@@ -1,12 +1,12 @@
 /*************************************************************************
-**文件: cpp-errors.h
+**文件: skywalker-errors.h
 **作者: shyfan
-**日期: 2023/07/13 14:44:00
-**功能: C++错误处理
+**日期: 2023/07/26 20:27:15
+**功能: 错误
 *************************************************************************/
 
-#ifndef __CPP_ERRORS_H__
-#define __CPP_ERRORS_H__
+#ifndef __SKYWALKER_ERRORS_H__
+#define __SKYWALKER_ERRORS_H__
 
 #include <vector>
 #include <string>
@@ -96,4 +96,4 @@ namespace Skywalker
     } // namespace Errors
 } // namespace Skywalker
 
-#endif // __CPP_ERRORS_H__
+#endif // __SKYWALKER_ERRORS_H__
