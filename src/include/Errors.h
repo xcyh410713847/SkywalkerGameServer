@@ -8,8 +8,8 @@
 #ifndef __SKYWALKER_GS_INCLUDE_ERRORS_H__
 #define __SKYWALKER_GS_INCLUDE_ERRORS_H__
 
-#include "cpp-errors.h"
+#include "libs/skywalker-errors/skywalker-errors.h"
 
-typedef Skywalker::CppErrors::CCppErrors<unsigned int> LauncherErrors;
+typedef Skywalker::Errors::CSkywalkerErrors<unsigned int> LauncherErrors;
 
 #endif // __SKYWALKER_GS_INCLUDE_ERRORS_H__

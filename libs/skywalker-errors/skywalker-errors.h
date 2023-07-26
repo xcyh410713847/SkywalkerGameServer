@@ -14,19 +14,19 @@
 
 namespace Skywalker
 {
-    namespace CppErrors
+    namespace Errors
     {
         std::string emptyTrace = "";
 
         template <typename T>
-        class CCppErrors
+        class CSkywalkerErrors
         {
             std::vector<T> errors;               // 错误列表
             std::vector<std::string> errorTrace; // 错误堆栈
 
         public:
-            CCppErrors(){};
-            ~CCppErrors()
+            CSkywalkerErrors(){};
+            ~CSkywalkerErrors()
             {
                 errors.clear();
                 errorTrace.clear();
@@ -93,7 +93,7 @@ namespace Skywalker
         ss << "[" << __FILE__ << ":" << __LINE__ << "(" << __FUNCTION__ << ")] "; \
         cppErrors.AddError(error, ss.str());                                      \
     }
-    } // namespace CppErrors
+    } // namespace Errors
 } // namespace Skywalker
 
 #endif // __CPP_ERRORS_H__

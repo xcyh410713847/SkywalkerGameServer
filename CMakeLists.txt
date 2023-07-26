@@ -7,7 +7,7 @@ set(skywalker_project_name "SkywalkerGameServer")
 # 项目名称
 project(${skywalker_project_name})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/cpp-errors)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # 服务器代码
 add_subdirectory(src)
