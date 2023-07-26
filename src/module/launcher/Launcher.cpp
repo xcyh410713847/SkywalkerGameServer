@@ -14,3 +14,11 @@ CLauncher::CLauncher()
 CLauncher::~CLauncher()
 {
 }
+
+void CLauncher::LaunchServer(LauncherErrors &Errors)
+{
+}
+
+void CLauncher::CloseServer(LauncherErrors &Errors)
+{
+}

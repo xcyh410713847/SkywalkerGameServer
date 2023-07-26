@@ -1,15 +1,10 @@
 /*************************************************************************
-**文件: main.cpp
+**文件: Errors.h
 **作者: shyfan
-**日期: 2023/07/25 17:57:21
-**功能: 启动器入口
+**日期: 2023/07/26 11:47:00
+**功能: 错误
 *************************************************************************/
 
-#include <stdio.h>
+#include "cpp-errors.h"
 
-#include "ILauncher.h"
-
-int main(int argc, char *argv[])
-{
-    return 0;
-}
+typedef Skywalker::CppErrors::CCppErrors<unsigned int> LauncherErrors;
