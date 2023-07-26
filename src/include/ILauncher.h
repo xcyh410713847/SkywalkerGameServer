@@ -5,8 +5,8 @@
 **功能: 启动器接口
 *************************************************************************/
 
-#ifndef __I_LAUNCHER_H__
-#define __I_LAUNCHER_H__
+#ifndef __SKYWALKER_GS_INCLUDE_I_LAUNCHER_H__
+#define __SKYWALKER_GS_INCLUDE_I_LAUNCHER_H__
 
 #include "Errors.h"
 
@@ -27,4 +27,4 @@ struct ILauncher
     virtual void CloseServer(LauncherErrors &Errors) = 0;
 };
 
-#endif // __I_LAUNCHER_H__
+#endif // __SKYWALKER_GS_INCLUDE_I_LAUNCHER_H__

@@ -5,12 +5,13 @@
 **功能: 启动器
 *************************************************************************/
 
-#ifndef __LAUNCHER_H__
-#define __LAUNCHER_H__
+#ifndef __SKYWALKER_GS_MODULE_LAUNCHER_H__
+#define __SKYWALKER_GS_MODULE_LAUNCHER_H__
 
+#include "ModuleExporter.h"
 #include "ILauncher.h"
 
-class CLauncher : public ILauncher
+class DLL_EXPORT CLauncher : public ILauncher
 {
 public:
     CLauncher();
@@ -36,4 +37,4 @@ public:
 #pragma endregion // ILauncher
 };
 
-#endif // __LAUNCHER_H__
+#endif // __SKYWALKER_GS_MODULE_LAUNCHER_H__
