@@ -9,5 +9,8 @@ project(${skywalker_project_name})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+# SkywalkerFramework
+add_subdirectory(skywalker-framework)
+
 # 服务器代码
 add_subdirectory(src)
