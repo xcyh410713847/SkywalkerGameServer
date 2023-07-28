@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_GS_INCLUDE_ERRORS_H__
 #define __SKYWALKER_GS_INCLUDE_ERRORS_H__
 
-#include "libs/skywalker-errors/skywalker-errors.h"
+#include "skywalker-tools/skywalker-errors/skywalker-errors.h"
 
 typedef Skywalker::Errors::CSkywalkerErrors<unsigned int> LauncherErrors;
 
