@@ -1,18 +1,18 @@
 /*************************************************************************
-**文件: Object.cpp
+**文件: SSFObject.cpp
 **作者: shyfan
-**日期: 2023/07/28 10:39:32
+**日期: 2023/07/28 10:57:46
 **功能: 对象
 *************************************************************************/
 
-#include "Object.h"
+#include "SSFObject.h"
 
-using namespace Skywalker::Framework;
+using namespace Skywalker::ServerFramework;
 
-CObject::CObject()
+SSFCObject::SSFCObject()
 {
 }
 
-CObject::~CObject()
+SSFCObject::~SSFCObject()
 {
 }

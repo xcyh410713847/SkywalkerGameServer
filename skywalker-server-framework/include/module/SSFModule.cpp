@@ -1,18 +1,18 @@
 /*************************************************************************
-**文件: Module.cpp
+**文件: SSFModule.cpp
 **作者: shyfan
-**日期: 2023/07/28 10:41:06
+**日期: 2023/07/28 10:56:01
 **功能: 模块
 *************************************************************************/
 
-#include "Module.h"
+#include "SSFModule.h"
 
-using namespace Skywalker::Framework;
+using namespace Skywalker::ServerFramework;
 
-CModule::CModule()
+SSFCModule::SSFCModule()
 {
 }
 
-CModule::~CModule()
+SSFCModule::~SSFCModule()
 {
 }
