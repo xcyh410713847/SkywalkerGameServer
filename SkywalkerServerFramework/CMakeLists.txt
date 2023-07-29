@@ -17,7 +17,9 @@ include_directories(
     ${skywalker_server_framework}
 )
 
-add_subdirectory(Plugins)
+add_subdirectory(Core)
+
+add_subdirectory(Plugin)
 
 add_subdirectory(Editor)
 

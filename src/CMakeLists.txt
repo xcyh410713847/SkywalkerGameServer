@@ -2,8 +2,8 @@ SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
 
 # 头文件目录
 include_directories(
-    ${PROJECT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR} # 项目根目录
+    ${CMAKE_CURRENT_SOURCE_DIR} # 当前CMakeLists.txt所在目录
 )
 
 # 服务器模块文件夹

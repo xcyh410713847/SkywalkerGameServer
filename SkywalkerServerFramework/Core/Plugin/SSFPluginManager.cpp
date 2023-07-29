@@ -19,10 +19,11 @@ SSFCPluginManager::~SSFCPluginManager()
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::RegisterPlugin(SSFIPlugin *Plugin)
+void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin)
 {
     if (Plugin == nullptr)
     {
+        Skywalker::Errors::CPP_ERRORS_WRAP_TRACE(Errors, PluginError_Register_Plugin_nullptr);
         return;
     }
 
@@ -37,7 +38,7 @@ void SSFCPluginManager::RegisterPlugin(SSFIPlugin *Plugin)
     // TODO 初始化插件资源
 }
 
-void SSFCPluginManager::UnregisterPlugin(SSFIPlugin *Plugin)
+void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin)
 {
     if (Plugin == nullptr)
     {

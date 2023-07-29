@@ -1,10 +1,18 @@
 /*************************************************************************
-**文件: SSFPlugin_LaunchState.cpp
+**文件: SkywalkerServerFramework/Object/SSFObject.cpp
 **作者: shyfan
-**日期: 2023/07/29 12:14:48
-**功能: 启动状态插件
+**日期: 2023/07/28 10:57:46
+**功能: 对象
 *************************************************************************/
 
-#include "SSFPlugin_LaunchState.h"
+#include "SSFObject.h"
 
 using namespace Skywalker::ServerFramework;
+
+SSFCObject::SSFCObject()
+{
+}
+
+SSFCObject::~SSFCObject()
+{
+}

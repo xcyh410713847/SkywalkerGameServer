@@ -1,5 +1,5 @@
 /*************************************************************************
-**文件: SSFIPluginManager.h
+**文件: SkywalkerServerFramework/Include/SSFIPluginManager.h
 **作者: shyfan
 **日期: 2023/07/29 15:20:03
 **功能: 插件管理器接口
@@ -18,7 +18,7 @@ namespace Skywalker
 {
     namespace ServerFramework
     {
-        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginError;
+        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
 
         struct SSFIPluginManager
         {
@@ -26,13 +26,13 @@ namespace Skywalker
              * 注册插件
              * @param Plugin 插件
              */
-            virtual void RegisterPlugin(SSFIPlugin *Plugin) = 0;
+            virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
 
             /**
              * 注销插件
              * @param Plugin 插件
              */
-            virtual void UnregisterPlugin(SSFIPlugin *Plugin) = 0;
+            virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
 
             /**
              * 获取插件

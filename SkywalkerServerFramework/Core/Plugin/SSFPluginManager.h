@@ -28,13 +28,13 @@ namespace Skywalker
              * 注册插件
              * @param Plugin 插件
              */
-            virtual void RegisterPlugin(SSFIPlugin *Plugin) override;
+            virtual void RegisterPlugin(SSFPluginError &Errors, SSFIPlugin *Plugin) override;
 
             /**
              * 注销插件
              * @param Plugin 插件
              */
-            virtual void UnregisterPlugin(SSFIPlugin *Plugin) override;
+            virtual void UnregisterPlugin(SSFPluginError &Errors, SSFIPlugin *Plugin) override;
 
             /**
              * 获取插件

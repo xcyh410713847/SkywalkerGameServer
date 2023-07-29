@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "SSFIPluginManager.h"
+#include "Include/SSFIPluginManager.h"
 
 namespace Skywalker
 {
