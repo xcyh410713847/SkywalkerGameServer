@@ -1,3 +1,5 @@
+SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
+
 # 头文件目录
 include_directories(
     ${PROJECT_SOURCE_DIR}
@@ -9,3 +11,5 @@ add_subdirectory(Module)
 
 # 执行文件文件夹
 add_subdirectory(Executable)
+
+SkywalkerGameServer_MessageDebug("End Build SkywalkerGameServer")

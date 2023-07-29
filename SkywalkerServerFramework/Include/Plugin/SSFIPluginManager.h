@@ -18,6 +18,8 @@ namespace Skywalker
 {
     namespace ServerFramework
     {
+        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginError;
+
         struct SSFIPluginManager
         {
             /**
