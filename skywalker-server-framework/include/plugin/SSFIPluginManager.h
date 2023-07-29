@@ -19,6 +19,18 @@ namespace Skywalker
         struct SSFIPluginManager
         {
             /**
+             * 注册插件
+             * @param Plugin 插件
+             */
+            virtual void RegisterPlugin(SSFIPlugin *Plugin) = 0;
+
+            /**
+             * 注销插件
+             * @param Plugin 插件
+             */
+            virtual void UnregisterPlugin(SSFIPlugin *Plugin) = 0;
+
+            /**
              * 获取插件
              * @param PluginName 插件名称
              * @return 插件

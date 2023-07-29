@@ -14,6 +14,7 @@ namespace Skywalker
     {
         struct SSFIPlugin
         {
+            virtual const std::string &GetPluginName() = 0;
         };
     }
 }

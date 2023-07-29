@@ -24,6 +24,17 @@ namespace Skywalker
             virtual ~SSFCPluginManager();
 
 #pragma region SSFIPluginManager
+            /**
+             * 注册插件
+             * @param Plugin 插件
+             */
+            virtual void RegisterPlugin(SSFIPlugin *Plugin) override;
+
+            /**
+             * 注销插件
+             * @param Plugin 插件
+             */
+            virtual void UnregisterPlugin(SSFIPlugin *Plugin) override;
 
             /**
              * 获取插件
