@@ -8,6 +8,8 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__
 
+#include <string>
+
 namespace Skywalker
 {
     namespace ServerFramework

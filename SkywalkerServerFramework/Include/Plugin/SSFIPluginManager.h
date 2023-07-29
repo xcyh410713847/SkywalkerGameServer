@@ -10,6 +10,8 @@
 
 #include <string>
 
+#include "SkywalkerTools/SkywalkerErrors/SkywalkerErrors.h"
+
 #include "SSFIPlugin.h"
 
 namespace Skywalker

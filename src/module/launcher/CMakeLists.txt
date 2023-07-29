@@ -1,9 +1,15 @@
-set(skywalker_module_launcher_name "launcher")
+set(skywalker_game_server_module_name "Launcher")
 
-# 查找当前目录的所有源文件
-aux_source_directory(. DIR_LIB_SRCS)
+file(GLOB skywalker_game_server_source_cpp
+    *.cpp)
 
-add_library(${skywalker_module_launcher_name} SHARED ${DIR_LIB_SRCS})
+file(GLOB skywalker_game_server_source_h
+    *.h)
+
+add_library(${skywalker_game_server_module_name} SHARED
+    ${skywalker_game_server_source_cpp}
+    ${skywalker_game_server_source_h}
+)
 
 # 关闭警告
-target_compile_options(${skywalker_module_launcher_name} PRIVATE "/wd4819")
+target_compile_options(${skywalker_game_server_module_name} PRIVATE "/wd4819")
