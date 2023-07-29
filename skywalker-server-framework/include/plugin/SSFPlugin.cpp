@@ -9,7 +9,8 @@
 
 using namespace Skywalker::ServerFramework;
 
-SSFCPlugin::SSFCPlugin()
+SSFCPlugin::SSFCPlugin(SSFSharedPtrPluginManager PluginManager)
+    : PluginManager(PluginManager)
 {
 }
 

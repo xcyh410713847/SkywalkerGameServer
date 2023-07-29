@@ -8,17 +8,24 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 
-#include "SSFIPlugin.h"
+#include <memory>
+
+#include "SSFIPluginManager.h"
 
 namespace Skywalker
 {
     namespace ServerFramework
     {
+        typedef std::shared_ptr<SSFIPluginManager> SSFSharedPtrPluginManager;
+
         class SSFCPlugin : public SSFIPlugin
         {
         public:
-            SSFCPlugin();
+            SSFCPlugin(SSFSharedPtrPluginManager PluginManager);
             virtual ~SSFCPlugin();
+
+        protected:
+            SSFSharedPtrPluginManager PluginManager;
         };
     }
 }
