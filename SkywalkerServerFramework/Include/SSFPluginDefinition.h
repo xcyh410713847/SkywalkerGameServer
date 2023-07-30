@@ -1,7 +1,7 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework/Include/SSFPluginDefinition.h
+**文件: SkywalkerServerFramework\Include\SSFPluginDefinition.h
 **作者: shyfan
-**日期: 2023/07/29 18:48:52
+**日期: 2023/07/30 12:37:24
 **功能: 插件定义
 *************************************************************************/
 

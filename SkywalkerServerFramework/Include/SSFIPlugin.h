@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework/Include/SSFIPlugin.h
+**文件: SkywalkerServerFramework\Include\SSFIPlugin.h
 **作者: shyfan
-**日期: 2023/07/28 10:58:10
-**功能: 插件接口
+**日期: 2023/07/30 12:37:01
+**功能:
 *************************************************************************/
 
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__

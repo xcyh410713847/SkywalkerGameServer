@@ -1,3 +1,10 @@
+# #########################################################################
+# 文件: SkywalkerServerFramework\Plugin\LaunchState\CMakeLists.txt
+# 作者: shyfan
+# 日期: 2023/07/30 12:38:17
+# 功能:
+# #########################################################################
+
 set(skywalker_server_plugin_name "SSFPluginLaunchState")
 
 file(GLOB skywalker_server_plugin_source_cpp

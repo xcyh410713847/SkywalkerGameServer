@@ -1,15 +1,15 @@
 /*************************************************************************
-**文件: Launcher.h
+**文件: Src\Module\Launcher\Launcher.h
 **作者: shyfan
-**日期: 2023/07/25 20:50:32
+**日期: 2023/07/30 12:41:36
 **功能: 启动器
 *************************************************************************/
 
 #ifndef __SKYWALKER_GS_MODULE_LAUNCHER_H__
 #define __SKYWALKER_GS_MODULE_LAUNCHER_H__
 
-#include "Include/ModuleExporter.h"
-#include "Include/ILauncher.h"
+#include "Include\ModuleExporter.h"
+#include "Include\ILauncher.h"
 
 class DLL_EXPORT CLauncher : public ILauncher
 {

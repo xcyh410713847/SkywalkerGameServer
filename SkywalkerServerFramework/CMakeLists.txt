@@ -1,3 +1,10 @@
+# #########################################################################
+# 文件: SkywalkerServerFramework\CMakeLists.txt
+# 作者: shyfan
+# 日期: 2023/07/30 12:39:03
+# 功能:
+# #########################################################################
+
 function(SkywalkerServerFramework_MessageDebug info)
     message(STATUS "[Skywalker Server Framework] ${info}")
 endfunction()
@@ -15,12 +22,17 @@ SkywalkerServerFramework_MessageDebug("Skywalker Server Framework PATH: ${skywal
 include_directories(
     ${skywalker_tools}
     ${skywalker_server_framework}
+    ${skywalker_server_framework}/Include
+    ${skywalker_server_framework}/Core
 )
 
+# 核心代码
 add_subdirectory(Core)
 
+# 插件
 add_subdirectory(Plugin)
 
+# 编辑器
 add_subdirectory(Editor)
 
 SkywalkerServerFramework_MessageDebug("End Build Skywalker Server Framework")

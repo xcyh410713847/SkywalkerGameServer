@@ -1,7 +1,7 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework/Include/SSFIPluginManager.h
+**文件: SkywalkerServerFramework\Include\SSFIPluginManager.h
 **作者: shyfan
-**日期: 2023/07/29 15:20:03
+**日期: 2023/07/30 12:37:08
 **功能: 插件管理器接口
 *************************************************************************/
 
@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "SkywalkerTools/SkywalkerErrors/SkywalkerErrors.h"
+#include "SkywalkerTools\SkywalkerErrors\SkywalkerErrors.h"
 
 #include "SSFIPlugin.h"
 

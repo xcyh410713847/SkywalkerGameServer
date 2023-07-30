@@ -1,3 +1,10 @@
+# #########################################################################
+# 文件: Src\Executable\CMakeLists.txt
+# 作者: shyfan
+# 日期: 2023/07/30 12:39:50
+# 功能:
+# #########################################################################
+
 set(skywalker_game_server_exe_name "SkywalkerServer")
 
 file(GLOB skywalker_game_server_source_cpp
