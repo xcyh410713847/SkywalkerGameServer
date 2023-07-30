@@ -22,8 +22,6 @@ SkywalkerServerFramework_MessageDebug("Skywalker Server Framework PATH: ${skywal
 include_directories(
     ${skywalker_tools}
     ${skywalker_server_framework}
-    ${skywalker_server_framework}/Include
-    ${skywalker_server_framework}/Core
 )
 
 # 核心代码

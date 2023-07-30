@@ -1,18 +1,18 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\Module\SSFModule.cpp
+**文件: SkywalkerServerFramework\Core\SSFObject.cpp
 **作者: shyfan
-**日期: 2023/07/30 12:32:46
-**功能: 模块
+**日期: 2023/07/30 12:56:54
+**功能: 对象
 *************************************************************************/
 
-#include "SSFModule.h"
+#include "SSFObject.h"
 
 using namespace Skywalker::ServerFramework;
 
-SSFCModule::SSFCModule()
+SSFCObject::SSFCObject()
 {
 }
 
-SSFCModule::~SSFCModule()
+SSFCObject::~SSFCObject()
 {
 }

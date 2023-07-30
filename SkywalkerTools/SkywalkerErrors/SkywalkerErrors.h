@@ -16,8 +16,6 @@ namespace Skywalker
 {
     namespace Errors
     {
-        std::string emptyTrace = "";
-
         template <typename T>
         class CSkywalkerErrors
         {
@@ -82,18 +80,18 @@ namespace Skywalker
                 return !errors.empty();
             }
         };
+    } // namespace Errors
+} // namespace Skywalker
 
 // 不带堆栈的错误
-#define CPP_ERRORS_WRAP(cppErrors, error) cppErrors.AddError(error, emptyTrace)
+#define SKYWALKER_ERRORS_WRAP(cppErrors, error) cppErrors.AddError(error, "")
 
 // 带堆栈的错误
-#define CPP_ERRORS_WRAP_TRACE(cppErrors, error)                                   \
+#define SKYWALKER_ERRORS_WRAP_TRACE(cppErrors, error)                             \
     {                                                                             \
-        stringstream ss;                                                          \
+        std::stringstream ss;                                                     \
         ss << "[" << __FILE__ << ":" << __LINE__ << "(" << __FUNCTION__ << ")] "; \
         cppErrors.AddError(error, ss.str());                                      \
     }
-    } // namespace Errors
-} // namespace Skywalker
 
 #endif // __SKYWALKER_ERRORS_H__

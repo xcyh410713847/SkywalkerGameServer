@@ -5,14 +5,18 @@
 # 功能:
 # #########################################################################
 
-# Object
-add_subdirectory(Object)
+set(skywalker_server_framework_core_name "SSFCore")
 
-# Module
-add_subdirectory(Module)
+file(GLOB skywalker_server_framework_source_cpp
+    *.cpp)
 
-# Plugin
-add_subdirectory(Plugin)
+file(GLOB skywalker_server_framework_source_h
+    *.h)
 
-# System
-add_subdirectory(System)
+add_library(${skywalker_server_framework_core_name} STATIC
+    ${skywalker_server_framework_source_cpp}
+    ${skywalker_server_framework_source_h}
+)
+
+# 关闭警告
+target_compile_options(${skywalker_server_framework_core_name} PRIVATE "/wd4819")

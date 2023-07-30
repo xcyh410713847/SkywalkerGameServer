@@ -1,0 +1,22 @@
+/*************************************************************************
+**文件: SkywalkerServerFramework\Include\SSFErrors.h
+**作者: shyfan
+**日期: 2023/07/30 13:25:43
+**功能: 错误码
+*************************************************************************/
+
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__
+
+#include "SkywalkerTools\SkywalkerErrors\SkywalkerErrors.h"
+
+namespace Skywalker
+{
+    namespace ServerFramework
+    {
+        // 插件错误
+        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
+    }
+}
+
+#endif // __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__

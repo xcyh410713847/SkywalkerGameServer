@@ -1,7 +1,7 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\Plugin\SSFPluginManager.cpp
+**文件: SkywalkerServerFramework\Core\SSFPluginManager.cpp
 **作者: shyfan
-**日期: 2023/07/30 12:34:18
+**日期: 2023/07/30 12:57:23
 **功能: 插件管理器
 *************************************************************************/
 
@@ -23,19 +23,23 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plug
 {
     if (Plugin == nullptr)
     {
-        Skywalker::Errors::CPP_ERRORS_WRAP_TRACE(Errors, PluginError_Register_Plugin_nullptr);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, PluginError_Register_Plugin_nullptr);
         return;
     }
 
-    TMap_Plugin::iterator it = PluginMap.find(Plugin->GetPluginName());
+    std::string PluginName = Plugin->GetPluginName();
+    if (PluginName.empty())
+    {
+        return;
+    }
+
+    TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
     {
         return;
     }
 
-    PluginMap.insert(std::make_pair(Plugin->GetPluginName(), Plugin));
-
-    // TODO 初始化插件资源
+    PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
 void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin)
@@ -45,13 +49,18 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Pl
         return;
     }
 
-    TMap_Plugin::iterator it = PluginMap.find(Plugin->GetPluginName());
+    std::string PluginName = Plugin->GetPluginName();
+    if (PluginName.empty())
+    {
+        return;
+    }
+
+    TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it == PluginMap.end())
     {
         return;
     }
 
-    // TODO 释放插件资源
     PluginMap.erase(it);
 }
 

@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_LAUNCH_STATE_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_LAUNCH_STATE_H__
 
-#include "Core/Plugin/SSFPlugin.h"
+#include "Core\SSFPlugin.h"
 
 namespace Skywalker
 {

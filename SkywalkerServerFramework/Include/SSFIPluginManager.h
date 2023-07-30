@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "SkywalkerTools\SkywalkerErrors\SkywalkerErrors.h"
+#include "SSFErrors.h"
 
 #include "SSFIPlugin.h"
 
@@ -18,8 +18,6 @@ namespace Skywalker
 {
     namespace ServerFramework
     {
-        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
-
         struct SSFIPluginManager
         {
             /**

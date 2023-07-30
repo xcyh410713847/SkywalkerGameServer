@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\Plugin\SSFPluginManager.h
+**文件: SkywalkerServerFramework\Core\SSFPluginManager.h
 **作者: shyfan
-**日期: 2023/07/30 12:34:27
-**功能: 插件管理器
+**日期: 2023/07/30 12:57:31
+**功能:
 *************************************************************************/
 
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
@@ -11,7 +11,8 @@
 #include <map>
 #include <string>
 
-#include "SSFIPluginManager.h"
+#include "Include\SSFIPluginManager.h"
+#include "Include\SSFPluginDefinition.h"
 
 namespace Skywalker
 {
@@ -28,13 +29,13 @@ namespace Skywalker
              * 注册插件
              * @param Plugin 插件
              */
-            virtual void RegisterPlugin(SSFPluginError &Errors, SSFIPlugin *Plugin) override;
+            virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) override;
 
             /**
              * 注销插件
              * @param Plugin 插件
              */
-            virtual void UnregisterPlugin(SSFPluginError &Errors, SSFIPlugin *Plugin) override;
+            virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) override;
 
             /**
              * 获取插件
