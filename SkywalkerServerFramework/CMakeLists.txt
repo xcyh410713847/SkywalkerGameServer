@@ -5,6 +5,11 @@
 # 功能:
 # #########################################################################
 
+# CMake 最低版本号要求
+cmake_minimum_required(VERSION 3.12)
+
+project(SkywalkerServerFramework)
+
 function(SkywalkerServerFramework_MessageDebug info)
     message(STATUS "[Skywalker Server Framework] ${info}")
 endfunction()
