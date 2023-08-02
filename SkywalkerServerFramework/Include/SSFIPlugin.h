@@ -10,15 +10,15 @@
 
 #include <string>
 
-namespace Skywalker
+#include "SSFCore.h"
+
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+struct SSFIPlugin
 {
-    namespace ServerFramework
-    {
-        struct SSFIPlugin
-        {
-            virtual const std::string &GetPluginName() = 0;
-        };
-    }
-}
+    virtual const std::string &GetPluginName() = 0;
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__

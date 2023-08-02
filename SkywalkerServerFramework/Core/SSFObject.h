@@ -10,17 +10,15 @@
 
 #include "Include/SSFIObject.h"
 
-namespace Skywalker
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+class SSFCObject : public SSFIObject
 {
-    namespace ServerFramework
-    {
-        class SSFCObject : public SSFIObject
-        {
-        public:
-            SSFCObject();
-            virtual ~SSFCObject();
-        };
-    }
-}
+public:
+    SSFCObject();
+    virtual ~SSFCObject();
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

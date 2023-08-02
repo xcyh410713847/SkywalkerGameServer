@@ -8,14 +8,14 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_I_OBJECT_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_I_OBJECT_H__
 
-namespace Skywalker
+#include "SSFCore.h"
+
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+struct SSFIObject
 {
-    namespace ServerFramework
-    {
-        struct SSFIObject
-        {
-        };
-    }
-}
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_OBJECT_H__

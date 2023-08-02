@@ -8,11 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_KEYWORD_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_KEYWORD_H__
 
-namespace Skywalker
-{
-    namespace ServerFramework
-    {
-    }
-}
+#include "SSFCore.h"
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_KEYWORD_H__

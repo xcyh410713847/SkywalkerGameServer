@@ -8,17 +8,17 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_DEFINITION_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_DEFINITION_H__
 
-namespace Skywalker
+#include "SSFCore.h"
+
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+enum EPluginError
 {
-    namespace ServerFramework
-    {
-        enum EPluginError
-        {
-            PluginError_Success = 0,             // 成功
-            PluginError_Unknow,                  // 未知错误
-            PluginError_Register_Plugin_nullptr, // 注册插件为空
-        };
-    }
-}
+    PluginError_Success = 0,             // 成功
+    PluginError_Unknow,                  // 未知错误
+    PluginError_Register_Plugin_nullptr, // 注册插件为空
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_DEFINITION_H__

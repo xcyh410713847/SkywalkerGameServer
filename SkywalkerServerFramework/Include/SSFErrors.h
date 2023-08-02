@@ -10,13 +10,13 @@
 
 #include "SkywalkerTools\SkywalkerErrors\SkywalkerErrors.h"
 
-namespace Skywalker
-{
-    namespace ServerFramework
-    {
-        // 插件错误
-        typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
-    }
-}
+#include "SSFCore.h"
+
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+// 插件错误
+typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__

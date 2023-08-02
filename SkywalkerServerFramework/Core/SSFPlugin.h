@@ -12,22 +12,20 @@
 
 #include "Include/SSFIPluginManager.h"
 
-namespace Skywalker
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+typedef std::shared_ptr<SSFIPluginManager> SSFSharedPtrPluginManager;
+
+class SSFCPlugin : public SSFIPlugin
 {
-    namespace ServerFramework
-    {
-        typedef std::shared_ptr<SSFIPluginManager> SSFSharedPtrPluginManager;
+public:
+    SSFCPlugin(SSFSharedPtrPluginManager PluginManager);
+    virtual ~SSFCPlugin();
 
-        class SSFCPlugin : public SSFIPlugin
-        {
-        public:
-            SSFCPlugin(SSFSharedPtrPluginManager PluginManager);
-            virtual ~SSFCPlugin();
+protected:
+    SSFSharedPtrPluginManager PluginManager;
+};
 
-        protected:
-            SSFSharedPtrPluginManager PluginManager;
-        };
-    }
-}
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__

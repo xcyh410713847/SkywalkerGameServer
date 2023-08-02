@@ -10,17 +10,15 @@
 
 #include "Include\SSFIModule.h"
 
-namespace Skywalker
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+class SSFCModule : public SSFIModule
 {
-    namespace ServerFramework
-    {
-        class SSFCModule : public SSFIModule
-        {
-        public:
-            SSFCModule();
-            virtual ~SSFCModule();
-        };
-    }
-}
+public:
+    SSFCModule();
+    virtual ~SSFCModule();
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__

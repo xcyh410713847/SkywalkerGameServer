@@ -10,14 +10,12 @@
 
 #include "Core\SSFPlugin.h"
 
-namespace Skywalker
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+class SSFCPlugin_LaunchState : public SSFCPlugin
 {
-    namespace ServerFramework
-    {
-        class SSFCPlugin_LaunchState : public SSFCPlugin
-        {
-        };
-    }
-}
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_LAUNCH_STATE_H__

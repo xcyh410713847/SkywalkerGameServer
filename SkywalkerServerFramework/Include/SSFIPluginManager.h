@@ -10,36 +10,36 @@
 
 #include <string>
 
+#include "SSFCore.h"
+
 #include "SSFErrors.h"
 
 #include "SSFIPlugin.h"
 
-namespace Skywalker
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+struct SSFIPluginManager
 {
-    namespace ServerFramework
-    {
-        struct SSFIPluginManager
-        {
-            /**
-             * 注册插件
-             * @param Plugin 插件
-             */
-            virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
+    /**
+     * 注册插件
+     * @param Plugin 插件
+     */
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
 
-            /**
-             * 注销插件
-             * @param Plugin 插件
-             */
-            virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
+    /**
+     * 注销插件
+     * @param Plugin 插件
+     */
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
 
-            /**
-             * 获取插件
-             * @param PluginName 插件名称
-             * @return 插件
-             */
-            virtual SSFIPlugin *GetPlugin(const std::string &PluginName) = 0;
-        };
-    }
-}
+    /**
+     * 获取插件
+     * @param PluginName 插件名称
+     * @return 插件
+     */
+    virtual SSFIPlugin *GetPlugin(const std::string &PluginName) = 0;
+};
+
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__

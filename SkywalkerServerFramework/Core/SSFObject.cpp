@@ -7,7 +7,7 @@
 
 #include "SSFObject.h"
 
-using namespace Skywalker::ServerFramework;
+SKYWALKER_SF_NAMESPACE_USE
 
 SSFCObject::SSFCObject()
 {

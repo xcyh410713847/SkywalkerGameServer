@@ -7,7 +7,7 @@
 
 #include "SSFPlugin.h"
 
-using namespace Skywalker::ServerFramework;
+SKYWALKER_SF_NAMESPACE_USE
 
 SSFCPlugin::SSFCPlugin(SSFSharedPtrPluginManager PluginManager)
     : PluginManager(PluginManager)

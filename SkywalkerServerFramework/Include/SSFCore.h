@@ -1,0 +1,23 @@
+/*************************************************************************
+**文件: SkywalkerServerFramework\Include\SSFCore.h
+**作者: shyfan
+**日期: 2023/08/02 17:16:32
+**功能: 核心头文件
+*************************************************************************/
+
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
+
+#define SKYWALKER_SF_NAMESPACE_BEGIN \
+    namespace Skywalker              \
+    {                                \
+        namespace ServerFramework    \
+        {
+
+#define SKYWALKER_SF_NAMESPACE_END \
+    } /* ServerFramework */        \
+    } /* Skywalker */
+
+#define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
+
+#endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

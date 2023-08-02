@@ -7,7 +7,7 @@
 
 #include "SSFModule.h"
 
-using namespace Skywalker::ServerFramework;
+SKYWALKER_SF_NAMESPACE_USE
 
 SSFCModule::SSFCModule()
 {
