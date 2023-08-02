@@ -20,3 +20,7 @@ add_executable(${skywalker_game_server_exe_name}
 
 # 关闭警告
 target_compile_options(${skywalker_game_server_exe_name} PRIVATE "/wd4819")
+
+target_link_libraries(${skywalker_game_server_exe_name} PRIVATE
+    ${skywalker_server_framework_core_name}
+)

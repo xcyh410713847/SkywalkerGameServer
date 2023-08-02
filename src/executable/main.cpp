@@ -7,9 +7,13 @@
 
 #include <stdio.h>
 
+#include "SkywalkerServerFramework\Include\SSFCore.h"
+
 #include "Include\ILauncher.h"
 
 int main(int argc, char *argv[])
 {
+    SkywalkerServerFrameworkInit();
+
     return 0;
 }

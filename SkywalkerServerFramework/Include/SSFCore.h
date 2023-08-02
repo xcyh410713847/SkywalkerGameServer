@@ -8,6 +8,10 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
 
+#include <iostream>
+
+#pragma region Common Macro
+
 #define SKYWALKER_SF_NAMESPACE_BEGIN \
     namespace Skywalker              \
     {                                \
@@ -19,5 +23,15 @@
     } /* Skywalker */
 
 #define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
+
+#define SKYWALKER_SF_API extern "C"
+
+#pragma endregion Common Macro
+
+SKYWALKER_SF_API static bool SkywalkerServerFrameworkInit()
+{
+    std::cout << "SkywalkerServerFrameworkInit" << std::endl;
+    return true;
+}
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

@@ -5,7 +5,7 @@
 # 功能:
 # #########################################################################
 
-set(skywalker_server_framework_core_name "SSFCore")
+set(skywalker_server_framework_core_name "SSFCore" CACHE STRING "skywalker server framework core name")
 
 file(GLOB skywalker_server_framework_source_cpp
     *.cpp)
