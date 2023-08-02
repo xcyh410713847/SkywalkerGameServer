@@ -8,8 +8,8 @@
 #ifndef __SKYWALKER_GS_MODULE_LAUNCHER_H__
 #define __SKYWALKER_GS_MODULE_LAUNCHER_H__
 
-#include "Include\ModuleExporter.h"
-#include "Include\ILauncher.h"
+#include "ModuleExporter.h"
+#include "ILauncher.h"
 
 class DLL_EXPORT CLauncher : public ILauncher
 {

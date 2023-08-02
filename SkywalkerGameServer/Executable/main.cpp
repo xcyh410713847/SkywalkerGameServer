@@ -9,7 +9,7 @@
 
 #include "SkywalkerServerFramework\Include\SSFCore.h"
 
-#include "Include\ILauncher.h"
+#include "ILauncher.h"
 
 int main(int argc, char *argv[])
 {

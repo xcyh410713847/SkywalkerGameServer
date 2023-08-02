@@ -13,7 +13,7 @@ file(GLOB skywalker_server_framework_source_cpp
 file(GLOB skywalker_server_framework_source_h
     *.h)
 
-add_library(${skywalker_server_framework_core_name} SHARED
+add_library(${skywalker_server_framework_core_name} STATIC
     ${skywalker_server_framework_source_cpp}
     ${skywalker_server_framework_source_h}
 )

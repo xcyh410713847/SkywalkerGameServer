@@ -8,25 +8,24 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
-project(SkywalkerServerFramework)
-
 function(SkywalkerServerFramework_MessageDebug info)
     message(STATUS "[Skywalker Server Framework] ${info}")
 endfunction()
 
 SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
 
-# SkywalkerTools 路径
-set(skywalker_tools ${PROJECT_SOURCE_DIR})
-SkywalkerServerFramework_MessageDebug("Skywalker Tools PATH: ${skywalker_tools}")
+# 设置项目名称
+set(skywalker_server_framework_name "SkywalkerServerFramework")
 
-# SkywalkerServerFramework 路径
-set(skywalker_server_framework ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Skywalker server framework PATH" FORCE)
-SkywalkerServerFramework_MessageDebug("Skywalker Server Framework PATH: ${skywalker_server_framework}")
+# 项目名称
+project(${skywalker_server_framework_name})
+
+# SkywalkerTools 路径
+set(skywalker_tools_path "../SkywalkerTools")
 
 include_directories(
-    ${skywalker_tools}
-    ${skywalker_server_framework}
+    ${skywalker_tools_path}
+    ./
 )
 
 # 核心代码
@@ -38,4 +37,6 @@ add_subdirectory(Plugin)
 # 编辑器
 add_subdirectory(Editor)
 
+# 启动库
+# add_subdirectory(Launcher)
 SkywalkerServerFramework_MessageDebug("End Build Skywalker Server Framework")

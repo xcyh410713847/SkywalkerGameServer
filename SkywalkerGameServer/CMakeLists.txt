@@ -5,12 +5,25 @@
 # 功能:
 # #########################################################################
 
+# CMake 最低版本号要求
+cmake_minimum_required(VERSION 3.12)
+
+function(SkywalkerGameServer_MessageDebug info)
+    message(STATUS "[Skywalker Game Server] ${info}")
+endfunction()
+
+# 设置项目名称
+set(skywalker_server_project_name "SkywalkerGameServer")
+
+# 项目名称
+project(${skywalker_server_project_name})
+
 SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
 
 # 头文件目录
 include_directories(
-    ${PROJECT_SOURCE_DIR} # 项目根目录
-    ${CMAKE_CURRENT_SOURCE_DIR} # 当前CMakeLists.txt所在目录
+    ../
+    ./Include
 )
 
 # 服务器模块文件夹
