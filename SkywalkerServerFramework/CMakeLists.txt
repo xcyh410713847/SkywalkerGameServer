@@ -2,11 +2,13 @@
 # 文件: SkywalkerServerFramework\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/07/30 12:39:03
-# 功能:
+# 功能: Skywalker Server Framework 项目CMakeLists.txt
 # #########################################################################
 
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
+
+set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 function(SkywalkerServerFramework_MessageDebug info)
     message(STATUS "[Skywalker Server Framework] ${info}")
@@ -33,9 +35,6 @@ add_subdirectory(Core)
 
 # 插件
 add_subdirectory(Plugin)
-
-# 编辑器
-add_subdirectory(Editor)
 
 # 启动库
 # add_subdirectory(Launcher)

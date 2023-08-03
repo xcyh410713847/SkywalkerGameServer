@@ -5,10 +5,11 @@
 # 功能:
 # #########################################################################
 
-set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
-
 # SkywalkerServerFramework
 add_subdirectory(SkywalkerServerFramework)
+
+# SkywalkerServerEditor
+add_subdirectory(SkywalkerServerEditor)
 
 # SkywalkerGameServer
 add_subdirectory(SkywalkerGameServer)
