@@ -36,6 +36,4 @@ add_subdirectory(Core)
 # 插件
 add_subdirectory(Plugin)
 
-# 启动库
-# add_subdirectory(Launcher)
 SkywalkerServerFramework_MessageDebug("End Build Skywalker Server Framework")
