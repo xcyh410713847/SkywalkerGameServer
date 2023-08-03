@@ -5,22 +5,20 @@
 # 功能:
 # #########################################################################
 
-set(skywalker_game_server_exe_name "SkywalkerServer")
-
 file(GLOB skywalker_game_server_source_cpp
     *.cpp)
 
 file(GLOB skywalker_game_server_source_h
     *.h)
 
-add_executable(${skywalker_game_server_exe_name}
+add_executable(${skywalker_game_server_name}
     ${skywalker_game_server_source_cpp}
     ${skywalker_game_server_source_h}
 )
 
 # 关闭警告
-target_compile_options(${skywalker_game_server_exe_name} PRIVATE "/wd4819")
+target_compile_options(${skywalker_game_server_name} PRIVATE "/wd4819")
 
-target_link_libraries(${skywalker_game_server_exe_name} PRIVATE
+target_link_libraries(${skywalker_game_server_name} PRIVATE
     ${skywalker_server_framework_core_name}
 )

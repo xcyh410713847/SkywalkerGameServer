@@ -30,4 +30,6 @@ include_directories(
     ./
 )
 
+add_subdirectory(Editor)
+
 SkywalkerServerEditor_MessageDebug("End Build Skywalker Server Editor")

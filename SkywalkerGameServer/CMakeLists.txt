@@ -15,10 +15,10 @@ function(SkywalkerGameServer_MessageDebug info)
 endfunction()
 
 # 设置项目名称
-set(skywalker_server_project_name "SkywalkerGameServer")
+set(skywalker_game_server_name "SkywalkerGameServer")
 
 # 项目名称
-project(${skywalker_server_project_name})
+project(${skywalker_game_server_name})
 
 SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
 
