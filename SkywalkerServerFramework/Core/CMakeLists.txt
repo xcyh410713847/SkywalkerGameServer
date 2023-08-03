@@ -5,18 +5,16 @@
 # 功能:
 # #########################################################################
 
-set(skywalker_server_framework_core_name "SSFCore" CACHE STRING "skywalker server framework core name")
-
 file(GLOB skywalker_server_framework_source_cpp
     *.cpp)
 
 file(GLOB skywalker_server_framework_source_h
     *.h)
 
-add_library(${skywalker_server_framework_core_name} STATIC
+add_library(${skywalker_server_framework_name} STATIC
     ${skywalker_server_framework_source_cpp}
     ${skywalker_server_framework_source_h}
 )
 
 # 关闭警告
-target_compile_options(${skywalker_server_framework_core_name} PRIVATE "/wd4819")
+target_compile_options(${skywalker_server_framework_name} PRIVATE "/wd4819")
