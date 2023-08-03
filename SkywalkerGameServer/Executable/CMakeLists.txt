@@ -5,6 +5,9 @@
 # 功能:
 # #########################################################################
 
+# 设置 SkywalkerServerFramework 静态库库的名称
+set(skywalker_server_framework_name "SkywalkerServerFramework")
+
 file(GLOB skywalker_game_server_source_cpp
     *.cpp)
 

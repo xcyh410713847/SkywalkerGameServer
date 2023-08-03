@@ -28,10 +28,6 @@
 
 #pragma endregion Common Macro
 
-SKYWALKER_SF_API static bool SkywalkerServerFrameworkInit()
-{
-    std::cout << "SkywalkerServerFrameworkInit" << std::endl;
-    return true;
-}
+SKYWALKER_SF_API bool SkywalkerServerFrameworkInit();
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
