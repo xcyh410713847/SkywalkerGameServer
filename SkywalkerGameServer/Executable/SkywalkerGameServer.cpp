@@ -1,7 +1,7 @@
 /*************************************************************************
-**文件: Src\Executable\main.cpp
+**文件: SkywalkerGameServer\Executable\SkywalkerGameServer.cpp
 **作者: shyfan
-**日期: 2023/07/30 12:39:57
+**日期: 2023/08/03 11:19:47
 **功能: 入口
 *************************************************************************/
 
@@ -9,7 +9,7 @@
 
 #include "SkywalkerServerFramework\Include\SSFCore.h"
 
-#include "ILauncher.h"
+#include "SGSILauncher.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,14 +1,14 @@
 /*************************************************************************
-**文件: Src\Include\ILauncher.h
+**文件: SkywalkerGameServer\Include\SGSILauncher.h
 **作者: shyfan
-**日期: 2023/07/30 12:40:44
+**日期: 2023/08/03 11:20:17
 **功能: 启动器接口
 *************************************************************************/
 
 #ifndef __SKYWALKER_GS_INCLUDE_I_LAUNCHER_H__
 #define __SKYWALKER_GS_INCLUDE_I_LAUNCHER_H__
 
-#include "Errors.h"
+#include "SGSErrors.h"
 
 struct ILauncher
 {

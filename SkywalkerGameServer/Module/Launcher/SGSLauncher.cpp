@@ -1,11 +1,11 @@
 /*************************************************************************
-**文件: Src\Module\Launcher\Launcher.cpp
+**文件: SkywalkerGameServer\Module\Launcher\SGSLauncher.cpp
 **作者: shyfan
-**日期: 2023/07/30 12:41:27
+**日期: 2023/08/03 11:21:05
 **功能: 启动器
 *************************************************************************/
 
-#include "Launcher.h"
+#include "SGSLauncher.h"
 
 CLauncher::CLauncher()
 {

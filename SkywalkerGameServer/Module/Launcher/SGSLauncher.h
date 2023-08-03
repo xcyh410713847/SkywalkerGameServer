@@ -1,15 +1,15 @@
 /*************************************************************************
-**文件: Src\Module\Launcher\Launcher.h
+**文件: SkywalkerGameServer\Module\Launcher\SGSLauncher.h
 **作者: shyfan
-**日期: 2023/07/30 12:41:36
+**日期: 2023/08/03 11:21:12
 **功能: 启动器
 *************************************************************************/
 
 #ifndef __SKYWALKER_GS_MODULE_LAUNCHER_H__
 #define __SKYWALKER_GS_MODULE_LAUNCHER_H__
 
-#include "ModuleExporter.h"
-#include "ILauncher.h"
+#include "SGSModuleExporter.h"
+#include "SGSILauncher.h"
 
 class DLL_EXPORT CLauncher : public ILauncher
 {
