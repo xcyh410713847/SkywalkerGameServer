@@ -32,9 +32,6 @@ include_directories(
     ./Include
 )
 
-# 服务器模块文件夹
-add_subdirectory(Module)
-
 # 执行文件文件夹
 add_subdirectory(Executable)
 
