@@ -33,6 +33,9 @@ bool SkywalkerServerFramework_Tick()
 
     std::cout << "Tick SkywalkerServerFramework" << std::endl;
 
+    // TODO Shyfan 临时
+    SKYWALKER_PLATFORM_SLEEP(1000);
+
     return true;
 }
 
