@@ -22,6 +22,9 @@ project(${skywalker_game_server_name})
 
 SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
 
+# 支持C++17
+set(CMAKE_CXX_STANDARD 17)
+
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 

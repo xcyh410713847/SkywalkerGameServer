@@ -14,13 +14,13 @@ function(SkywalkerServerEditor_MessageDebug info)
     message(STATUS "[Skywalker Server Editor] ${info}")
 endfunction()
 
-SkywalkerServerEditor_MessageDebug("Start Build Skywalker Server Editor")
-
 # 设置项目名称
 set(skywalker_server_editor_name "SkywalkerServerEditor")
 
 # 项目名称
 project(${skywalker_server_editor_name})
+
+SkywalkerServerEditor_MessageDebug("Start Build Skywalker Server Editor")
 
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")

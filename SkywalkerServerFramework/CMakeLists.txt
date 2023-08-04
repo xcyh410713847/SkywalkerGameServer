@@ -14,13 +14,16 @@ function(SkywalkerServerFramework_MessageDebug info)
     message(STATUS "[Skywalker Server Framework] ${info}")
 endfunction()
 
-SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
-
 # 设置项目名称
 set(skywalker_server_framework_name "SkywalkerServerFramework")
 
 # 项目名称
 project(${skywalker_server_framework_name})
+
+SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
+
+# 支持C++17
+set(CMAKE_CXX_STANDARD 17)
 
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")

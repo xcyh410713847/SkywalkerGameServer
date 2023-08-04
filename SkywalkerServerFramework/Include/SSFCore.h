@@ -12,15 +12,14 @@
 
 #pragma region Common Macro
 
+#define SKYWALKER_SF_NAMESPACE Skywalker::ServerFramework
+
 #define SKYWALKER_SF_NAMESPACE_BEGIN \
-    namespace Skywalker              \
-    {                                \
-        namespace ServerFramework    \
-        {
+    namespace SKYWALKER_SF_NAMESPACE \
+    {
 
 #define SKYWALKER_SF_NAMESPACE_END \
-    } /* ServerFramework */        \
-    } /* Skywalker */
+    } // Skywalker::ServerFramework
 
 #define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
 
@@ -28,6 +27,6 @@
 
 #pragma endregion Common Macro
 
-SKYWALKER_SF_API bool SkywalkerServerFrameworkInit();
+SKYWALKER_SF_API bool SkywalkerServerFramework_Start();
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

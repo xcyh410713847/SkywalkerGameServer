@@ -7,9 +7,23 @@
 
 #include "Include\SSFCore.h"
 
-bool SkywalkerServerFrameworkInit()
+#include "Include\SSFIPluginManager.h"
+#include "SSFPluginManager.h"
+
+SKYWALKER_SF_NAMESPACE_USE
+
+static SSFSharedPtr_IPluginManager G_PluginManager;
+
+bool SkywalkerServerFramework_Start()
 {
     std::cout << "Hello SkywalkerServerFramework" << std::endl;
 
+    G_PluginManager = new SSFCPluginManager();
+
     return true;
+}
+
+SSFSharedPtr_IPluginManager SkywalkerServerFramework_GetPluginManager()
+{
+    return G_PluginManager;
 }

@@ -8,12 +8,17 @@
 #include <stdio.h>
 
 #include "SkywalkerServerFramework\Include\SSFCore.h"
+#include "SkywalkerServerFramework\Include\SSFIPluginManager.h"
 
 #include "SGSILauncher.h"
 
+SKYWALKER_SF_NAMESPACE_USE
+
 int main(int argc, char *argv[])
 {
-    SkywalkerServerFrameworkInit();
+    SkywalkerServerFramework_Start();
+
+    SSFSharedPtr_IPluginManager PluginManager = SkywalkerServerFramework_GetPluginManager();
 
     return 0;
 }

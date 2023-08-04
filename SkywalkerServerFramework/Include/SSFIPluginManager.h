@@ -42,4 +42,13 @@ struct SSFIPluginManager
 
 SKYWALKER_SF_NAMESPACE_END
 
+// SSFIPluginManager 智能指针
+typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFSharedPtr_IPluginManager;
+
+/**
+ * 获取插件管理器
+ * @return 插件管理器
+ */
+SKYWALKER_SF_API SSFSharedPtr_IPluginManager SkywalkerServerFramework_GetPluginManager();
+
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__
