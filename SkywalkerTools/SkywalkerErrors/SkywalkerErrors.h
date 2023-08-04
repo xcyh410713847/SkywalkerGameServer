@@ -12,76 +12,75 @@
 #include <string>
 #include <sstream>
 
-namespace Skywalker
+#define SKYWALKER_ERRORS_NAMESPACE Skywalker::Errors
+
+namespace SKYWALKER_ERRORS_NAMESPACE
 {
-    namespace Errors
+    template <typename T>
+    class CSkywalkerErrors
     {
-        template <typename T>
-        class CSkywalkerErrors
+        std::vector<T> errors;               // 错误列表
+        std::vector<std::string> errorTrace; // 错误堆栈
+
+    public:
+        CSkywalkerErrors(){};
+        ~CSkywalkerErrors()
         {
-            std::vector<T> errors;               // 错误列表
-            std::vector<std::string> errorTrace; // 错误堆栈
+            errors.clear();
+            errorTrace.clear();
+        }
 
-        public:
-            CSkywalkerErrors(){};
-            ~CSkywalkerErrors()
-            {
-                errors.clear();
-                errorTrace.clear();
-            }
+        /** 添加错误
+         * @param const T &error	: 错误
+         * @param string trace		: 错误堆栈
+         */
+        void AddError(const T &error, std::string trace)
+        {
+            errors.push_back(error);
+            errorTrace.push_back(trace);
+        }
 
-            /** 添加错误
-             * @param const T &error	: 错误
-             * @param string trace		: 错误堆栈
-             */
-            void AddError(const T &error, std::string trace)
-            {
-                errors.push_back(error);
-                errorTrace.push_back(trace);
-            }
-
-            /** 获取错误列表
-             * @return const vector<T>	: 错误列表
-             */
-            const std::vector<T> GetErrors() const
-            {
-                return errors;
-            };
-
-            /** 获取错误堆栈
-             * @return const vector<string>	: 错误堆栈
-             */
-            const std::vector<std::string> GetErrorTrace() const
-            {
-                return errorTrace;
-            }
-
-            /** 获取首个错误
-             * @return const T	: 首个错误
-             */
-            const T GetFirstError() const
-            {
-                if (errors.size() > 0)
-                {
-                    return errors[0];
-                }
-                else
-                {
-                    T t;
-                    return t;
-                }
-            }
-
-            /** 是否有效
-             * @return bool	: true 有效, false 无效
-             */
-            bool IsValid() const
-            {
-                return !errors.empty();
-            }
+        /** 获取错误列表
+         * @return const vector<T>	: 错误列表
+         */
+        const std::vector<T> GetErrors() const
+        {
+            return errors;
         };
-    } // namespace Errors
-} // namespace Skywalker
+
+        /** 获取错误堆栈
+         * @return const vector<string>	: 错误堆栈
+         */
+        const std::vector<std::string> GetErrorTrace() const
+        {
+            return errorTrace;
+        }
+
+        /** 获取首个错误
+         * @return const T	: 首个错误
+         */
+        const T GetFirstError() const
+        {
+            if (errors.size() > 0)
+            {
+                return errors[0];
+            }
+            else
+            {
+                T t;
+                return t;
+            }
+        }
+
+        /** 是否有效
+         * @return bool	: true 有效, false 无效
+         */
+        bool IsValid() const
+        {
+            return !errors.empty();
+        }
+    };
+} // namespace SKYWALKER_ERRORS_NAMESPACE
 
 // 不带堆栈的错误
 #define SKYWALKER_ERRORS_WRAP(cppErrors, error) cppErrors.AddError(error, "")
