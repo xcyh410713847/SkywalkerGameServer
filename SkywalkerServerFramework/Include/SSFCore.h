@@ -27,6 +27,31 @@
 
 #pragma endregion Common Macro
 
+#pragma region Function Macro
+
+// 释放对象
+#define SKYWALKER_SF_RELEASE(Obj) \
+    if (Obj)                      \
+    {                             \
+        Obj->Release();           \
+        Obj = nullptr;            \
+    }
+
+#pragma endregion Function Macro
+
+/**
+ * 启动
+ */
 SKYWALKER_SF_API bool SkywalkerServerFramework_Start();
+
+/**
+ * Tick
+ */
+SKYWALKER_SF_API bool SkywalkerServerFramework_Tick();
+
+/**
+ * 结束
+ */
+SKYWALKER_SF_API void SkywalkerServerFramework_Stop();
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

@@ -18,7 +18,13 @@ int main(int argc, char *argv[])
 {
     SkywalkerServerFramework_Start();
 
-    SSFSharedPtr_IPluginManager PluginManager = SkywalkerServerFramework_GetPluginManager();
+    bool bTick = true;
+    while (bTick)
+    {
+        bTick = SkywalkerServerFramework_Tick();
+    }
+
+    SkywalkerServerFramework_Stop();
 
     return 0;
 }

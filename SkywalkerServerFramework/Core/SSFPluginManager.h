@@ -42,6 +42,21 @@ public:
      */
     virtual SSFIPlugin *GetPlugin(const std::string &PluginName) override;
 
+    /**
+     * Tick
+     */
+    virtual void Tick() override;
+
+    /**
+     * 结束
+     */
+    virtual void Stop() override;
+
+    /**
+     * 释放
+     */
+    virtual void Release() override;
+
 #pragma endregion SSFIPluginManager
 
 private:

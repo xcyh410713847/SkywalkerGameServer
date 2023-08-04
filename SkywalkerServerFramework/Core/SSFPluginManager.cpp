@@ -75,4 +75,19 @@ SSFIPlugin *SSFCPluginManager::GetPlugin(const std::string &PluginName)
     return nullptr;
 }
 
+void SSFCPluginManager::Tick()
+{
+    // TODO Shyfan 插件管理器Tick
+}
+
+void SSFCPluginManager::Stop()
+{
+    // TODO Shyfan 插件管理器Stop
+}
+
+void SSFCPluginManager::Release()
+{
+    delete this;
+}
+
 #pragma endregion SSFIPluginManager

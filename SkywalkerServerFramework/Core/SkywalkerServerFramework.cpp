@@ -5,6 +5,8 @@
 **功能: 核心
 *************************************************************************/
 
+#include <stdlib.h>
+
 #include "Include\SSFCore.h"
 
 #include "Include\SSFIPluginManager.h"
@@ -21,6 +23,25 @@ bool SkywalkerServerFramework_Start()
     G_PluginManager = new SSFCPluginManager();
 
     return true;
+}
+
+bool SkywalkerServerFramework_Tick()
+{
+    // TODO Shyfan 是否需要结束
+
+    G_PluginManager->Tick();
+
+    std::cout << "Tick SkywalkerServerFramework" << std::endl;
+
+    return true;
+}
+
+void SkywalkerServerFramework_Stop()
+{
+    G_PluginManager->Stop();
+    SKYWALKER_SF_RELEASE(G_PluginManager);
+
+    std::cout << "Bye SkywalkerServerFramework" << std::endl;
 }
 
 SSFSharedPtr_IPluginManager SkywalkerServerFramework_GetPluginManager()

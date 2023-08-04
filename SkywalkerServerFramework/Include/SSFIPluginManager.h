@@ -38,6 +38,21 @@ struct SSFIPluginManager
      * @return 插件
      */
     virtual SSFIPlugin *GetPlugin(const std::string &PluginName) = 0;
+
+    /**
+     * Tick
+     */
+    virtual void Tick() = 0;
+
+    /**
+     * 结束
+     */
+    virtual void Stop() = 0;
+
+    /**
+     * 释放
+     */
+    virtual void Release() = 0;
 };
 
 SKYWALKER_SF_NAMESPACE_END
