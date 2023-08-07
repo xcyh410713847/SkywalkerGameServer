@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\SSFPluginManager.h
+**文件: SkywalkerServerFramework\Core\Plugin\SSFPluginManager.h
 **作者: shyfan
-**日期: 2023/07/30 12:57:31
-**功能:
+**日期: 2023/08/07 23:53:25
+**功能: 插件管理器
 *************************************************************************/
 
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
