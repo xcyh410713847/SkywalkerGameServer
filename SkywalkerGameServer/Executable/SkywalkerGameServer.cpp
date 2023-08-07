@@ -7,24 +7,25 @@
 
 #include <stdio.h>
 
-#include "SkywalkerServerFramework\Include\SSFCore.h"
-#include "SkywalkerServerFramework\Include\SSFIPluginManager.h"
-
-#include "SGSILauncher.h"
+#include "SkywalkerServerFramework\SkywalkerServerFramework.h"
 
 SKYWALKER_SF_NAMESPACE_USE
 
 int main(int argc, char *argv[])
 {
-    SkywalkerServerFramework_Start();
+    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework();
 
-    bool bTick = true;
-    while (bTick)
+    if (!pSkywalkerServerFramework->Start())
     {
-        bTick = SkywalkerServerFramework_Tick();
+        return 1;
     }
 
-    SkywalkerServerFramework_Stop();
+    while (pSkywalkerServerFramework->IsRunning())
+    {
+        pSkywalkerServerFramework->Tick();
+    }
+
+    pSkywalkerServerFramework->Stop();
 
     return 0;
 }

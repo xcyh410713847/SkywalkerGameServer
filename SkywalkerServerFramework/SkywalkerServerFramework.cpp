@@ -5,31 +5,41 @@
 **功能: 核心
 *************************************************************************/
 
-#include <stdlib.h>
+#include "SkywalkerServerFramework.h"
 
-#include "Include\SSFCore.h"
-
-#include "Include\SSFIPluginManager.h"
-#include "SSFPluginManager.h"
+#include <iostream>
 
 SKYWALKER_SF_NAMESPACE_USE
 
-static SSFSharedPtr_IPluginManager G_PluginManager;
+CSkywalkerServerFramework::CSkywalkerServerFramework()
+    : Running(false)
+{
+}
 
-bool SkywalkerServerFramework_Start()
+CSkywalkerServerFramework::~CSkywalkerServerFramework()
+{
+}
+
+bool CSkywalkerServerFramework::Start()
 {
     std::cout << "Hello SkywalkerServerFramework" << std::endl;
 
-    G_PluginManager = new SSFCPluginManager();
+    Running = true;
 
     return true;
 }
 
-bool SkywalkerServerFramework_Tick()
+bool CSkywalkerServerFramework::IsRunning() const
 {
-    // TODO Shyfan 是否需要结束
+    return Running;
+}
 
-    G_PluginManager->Tick();
+bool CSkywalkerServerFramework::Tick()
+{
+    if (!IsRunning())
+    {
+        return false;
+    }
 
     std::cout << "Tick SkywalkerServerFramework" << std::endl;
 
@@ -39,15 +49,7 @@ bool SkywalkerServerFramework_Tick()
     return true;
 }
 
-void SkywalkerServerFramework_Stop()
+void CSkywalkerServerFramework::Stop()
 {
-    G_PluginManager->Stop();
-    SKYWALKER_SF_RELEASE(G_PluginManager);
-
     std::cout << "Bye SkywalkerServerFramework" << std::endl;
-}
-
-SSFSharedPtr_IPluginManager SkywalkerServerFramework_GetPluginManager()
-{
-    return G_PluginManager;
 }

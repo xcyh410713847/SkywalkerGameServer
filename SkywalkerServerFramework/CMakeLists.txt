@@ -33,10 +33,14 @@ include_directories(
     ./
 )
 
-# 核心代码
-add_subdirectory(Core)
-
 # 插件
 add_subdirectory(Plugin)
+
+add_library(${skywalker_server_framework_name} STATIC
+    SkywalkerServerFramework.cpp
+)
+
+# 关闭警告
+target_compile_options(${skywalker_server_framework_name} PRIVATE "/wd4819")
 
 SkywalkerServerFramework_MessageDebug("End Build Skywalker Server Framework")
