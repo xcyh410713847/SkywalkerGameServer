@@ -13,3 +13,6 @@ add_subdirectory(SkywalkerServerEditor)
 
 # SkywalkerGameServer
 add_subdirectory(SkywalkerGameServer)
+
+# SkywalkerGameClient
+add_subdirectory(SkywalkerGameClient)
