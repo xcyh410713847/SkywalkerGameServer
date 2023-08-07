@@ -12,20 +12,13 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
+SKYWALKER_SINGLETON_IMPLEMENT(CSkywalkerServerFramework);
+
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
     std::cout << "Received signal: " << Signal << std::endl;
 
     exit(Signal);
-}
-
-CSkywalkerServerFramework::CSkywalkerServerFramework()
-    : Running(false)
-{
-}
-
-CSkywalkerServerFramework::~CSkywalkerServerFramework()
-{
 }
 
 bool CSkywalkerServerFramework::Start()

@@ -8,19 +8,20 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_H__
 
+#include "SkywalkerSingleton\SkywalkerSingleton.h"
+
 #include "Include\SSFCore.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class CSkywalkerServerFramework
 {
+    SKYWALKER_SINGLETON_DECLARE(CSkywalkerServerFramework);
+
 public:
     static void SignalHandler(int Signal);
 
 public:
-    CSkywalkerServerFramework();
-    ~CSkywalkerServerFramework();
-
     bool Start();
     bool Tick();
     void Stop();
@@ -34,17 +35,18 @@ private:
 
 SKYWALKER_SF_NAMESPACE_END
 
-#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                        \
-    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework(); \
-    if (!pSkywalkerServerFramework->Start())                                                \
-    {                                                                                       \
-        return 1;                                                                           \
-    }                                                                                       \
-    while (pSkywalkerServerFramework->IsRunning())                                          \
-    {                                                                                       \
-        pSkywalkerServerFramework->Tick();                                                  \
-    }                                                                                       \
-    pSkywalkerServerFramework->Stop();                                                      \
+#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                                 \
+    CSkywalkerServerFramework *pSkywalkerServerFramework = CSkywalkerServerFramework::GetInstance(); \
+    if (!pSkywalkerServerFramework->Start())                                                         \
+    {                                                                                                \
+        return 1;                                                                                    \
+    }                                                                                                \
+    while (pSkywalkerServerFramework->IsRunning())                                                   \
+    {                                                                                                \
+        pSkywalkerServerFramework->Tick();                                                           \
+    }                                                                                                \
+    pSkywalkerServerFramework->Stop();                                                               \
+    pSkywalkerServerFramework->DestroyInstance();                                                    \
     return 0;
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__
