@@ -18,7 +18,7 @@ void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
     std::cout << "Received signal: " << Signal << std::endl;
 
-    exit(Signal);
+    CSkywalkerServerFramework::GetInstance()->SetRunning(false);
 }
 
 bool CSkywalkerServerFramework::Start()
@@ -28,11 +28,6 @@ bool CSkywalkerServerFramework::Start()
     Running = true;
 
     return true;
-}
-
-bool CSkywalkerServerFramework::IsRunning() const
-{
-    return Running;
 }
 
 bool CSkywalkerServerFramework::Tick()

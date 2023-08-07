@@ -26,8 +26,8 @@ public:
     bool Tick();
     void Stop();
 
-    bool IsRunning() const;
-    void SetRunning(bool Running);
+    bool IsRunning() const { return Running; };
+    void SetRunning(bool Running) { this->Running = Running; };
 
 private:
     bool Running;
