@@ -41,19 +41,4 @@
 
 #pragma endregion Function Macro
 
-/**
- * 启动
- */
-SKYWALKER_SF_API bool SkywalkerServerFramework_Start();
-
-/**
- * Tick
- */
-SKYWALKER_SF_API bool SkywalkerServerFramework_Tick();
-
-/**
- * 结束
- */
-SKYWALKER_SF_API void SkywalkerServerFramework_Stop();
-
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

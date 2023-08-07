@@ -19,14 +19,29 @@ public:
     ~CSkywalkerServerFramework();
 
     bool Start();
-    bool IsRunning() const;
     bool Tick();
     void Stop();
+
+    bool IsRunning() const;
+    void SetRunning(bool Running);
 
 private:
     bool Running;
 };
 
 SKYWALKER_SF_NAMESPACE_END
+
+#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                        \
+    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework(); \
+    if (!pSkywalkerServerFramework->Start())                                                \
+    {                                                                                       \
+        return 1;                                                                           \
+    }                                                                                       \
+    while (pSkywalkerServerFramework->IsRunning())                                          \
+    {                                                                                       \
+        pSkywalkerServerFramework->Tick();                                                  \
+    }                                                                                       \
+    pSkywalkerServerFramework->Stop();                                                      \
+    return 0;
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__

@@ -13,19 +13,5 @@ SKYWALKER_SF_NAMESPACE_USE
 
 int main(int argc, char *argv[])
 {
-    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework();
-
-    if (!pSkywalkerServerFramework->Start())
-    {
-        return 1;
-    }
-
-    while (pSkywalkerServerFramework->IsRunning())
-    {
-        pSkywalkerServerFramework->Tick();
-    }
-
-    pSkywalkerServerFramework->Stop();
-
-    return 0;
+    SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)
 }
