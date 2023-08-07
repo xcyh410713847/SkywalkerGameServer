@@ -30,6 +30,18 @@ include_directories(
     ./
 )
 
-add_subdirectory(Editor)
+# 生成可执行文件
+file(GLOB skywalker_server_editor_source_cpp
+    *.cpp)
+
+file(GLOB skywalker_server_editor_source_h
+    *.h)
+
+add_executable(${skywalker_server_editor_name}
+    SkywalkerServerEditor.cpp
+)
+
+# 关闭警告
+target_compile_options(${skywalker_server_editor_name} PRIVATE "/wd4819")
 
 SkywalkerServerEditor_MessageDebug("End Build Skywalker Server Editor")

@@ -34,7 +34,12 @@ include_directories(
     ../
 )
 
-# 执行文件文件夹
-add_subdirectory(Executable)
+# 生成可执行文件
+add_executable(${skywalker_game_client_name}
+    SkywalkerGameClient.cpp
+)
+
+# 关闭警告
+target_compile_options(${skywalker_game_client_name} PRIVATE "/wd4819")
 
 SkywalkerGameClient_MessageDebug("End Build SkywalkerGameClient")

@@ -5,8 +5,6 @@
 **功能: 入口
 *************************************************************************/
 
-#include <stdio.h>
-
 #include "SkywalkerServerFramework\SkywalkerServerFramework.h"
 
 SKYWALKER_SF_NAMESPACE_USE
