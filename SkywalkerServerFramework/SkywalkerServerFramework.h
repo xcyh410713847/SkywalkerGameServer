@@ -15,6 +15,9 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class CSkywalkerServerFramework
 {
 public:
+    static void SignalHandler(int Signal);
+
+public:
     CSkywalkerServerFramework();
     ~CSkywalkerServerFramework();
 

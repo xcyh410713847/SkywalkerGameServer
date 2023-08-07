@@ -8,8 +8,16 @@
 #include "SkywalkerServerFramework.h"
 
 #include <iostream>
+#include <csignal>
 
 SKYWALKER_SF_NAMESPACE_USE
+
+void CSkywalkerServerFramework::SignalHandler(int Signal)
+{
+    std::cout << "Received signal: " << Signal << std::endl;
+
+    exit(Signal);
+}
 
 CSkywalkerServerFramework::CSkywalkerServerFramework()
     : Running(false)
@@ -45,6 +53,8 @@ bool CSkywalkerServerFramework::Tick()
 
     // TODO Shyfan 临时
     SKYWALKER_PLATFORM_SLEEP(1000);
+
+    signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
 
     return true;
 }
