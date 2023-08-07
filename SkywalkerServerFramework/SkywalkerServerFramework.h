@@ -14,6 +14,17 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
+// Skywalker Server Framework 运行状态
+enum class ESkywalkerServerFrameworkRunningState
+{
+    SkywalkerServerFrameworkRunningState_Create = 0, // 创建
+    SkywalkerServerFrameworkRunningState_Starting,   // 启动中
+    SkywalkerServerFrameworkRunningState_Running,    // 运行中
+    SkywalkerServerFrameworkRunningState_Pausing,    // 暂停中
+    SkywalkerServerFrameworkRunningState_Stopping,   // 停止中
+    SkywalkerServerFrameworkRunningState_Stoped,     // 已停止
+};
+
 class CSkywalkerServerFramework
 {
     SKYWALKER_SINGLETON_DECLARE(CSkywalkerServerFramework);
@@ -26,11 +37,11 @@ public:
     bool Tick();
     void Stop();
 
-    bool IsRunning() const { return Running; };
-    void SetRunning(bool Running) { this->Running = Running; };
+    bool IsRunning() const;
 
 private:
-    bool Running;
+    typedef ESkywalkerServerFrameworkRunningState ERunningState;
+    ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Create;
 };
 
 SKYWALKER_SF_NAMESPACE_END

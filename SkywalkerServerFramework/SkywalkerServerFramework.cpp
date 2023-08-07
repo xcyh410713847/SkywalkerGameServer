@@ -17,15 +17,17 @@ SKYWALKER_SINGLETON_IMPLEMENT(CSkywalkerServerFramework);
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
     std::cout << "Received signal: " << Signal << std::endl;
-
-    CSkywalkerServerFramework::GetInstance()->SetRunning(false);
 }
 
 bool CSkywalkerServerFramework::Start()
 {
     std::cout << "Hello SkywalkerServerFramework" << std::endl;
 
-    Running = true;
+    // 进入启动中状态
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
+
+    // 进入运行状态
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
     return true;
 }
@@ -50,4 +52,16 @@ bool CSkywalkerServerFramework::Tick()
 void CSkywalkerServerFramework::Stop()
 {
     std::cout << "Bye SkywalkerServerFramework" << std::endl;
+
+    // 进入停止中状态
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
+
+    // 进入已停止状态
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
+}
+
+bool CSkywalkerServerFramework::IsRunning() const
+{
+    return RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Running ||
+           RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Pausing;
 }
