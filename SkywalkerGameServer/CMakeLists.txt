@@ -35,7 +35,19 @@ include_directories(
     ./Include
 )
 
-# 执行文件文件夹
-add_subdirectory(Executable)
+# 创建执行文件
+# 设置 SkywalkerServerFramework 静态库库的名称
+set(skywalker_server_framework_name "SkywalkerServerFramework")
+
+add_executable(${skywalker_game_server_name}
+    SkywalkerGameServer.cpp
+)
+
+# 关闭警告
+target_compile_options(${skywalker_game_server_name} PRIVATE "/wd4819")
+
+target_link_libraries(${skywalker_game_server_name} PRIVATE
+    ${skywalker_server_framework_name}
+)
 
 SkywalkerGameServer_MessageDebug("End Build SkywalkerGameServer")
