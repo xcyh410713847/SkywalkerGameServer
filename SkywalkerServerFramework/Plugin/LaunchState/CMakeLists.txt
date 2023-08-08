@@ -5,6 +5,11 @@
 # 功能:
 # #########################################################################
 
+# 设置宏
+add_definitions(
+    -DSKYWALKER_SF_DYNAMIC_PLUGIN
+)
+
 set(skywalker_server_plugin_name "SSFPluginLaunchState")
 
 file(GLOB skywalker_server_plugin_source_cpp

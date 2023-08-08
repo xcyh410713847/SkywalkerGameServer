@@ -25,11 +25,6 @@ SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
 
-# 设置宏
-add_definitions(
-    -DSKYWALKER_SF_DYNAMIC_PLUGIN
-)
-
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 
