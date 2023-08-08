@@ -12,6 +12,8 @@
 
 #include "SSFPlatform.h"
 
+
+
 #pragma region Common Macro
 
 #define SKYWALKER_SF_NAMESPACE Skywalker::ServerFramework
@@ -38,6 +40,9 @@
         Obj->Release();           \
         Obj = nullptr;            \
     }
+
+// 获取类名
+#define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)
 
 #pragma endregion Function Macro
 

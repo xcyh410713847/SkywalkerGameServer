@@ -24,20 +24,20 @@ struct SSFIPluginManager
      * 注册插件
      * @param Plugin 插件
      */
-    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) = 0;
 
     /**
      * 注销插件
      * @param Plugin 插件
      */
-    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) = 0;
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) = 0;
 
     /**
      * 获取插件
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSFIPlugin *GetPlugin(const std::string &PluginName) = 0;
+    virtual SSFSharedPtr_IPlugin GetPlugin(const std::string &PluginName) = 0;
 
     /**
      * Tick
@@ -57,13 +57,19 @@ struct SSFIPluginManager
 
 SKYWALKER_SF_NAMESPACE_END
 
-// SSFIPluginManager 智能指针
+/**
+ * SSFIPluginManager 智能指针
+ */
 typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFSharedPtr_IPluginManager;
 
 /**
- * 获取插件管理器
- * @return 插件管理器
+ * 创建插件
  */
-SKYWALKER_SF_API SSFSharedPtr_IPluginManager SkywalkerServerFramework_GetPluginManager();
+#define SKYWALKER_SF_CREATE_PLUGIN(PluginManager, ClassName, Errors) PluginManager->RegisterPlugin(Errors, new ClassName(PluginManager));
+
+/**
+ * 销毁插件
+ */
+#define SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, ClassName, Errors) PluginManager->UnregisterPlugin(Errors, PluginManager->GetPlugin((#ClassName)));
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__

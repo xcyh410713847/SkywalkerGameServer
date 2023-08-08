@@ -19,7 +19,7 @@ SSFCPluginManager::~SSFCPluginManager()
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin)
+void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin)
 {
     if (Plugin == nullptr)
     {
@@ -42,7 +42,7 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plug
     PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
-void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin)
+void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin)
 {
     if (Plugin == nullptr)
     {
@@ -64,7 +64,7 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Pl
     PluginMap.erase(it);
 }
 
-SSFIPlugin *SSFCPluginManager::GetPlugin(const std::string &PluginName)
+SSFSharedPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
 {
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())

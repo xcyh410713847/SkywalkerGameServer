@@ -14,16 +14,14 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-typedef std::shared_ptr<SSFIPluginManager> SSFSharedPtrPluginManager;
-
 class SSFCPlugin : public SSFIPlugin
 {
 public:
-    SSFCPlugin(SSFSharedPtrPluginManager PluginManager);
+    SSFCPlugin();
     virtual ~SSFCPlugin();
 
 protected:
-    SSFSharedPtrPluginManager PluginManager;
+    SSFSharedPtr_IPluginManager PluginManager;
 };
 
 SKYWALKER_SF_NAMESPACE_END

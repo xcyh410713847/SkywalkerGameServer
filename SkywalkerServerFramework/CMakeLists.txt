@@ -33,6 +33,9 @@ include_directories(
     ./
 )
 
+# 核心
+add_subdirectory(Core)
+
 # 插件
 add_subdirectory(Plugin)
 

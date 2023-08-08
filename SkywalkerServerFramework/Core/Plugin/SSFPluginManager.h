@@ -27,20 +27,20 @@ public:
      * 注册插件
      * @param Plugin 插件
      */
-    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) override;
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) override;
 
     /**
      * 注销插件
      * @param Plugin 插件
      */
-    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFIPlugin *Plugin) override;
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) override;
 
     /**
      * 获取插件
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSFIPlugin *GetPlugin(const std::string &PluginName) override;
+    virtual SSFSharedPtr_IPlugin GetPlugin(const std::string &PluginName) override;
 
     /**
      * Tick
@@ -60,7 +60,7 @@ public:
 #pragma endregion SSFIPluginManager
 
 private:
-    typedef std::map<std::string, SSFIPlugin *> TMap_Plugin;
+    typedef std::map<std::string, SSFSharedPtr_IPlugin> TMap_Plugin;
     TMap_Plugin PluginMap;
 };
 
