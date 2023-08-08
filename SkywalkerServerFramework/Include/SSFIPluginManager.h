@@ -65,11 +65,15 @@ typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFSharedPtr_IPluginManager;
 /**
  * 创建插件
  */
-#define SKYWALKER_SF_CREATE_PLUGIN(PluginManager, ClassName, Errors) PluginManager->RegisterPlugin(Errors, new ClassName(PluginManager));
+#define SKYWALKER_SF_CREATE_PLUGIN(PluginManager, ClassName) \
+    SSFPluginErrors Errors;                                  \
+    PluginManager->RegisterPlugin(Errors, new ClassName(PluginManager));
 
 /**
  * 销毁插件
  */
-#define SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, ClassName, Errors) PluginManager->UnregisterPlugin(Errors, PluginManager->GetPlugin((#ClassName)));
+#define SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, ClassName) \
+    SSFPluginErrors Errors;                                   \
+    PluginManager->UnregisterPlugin(Errors, PluginManager->GetPlugin((#ClassName)));
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__
