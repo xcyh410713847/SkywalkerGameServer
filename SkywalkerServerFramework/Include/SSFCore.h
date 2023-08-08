@@ -25,7 +25,7 @@
 
 #define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
 
-#define SKYWALKER_SF_API extern "C"
+#define SKYWALKER_SF_API extern "C" __declspec(dllexport)
 
 #pragma endregion Common Macro
 
