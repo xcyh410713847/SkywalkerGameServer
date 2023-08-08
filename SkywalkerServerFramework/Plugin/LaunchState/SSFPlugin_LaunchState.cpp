@@ -9,6 +9,8 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
+#ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
+
 #pragma region 插件导出
 
 SKYWALKER_SF_API void DllStartPlugin(SSFSharedPtr_IPluginManager PluginManager)
@@ -24,6 +26,8 @@ SKYWALKER_SF_API void DllStopPlugin(SSFSharedPtr_IPluginManager PluginManager)
 }
 
 #pragma endregion 插件导出
+
+#endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
 SSFCPlugin_LaunchState::SSFCPlugin_LaunchState(SSFSharedPtr_IPluginManager InPluginManager)
 {
