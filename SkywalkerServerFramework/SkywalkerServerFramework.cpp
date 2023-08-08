@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\SkywalkerServerFramework.cpp
+**文件: SkywalkerServerFramework\SkywalkerServerFramework.cpp
 **作者: shyfan
-**日期: 2023/08/03 11:46:37
-**功能: 核心
+**日期: 2023/08/08 10:07:45
+**功能: SkywalkerServerFramework
 *************************************************************************/
 
 #include "SkywalkerServerFramework.h"

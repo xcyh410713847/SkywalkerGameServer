@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\SkywalkerServerFramework.h
+**文件: SkywalkerServerFramework\SkywalkerServerFramework.h
 **作者: shyfan
-**日期: 2023/08/07 15:54:41
-**功能: 核心
+**日期: 2023/08/08 10:07:38
+**功能: SkywalkerServerFramework
 *************************************************************************/
 
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_H__
