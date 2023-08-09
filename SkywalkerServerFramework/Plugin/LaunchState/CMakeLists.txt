@@ -29,3 +29,5 @@ target_compile_options(${skywalker_server_plugin_name} PRIVATE "/wd4819")
 target_link_libraries(${skywalker_server_plugin_name} PRIVATE
     SSFCore
 )
+
+SkywalkerServerFramework_Export(${skywalker_server_plugin_name})

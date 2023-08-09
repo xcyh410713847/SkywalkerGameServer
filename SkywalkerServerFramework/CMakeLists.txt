@@ -25,6 +25,17 @@ SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
 
+# 设置导出路径
+set(skywalker_server_framework_output_PATH ${Skywalker_Server_output_PATH}/${skywalker_server_framework_name})
+
+# 导出宏
+macro(SkywalkerServerFramework_Export ProjectName)
+    set_target_properties(${ProjectName} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_framework_output_PATH}
+        ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_framework_output_PATH}
+    )
+endmacro()
+
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 
