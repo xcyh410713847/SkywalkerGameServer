@@ -20,3 +20,5 @@ add_library(${skywalker_server_framework_core_name} STATIC
 
 # 关闭警告
 target_compile_options(${skywalker_server_framework_core_name} PRIVATE "/wd4819")
+
+SkywalkerServerFramework_Export(${skywalker_server_framework_core_name})

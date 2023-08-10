@@ -20,7 +20,7 @@ set(skywalker_server_editor_name "SkywalkerServerEditor")
 # 项目名称
 project(${skywalker_server_editor_name})
 
-SkywalkerServerEditor_MessageDebug("Start Build Skywalker Server Editor")
+SkywalkerServerEditor_MessageDebug("Start Build ${skywalker_server_editor_name}")
 
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
@@ -44,4 +44,4 @@ add_executable(${skywalker_server_editor_name}
 # 关闭警告
 target_compile_options(${skywalker_server_editor_name} PRIVATE "/wd4819")
 
-SkywalkerServerEditor_MessageDebug("End Build Skywalker Server Editor")
+SkywalkerServerEditor_MessageDebug("End Build ${skywalker_server_editor_name}")

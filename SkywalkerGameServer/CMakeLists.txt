@@ -20,7 +20,7 @@ set(skywalker_game_server_name "SkywalkerGameServer")
 # 项目名称
 project(${skywalker_game_server_name})
 
-SkywalkerGameServer_MessageDebug("Start Build SkywalkerGameServer")
+SkywalkerGameServer_MessageDebug("Start Build ${skywalker_game_server_name}")
 
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -50,4 +50,4 @@ target_link_libraries(${skywalker_game_server_name} PRIVATE
     ${skywalker_server_framework_name}
 )
 
-SkywalkerGameServer_MessageDebug("End Build SkywalkerGameServer")
+SkywalkerGameServer_MessageDebug("End Build ${skywalker_game_server_name}")

@@ -20,7 +20,7 @@ set(skywalker_game_client_name "SkywalkerGameClient")
 # 项目名称
 project(${skywalker_game_client_name})
 
-SkywalkerGameClient_MessageDebug("Start Build SkywalkerGameClient")
+SkywalkerGameClient_MessageDebug("Start Build ${skywalker_game_client_name}")
 
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -42,4 +42,4 @@ add_executable(${skywalker_game_client_name}
 # 关闭警告
 target_compile_options(${skywalker_game_client_name} PRIVATE "/wd4819")
 
-SkywalkerGameClient_MessageDebug("End Build SkywalkerGameClient")
+SkywalkerGameClient_MessageDebug("End Build ${skywalker_game_client_name}")

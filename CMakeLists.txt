@@ -7,17 +7,36 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
-# 项目名称
-project(SkywalkerServer)
+set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+function(SkywalkerServer_MessageDebug info)
+    message(STATUS "[Skywalker Server] ${info}")
+endfunction()
+
+# 设置项目名称
+set(skywalker_server_name "SkywalkerServer")
+
+# 项目名称
+project(skywalker_server_name)
+
+SkywalkerServer_MessageDebug("Start Build ${skywalker_server_name}")
 
 # 设置导出路径
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
-    set(Skywalker_Server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin/Debug CACHE STRING "Skywalker_Server_output_PATH")
-else()
-    set(Skywalker_Server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin/Release CACHE STRING "Skywalker_Server_output_PATH")
-endif()
+set(Skywalker_Server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "Skywalker_Server_output_PATH")
+
+# 导出路径
+SkywalkerServer_MessageDebug("OutputPath: ${Skywalker_Server_output_PATH}")
+
+# 导出宏
+macro(SkywalkerServer_Export TargetName ProjectName)
+    SkywalkerServer_MessageDebug("Export ${ProjectName} ${TargetName}")
+
+    set_target_properties(${TargetName} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+        ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+        RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+    )
+endmacro()
 
 # SkywalkerServerFramework
 add_subdirectory(SkywalkerServerFramework)
@@ -30,3 +49,5 @@ add_subdirectory(SkywalkerGameServer)
 
 # SkywalkerGameClient
 add_subdirectory(SkywalkerGameClient)
+
+SkywalkerServer_MessageDebug("End Build ${skywalker_server_name}")

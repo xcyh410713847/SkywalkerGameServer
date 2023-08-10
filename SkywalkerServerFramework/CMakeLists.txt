@@ -20,7 +20,7 @@ set(skywalker_server_framework_name "SkywalkerServerFramework")
 # 项目名称
 project(${skywalker_server_framework_name})
 
-SkywalkerServerFramework_MessageDebug("Start Build Skywalker Server Framework")
+SkywalkerServerFramework_MessageDebug("Start Build ${skywalker_server_framework_name}")
 
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -28,12 +28,11 @@ set(CMAKE_CXX_STANDARD 17)
 # 设置导出路径
 set(skywalker_server_framework_output_PATH ${Skywalker_Server_output_PATH}/${skywalker_server_framework_name})
 
+SkywalkerServerFramework_MessageDebug("Output Path: ${skywalker_server_framework_output_PATH}")
+
 # 导出宏
-macro(SkywalkerServerFramework_Export ProjectName)
-    set_target_properties(${ProjectName} PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_framework_output_PATH}
-        ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_framework_output_PATH}
-    )
+macro(SkywalkerServerFramework_Export TargetName)
+    SkywalkerServer_Export(${TargetName} ${skywalker_server_framework_name})
 endmacro()
 
 # SkywalkerTools 路径
@@ -57,4 +56,6 @@ add_library(${skywalker_server_framework_name} STATIC
 # 关闭警告
 target_compile_options(${skywalker_server_framework_name} PRIVATE "/wd4819")
 
-SkywalkerServerFramework_MessageDebug("End Build Skywalker Server Framework")
+SkywalkerServerFramework_Export(${skywalker_server_framework_name})
+
+SkywalkerServerFramework_MessageDebug("End Build ${skywalker_server_framework_name}")
