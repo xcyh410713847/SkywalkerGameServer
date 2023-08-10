@@ -23,11 +23,11 @@ add_library(${skywalker_server_plugin_name} SHARED
     ${skywalker_server_plugin_source_h}
 )
 
-# 关闭警告
-target_compile_options(${skywalker_server_plugin_name} PRIVATE "/wd4819")
-
 target_link_libraries(${skywalker_server_plugin_name} PRIVATE
     SSFCore
 )
 
 SkywalkerServerFramework_Export(${skywalker_server_plugin_name})
+
+# 关闭警告
+target_compile_options(${skywalker_server_plugin_name} PRIVATE "/wd4819")

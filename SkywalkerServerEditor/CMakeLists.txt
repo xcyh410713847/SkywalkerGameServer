@@ -22,6 +22,11 @@ project(${skywalker_server_editor_name})
 
 SkywalkerServerEditor_MessageDebug("Start Build ${skywalker_server_editor_name}")
 
+# 导出宏
+macro(SkywalkerGameEditor_Export TargetName)
+    SkywalkerServer_Export(${TargetName} ${skywalker_server_editor_name})
+endmacro()
+
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 
@@ -40,6 +45,8 @@ file(GLOB skywalker_server_editor_source_h
 add_executable(${skywalker_server_editor_name}
     SkywalkerServerEditor.cpp
 )
+
+SkywalkerGameEditor_Export(${skywalker_server_editor_name})
 
 # 关闭警告
 target_compile_options(${skywalker_server_editor_name} PRIVATE "/wd4819")

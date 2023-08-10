@@ -22,6 +22,11 @@ project(${skywalker_game_client_name})
 
 SkywalkerGameClient_MessageDebug("Start Build ${skywalker_game_client_name}")
 
+# 导出宏
+macro(SkywalkerGameClient_Export TargetName)
+    SkywalkerServer_Export(${TargetName} ${skywalker_game_client_name})
+endmacro()
+
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
 
@@ -38,6 +43,8 @@ include_directories(
 add_executable(${skywalker_game_client_name}
     SkywalkerGameClient.cpp
 )
+
+SkywalkerGameClient_Export(${skywalker_game_client_name})
 
 # 关闭警告
 target_compile_options(${skywalker_game_client_name} PRIVATE "/wd4819")

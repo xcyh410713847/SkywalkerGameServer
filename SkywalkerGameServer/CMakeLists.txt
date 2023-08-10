@@ -22,6 +22,11 @@ project(${skywalker_game_server_name})
 
 SkywalkerGameServer_MessageDebug("Start Build ${skywalker_game_server_name}")
 
+# 导出宏
+macro(SkywalkerGameServer_Export TargetName)
+    SkywalkerServer_Export(${TargetName} ${skywalker_game_server_name})
+endmacro()
+
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
 
@@ -43,11 +48,13 @@ add_executable(${skywalker_game_server_name}
     SkywalkerGameServer.cpp
 )
 
-# 关闭警告
-target_compile_options(${skywalker_game_server_name} PRIVATE "/wd4819")
-
 target_link_libraries(${skywalker_game_server_name} PRIVATE
     ${skywalker_server_framework_name}
 )
+
+SkywalkerGameServer_Export(${skywalker_game_server_name})
+
+# 关闭警告
+target_compile_options(${skywalker_game_server_name} PRIVATE "/wd4819")
 
 SkywalkerGameServer_MessageDebug("End Build ${skywalker_game_server_name}")
