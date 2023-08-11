@@ -27,15 +27,26 @@ set(Skywalker_Server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "S
 # 导出路径
 SkywalkerServer_MessageDebug("OutputPath: ${Skywalker_Server_output_PATH}")
 
+# 编译完成后拷贝到指定目录
+macro(SkywalkerServer_CopyToTarget TargetName ProjectName)
+    add_custom_command(TARGET ${TargetName} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:${TargetName}>
+        ${Skywalker_Server_output_PATH}/${ProjectName}/$<TARGET_FILE_NAME:${TargetName}>
+    )
+endmacro()
+
 # 导出宏
 macro(SkywalkerServer_Export TargetName ProjectName)
     SkywalkerServer_MessageDebug("Export ${ProjectName} ${TargetName}")
 
-    set_target_properties(${TargetName} PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-        ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-        RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-    )
+    # 设置编译之后的输出路径
+    # set_target_properties(${TargetName} PROPERTIES
+    # LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+    # ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+    # RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+    # )
+    SkywalkerServer_CopyToTarget(${TargetName} ${ProjectName})
 endmacro()
 
 # SkywalkerServerFramework
