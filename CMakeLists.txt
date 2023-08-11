@@ -41,12 +41,13 @@ macro(SkywalkerServer_Export TargetName ProjectName)
     SkywalkerServer_MessageDebug("Export ${ProjectName} ${TargetName}")
 
     # 设置编译之后的输出路径
-    # set_target_properties(${TargetName} PROPERTIES
-    # LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-    # ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-    # RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-    # )
-    SkywalkerServer_CopyToTarget(${TargetName} ${ProjectName})
+    set_target_properties(${TargetName} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+        ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+        RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+    )
+
+    # SkywalkerServer_CopyToTarget(${TargetName} ${ProjectName})
 endmacro()
 
 # SkywalkerServerFramework
