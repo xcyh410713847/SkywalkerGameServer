@@ -12,4 +12,18 @@
 #include "SkywalkerPlatformMac.h"
 #include "SkywalkerPlatformWin.h"
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+#define SKYWALKER__DYNAMIC_LIB_HANDLE HINSTANCE
+#define SKYWALKER__DYNAMIC_LIB_LOAD(LibName) LoadLibraryExA(LibName, NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
+#define SKYWALKER__DYNAMIC_LIB_UNLOAD(Instance) FreeLibrary(Instance)
+#define SKYWALKER__DYNAMIC_LIB_GET_SYMBOL(Instance, ProcName) GetProcAddress(Instance, ProcName)
+#define SKYWALKER__DYNAMIC_LIB_EXT ".dll"
+#else
+#define SKYWALKER__DYNAMIC_LIB_HANDLE void *
+#define SKYWALKER__DYNAMIC_LIB_LOAD(LibName) dlopen(LibName, RTLD_LAZY | RTLD_GLOBAL)
+#define SKYWALKER__DYNAMIC_LIB_UNLOAD(Instance) dlclose(Instance)
+#define SKYWALKER__DYNAMIC_LIB_GET_SYMBOL(Instance, ProcName) dlsym(Instance, ProcName)
+#define SKYWALKER__DYNAMIC_LIB_EXT ".so"
+#endif
+
 #endif // __SKYWALKER_PLATFORM_H__

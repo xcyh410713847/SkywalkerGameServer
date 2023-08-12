@@ -12,8 +12,6 @@
 
 #include "SSFPlatform.h"
 
-
-
 #pragma region Common Macro
 
 #define SKYWALKER_SF_NAMESPACE Skywalker::ServerFramework

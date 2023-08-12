@@ -8,10 +8,14 @@
 set(skywalker_server_framework_core_name "SSFCore")
 
 file(GLOB skywalker_server_framework_core_source_cpp
-    Plugin/*.cpp)
+    Plugin/*.cpp
+    DynamicLib/*.cpp
+)
 
 file(GLOB skywalker_server_framework_core_source_h
-    Plugin/*.h)
+    Plugin/*.h
+    DynamicLib/*.h
+)
 
 add_library(${skywalker_server_framework_core_name} STATIC
     ${skywalker_server_framework_core_source_cpp}
