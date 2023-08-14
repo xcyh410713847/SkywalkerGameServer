@@ -18,6 +18,22 @@ SSFCPluginManager::~SSFCPluginManager()
 }
 
 #pragma region SSFIPluginManager
+void SSFCPluginManager::LoadPluginConfig()
+{
+    // TODO Shyfan 临时写的
+    PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
+}
+
+void SSFCPluginManager::LoadPlugin()
+{
+    for (TMap_PluginName::iterator it = PluginNameMap.begin(); it != PluginNameMap.end(); ++it)
+    {
+        if (it->second)
+        {
+            LoadPluginLib(it->first);
+        }
+    }
+}
 
 void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin)
 {
@@ -91,3 +107,30 @@ void SSFCPluginManager::Release()
 }
 
 #pragma endregion SSFIPluginManager
+
+void SSFCPluginManager::LoadPluginLib(const std::string &PluginName)
+{
+    if (DynamicLibMap.find(PluginName) != DynamicLibMap.end())
+    {
+        return;
+    }
+
+    SSFCDynamicLib *DynamicLib = new SSFCDynamicLib(PluginName);
+    if (DynamicLib == nullptr)
+    {
+        return;
+    }
+
+    DynamicLibMap.insert(std::make_pair(PluginName, DynamicLib));
+
+    // 加载
+    DynamicLib->Load();
+
+    DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)DynamicLib->GetSymbol("DllStartPlugin");
+    if (DllStartPluginFunc == nullptr)
+    {
+        return;
+    }
+
+    DllStartPluginFunc(SSFSharedPtr_IPluginManager(this));
+}

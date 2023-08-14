@@ -27,6 +27,16 @@ public:
 
 #pragma region SSFIPluginManager
     /**
+     * 加载插件配置
+     */
+    virtual void LoadPluginConfig() override;
+
+    /**
+     * 加载库
+     */
+    virtual void LoadPlugin() override;
+
+    /**
      * 注册插件
      * @param Plugin 插件
      */
@@ -63,6 +73,15 @@ public:
 #pragma endregion SSFIPluginManager
 
 private:
+    void LoadPluginLib(const std::string &PluginName);
+
+private:
+    typedef void (*DLL_START_PLUGIN_FUNC)(SSFSharedPtr_IPluginManager);
+    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSFSharedPtr_IPluginManager);
+
+    typedef SSFMap<std::string, bool> TMap_PluginName;
+    TMap_PluginName PluginNameMap;
+
     typedef SSFMap<std::string, SSFSharedPtr_DynamicLib> TMap_DynamicLib;
     TMap_DynamicLib DynamicLibMap;
 

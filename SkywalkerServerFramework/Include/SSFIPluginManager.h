@@ -21,6 +21,16 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 struct SSFIPluginManager
 {
     /**
+     * 加载插件配置
+     */
+    virtual void LoadPluginConfig() = 0;
+
+    /**
+     * 加载库
+     */
+    virtual void LoadPlugin() = 0;
+
+    /**
      * 注册插件
      * @param Plugin 插件
      */
