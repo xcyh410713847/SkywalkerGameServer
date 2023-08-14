@@ -25,7 +25,7 @@ struct SSFIPlugin
 
 SKYWALKER_SF_NAMESPACE_END
 
-// SSFIPlugin 智能指针
-typedef SKYWALKER_SF_NAMESPACE::SSFIPlugin *SSFSharedPtr_IPlugin;
+// SSFIPlugin 指针，共享指针继承有问题，所以用普通
+typedef SKYWALKER_SF_NAMESPACE::SSFIPlugin *SSFPtr_IPlugin;
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__

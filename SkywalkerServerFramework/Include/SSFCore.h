@@ -44,4 +44,11 @@
 
 #pragma endregion Function Macro
 
+#pragma region Common Type
+
+template <typename T>
+using SSFSharedPtr = std::shared_ptr<T>;
+
+#pragma endregion Common Type
+
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

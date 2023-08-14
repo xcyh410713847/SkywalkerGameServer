@@ -24,20 +24,20 @@ struct SSFIPluginManager
      * 注册插件
      * @param Plugin 插件
      */
-    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) = 0;
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) = 0;
 
     /**
      * 注销插件
      * @param Plugin 插件
      */
-    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) = 0;
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) = 0;
 
     /**
      * 获取插件
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSFSharedPtr_IPlugin GetPlugin(const std::string &PluginName) = 0;
+    virtual SSFPtr_IPlugin GetPlugin(const std::string &PluginName) = 0;
 
     /**
      * Tick
@@ -60,7 +60,7 @@ SKYWALKER_SF_NAMESPACE_END
 /**
  * SSFIPluginManager 智能指针
  */
-typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFSharedPtr_IPluginManager;
+typedef SSFSharedPtr<SKYWALKER_SF_NAMESPACE::SSFIPluginManager> SSFSharedPtr_IPluginManager;
 
 /**
  * 创建插件

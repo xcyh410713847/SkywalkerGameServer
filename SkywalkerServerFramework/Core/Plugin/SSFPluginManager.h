@@ -14,6 +14,9 @@
 #include "Include\SSFIPluginManager.h"
 #include "Include\SSFPluginDefinition.h"
 
+#include "Map\SSFMap.h"
+#include "DynamicLib\SSFDynamicLib.h"
+
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFCPluginManager : public SSFIPluginManager
@@ -27,20 +30,20 @@ public:
      * 注册插件
      * @param Plugin 插件
      */
-    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) override;
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) override;
 
     /**
      * 注销插件
      * @param Plugin 插件
      */
-    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFSharedPtr_IPlugin Plugin) override;
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) override;
 
     /**
      * 获取插件
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSFSharedPtr_IPlugin GetPlugin(const std::string &PluginName) override;
+    virtual SSFPtr_IPlugin GetPlugin(const std::string &PluginName) override;
 
     /**
      * Tick
@@ -60,7 +63,10 @@ public:
 #pragma endregion SSFIPluginManager
 
 private:
-    typedef std::map<std::string, SSFSharedPtr_IPlugin> TMap_Plugin;
+    typedef SSFMap<std::string, SSFSharedPtr_DynamicLib> TMap_DynamicLib;
+    TMap_DynamicLib DynamicLibMap;
+
+    typedef std::map<std::string, SSFPtr_IPlugin> TMap_Plugin;
     TMap_Plugin PluginMap;
 };
 

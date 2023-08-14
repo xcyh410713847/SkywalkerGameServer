@@ -35,4 +35,7 @@ private:
 
 SKYWALKER_SF_NAMESPACE_END
 
+// SSFCDynamicLib 智能指针
+typedef SSFSharedPtr<SKYWALKER_SF_NAMESPACE::SSFCDynamicLib> SSFSharedPtr_DynamicLib;
+
 #endif // __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__
