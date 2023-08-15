@@ -21,7 +21,7 @@ public:
     virtual ~SSFCPlugin();
 
 protected:
-    SSFSharedPtr_IPluginManager PluginManager;
+    SSFPtr_IPluginManager PluginManager;
 };
 
 SKYWALKER_SF_NAMESPACE_END

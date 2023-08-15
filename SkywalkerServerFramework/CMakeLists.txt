@@ -48,6 +48,10 @@ add_library(${skywalker_server_framework_name} STATIC
     SkywalkerServerFramework.cpp
 )
 
+target_link_libraries(${skywalker_server_framework_name} PRIVATE
+    SSFCore
+)
+
 SkywalkerServerFramework_Export(${skywalker_server_framework_name})
 
 # 关闭警告

@@ -7,10 +7,6 @@
 
 set(skywalker_server_framework_core_name "SSFCore")
 
-include_directories(
-    ./
-)
-
 file(GLOB skywalker_server_framework_core_source_cpp
     Plugin/*.cpp
     DynamicLib/*.cpp

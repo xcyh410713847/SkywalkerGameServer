@@ -23,12 +23,12 @@ struct SSFIPluginManager
     /**
      * 加载插件配置
      */
-    virtual void LoadPluginConfig() = 0;
+    virtual void LoadPluginConfig(SSFPluginErrors &Errors) = 0;
 
     /**
      * 加载库
      */
-    virtual void LoadPlugin() = 0;
+    virtual void LoadPlugin(SSFPluginErrors &Errors) = 0;
 
     /**
      * 注册插件
@@ -70,7 +70,7 @@ SKYWALKER_SF_NAMESPACE_END
 /**
  * SSFIPluginManager 智能指针
  */
-typedef SSFSharedPtr<SKYWALKER_SF_NAMESPACE::SSFIPluginManager> SSFSharedPtr_IPluginManager;
+typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFPtr_IPluginManager;
 
 /**
  * 创建插件

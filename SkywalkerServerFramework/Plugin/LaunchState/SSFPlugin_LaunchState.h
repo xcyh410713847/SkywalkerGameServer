@@ -15,7 +15,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFCPlugin_LaunchState : public SSFCPlugin
 {
 public:
-    SSFCPlugin_LaunchState(SSFSharedPtr_IPluginManager InPluginManager);
+    SSFCPlugin_LaunchState(SSFPtr_IPluginManager InPluginManager);
     virtual ~SSFCPlugin_LaunchState();
 
 #pragma region SSFIPlugin

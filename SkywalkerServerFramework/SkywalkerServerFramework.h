@@ -12,6 +12,8 @@
 
 #include "Include\SSFCore.h"
 
+#include "Core\Plugin\SSFPluginManager.h"
+
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 // Skywalker Server Framework 运行状态

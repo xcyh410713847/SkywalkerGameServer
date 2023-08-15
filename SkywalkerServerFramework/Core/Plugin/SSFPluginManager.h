@@ -11,30 +11,31 @@
 #include <map>
 #include <string>
 
+#include "SkywalkerSingleton\SkywalkerSingleton.h"
+
 #include "Include\SSFIPluginManager.h"
 #include "Include\SSFPluginDefinition.h"
 
-#include "Map\SSFMap.h"
-#include "DynamicLib\SSFDynamicLib.h"
+#include "Core\Map\SSFMap.h"
+#include "Core\DynamicLib\SSFDynamicLib.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFCPluginManager : public SSFIPluginManager
 {
-public:
-    SSFCPluginManager();
-    virtual ~SSFCPluginManager();
+    SKYWALKER_SINGLETON_DECLARE(SSFCPluginManager);
 
 #pragma region SSFIPluginManager
+public:
     /**
      * 加载插件配置
      */
-    virtual void LoadPluginConfig() override;
+    virtual void LoadPluginConfig(SSFPluginErrors &Errors) override;
 
     /**
      * 加载库
      */
-    virtual void LoadPlugin() override;
+    virtual void LoadPlugin(SSFPluginErrors &Errors) override;
 
     /**
      * 注册插件
@@ -76,8 +77,8 @@ private:
     void LoadPluginLib(const std::string &PluginName);
 
 private:
-    typedef void (*DLL_START_PLUGIN_FUNC)(SSFSharedPtr_IPluginManager);
-    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSFSharedPtr_IPluginManager);
+    typedef void (*DLL_START_PLUGIN_FUNC)(SSFPtr_IPluginManager);
+    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSFPtr_IPluginManager);
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
     TMap_PluginName PluginNameMap;

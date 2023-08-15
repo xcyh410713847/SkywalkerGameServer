@@ -13,12 +13,12 @@ SKYWALKER_SF_NAMESPACE_USE
 
 #pragma region 插件导出
 
-SKYWALKER_SF_API void DllStartPlugin(SSFSharedPtr_IPluginManager PluginManager)
+SKYWALKER_SF_API void DllStartPlugin(SSFPtr_IPluginManager PluginManager)
 {
     SKYWALKER_SF_CREATE_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
 }
 
-SKYWALKER_SF_API void DllStopPlugin(SSFSharedPtr_IPluginManager PluginManager)
+SKYWALKER_SF_API void DllStopPlugin(SSFPtr_IPluginManager PluginManager)
 {
     SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
 }
@@ -27,7 +27,7 @@ SKYWALKER_SF_API void DllStopPlugin(SSFSharedPtr_IPluginManager PluginManager)
 
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
-SSFCPlugin_LaunchState::SSFCPlugin_LaunchState(SSFSharedPtr_IPluginManager InPluginManager)
+SSFCPlugin_LaunchState::SSFCPlugin_LaunchState(SSFPtr_IPluginManager InPluginManager)
 {
     PluginManager = InPluginManager;
 }

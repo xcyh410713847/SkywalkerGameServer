@@ -9,22 +9,17 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFCPluginManager::SSFCPluginManager()
-{
-}
-
-SSFCPluginManager::~SSFCPluginManager()
-{
-}
+SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
 #pragma region SSFIPluginManager
-void SSFCPluginManager::LoadPluginConfig()
+
+void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 {
     // TODO Shyfan 临时写的
     PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
 }
 
-void SSFCPluginManager::LoadPlugin()
+void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
 {
     for (TMap_PluginName::iterator it = PluginNameMap.begin(); it != PluginNameMap.end(); ++it)
     {
@@ -132,5 +127,5 @@ void SSFCPluginManager::LoadPluginLib(const std::string &PluginName)
         return;
     }
 
-    DllStartPluginFunc(SSFSharedPtr_IPluginManager(this));
+    DllStartPluginFunc(SSFPtr_IPluginManager(this));
 }

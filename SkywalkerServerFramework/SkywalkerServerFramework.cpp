@@ -26,6 +26,9 @@ bool CSkywalkerServerFramework::Start()
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
+    // 插件管理器初始化
+    SSFCPluginManager *PluginManager = SSFCPluginManager::GetInstance();
+
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
