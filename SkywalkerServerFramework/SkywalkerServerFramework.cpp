@@ -11,7 +11,7 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework);
+SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 SKYWALKER_SINGLETON_IMPLEMENT(CSkywalkerServerFramework);
 

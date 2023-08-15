@@ -33,16 +33,18 @@ enum ELogLevel
 /**
  * 日志模块定义
  */
-#define SKYWALKER_SF_LOG_DEFINE(Module) \
-    static const char *SSFLogModule = #Module;
+#define SKYWALKER_SF_LOG_DEFINE(Module, ShowLevel) \
+    static const char *SSFLogModuleName = #Module; \
+    static const ELogLevel SSFLogModuleShowLevel = ShowLevel;
 
-#define SKYWALKER_SF_LOG_MODULE "[" << SSFLogModule << "] "
+#define SKYWALKER_SF_LOG_MODULE "[" << SSFLogModuleName << "] "
 
 /**
  * 日志打印
  */
 #define SKYWALKER_SF_LOG_PRINT(Level, Content) \
-    std::cout << Content << std::endl;
+    if (Level >= SSFLogModuleShowLevel)        \
+        std::cout << Content << std::endl;
 
 /**
  * 调试

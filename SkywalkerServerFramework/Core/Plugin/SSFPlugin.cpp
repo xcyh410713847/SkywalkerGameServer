@@ -9,8 +9,8 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFCPlugin::SSFCPlugin()
-    : PluginManager(nullptr)
+SSFCPlugin::SSFCPlugin(SSFPtr_IPluginManager InPluginManager)
+    : PluginManager(InPluginManager)
 {
 }
 

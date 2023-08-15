@@ -6,3 +6,5 @@
 # #########################################################################
 
 add_subdirectory(LaunchState)
+
+add_subdirectory(Network)

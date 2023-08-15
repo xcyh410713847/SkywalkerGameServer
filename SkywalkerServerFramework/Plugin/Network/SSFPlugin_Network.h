@@ -1,28 +1,25 @@
 /*************************************************************************
-**文件: SkywalkerServerFramework\Core\Plugin\SSFPlugin.h
+**文件: SkywalkerServerFramework\Plugin\Network\SSFPlugin_Network.h
 **作者: shyfan
-**日期: 2023/08/07 23:53:05
-**功能: 插件
+**日期: 2023/08/15 20:04:42
+**功能: 网络插件
 *************************************************************************/
 
-#ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
-#define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
 
-#include <memory>
-
-#include "Include/SSFIPluginManager.h"
-
-#include "Core\Object\SSFObject.h"
+#include "Core\Plugin\SSFPlugin.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCPlugin
-    : public SSFIPlugin,
-      public SSFCObject
+class SSFCPlugin_Network : public SSFCPlugin
 {
 public:
-    SSFCPlugin(SSFPtr_IPluginManager InPluginManager);
-    virtual ~SSFCPlugin();
+    SSFCPlugin_Network(SSFPtr_IPluginManager InPluginManager)
+        : SSFCPlugin(InPluginManager)
+    {
+    }
+    virtual ~SSFCPlugin_Network(){};
 
 #pragma region Object Base Interface
 
@@ -62,17 +59,22 @@ public:
      */
     virtual void Destroy(SSFObjectErrors &Errors) override;
 
-    /**
-     * 释放
-     */
-    virtual void Release(SSFObjectErrors &Errors) override;
-
 #pragma endregion Object Base Interface
 
-protected:
-    SSFPtr_IPluginManager PluginManager;
+#pragma region SSFIPlugin
+public:
+    /**
+     * 获取插件名称
+     * @return 插件名称
+     */
+    virtual const std::string GetPluginName() override
+    {
+        return SKYWALKER_SF_CLASS_NAME(SSFCPlugin_Network);
+    };
+
+#pragma endregion SSFIPlugin
 };
 
 SKYWALKER_SF_NAMESPACE_END
 
-#endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
+#endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__

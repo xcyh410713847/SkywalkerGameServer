@@ -7,9 +7,13 @@
 
 #include "SSFPluginManager.h"
 
+#include "Include\SSFILog.h"
+
 #include "SSFPlugin.h"
 
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
@@ -161,6 +165,7 @@ SSFPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
 void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 {
     // TODO Shyfan 临时写的
+    PluginNameMap.insert(std::make_pair("SSFPlugin_Network", true));
     PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
 }
 
@@ -211,4 +216,6 @@ void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string
     }
 
     DllStartPluginFunc(SSFPtr_IPluginManager(this));
+
+    SKYWALKER_SF_LOG_INFO("LoadPluginLib " << PluginName << " Success");
 }
