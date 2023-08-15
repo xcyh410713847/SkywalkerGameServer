@@ -8,6 +8,8 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MAP_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MAP_H__
 
+#include <map>
+
 template <typename Key, typename Value>
 using SSFMap = std::map<Key, Value>;
 

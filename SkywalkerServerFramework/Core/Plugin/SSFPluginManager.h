@@ -8,9 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 
-#include <map>
-#include <string>
-
 #include "SkywalkerSingleton\SkywalkerSingleton.h"
 
 #include "Include\SSFIPluginManager.h"
