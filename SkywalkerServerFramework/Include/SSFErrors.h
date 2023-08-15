@@ -15,7 +15,7 @@
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 // 接口错误
-typedef Skywalker::Errors::CSkywalkerErrors<std::string> SSFInterfaceErrors;
+typedef Skywalker::Errors::CSkywalkerErrors<std::string> SSFObjectErrors;
 
 // 插件错误
 typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;

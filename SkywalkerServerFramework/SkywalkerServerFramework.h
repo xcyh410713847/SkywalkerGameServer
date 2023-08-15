@@ -11,7 +11,6 @@
 #include "SkywalkerSingleton\SkywalkerSingleton.h"
 
 #include "Include\SSFCore.h"
-#include "Include\SSFInterface.h"
 
 #include "Core\Plugin\SSFPluginManager.h"
 

@@ -13,42 +13,42 @@ SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
 #pragma region SSFInterface
 
-void SSFCPluginManager::Init(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Init
 }
 
-void SSFCPluginManager::Awake(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Awake(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Awake
 }
 
-void SSFCPluginManager::Start(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Start(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Start
 }
 
-void SSFCPluginManager::Tick(SSFInterfaceErrors &Errors, int DelayMS)
+void SSFCPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     // TODO Shyfan 插件管理器Tick
 }
 
-void SSFCPluginManager::Stop(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Stop(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Stop
 }
 
-void SSFCPluginManager::Sleep(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Sleep(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Sleep
 }
 
-void SSFCPluginManager::Destroy(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Destroy(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Destroy
 }
 
-void SSFCPluginManager::Release(SSFInterfaceErrors &Errors)
+void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 {
     delete this;
 }

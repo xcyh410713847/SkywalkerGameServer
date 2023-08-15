@@ -9,6 +9,7 @@
 #define __SKYWALKER_SERVER_FRAMEWORK_I_OBJECT_H__
 
 #include "SSFCore.h"
+#include "SSFErrors.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

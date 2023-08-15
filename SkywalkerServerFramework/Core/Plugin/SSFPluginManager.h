@@ -13,9 +13,9 @@
 
 #include "SkywalkerSingleton\SkywalkerSingleton.h"
 
-#include "Include\SSFInterface.h"
 #include "Include\SSFIPluginManager.h"
 
+#include "Core\Object\SSFObject.h"
 #include "Core\Map\SSFMap.h"
 #include "Core\DynamicLib\SSFDynamicLib.h"
 
@@ -26,7 +26,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
  */
 class SSFCPluginManager
     : public SSFIPluginManager,
-      public SSFInterface
+      public SSFCObject
 {
     SKYWALKER_SINGLETON_DECLARE(SSFCPluginManager);
 
@@ -36,42 +36,42 @@ public:
     /**
      * 初始化
      */
-    virtual void Init(SSFInterfaceErrors &Errors) override;
+    virtual void Init(SSFObjectErrors &Errors) override;
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFInterfaceErrors &Errors) override;
+    virtual void Awake(SSFObjectErrors &Errors) override;
 
     /**
      * 开始
      */
-    virtual void Start(SSFInterfaceErrors &Errors) override;
+    virtual void Start(SSFObjectErrors &Errors) override;
 
     /**
      * Tick
      */
-    virtual void Tick(SSFInterfaceErrors &Errors, int DelayMS) override;
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
 
     /**
      * 结束
      */
-    virtual void Stop(SSFInterfaceErrors &Errors) override;
+    virtual void Stop(SSFObjectErrors &Errors) override;
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFInterfaceErrors &Errors) override;
+    virtual void Sleep(SSFObjectErrors &Errors) override;
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFInterfaceErrors &Errors) override;
+    virtual void Destroy(SSFObjectErrors &Errors) override;
 
     /**
      * 释放
      */
-    virtual void Release(SSFInterfaceErrors &Errors) override;
+    virtual void Release(SSFObjectErrors &Errors) override;
 #pragma endregion SSFInterface
 
 #pragma region SSFIPluginManager
