@@ -13,7 +13,7 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
-#pragma region SSFInterface
+#pragma region Object Base Interface
 
 void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 {
@@ -96,7 +96,7 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
     delete this;
 }
 
-#pragma endregion SSFInterface
+#pragma endregion Object Base Interface
 
 #pragma region SSFIPluginManager
 
@@ -166,36 +166,47 @@ void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 
 void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
 {
-    for (TMap_PluginName::iterator it = PluginNameMap.begin(); it != PluginNameMap.end(); ++it)
+    SKYWALKER_SF_MAP_ITERATOR(IterName, PluginNameMap)
     {
-        if (it->second)
+        if (IterName->second)
         {
-            LoadPluginLib(it->first);
+            LoadPluginLib(Errors, IterName->first);
+            if (Errors.IsValid())
+            {
+                return;
+            }
         }
     }
 }
 
-void SSFCPluginManager::LoadPluginLib(const std::string &PluginName)
+void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName)
 {
     if (DynamicLibMap.find(PluginName) != DynamicLibMap.end())
     {
+        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Repeat);
         return;
     }
 
     SSFCDynamicLib *DynamicLib = new SSFCDynamicLib(PluginName);
     if (DynamicLib == nullptr)
     {
+        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_DynamicLib_nullptr);
         return;
     }
 
     DynamicLibMap.insert(std::make_pair(PluginName, DynamicLib));
 
     // 加载
-    DynamicLib->Load();
+    if (!DynamicLib->Load())
+    {
+        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Failed);
+        return;
+    }
 
     DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)DynamicLib->GetSymbol("DllStartPlugin");
     if (DllStartPluginFunc == nullptr)
     {
+        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Entry_nullptr);
         return;
     }
 

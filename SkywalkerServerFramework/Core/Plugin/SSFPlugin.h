@@ -24,7 +24,7 @@ public:
     SSFCPlugin();
     virtual ~SSFCPlugin();
 
-#pragma region SSFInterface
+#pragma region Object Base Interface
 
 public:
     /**
@@ -67,7 +67,7 @@ public:
      */
     virtual void Release(SSFObjectErrors &Errors) override;
 
-#pragma endregion SSFInterface
+#pragma endregion Object Base Interface
 
 protected:
     SSFPtr_IPluginManager PluginManager;

@@ -18,7 +18,7 @@ SSFCPlugin::~SSFCPlugin()
 {
 }
 
-#pragma region SSFInterface
+#pragma region Object Base Interface
 
 void SSFCPlugin::Init(SSFObjectErrors &Errors)
 {
@@ -60,4 +60,4 @@ void SSFCPlugin::Release(SSFObjectErrors &Errors)
     delete this;
 }
 
-#pragma endregion SSFInterface
+#pragma endregion Object Base Interface

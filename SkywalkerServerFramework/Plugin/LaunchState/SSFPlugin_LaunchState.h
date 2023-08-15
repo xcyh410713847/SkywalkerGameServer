@@ -18,6 +18,46 @@ public:
     SSFCPlugin_LaunchState(SSFPtr_IPluginManager InPluginManager);
     virtual ~SSFCPlugin_LaunchState();
 
+#pragma region Object Base Interface
+
+public:
+    /**
+     * 初始化
+     */
+    virtual void Init(SSFObjectErrors &Errors) override;
+
+    /**
+     * 唤醒
+     */
+    virtual void Awake(SSFObjectErrors &Errors) override;
+
+    /**
+     * 开始
+     */
+    virtual void Start(SSFObjectErrors &Errors) override;
+
+    /**
+     * Tick
+     */
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+
+    /**
+     * 结束
+     */
+    virtual void Stop(SSFObjectErrors &Errors) override;
+
+    /**
+     * 休眠
+     */
+    virtual void Sleep(SSFObjectErrors &Errors) override;
+
+    /**
+     * 销毁
+     */
+    virtual void Destroy(SSFObjectErrors &Errors) override;
+
+#pragma endregion Object Base Interface
+
 #pragma region SSFIPlugin
 public:
     /**

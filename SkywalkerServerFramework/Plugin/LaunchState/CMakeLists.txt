@@ -10,7 +10,7 @@ add_definitions(
     -DSKYWALKER_SF_DYNAMIC_PLUGIN
 )
 
-set(skywalker_server_plugin_name "SSFPluginLaunchState")
+set(skywalker_server_plugin_name "SSFPlugin_LaunchState")
 
 file(GLOB skywalker_server_plugin_source_cpp
     *.cpp)

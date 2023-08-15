@@ -83,10 +83,11 @@ public:
     {
         return !errors.empty();
     }
+};
 
-    /**
-     * 不带堆栈的错误
-     */
+/**
+ * 不带堆栈的错误
+ */
 #define SKYWALKER_ERRORS_WRAP(cppErrors, error) cppErrors.AddError(error, "")
 
 /**
@@ -98,7 +99,6 @@ public:
         ss << "[" << __FILE__ << ":" << __LINE__ << "(" << __FUNCTION__ << ")] "; \
         cppErrors.AddError(error, ss.str());                                      \
     }
-};
 
 SKYWALKER_ERRORS_NAMESPACE_END
 

@@ -36,6 +36,46 @@ SSFCPlugin_LaunchState::~SSFCPlugin_LaunchState()
 {
 }
 
+#pragma region Object Base Interface
+
+void SSFCPlugin_LaunchState::Init(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Init
+}
+
+void SSFCPlugin_LaunchState::Awake(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Awake
+}
+
+void SSFCPlugin_LaunchState::Start(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Start
+}
+
+void SSFCPlugin_LaunchState::Tick(SSFObjectErrors &Errors, int DelayMS)
+{
+    // TODO Shyfan 插件管理器Tick
+    std::cout << "SSFCPlugin_LaunchState::Tick" << std::endl;
+}
+
+void SSFCPlugin_LaunchState::Stop(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Stop
+}
+
+void SSFCPlugin_LaunchState::Sleep(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Sleep
+}
+
+void SSFCPlugin_LaunchState::Destroy(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Destroy
+}
+
+#pragma endregion Object Base Interface
+
 #pragma region SSFIPlugin
 
 const std::string SSFCPlugin_LaunchState::GetPluginName()

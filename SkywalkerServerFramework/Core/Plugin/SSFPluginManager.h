@@ -30,7 +30,7 @@ class SSFCPluginManager
 {
     SKYWALKER_SINGLETON_DECLARE(SSFCPluginManager);
 
-#pragma region SSFInterface
+#pragma region Object Base Interface
 
 public:
     /**
@@ -73,7 +73,7 @@ public:
      */
     virtual void Release(SSFObjectErrors &Errors) override;
 
-#pragma endregion SSFInterface
+#pragma endregion Object Base Interface
 
 #pragma region SSFIPluginManager
 
@@ -113,7 +113,7 @@ private:
     /**
      * 加载插件库
      */
-    void LoadPluginLib(const std::string &PluginName);
+    void LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName);
 
 private:
     typedef void (*DLL_START_PLUGIN_FUNC)(SSFPtr_IPluginManager);
