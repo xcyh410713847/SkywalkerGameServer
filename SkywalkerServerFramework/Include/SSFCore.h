@@ -76,10 +76,10 @@ using SSFSharedPtr = std::shared_ptr<T>;
 #pragma region Iterator Macro
 
 /**
- * Map迭代器
+ * 通用迭代器
  */
-#define SKYWALKER_SF_MAP_ITERATOR(Iterator, Map) \
-    for (auto Iterator = Map.begin(); Iterator != Map.end(); ++Iterator)
+#define SKYWALKER_SF_COMMON_ITERATOR(Iterator, Container) \
+    for (auto Iterator = Container.begin(); Iterator != Container.end(); ++Iterator)
 
 #pragma endregion Iterator Macro
 

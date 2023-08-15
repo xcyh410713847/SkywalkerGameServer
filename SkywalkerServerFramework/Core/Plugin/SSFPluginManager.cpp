@@ -32,7 +32,7 @@ void SSFCPluginManager::Init(SSFObjectErrors &Errors)
         return;
     }
 
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Init(Errors);
     }
@@ -40,7 +40,7 @@ void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Awake(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Awake(Errors);
     }
@@ -48,7 +48,7 @@ void SSFCPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Start(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Start(Errors);
     }
@@ -56,7 +56,7 @@ void SSFCPluginManager::Start(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Tick(Errors, DelayMS);
     }
@@ -64,7 +64,7 @@ void SSFCPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFCPluginManager::Stop(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Stop(Errors);
     }
@@ -72,7 +72,7 @@ void SSFCPluginManager::Stop(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Sleep(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Sleep(Errors);
     }
@@ -80,7 +80,7 @@ void SSFCPluginManager::Sleep(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Destroy(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Destroy(Errors);
     }
@@ -88,7 +88,7 @@ void SSFCPluginManager::Destroy(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Release(Errors);
     }
@@ -166,7 +166,7 @@ void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 
 void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
 {
-    SKYWALKER_SF_MAP_ITERATOR(IterName, PluginNameMap)
+    SKYWALKER_SF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
         if (IterName->second)
         {
