@@ -11,6 +11,50 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
+#pragma region SSFInterface
+
+void SSFCPluginManager::Init(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Init
+}
+
+void SSFCPluginManager::Awake(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Awake
+}
+
+void SSFCPluginManager::Start(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Start
+}
+
+void SSFCPluginManager::Tick(SSFInterfaceErrors &Errors, int DelayMS)
+{
+    // TODO Shyfan 插件管理器Tick
+}
+
+void SSFCPluginManager::Stop(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Stop
+}
+
+void SSFCPluginManager::Sleep(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Sleep
+}
+
+void SSFCPluginManager::Destroy(SSFInterfaceErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Destroy
+}
+
+void SSFCPluginManager::Release(SSFInterfaceErrors &Errors)
+{
+    delete this;
+}
+
+#pragma endregion SSFInterface
+
 #pragma region SSFIPluginManager
 
 void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
@@ -84,21 +128,6 @@ SSFPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
     }
 
     return nullptr;
-}
-
-void SSFCPluginManager::Tick()
-{
-    // TODO Shyfan 插件管理器Tick
-}
-
-void SSFCPluginManager::Stop()
-{
-    // TODO Shyfan 插件管理器Stop
-}
-
-void SSFCPluginManager::Release()
-{
-    delete this;
 }
 
 #pragma endregion SSFIPluginManager

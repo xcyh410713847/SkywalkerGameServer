@@ -13,19 +13,69 @@
 
 #include "SkywalkerSingleton\SkywalkerSingleton.h"
 
+#include "Include\SSFInterface.h"
 #include "Include\SSFIPluginManager.h"
-#include "Include\SSFPluginDefinition.h"
 
 #include "Core\Map\SSFMap.h"
 #include "Core\DynamicLib\SSFDynamicLib.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCPluginManager : public SSFIPluginManager
+/**
+ * 插件管理器
+ */
+class SSFCPluginManager
+    : public SSFIPluginManager,
+      public SSFInterface
 {
     SKYWALKER_SINGLETON_DECLARE(SSFCPluginManager);
 
+#pragma region SSFInterface
+
+public:
+    /**
+     * 初始化
+     */
+    virtual void Init(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * 唤醒
+     */
+    virtual void Awake(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * 开始
+     */
+    virtual void Start(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * Tick
+     */
+    virtual void Tick(SSFInterfaceErrors &Errors, int DelayMS) override;
+
+    /**
+     * 结束
+     */
+    virtual void Stop(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * 休眠
+     */
+    virtual void Sleep(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * 销毁
+     */
+    virtual void Destroy(SSFInterfaceErrors &Errors) override;
+
+    /**
+     * 释放
+     */
+    virtual void Release(SSFInterfaceErrors &Errors) override;
+#pragma endregion SSFInterface
+
 #pragma region SSFIPluginManager
+
 public:
     /**
      * 加载插件配置
@@ -55,21 +105,6 @@ public:
      * @return 插件
      */
     virtual SSFPtr_IPlugin GetPlugin(const std::string &PluginName) override;
-
-    /**
-     * Tick
-     */
-    virtual void Tick() override;
-
-    /**
-     * 结束
-     */
-    virtual void Stop() override;
-
-    /**
-     * 释放
-     */
-    virtual void Release() override;
 
 #pragma endregion SSFIPluginManager
 

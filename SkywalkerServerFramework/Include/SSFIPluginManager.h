@@ -11,10 +11,9 @@
 #include <string>
 
 #include "SSFCore.h"
-
 #include "SSFErrors.h"
-
 #include "SSFIPlugin.h"
+#include "SSFPluginDefinition.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
@@ -48,21 +47,6 @@ struct SSFIPluginManager
      * @return 插件
      */
     virtual SSFPtr_IPlugin GetPlugin(const std::string &PluginName) = 0;
-
-    /**
-     * Tick
-     */
-    virtual void Tick() = 0;
-
-    /**
-     * 结束
-     */
-    virtual void Stop() = 0;
-
-    /**
-     * 释放
-     */
-    virtual void Release() = 0;
 };
 
 SKYWALKER_SF_NAMESPACE_END
