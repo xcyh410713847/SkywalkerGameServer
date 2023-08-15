@@ -30,7 +30,7 @@ public:
 private:
     std::string Name;
 
-    SKYWALKER__DYNAMIC_LIB_HANDLE Instance;
+    SKYWALKER_SF_DYNAMIC_LIB_HANDLE Instance;
 };
 
 SKYWALKER_SF_NAMESPACE_END

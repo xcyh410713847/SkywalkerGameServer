@@ -56,7 +56,6 @@ void SSFCPlugin_LaunchState::Start(SSFObjectErrors &Errors)
 void SSFCPlugin_LaunchState::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     // TODO Shyfan 插件管理器Tick
-    std::cout << "SSFCPlugin_LaunchState::Tick" << std::endl;
 }
 
 void SSFCPlugin_LaunchState::Stop(SSFObjectErrors &Errors)

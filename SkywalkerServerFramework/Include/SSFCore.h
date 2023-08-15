@@ -61,12 +61,6 @@
  */
 #define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)
 
-/**
- * 使用std::cout打印
- */
-#define SKYWALKER_SF_PRINT(Content) \
-    std::cout << Content << std::endl;
-
 #pragma endregion Function Macro
 
 #pragma region Common Type

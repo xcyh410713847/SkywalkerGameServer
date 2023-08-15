@@ -14,7 +14,7 @@ SSFCDynamicLib::SSFCDynamicLib(const std::string &InName)
     Name = InName;
     Instance = NULL;
 
-    Name.append(SKYWALKER__DYNAMIC_LIB_EXT);
+    Name.append(SKYWALKER_SF_DYNAMIC_LIB_EXT);
 }
 
 SSFCDynamicLib::~SSFCDynamicLib()
@@ -26,18 +26,18 @@ bool SSFCDynamicLib::Load()
     std::string Path = SKYWALKER__DYNAMIC_LIB_PATH;
     Path.append(Name);
 
-    Instance = SKYWALKER__DYNAMIC_LIB_LOAD(Path.c_str());
+    Instance = SKYWALKER_SF_DYNAMIC_LIB_LOAD(Path.c_str());
 
     return Instance != nullptr;
 }
 
 bool SSFCDynamicLib::Unload()
 {
-    SKYWALKER__DYNAMIC_LIB_UNLOAD(Instance);
+    SKYWALKER_SF_DYNAMIC_LIB_UNLOAD(Instance);
     return true;
 }
 
 void *SSFCDynamicLib::GetSymbol(const char *ProcName)
 {
-    return (SKYWALKER__DYNAMIC_LIB_HANDLE)SKYWALKER__DYNAMIC_LIB_GET_SYMBOL(Instance, ProcName);
+    return (SKYWALKER_SF_DYNAMIC_LIB_HANDLE)SKYWALKER_SF_DYNAMIC_LIB_GET_SYMBOL(Instance, ProcName);
 }

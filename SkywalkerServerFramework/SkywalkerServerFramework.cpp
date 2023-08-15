@@ -7,21 +7,22 @@
 
 #include "SkywalkerServerFramework.h"
 
-#include <iostream>
-#include <csignal>
+#include "Include\SSFILog.h"
 
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework);
 
 SKYWALKER_SINGLETON_IMPLEMENT(CSkywalkerServerFramework);
 
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
-    std::cout << "Received signal: " << Signal << std::endl;
+    SKYWALKER_SF_LOG_DEBUG("Received signal: " << Signal);
 }
 
 bool CSkywalkerServerFramework::Start()
 {
-    std::cout << "Hello SkywalkerServerFramework" << std::endl;
+    SKYWALKER_SF_LOG_INFO("Start SkywalkerServerFramework ");
 
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
@@ -52,8 +53,6 @@ bool CSkywalkerServerFramework::Tick()
         return false;
     }
 
-    std::cout << "Tick SkywalkerServerFramework" << std::endl;
-
     // TODO Shyfan 临时
     SKYWALKER_PLATFORM_SLEEP(1000);
 
@@ -67,7 +66,7 @@ bool CSkywalkerServerFramework::Tick()
 
 void CSkywalkerServerFramework::Stop()
 {
-    std::cout << "Bye SkywalkerServerFramework" << std::endl;
+    SKYWALKER_SF_LOG_INFO("Stop SkywalkerServerFramework");
 
     // 进入停止中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;

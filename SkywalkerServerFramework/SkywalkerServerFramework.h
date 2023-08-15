@@ -8,6 +8,8 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_H__
 
+#include <csignal>
+
 #include "SkywalkerSingleton\SkywalkerSingleton.h"
 
 #include "Include\SSFCore.h"
