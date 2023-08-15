@@ -17,6 +17,21 @@ SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
 void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 {
+    SSFPluginErrors PluginErrors;
+    LoadPluginConfig(PluginErrors);
+    if (PluginErrors.IsValid())
+    {
+        SKYWALKER_ERRORS_WRAP(Errors, "LoadPluginConfig Failed");
+        return;
+    }
+
+    LoadPlugin(PluginErrors);
+    if (PluginErrors.IsValid())
+    {
+        SKYWALKER_ERRORS_WRAP(Errors, "LoadPlugin Failed");
+        return;
+    }
+
     SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFCPlugin *)IterPlugin->second)->Init(Errors);
@@ -85,23 +100,6 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
-{
-    // TODO Shyfan 临时写的
-    PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
-}
-
-void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
-{
-    for (TMap_PluginName::iterator it = PluginNameMap.begin(); it != PluginNameMap.end(); ++it)
-    {
-        if (it->second)
-        {
-            LoadPluginLib(it->first);
-        }
-    }
-}
-
 void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin)
 {
     if (Plugin == nullptr)
@@ -159,6 +157,23 @@ SSFPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
 }
 
 #pragma endregion SSFIPluginManager
+
+void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
+{
+    // TODO Shyfan 临时写的
+    PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
+}
+
+void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
+{
+    for (TMap_PluginName::iterator it = PluginNameMap.begin(); it != PluginNameMap.end(); ++it)
+    {
+        if (it->second)
+        {
+            LoadPluginLib(it->first);
+        }
+    }
+}
 
 void SSFCPluginManager::LoadPluginLib(const std::string &PluginName)
 {

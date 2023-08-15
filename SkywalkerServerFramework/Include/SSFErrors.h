@@ -14,11 +14,11 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-// 接口错误
-typedef Skywalker::Errors::CSkywalkerErrors<std::string> SSFObjectErrors;
+// 对象错误
+typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<std::string> SSFObjectErrors;
 
 // 插件错误
-typedef Skywalker::Errors::CSkywalkerErrors<int> SSFPluginErrors;
+typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SSFPluginErrors;
 
 SKYWALKER_SF_NAMESPACE_END
 

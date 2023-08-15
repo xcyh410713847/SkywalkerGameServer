@@ -79,16 +79,6 @@ public:
 
 public:
     /**
-     * 加载插件配置
-     */
-    virtual void LoadPluginConfig(SSFPluginErrors &Errors) override;
-
-    /**
-     * 加载库
-     */
-    virtual void LoadPlugin(SSFPluginErrors &Errors) override;
-
-    /**
      * 注册插件
      * @param Plugin 插件
      */
@@ -110,6 +100,19 @@ public:
 #pragma endregion SSFIPluginManager
 
 private:
+    /**
+     * 加载插件配置
+     */
+    void LoadPluginConfig(SSFPluginErrors &Errors);
+
+    /**
+     * 加载库
+     */
+    void LoadPlugin(SSFPluginErrors &Errors);
+
+    /**
+     * 加载插件库
+     */
     void LoadPluginLib(const std::string &PluginName);
 
 private:
