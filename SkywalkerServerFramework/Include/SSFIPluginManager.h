@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__
 
-#include <string>
+#include "SkywalkerDerived\SkywalkerDerived.h"
 
 #include "SSFCore.h"
 #include "SSFErrors.h"
@@ -50,14 +50,16 @@ typedef SKYWALKER_SF_NAMESPACE::SSFIPluginManager *SSFPtr_IPluginManager;
  * 创建插件
  */
 #define SKYWALKER_SF_CREATE_PLUGIN(PluginManager, ClassName) \
+    assert(SKYWALKER_IS_DERIVED(ClassName, SSFIPlugin));     \
     SSFPluginErrors Errors;                                  \
     PluginManager->RegisterPlugin(Errors, new ClassName(PluginManager));
 
 /**
  * 销毁插件
  */
-#define SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, ClassName) \
-    SSFPluginErrors Errors;                                   \
+#define SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, ClassName)         \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFIPlugin)); \
+    SSFPluginErrors Errors;                                           \
     PluginManager->UnregisterPlugin(Errors, PluginManager->GetPlugin((#ClassName)));
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_MANAGER_H__

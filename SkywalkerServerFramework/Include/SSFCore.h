@@ -9,6 +9,8 @@
 #define __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
 
 #include <iostream>
+#include <string>
+#include <assert.h>
 
 #include "SSFPlatform.h"
 
@@ -60,6 +62,11 @@
  * 获取类名
  */
 #define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)
+
+/**
+ * 断言
+ */
+#define SKYWALKER_SF_ASSERT(Condition) assert(Condition)
 
 #pragma endregion Function Macro
 

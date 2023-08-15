@@ -9,30 +9,34 @@
 #define __SKYWALKER_DERIVED_H__
 
 #define SKYWALKER_DERIVED_NAMESPACE Skywalker::Derived
-
-namespace SKYWALKER_DERIVED_NAMESPACE
-{
-    template <typename DerivedType, typename BaseType>
-    class TIsDerived
+#define SKYWALKER_DERIVED_NAMESPACE_BEGIN \
+    namespace SKYWALKER_DERIVED_NAMESPACE \
     {
-    public:
-        static int AnyFunction(BaseType *base)
-        {
-            return 1;
-        }
+#define SKYWALKER_DERIVED_NAMESPACE_END } // namespace SKYWALKER_DERIVED_NAMESPACE
 
-        static char AnyFunction(void *t2)
-        {
-            return 0;
-        }
+SKYWALKER_DERIVED_NAMESPACE_BEGIN
+template <typename DerivedType, typename BaseType>
+class TIsDerived
+{
+public:
+    static int AnyFunction(BaseType *base)
+    {
+        return 1;
+    }
 
-        enum
-        {
-            Result = (sizeof(int) == sizeof(AnyFunction((DerivedType *)NULL))),
-        };
+    static char AnyFunction(void *t2)
+    {
+        return 0;
+    }
+
+    enum
+    {
+        Result = (sizeof(int) == sizeof(AnyFunction((DerivedType *)NULL))),
     };
-} // namespace SKYWALKER_DERIVED_NAMESPACE
+};
 
 #define SKYWALKER_IS_DERIVED(DerivedType, BaseType) SKYWALKER_DERIVED_NAMESPACE::TIsDerived<DerivedType, BaseType>::Result
+
+SKYWALKER_DERIVED_NAMESPACE_END
 
 #endif // __SKYWALKER_DERIVED_H__
