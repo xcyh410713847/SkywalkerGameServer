@@ -14,24 +14,41 @@
 
 #pragma region Common Macro
 
+/**
+ * 定义命名空间
+ */
 #define SKYWALKER_SF_NAMESPACE Skywalker::ServerFramework
 
+/**
+ * 命名空间开始
+ */
 #define SKYWALKER_SF_NAMESPACE_BEGIN \
     namespace SKYWALKER_SF_NAMESPACE \
     {
 
+/**
+ * 命名空间结束
+ */
 #define SKYWALKER_SF_NAMESPACE_END \
     } // Skywalker::ServerFramework
 
+/**
+ * 使用命名空间
+ */
 #define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
 
+/**
+ * 导出
+ */
 #define SKYWALKER_SF_API extern "C" __declspec(dllexport)
 
 #pragma endregion Common Macro
 
 #pragma region Function Macro
 
-// 释放对象
+/**
+ * 释放对象
+ */
 #define SKYWALKER_SF_RELEASE(Obj) \
     if (Obj)                      \
     {                             \
@@ -39,16 +56,31 @@
         Obj = nullptr;            \
     }
 
-// 获取类名
+/**
+ * 获取类名
+ */
 #define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)
 
 #pragma endregion Function Macro
 
 #pragma region Common Type
 
+/**
+ * 共享指针
+ */
 template <typename T>
 using SSFSharedPtr = std::shared_ptr<T>;
 
 #pragma endregion Common Type
+
+#pragma region Iterator Macro
+
+/**
+ * Map迭代器
+ */
+#define SKYWALKER_SF_MAP_ITERATOR(Iterator, Map) \
+    for (auto Iterator = Map.begin(); Iterator != Map.end(); ++Iterator)
+
+#pragma endregion Iterator Macro
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

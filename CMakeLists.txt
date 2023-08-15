@@ -17,37 +17,37 @@ endfunction()
 set(skywalker_server_name "SkywalkerServer")
 
 # 项目名称
-project(skywalker_server_name)
+project(${skywalker_server_name})
 
 SkywalkerServer_MessageDebug("Start Build ${skywalker_server_name}")
 
-# 设置导出路径
-set(Skywalker_Server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "Skywalker_Server_output_PATH")
-
-# 导出路径
-SkywalkerServer_MessageDebug("OutputPath: ${Skywalker_Server_output_PATH}")
+# 导出相关
+set(skywalker_server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "skywalker_server_output_PATH")
+set(skywalker_server_server_DIR "Server" CACHE STRING "skywalker_server_server_DIR")
+set(skywalker_server_editor_DIR "Editor" CACHE STRING "skywalker_server_editor_DIR")
+set(skywalker_server_client_DIR "Client" CACHE STRING "skywalker_server_client_DIR")
 
 # 编译完成后拷贝到指定目录
-macro(SkywalkerServer_CopyToTarget TargetName ProjectName)
+macro(SkywalkerServer_CopyToTarget TargetName DirName)
+    SkywalkerServer_MessageDebug("Copy ${TargetName} To ${skywalker_server_output_PATH}/${DirName} ")
+
     add_custom_command(TARGET ${TargetName} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         $<TARGET_FILE:${TargetName}>
-        ${Skywalker_Server_output_PATH}/${ProjectName}/$<TARGET_FILE_NAME:${TargetName}>
+        ${skywalker_server_output_PATH}/${DirName}/$<TARGET_FILE_NAME:${TargetName}>
     )
 endmacro()
 
 # 导出宏
 macro(SkywalkerServer_Export TargetName ProjectName)
-    SkywalkerServer_MessageDebug("Export ${ProjectName} ${TargetName}")
+    SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_PATH}/${ProjectName} ")
 
     # 设置编译之后的输出路径
     set_target_properties(${TargetName} PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-        ARCHIVE_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
-        RUNTIME_OUTPUT_DIRECTORY ${Skywalker_Server_output_PATH}/${ProjectName}
+        LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
+        ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
+        RUNTIME_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
     )
-
-    # SkywalkerServer_CopyToTarget(${TargetName} ${ProjectName})
 endmacro()
 
 # SkywalkerServerFramework

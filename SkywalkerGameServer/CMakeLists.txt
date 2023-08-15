@@ -54,6 +54,8 @@ target_link_libraries(${skywalker_game_server_name} PRIVATE
 
 SkywalkerGameServer_Export(${skywalker_game_server_name})
 
+SkywalkerServer_CopyToTarget(${skywalker_game_server_name} ${skywalker_server_server_DIR})
+
 # 关闭警告
 target_compile_options(${skywalker_game_server_name} PRIVATE "/wd4819")
 

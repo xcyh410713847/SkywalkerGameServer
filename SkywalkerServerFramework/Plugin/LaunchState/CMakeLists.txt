@@ -29,5 +29,7 @@ target_link_libraries(${skywalker_server_plugin_name} PRIVATE
 
 SkywalkerServerFramework_Export(${skywalker_server_plugin_name})
 
+SkywalkerServer_CopyToTarget(${skywalker_server_plugin_name} ${skywalker_server_server_DIR})
+
 # 关闭警告
 target_compile_options(${skywalker_server_plugin_name} PRIVATE "/wd4819")

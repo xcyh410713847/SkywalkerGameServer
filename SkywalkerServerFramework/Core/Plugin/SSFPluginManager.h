@@ -72,6 +72,7 @@ public:
      * 释放
      */
     virtual void Release(SSFObjectErrors &Errors) override;
+
 #pragma endregion SSFInterface
 
 #pragma region SSFIPluginManager

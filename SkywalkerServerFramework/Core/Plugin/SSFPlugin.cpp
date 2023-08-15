@@ -17,3 +17,47 @@ SSFCPlugin::SSFCPlugin()
 SSFCPlugin::~SSFCPlugin()
 {
 }
+
+#pragma region SSFInterface
+
+void SSFCPlugin::Init(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Init
+}
+
+void SSFCPlugin::Awake(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Awake
+}
+
+void SSFCPlugin::Start(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Start
+}
+
+void SSFCPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
+{
+    // TODO Shyfan 插件管理器Tick
+}
+
+void SSFCPlugin::Stop(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Stop
+}
+
+void SSFCPlugin::Sleep(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Sleep
+}
+
+void SSFCPlugin::Destroy(SSFObjectErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Destroy
+}
+
+void SSFCPlugin::Release(SSFObjectErrors &Errors)
+{
+    delete this;
+}
+
+#pragma endregion SSFInterface

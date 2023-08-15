@@ -8,15 +8,11 @@
 set(skywalker_server_framework_core_name "SSFCore")
 
 file(GLOB skywalker_server_framework_core_source_cpp
-    Object/*.cpp
-    DynamicLib/*.cpp
-    Plugin/*.cpp
+    */*.cpp
 )
 
 file(GLOB skywalker_server_framework_core_source_h
-    Object/*.h
-    DynamicLib/*.h
-    Plugin/*.h
+    */*.h
 )
 
 add_library(${skywalker_server_framework_core_name} STATIC
@@ -25,6 +21,8 @@ add_library(${skywalker_server_framework_core_name} STATIC
 )
 
 SkywalkerServerFramework_Export(${skywalker_server_framework_core_name})
+
+SkywalkerServer_CopyToTarget(${skywalker_server_framework_core_name} ${skywalker_server_server_DIR})
 
 # 关闭警告
 target_compile_options(${skywalker_server_framework_core_name} PRIVATE "/wd4819")

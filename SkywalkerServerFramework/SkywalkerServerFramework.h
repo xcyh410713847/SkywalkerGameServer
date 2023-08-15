@@ -27,6 +27,9 @@ enum class ESkywalkerServerFrameworkRunningState
     SkywalkerServerFrameworkRunningState_Stoped,     // 已停止
 };
 
+/**
+ * Skywalker Server Framework
+ */
 class CSkywalkerServerFramework
 {
     SKYWALKER_SINGLETON_DECLARE(CSkywalkerServerFramework);
@@ -48,6 +51,9 @@ private:
 
 SKYWALKER_SF_NAMESPACE_END
 
+/**
+ * Skywalker Server Framework 启动宏
+ */
 #define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                                 \
     CSkywalkerServerFramework *pSkywalkerServerFramework = CSkywalkerServerFramework::GetInstance(); \
     if (!pSkywalkerServerFramework->Start())                                                         \

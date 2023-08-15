@@ -7,6 +7,8 @@
 
 #include "SSFPluginManager.h"
 
+#include "SSFPlugin.h"
+
 SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
@@ -15,41 +17,67 @@ SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
 void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Init
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Init(Errors);
+    }
 }
 
 void SSFCPluginManager::Awake(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Awake
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Awake(Errors);
+    }
 }
 
 void SSFCPluginManager::Start(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Start
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Start(Errors);
+    }
 }
 
 void SSFCPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    // TODO Shyfan 插件管理器Tick
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Tick(Errors, DelayMS);
+    }
 }
 
 void SSFCPluginManager::Stop(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Stop
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Stop(Errors);
+    }
 }
 
 void SSFCPluginManager::Sleep(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Sleep
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Sleep(Errors);
+    }
 }
 
 void SSFCPluginManager::Destroy(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Destroy
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Destroy(Errors);
+    }
 }
 
 void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_MAP_ITERATOR(IterPlugin, PluginMap)
+    {
+        ((SSFCPlugin *)IterPlugin->second)->Release(Errors);
+    }
+
     delete this;
 }
 
