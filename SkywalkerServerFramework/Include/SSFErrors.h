@@ -20,6 +20,9 @@ typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<std::string> SSFObjectError
 // 插件错误
 typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SSFPluginErrors;
 
+// 模块错误
+typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SSFModuleErrors;
+
 SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__

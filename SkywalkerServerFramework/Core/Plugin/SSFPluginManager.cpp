@@ -104,7 +104,7 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin)
+void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (Plugin == nullptr)
     {
@@ -112,7 +112,7 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin P
         return;
     }
 
-    std::string PluginName = Plugin->GetPluginName();
+    std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
         return;
@@ -127,14 +127,14 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin P
     PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
-void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin)
+void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (Plugin == nullptr)
     {
         return;
     }
 
-    std::string PluginName = Plugin->GetPluginName();
+    std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
         return;
@@ -149,7 +149,7 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin
     PluginMap.erase(it);
 }
 
-SSFPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
+SSF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
 {
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
@@ -157,6 +157,19 @@ SSFPtr_IPlugin SSFCPluginManager::GetPlugin(const std::string &PluginName)
         return it->second;
     }
 
+    return nullptr;
+}
+
+void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+{
+}
+
+void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+{
+}
+
+SSF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
+{
     return nullptr;
 }
 
@@ -215,7 +228,7 @@ void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string
         return;
     }
 
-    DllStartPluginFunc(SSFPtr_IPluginManager(this));
+    DllStartPluginFunc((SKYWALKER_SF_PTR_PLUGIN_MANAGER)(this));
 
     SKYWALKER_SF_LOG_INFO("LoadPluginLib " << PluginName << " Success");
 }

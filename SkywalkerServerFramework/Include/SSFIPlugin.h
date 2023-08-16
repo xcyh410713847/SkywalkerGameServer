@@ -18,12 +18,14 @@ struct SSFIPlugin
      * 获取插件名称
      * @return 插件名称
      */
-    virtual const std::string GetPluginName() = 0;
+    virtual const std::string GetName() = 0;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+/**
+ *SSFIPlugin 指针，共享指针继承有问题，所以用普通
+ */
+#define SSF_PTR_PLUGIN SSFIPlugin *
 
-// SSFIPlugin 指针，共享指针继承有问题，所以用普通
-typedef SKYWALKER_SF_NAMESPACE::SSFIPlugin *SSFPtr_IPlugin;
+SKYWALKER_SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_I_PLUGIN_H__

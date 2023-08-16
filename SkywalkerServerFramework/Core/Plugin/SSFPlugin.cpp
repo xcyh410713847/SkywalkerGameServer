@@ -9,7 +9,7 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFCPlugin::SSFCPlugin(SSFPtr_IPluginManager InPluginManager)
+SSFCPlugin::SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
     : PluginManager(InPluginManager)
 {
 }
@@ -61,3 +61,13 @@ void SSFCPlugin::Release(SSFObjectErrors &Errors)
 }
 
 #pragma endregion Object Base Interface
+
+void SSFCPlugin::Install(SSFModuleErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Install
+}
+
+void SSFCPlugin::Uninstall(SSFModuleErrors &Errors)
+{
+    // TODO Shyfan 插件管理器Uninstall
+}

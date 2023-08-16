@@ -14,7 +14,16 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 struct SSFIModule
 {
+    /**
+     * 获取模块名称
+     * @return 模块名称
+     */
+    virtual const std::string GetName() = 0;
 };
+/**
+ * SSFIModule 指针，共享指针继承有问题，所以用普通
+ */
+#define SSF_PTR_MODULE SSFIModule *
 
 SKYWALKER_SF_NAMESPACE_END
 

@@ -15,7 +15,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFCPlugin_Network : public SSFCPlugin
 {
 public:
-    SSFCPlugin_Network(SSFPtr_IPluginManager InPluginManager)
+    SSFCPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFCPlugin(InPluginManager)
     {
     }
@@ -67,7 +67,7 @@ public:
      * 获取插件名称
      * @return 插件名称
      */
-    virtual const std::string GetPluginName() override
+    virtual const std::string GetName() override
     {
         return SKYWALKER_SF_CLASS_NAME(SSFCPlugin_Network);
     };

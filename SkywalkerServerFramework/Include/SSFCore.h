@@ -73,10 +73,14 @@
 #pragma region Common Type
 
 /**
+ * 普通指针
+ */
+#define SKYWALKER_SF_PTR(T) T *
+
+/**
  * 共享指针
  */
-template <typename T>
-using SSFSharedPtr = std::shared_ptr<T>;
+#define SKYWALKER_SF_SHARED_PTR(T) std::shared_ptr<T>
 
 #pragma endregion Common Type
 

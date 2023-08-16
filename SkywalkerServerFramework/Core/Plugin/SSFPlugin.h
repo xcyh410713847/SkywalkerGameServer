@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "Include/SSFIPluginManager.h"
+#include "Include\SSFIPluginManager.h"
 
 #include "Core\Object\SSFObject.h"
 
@@ -21,7 +21,7 @@ class SSFCPlugin
       public SSFCObject
 {
 public:
-    SSFCPlugin(SSFPtr_IPluginManager InPluginManager);
+    SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFCPlugin();
 
 #pragma region Object Base Interface
@@ -69,8 +69,29 @@ public:
 
 #pragma endregion Object Base Interface
 
+private:
+    /**
+     * 安装
+     */
+    void Install(SSFModuleErrors &Errors);
+
+    /**
+     * 卸载
+     */
+    void Uninstall(SSFModuleErrors &Errors);
+
+    /**
+     * 加入模块
+     */
+    void AddModule(const std::string &ModuleName, SSF_PTR_MODULE Module);
+
+    /**
+     * 移除模块
+     */
+    void RemoveModule(const std::string &ModuleName);
+
 protected:
-    SSFPtr_IPluginManager PluginManager;
+    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
 };
 
 SKYWALKER_SF_NAMESPACE_END

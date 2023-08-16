@@ -79,20 +79,39 @@ public:
      * 注册插件
      * @param Plugin 插件
      */
-    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) override;
+    virtual void RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin) override;
 
     /**
      * 注销插件
      * @param Plugin 插件
      */
-    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSFPtr_IPlugin Plugin) override;
+    virtual void UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin) override;
 
     /**
      * 获取插件
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSFPtr_IPlugin GetPlugin(const std::string &PluginName) override;
+    virtual SSF_PTR_PLUGIN GetPlugin(const std::string &PluginName) override;
+
+    /**
+     * 注册模块
+     * @param Module 模块
+     */
+    virtual void RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module) override;
+
+    /**
+     * 注销模块
+     * @param Module 模块
+     */
+    virtual void UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module) override;
+
+    /**
+     * 获取模块
+     * @param ModuleName 模块名称
+     * @return 模块
+     */
+    virtual SSF_PTR_MODULE GetModule(const std::string &ModuleName) override;
 
 #pragma endregion SSFIPluginManager
 
@@ -113,16 +132,16 @@ private:
     void LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName);
 
 private:
-    typedef void (*DLL_START_PLUGIN_FUNC)(SSFPtr_IPluginManager);
-    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSFPtr_IPluginManager);
+    typedef void (*DLL_START_PLUGIN_FUNC)(SKYWALKER_SF_PTR_PLUGIN_MANAGER);
+    typedef void (*DLL_STOP_PLUGIN_FUNC)(SKYWALKER_SF_PTR_PLUGIN_MANAGER);
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
     TMap_PluginName PluginNameMap;
 
-    typedef SSFMap<std::string, SSFSharedPtr_DynamicLib> TMap_DynamicLib;
+    typedef SSFMap<std::string, SKYWALKER_SF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
     TMap_DynamicLib DynamicLibMap;
 
-    typedef std::map<std::string, SSFPtr_IPlugin> TMap_Plugin;
+    typedef std::map<std::string, SSF_PTR_PLUGIN> TMap_Plugin;
     TMap_Plugin PluginMap;
 };
 
