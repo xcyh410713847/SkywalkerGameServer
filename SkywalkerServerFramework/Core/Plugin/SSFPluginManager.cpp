@@ -25,14 +25,14 @@ void SSFCPluginManager::Init(SSFObjectErrors &Errors)
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
     {
-        SKYWALKER_SF_ERROR(Errors, "LoadPluginConfig Failed");
+        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPluginConfig Failed");
         return;
     }
 
     LoadPlugin(PluginErrors);
     if (PluginErrors.IsValid())
     {
-        SKYWALKER_SF_ERROR(Errors, "LoadPlugin Failed");
+        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPlugin Failed");
         return;
     }
 

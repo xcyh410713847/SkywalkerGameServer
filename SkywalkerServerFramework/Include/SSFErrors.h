@@ -46,13 +46,38 @@ enum ESkywalkerSFError
     SkywalkerSFError_Module_Unregister_NotFound,  // 注销模块未找到
 
 #pragma endregion 模块错误
+
+#pragma region 对象错误
+
+    SkywalkerSFError_Object_Error = 300, // 模块错误
+    SkywalkerSFError_Object_Init_Failed, // 对象初始化失败
+
+#pragma endregion 对象错误
+};
+
+struct SSFError
+{
+    ESkywalkerSFError Error;
+    std::string ErrorDesc;
+
+    SSFError(ESkywalkerSFError InError)
+        : Error(InError),
+          ErrorDesc("")
+    {
+    }
+
+    SSFError(ESkywalkerSFError InError, std::string InErrorDesc)
+        : Error(InError),
+          ErrorDesc(InErrorDesc)
+    {
+    }
 };
 
 // 错误
-typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SkywalkerSFErrors;
+typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<SSFError> SkywalkerSFErrors;
 
 // 对象错误
-typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<std::string> SSFObjectErrors;
+typedef SkywalkerSFErrors SSFObjectErrors;
 
 // 插件错误
 typedef SkywalkerSFErrors SSFPluginErrors;
@@ -60,15 +85,37 @@ typedef SkywalkerSFErrors SSFPluginErrors;
 // 模块错误
 typedef SkywalkerSFErrors SSFModuleErrors;
 
+#pragma region 错误宏
+
 /**
  * 不带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR(CppErrors, Error) SKYWALKER_ERRORS_WRAP(CppErrors, Error)
+#define SKYWALKER_SF_ERROR(CppErrors, Error) \
+    SSFError error(Error);                   \
+    SKYWALKER_ERRORS_WRAP(CppErrors, error)
+
+/**
+ * 不带堆栈的错误
+ */
+#define SKYWALKER_SF_ERROR_DESC(CppErrors, Error, ErrorDesc) \
+    SSFError error(Error, ErrorDesc);                        \
+    SKYWALKER_ERRORS_WRAP(CppErrors, error)
 
 /**
  * 带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR_TRACE(CppErrors, Error) SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)
+#define SKYWALKER_SF_ERROR_TRACE(CppErrors, Error) \
+    SSFError error(Error);                         \
+    SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)
+
+/**
+ * 带堆栈的错误
+ */
+#define SKYWALKER_SF_ERROR_DESC_TRACE(CppErrors, Error, ErrorDesc) \
+    SSFError error(Error, ErrorDesc);                              \
+    SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, error)
+
+#pragma endregion 错误宏
 
 SKYWALKER_SF_NAMESPACE_END
 
