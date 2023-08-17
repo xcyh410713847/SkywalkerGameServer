@@ -76,6 +76,8 @@
  * 普通指针
  */
 #define SKYWALKER_SF_PTR(T) T *
+#define SKYWALKER_SF_CONST_PTR(T) const T *
+#define SKYWALKER_SF_PTR_VALID(Obj) (Obj != nullptr)
 
 /**
  * 共享指针

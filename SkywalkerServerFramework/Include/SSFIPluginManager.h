@@ -13,7 +13,6 @@
 #include "SSFCore.h"
 #include "SSFErrors.h"
 #include "SSFIPlugin.h"
-#include "SSFPluginDefinition.h"
 #include "SSFIModule.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN

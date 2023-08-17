@@ -132,17 +132,28 @@ private:
     void LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName);
 
 private:
+    /**
+     * 插件
+     */
     typedef void (*DLL_START_PLUGIN_FUNC)(SKYWALKER_SF_PTR_PLUGIN_MANAGER);
     typedef void (*DLL_STOP_PLUGIN_FUNC)(SKYWALKER_SF_PTR_PLUGIN_MANAGER);
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
-    TMap_PluginName PluginNameMap;
-
     typedef SSFMap<std::string, SKYWALKER_SF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
-    TMap_DynamicLib DynamicLibMap;
-
     typedef std::map<std::string, SSF_PTR_PLUGIN> TMap_Plugin;
+
+    TMap_PluginName PluginNameMap;
+    TMap_DynamicLib DynamicLibMap;
     TMap_Plugin PluginMap;
+
+    /**
+     * 模块
+     */
+    typedef SSFMap<std::string, bool> TMap_ModuleName;
+    typedef std::map<std::string, SSF_PTR_MODULE> TMap_Module;
+
+    TMap_ModuleName ModuleNameMap;
+    TMap_Module ModuleMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END

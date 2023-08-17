@@ -108,19 +108,21 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
 {
     if (Plugin == nullptr)
     {
-        SKYWALKER_ERRORS_WRAP_TRACE(Errors, PluginError_Register_Plugin_nullptr);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Register_Plugin_nullptr);
         return;
     }
 
     std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Register_Plugin_NameEmpty);
         return;
     }
 
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
     {
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Register_Plugin_Repeat);
         return;
     }
 
@@ -131,18 +133,21 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN
 {
     if (Plugin == nullptr)
     {
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Unregister_Plugin_nullptr);
         return;
     }
 
     std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Unregister_Plugin_NameEmpty);
         return;
     }
 
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it == PluginMap.end())
     {
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Unregister_Plugin_NotFound)
         return;
     }
 
@@ -162,6 +167,10 @@ SSF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
 
 void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
 {
+    if (!SKYWALKER_SF_PTR_VALID(Module))
+    {
+        return;
+    }
 }
 
 void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
@@ -170,6 +179,12 @@ void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE
 
 SSF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
 {
+    TMap_Module::iterator it = ModuleMap.find(ModuleName);
+    if (it != ModuleMap.end())
+    {
+        return it->second;
+    }
+
     return nullptr;
 }
 
@@ -201,14 +216,14 @@ void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string
 {
     if (DynamicLibMap.find(PluginName) != DynamicLibMap.end())
     {
-        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Repeat);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Load_Plugin_Repeated);
         return;
     }
 
     SSFCDynamicLib *DynamicLib = new SSFCDynamicLib(PluginName);
     if (DynamicLib == nullptr)
     {
-        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_DynamicLib_nullptr);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Load_Plugin_DynamicLibNullptr);
         return;
     }
 
@@ -217,14 +232,14 @@ void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string
     // 加载
     if (!DynamicLib->Load())
     {
-        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Failed);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Load_Plugin_Failed);
         return;
     }
 
     DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)DynamicLib->GetSymbol("DllStartPlugin");
     if (DllStartPluginFunc == nullptr)
     {
-        SKYWALKER_ERRORS_WRAP(Errors, PluginError_LoadPlugin_Entry_nullptr);
+        SKYWALKER_ERRORS_WRAP_TRACE(Errors, SkywalkerSFError_Load_Plugin_EntryNullptr);
         return;
     }
 

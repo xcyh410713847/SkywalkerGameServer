@@ -23,7 +23,7 @@ struct SSFIModule
 /**
  * SSFIModule 指针，共享指针继承有问题，所以用普通
  */
-#define SSF_PTR_MODULE SSFIModule *
+#define SSF_PTR_MODULE SKYWALKER_SF_PTR(SSFIModule)
 
 SKYWALKER_SF_NAMESPACE_END
 
