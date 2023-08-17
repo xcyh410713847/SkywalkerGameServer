@@ -22,9 +22,11 @@ enum ESkywalkerSFError
 #pragma region 插件错误
 
     SkywalkerSFError_Plugin_Error = 100,            // 插件错误
+    SkywalkerSFError_Plugin_Register_Failed,        // 注册插件失败
     SkywalkerSFError_Plugin_Register_nullptr,       // 注册插件为空
     SkywalkerSFError_Plugin_Register_NameEmpty,     // 注册插件名称为空
     SkywalkerSFError_Plugin_Register_Repeat,        // 注册插件重复
+    SkywalkerSFError_Plugin_Unregister_Failed,      // 注销插件失败
     SkywalkerSFError_Plugin_Unregister_nullptr,     // 注销插件为空
     SkywalkerSFError_Plugin_Unregister_NameEmpty,   // 注销插件名称为空
     SkywalkerSFError_Plugin_Unregister_NotFound,    // 注销插件未找到
@@ -38,9 +40,11 @@ enum ESkywalkerSFError
 #pragma region 模块错误
 
     SkywalkerSFError_Module_Error = 200,          // 模块错误
+    SkywalkerSFError_Module_Register_Failed,      // 注册模块失败
     SkywalkerSFError_Module_Register_nullptr,     // 注册模块为空
     SkywalkerSFError_Module_Register_NameEmpty,   // 注册模块名称为空
     SkywalkerSFError_Module_Register_Repeat,      // 注册模块重复
+    SkywalkerSFError_Module_Unregister_Failed,    // 注销模块失败
     SkywalkerSFError_Module_Unregister_nullptr,   // 注销模块为空
     SkywalkerSFError_Module_Unregister_NameEmpty, // 注销模块名称为空
     SkywalkerSFError_Module_Unregister_NotFound,  // 注销模块未找到

@@ -62,6 +62,13 @@ void SSFCPlugin::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object Base Interface
 
+template <typename T>
+SKYWALKER_SF_PTR(T)
+SSFCPlugin::GetModule(const std::string &ModuleName)
+{
+    return nullptr;
+}
+
 void SSFCPlugin::Install(SSFModuleErrors &Errors)
 {
     // TODO Shyfan 插件管理器Install
@@ -70,4 +77,14 @@ void SSFCPlugin::Install(SSFModuleErrors &Errors)
 void SSFCPlugin::Uninstall(SSFModuleErrors &Errors)
 {
     // TODO Shyfan 插件管理器Uninstall
+}
+
+void SSFCPlugin::AddModule(const std::string &ModuleName, SSF_PTR_MODULE Module)
+{
+    // TODO Shyfan 插件管理器AddModule
+}
+
+void SSFCPlugin::RemoveModule(const std::string &ModuleName)
+{
+    // TODO Shyfan 插件管理器RemoveModule
 }

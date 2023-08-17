@@ -98,13 +98,13 @@ public:
      * 注册模块
      * @param Module 模块
      */
-    virtual void RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module) override;
+    virtual void RegisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module) override;
 
     /**
      * 注销模块
      * @param Module 模块
      */
-    virtual void UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module) override;
+    virtual void UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module) override;
 
     /**
      * 获取模块
@@ -146,14 +146,9 @@ private:
     TMap_DynamicLib DynamicLibMap;
     TMap_Plugin PluginMap;
 
-    /**
-     * 模块
-     */
-    typedef SSFMap<std::string, bool> TMap_ModuleName;
-    typedef std::map<std::string, SSF_PTR_MODULE> TMap_Module;
-
-    TMap_ModuleName ModuleNameMap;
-    TMap_Module ModuleMap;
+    // 模块映射
+    typedef SSFMap<std::string, std::string> TMap_ModuleToPlugin;
+    TMap_ModuleToPlugin ModuleToPluginMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END

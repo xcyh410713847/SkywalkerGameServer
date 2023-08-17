@@ -15,12 +15,12 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_API void DllStartPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)
 {
-    SKYWALKER_SF_CREATE_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
+    SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
 }
 
 SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)
 {
-    SKYWALKER_SF_DESTROY_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
+    SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, SSFCPlugin_LaunchState);
 }
 
 #pragma endregion 插件导出

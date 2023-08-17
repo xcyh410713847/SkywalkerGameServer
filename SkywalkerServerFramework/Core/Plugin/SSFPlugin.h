@@ -13,6 +13,7 @@
 #include "Include\SSFIPluginManager.h"
 
 #include "Core\Object\SSFObject.h"
+#include "Core\Map\SSFMap.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
@@ -69,6 +70,16 @@ public:
 
 #pragma endregion Object Base Interface
 
+public:
+    /**
+     * 获取模块
+     * @param ModuleName 模块名称
+     * @return 模块
+     */
+    template <typename T>
+    SKYWALKER_SF_PTR(T)
+    GetModule(const std::string &ModuleName);
+
 private:
     /**
      * 安装
@@ -92,6 +103,16 @@ private:
 
 protected:
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
+
+private:
+    /**
+     * 模块
+     */
+    typedef SSFMap<std::string, bool> TMap_ModuleName;
+    typedef std::map<std::string, SSF_PTR_MODULE> TMap_Module;
+
+    TMap_ModuleName ModuleNameMap;
+    TMap_Module ModuleMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END

@@ -106,7 +106,7 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 
 void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
-    if (Plugin == nullptr)
+    if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_nullptr);
         return;
@@ -131,7 +131,7 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
 
 void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
-    if (Plugin == nullptr)
+    if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_nullptr);
         return;
@@ -165,68 +165,85 @@ SSF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
     return nullptr;
 }
 
-void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module)
 {
+    if (!SKYWALKER_SF_PTR_VALID(Plugin))
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin is nullptr");
+        return;
+    }
+
     if (!SKYWALKER_SF_PTR_VALID(Module))
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr)
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Module is nullptr");
+        return;
+    }
+
+    std::string PluginName = Plugin->GetName();
+    if (PluginName.empty())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "PluginName is empty");
         return;
     }
 
     std::string ModuleName = Module->GetName();
     if (ModuleName.empty())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty);
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "ModuleName is empty");
         return;
     }
 
-    TMap_Module::iterator it = ModuleMap.find(ModuleName);
-    if (it != ModuleMap.end())
+    auto it = ModuleToPluginMap.find(ModuleName);
+    if (it != ModuleToPluginMap.end())
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat);
         return;
     }
 
-    ModuleNameMap.insert(std::make_pair(ModuleName, true));
-
-    ModuleMap.insert(std::make_pair(ModuleName, Module));
+    ModuleToPluginMap.insert(std::make_pair(ModuleName, PluginName));
 }
 
-void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module)
 {
+    if (!SKYWALKER_SF_PTR_VALID(Plugin))
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin is nullptr");
+        return;
+    }
+
     if (!SKYWALKER_SF_PTR_VALID(Module))
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr)
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Module is nullptr");
+        return;
+    }
+
+    std::string PluginName = Plugin->GetName();
+    if (PluginName.empty())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "PluginName is empty");
         return;
     }
 
     std::string ModuleName = Module->GetName();
     if (ModuleName.empty())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty);
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "ModuleName is empty");
         return;
     }
 
-    TMap_Module::iterator it = ModuleMap.find(ModuleName);
-    if (it == ModuleMap.end())
+    auto it = ModuleToPluginMap.find(ModuleName);
+    if (it == ModuleToPluginMap.end())
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Module_Unregister_NotFound);
         return;
     }
 
-    ModuleNameMap.erase(ModuleName);
-
-    ModuleMap.erase(it);
+    ModuleToPluginMap.erase(it);
 }
 
 SSF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
 {
-    TMap_Module::iterator it = ModuleMap.find(ModuleName);
-    if (it != ModuleMap.end())
-    {
-        return it->second;
-    }
-
+    // TODO Shyfan 临时写的
     return nullptr;
 }
 
