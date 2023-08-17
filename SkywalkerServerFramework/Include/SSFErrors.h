@@ -19,29 +19,33 @@ enum ESkywalkerSFError
     SkywalkerSFError_Success = 0, // 成功
     SkywalkerSFError_Unknow,      // 未知错误
 
-    /**
-     * 插件错误
-     */
-    SkywalkerSFError_Register_Plugin_nullptr,       // 注册插件为空
-    SkywalkerSFError_Register_Plugin_NameEmpty,     // 注册插件名称为空
-    SkywalkerSFError_Register_Plugin_Repeat,        // 注册插件重复
-    SkywalkerSFError_Unregister_Plugin_nullptr,     // 注销插件为空
-    SkywalkerSFError_Unregister_Plugin_NameEmpty,   // 注销插件名称为空
-    SkywalkerSFError_Unregister_Plugin_NotFound,    // 注销插件未找到
-    SkywalkerSFError_Load_Plugin_Repeated,          // 插件重复加载
-    SkywalkerSFError_Load_Plugin_DynamicLibNullptr, // 动态库为空
-    SkywalkerSFError_Load_Plugin_Failed,            // 插件加载失败
-    SkywalkerSFError_Load_Plugin_EntryNullptr,      // 插件入口为空
+#pragma region 插件错误
 
-    /**
-     * 模块错误
-     */
-    SkywalkerSFError_Register_Module_nullptr,     // 注册模块为空
-    SkywalkerSFError_Register_Module_NameEmpty,   // 注册模块名称为空
-    SkywalkerSFError_Register_Module_Repeat,      // 注册模块重复
-    SkywalkerSFError_Unregister_Module_nullptr,   // 注销模块为空
-    SkywalkerSFError_Unregister_Module_NameEmpty, // 注销模块名称为空
-    SkywalkerSFError_Unregister_Module_NotFound,  // 注销模块未找到
+    SkywalkerSFError_Plugin_Error = 100,            // 插件错误
+    SkywalkerSFError_Plugin_Register_nullptr,       // 注册插件为空
+    SkywalkerSFError_Plugin_Register_NameEmpty,     // 注册插件名称为空
+    SkywalkerSFError_Plugin_Register_Repeat,        // 注册插件重复
+    SkywalkerSFError_Plugin_Unregister_nullptr,     // 注销插件为空
+    SkywalkerSFError_Plugin_Unregister_NameEmpty,   // 注销插件名称为空
+    SkywalkerSFError_Plugin_Unregister_NotFound,    // 注销插件未找到
+    SkywalkerSFError_Plugin_Load_Repeated,          // 插件重复加载
+    SkywalkerSFError_Plugin_Load_DynamicLibNullptr, // 动态库为空
+    SkywalkerSFError_Plugin_Load_Failed,            // 插件加载失败
+    SkywalkerSFError_Plugin_Load_EntryNullptr,      // 插件入口为空
+
+#pragma endregion 插件错误
+
+#pragma region 模块错误
+
+    SkywalkerSFError_Module_Error = 200,          // 模块错误
+    SkywalkerSFError_Module_Register_nullptr,     // 注册模块为空
+    SkywalkerSFError_Module_Register_NameEmpty,   // 注册模块名称为空
+    SkywalkerSFError_Module_Register_Repeat,      // 注册模块重复
+    SkywalkerSFError_Module_Unregister_nullptr,   // 注销模块为空
+    SkywalkerSFError_Module_Unregister_NameEmpty, // 注销模块名称为空
+    SkywalkerSFError_Module_Unregister_NotFound,  // 注销模块未找到
+
+#pragma endregion 模块错误
 };
 
 // 对象错误
