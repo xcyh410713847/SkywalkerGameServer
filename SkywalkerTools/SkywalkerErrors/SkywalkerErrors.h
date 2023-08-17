@@ -35,12 +35,12 @@ public:
     }
 
     /** 添加错误
-     * @param const T &error	: 错误
+     * @param const T &Error	: 错误
      * @param string trace		: 错误堆栈
      */
-    void AddError(const T &error, std::string trace)
+    void AddError(const T &Error, std::string trace)
     {
-        errors.push_back(error);
+        errors.push_back(Error);
         errorTrace.push_back(trace);
     }
 
@@ -88,16 +88,16 @@ public:
 /**
  * 不带堆栈的错误
  */
-#define SKYWALKER_ERRORS_WRAP(cppErrors, error) cppErrors.AddError(error, "")
+#define SKYWALKER_ERRORS_WRAP(CppErrors, Error) CppErrors.AddError(Error, "")
 
 /**
  * 带堆栈的错误
  */
-#define SKYWALKER_ERRORS_WRAP_TRACE(cppErrors, error)                             \
+#define SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)                             \
     {                                                                             \
         std::stringstream ss;                                                     \
         ss << "[" << __FILE__ << ":" << __LINE__ << "(" << __FUNCTION__ << ")] "; \
-        cppErrors.AddError(error, ss.str());                                      \
+        CppErrors.AddError(Error, ss.str());                                      \
     }
 
 SKYWALKER_ERRORS_NAMESPACE_END

@@ -48,14 +48,27 @@ enum ESkywalkerSFError
 #pragma endregion 模块错误
 };
 
+// 错误
+typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SkywalkerSFErrors;
+
 // 对象错误
 typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<std::string> SSFObjectErrors;
 
 // 插件错误
-typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SSFPluginErrors;
+typedef SkywalkerSFErrors SSFPluginErrors;
 
 // 模块错误
-typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<int> SSFModuleErrors;
+typedef SkywalkerSFErrors SSFModuleErrors;
+
+/**
+ * 不带堆栈的错误
+ */
+#define SKYWALKER_SF_ERROR(CppErrors, Error) SKYWALKER_ERRORS_WRAP(CppErrors, Error)
+
+/**
+ * 带堆栈的错误
+ */
+#define SKYWALKER_SF_ERROR_TRACE(CppErrors, Error) SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)
 
 SKYWALKER_SF_NAMESPACE_END
 
