@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__
 
-#include "Include\SSFIModule.h"
+#include "Include/SSFIModule.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

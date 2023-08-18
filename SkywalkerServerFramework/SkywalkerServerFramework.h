@@ -10,11 +10,11 @@
 
 #include <csignal>
 
-#include "SkywalkerSingleton\SkywalkerSingleton.h"
+#include "SkywalkerSingleton/SkywalkerSingleton.h"
 
-#include "Include\SSFCore.h"
+#include "Include/SSFCore.h"
 
-#include "Core\Plugin\SSFPluginManager.h"
+#include "Core/Plugin/SSFPluginManager.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

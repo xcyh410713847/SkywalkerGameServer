@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__
 
-#include "SkywalkerErrors\SkywalkerErrors.h"
+#include "SkywalkerErrors/SkywalkerErrors.h"
 
 #include "SSFCore.h"
 

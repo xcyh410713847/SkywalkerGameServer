@@ -7,7 +7,7 @@
 
 #include "SSFPluginManager.h"
 
-#include "Include\SSFILog.h"
+#include "Include/SSFILog.h"
 
 #include "SSFPlugin.h"
 

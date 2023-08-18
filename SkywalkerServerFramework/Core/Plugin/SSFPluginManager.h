@@ -8,13 +8,13 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 
-#include "SkywalkerSingleton\SkywalkerSingleton.h"
+#include "SkywalkerSingleton/SkywalkerSingleton.h"
 
-#include "Include\SSFIPluginManager.h"
+#include "Include/SSFIPluginManager.h"
 
-#include "Core\Object\SSFObject.h"
-#include "Core\Map\SSFMap.h"
-#include "Core\DynamicLib\SSFDynamicLib.h"
+#include "Core/Object/SSFObject.h"
+#include "Core/Map/SSFMap.h"
+#include "Core/DynamicLib/SSFDynamicLib.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

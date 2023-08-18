@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__
 
-#include "Include\SSFCore.h"
+#include "Include/SSFCore.h"
 
 #define SKYWALKER__DYNAMIC_LIB_PATH "./"
 
