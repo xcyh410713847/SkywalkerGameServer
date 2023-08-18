@@ -20,8 +20,10 @@ add_library(${skywalker_server_framework_core_name} STATIC
     ${skywalker_server_framework_core_source_h}
 )
 
-# 生成共享对象时没有使用 -fPIC 编译选项导致错误
-set_target_properties(${skywalker_server_framework_core_name} PROPERTIES COMPILE_FLAGS "-fPIC")
+if(LINUX)
+    # 生成共享对象时没有使用 -fPIC 编译选项导致错误
+    set_target_properties(${skywalker_server_framework_core_name} PROPERTIES COMPILE_FLAGS "-fPIC")
+endif()
 
 SkywalkerServerFramework_Export(${skywalker_server_framework_core_name})
 
