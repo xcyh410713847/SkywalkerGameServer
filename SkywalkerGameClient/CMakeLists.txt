@@ -1,4 +1,4 @@
-# #########################################################################
+﻿# #########################################################################
 # 文件: SkywalkerGameClient\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/08/07 11:29:57
@@ -47,8 +47,5 @@ add_executable(${skywalker_game_client_name}
 SkywalkerGameClient_Export(${skywalker_game_client_name})
 
 SkywalkerServer_CopyToTarget(${skywalker_game_client_name} ${skywalker_server_client_DIR})
-
-# 关闭警告
-target_compile_options(${skywalker_game_client_name} PRIVATE "/wd4819")
 
 SkywalkerGameClient_MessageDebug("End Build ${skywalker_game_client_name}")

@@ -1,4 +1,4 @@
-# #########################################################################
+﻿# #########################################################################
 # 文件: SkywalkerServerFramework\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/07/30 12:39:03
@@ -55,8 +55,5 @@ target_link_libraries(${skywalker_server_framework_name} PRIVATE
 SkywalkerServerFramework_Export(${skywalker_server_framework_name})
 
 SkywalkerServer_CopyToTarget(${skywalker_server_framework_name} ${skywalker_server_server_DIR})
-
-# 关闭警告
-target_compile_options(${skywalker_server_framework_name} PRIVATE "/wd4819")
 
 SkywalkerServerFramework_MessageDebug("End Build ${skywalker_server_framework_name}")

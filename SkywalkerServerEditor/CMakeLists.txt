@@ -1,4 +1,4 @@
-# #########################################################################
+﻿# #########################################################################
 # 文件: SkywalkerServerEditor\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/08/03 10:34:42
@@ -49,8 +49,5 @@ add_executable(${skywalker_server_editor_name}
 SkywalkerGameEditor_Export(${skywalker_server_editor_name})
 
 SkywalkerServer_CopyToTarget(${skywalker_server_editor_name} ${skywalker_server_editor_DIR})
-
-# 关闭警告
-target_compile_options(${skywalker_server_editor_name} PRIVATE "/wd4819")
 
 SkywalkerServerEditor_MessageDebug("End Build ${skywalker_server_editor_name}")
