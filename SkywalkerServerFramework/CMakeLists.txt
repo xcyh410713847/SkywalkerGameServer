@@ -22,8 +22,7 @@ project(${skywalker_server_framework_name})
 
 SkywalkerServerFramework_MessageDebug("Start Build ${skywalker_server_framework_name}")
 
-# 支持C++17
-set(CMAKE_CXX_STANDARD 17)
+
 
 # 导出宏
 macro(SkywalkerServerFramework_Export TargetName)

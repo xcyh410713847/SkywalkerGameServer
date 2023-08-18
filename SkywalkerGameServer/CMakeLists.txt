@@ -27,9 +27,6 @@ macro(SkywalkerGameServer_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_game_server_name})
 endmacro()
 
-# 支持C++17
-set(CMAKE_CXX_STANDARD 17)
-
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 
