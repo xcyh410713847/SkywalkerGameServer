@@ -11,6 +11,7 @@ set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 # 支持C++17
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # 必须使用C++17
 
 function(SkywalkerServer_MessageDebug info)
     message(STATUS "[Skywalker Server] ${info}")
