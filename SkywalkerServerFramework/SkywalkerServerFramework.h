@@ -67,7 +67,6 @@ SKYWALKER_SF_NAMESPACE_END
         pSkywalkerServerFramework->Tick();                                                           \
     }                                                                                                \
     pSkywalkerServerFramework->Stop();                                                               \
-    pSkywalkerServerFramework->DestroyInstance();                                                    \
-    return 0;
+    pSkywalkerServerFramework->DestroyInstance();
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__

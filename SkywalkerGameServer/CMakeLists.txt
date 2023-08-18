@@ -27,14 +27,14 @@ macro(SkywalkerGameServer_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_game_server_name})
 endmacro()
 
-# SkywalkerTools 路径
+# 包含路径
 set(skywalker_tools_path "../SkywalkerTools")
+set(skywalker_server_framework_path "../SkywalkerServerFramework")
 
 # 头文件目录
 include_directories(
     ${skywalker_tools_path}
-    ../
-    ./Include
+    ${skywalker_server_framework_path}
 )
 
 # 创建执行文件

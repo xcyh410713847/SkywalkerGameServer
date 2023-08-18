@@ -22,8 +22,6 @@ project(${skywalker_server_framework_name})
 
 SkywalkerServerFramework_MessageDebug("Start Build ${skywalker_server_framework_name}")
 
-
-
 # 导出宏
 macro(SkywalkerServerFramework_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_server_framework_name})
