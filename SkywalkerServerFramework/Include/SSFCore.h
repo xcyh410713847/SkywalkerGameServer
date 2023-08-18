@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <memory>
 
 #include "SSFPlatform.h"
 
@@ -42,7 +43,11 @@
 /**
  * 导出
  */
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
 #define SKYWALKER_SF_API extern "C" __declspec(dllexport)
+#else
+#define SKYWALKER_SF_API extern "C" __attribute__((visibility("default")))
+#endif
 
 #pragma endregion Common Macro
 
@@ -66,7 +71,7 @@
 /**
  * 断言
  */
-#define SKYWALKER_SF_ASSERT(Condition) assert(Condition)
+#define SKYWALKER_SF_ASSERT(Condition) assert((Condition))
 
 #pragma endregion Function Macro
 

@@ -11,6 +11,7 @@
 #if defined(__linux__)
 
 #include <unistd.h>
+#include <dlfcn.h>
 
 #define SKYWALKER_PLATFORM_LINUX
 

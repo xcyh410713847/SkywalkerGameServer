@@ -31,7 +31,7 @@ public:
 
     enum
     {
-        Result = (sizeof(int) == sizeof(AnyFunction((DerivedType *)NULL))),
+        Result = (sizeof(int) == sizeof(AnyFunction((DerivedType *)nullptr))),
     };
 };
 
