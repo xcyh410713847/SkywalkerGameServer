@@ -9,7 +9,8 @@
 
 #include "Include/SSFILog.h"
 
-#include "SSFPlugin.h"
+#include "Core/Plugin/SSFPlugin.h"
+#include "Core/Module/SSFModule.h"
 
 SKYWALKER_SF_NAMESPACE_USE
 
@@ -17,7 +18,7 @@ SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
 
-#pragma region Object Base Interface
+#pragma region Object
 
 void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 {
@@ -100,11 +101,11 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
     delete this;
 }
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -129,7 +130,7 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
     PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
-void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -154,7 +155,7 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN
     PluginMap.erase(it);
 }
 
-SSF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
+SKYWALKER_SF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
 {
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
@@ -165,7 +166,7 @@ SSF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
     return nullptr;
 }
 
-void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module)
+void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -203,7 +204,7 @@ void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN P
     ModuleToPluginMap.insert(std::make_pair(ModuleName, PluginName));
 }
 
-void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN Plugin, SSF_PTR_MODULE Module)
+void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -241,7 +242,7 @@ void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_PLUGIN
     ModuleToPluginMap.erase(it);
 }
 
-SSF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
+SKYWALKER_SF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
 {
     // TODO Shyfan 临时写的
     return nullptr;

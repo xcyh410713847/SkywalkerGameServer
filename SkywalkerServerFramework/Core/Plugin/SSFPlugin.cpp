@@ -9,16 +9,7 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFCPlugin::SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-    : PluginManager(InPluginManager)
-{
-}
-
-SSFCPlugin::~SSFCPlugin()
-{
-}
-
-#pragma region Object Base Interface
+#pragma region Object
 
 void SSFCPlugin::Init(SSFObjectErrors &Errors)
 {
@@ -60,7 +51,16 @@ void SSFCPlugin::Release(SSFObjectErrors &Errors)
     delete this;
 }
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
+
+SSFCPlugin::SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    : PluginManager(InPluginManager)
+{
+}
+
+SSFCPlugin::~SSFCPlugin()
+{
+}
 
 template <typename T>
 SKYWALKER_SF_PTR(T)
@@ -79,7 +79,7 @@ void SSFCPlugin::Uninstall(SSFModuleErrors &Errors)
     // TODO Shyfan 插件管理器Uninstall
 }
 
-void SSFCPlugin::AddModule(const std::string &ModuleName, SSF_PTR_MODULE Module)
+void SSFCPlugin::AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module)
 {
     // TODO Shyfan 插件管理器AddModule
 }

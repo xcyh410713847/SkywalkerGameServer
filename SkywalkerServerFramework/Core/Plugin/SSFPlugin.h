@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "Include/SSFIPluginManager.h"
+#include "Include/SSFCore.h"
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
@@ -18,14 +18,9 @@
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFCPlugin
-    : public SSFIPlugin,
-      public SSFCObject
+    : public SSFCObject
 {
-public:
-    SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
-    virtual ~SSFCPlugin();
-
-#pragma region Object Base Interface
+#pragma region Object
 
 public:
     /**
@@ -68,9 +63,21 @@ public:
      */
     virtual void Release(SSFObjectErrors &Errors) override;
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
 
 public:
+    SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
+    virtual ~SSFCPlugin();
+
+    /**
+     * 获取插件名称
+     * @return 插件名称
+     */
+    virtual const std::string GetName()
+    {
+        return SKYWALKER_SF_CLASS_NAME(SSFCPlugin);
+    };
+
     /**
      * 获取模块
      * @param ModuleName 模块名称
@@ -94,7 +101,7 @@ private:
     /**
      * 加入模块
      */
-    void AddModule(const std::string &ModuleName, SSF_PTR_MODULE Module);
+    void AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module);
 
     /**
      * 移除模块
@@ -109,7 +116,7 @@ private:
      * 模块
      */
     typedef SSFMap<std::string, bool> TMap_ModuleName;
-    typedef std::map<std::string, SSF_PTR_MODULE> TMap_Module;
+    typedef std::map<std::string, SKYWALKER_SF_PTR_MODULE> TMap_Module;
 
     TMap_ModuleName ModuleNameMap;
     TMap_Module ModuleMap;

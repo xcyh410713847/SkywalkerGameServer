@@ -8,20 +8,14 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
 
+#include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Plugin/SSFPlugin.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFCPlugin_Network : public SSFCPlugin
 {
-public:
-    SSFCPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFCPlugin(InPluginManager)
-    {
-    }
-    virtual ~SSFCPlugin_Network(){};
-
-#pragma region Object Base Interface
+#pragma region Object
 
 public:
     /**
@@ -59,10 +53,15 @@ public:
      */
     virtual void Destroy(SSFObjectErrors &Errors) override;
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
 
-#pragma region SSFIPlugin
 public:
+    SSFCPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFCPlugin(InPluginManager)
+    {
+    }
+    virtual ~SSFCPlugin_Network(){};
+
     /**
      * 获取插件名称
      * @return 插件名称
@@ -71,8 +70,6 @@ public:
     {
         return SKYWALKER_SF_CLASS_NAME(SSFCPlugin_Network);
     };
-
-#pragma endregion SSFIPlugin
 };
 
 SKYWALKER_SF_NAMESPACE_END

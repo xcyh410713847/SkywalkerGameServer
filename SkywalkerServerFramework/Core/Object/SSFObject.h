@@ -8,13 +8,14 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
 
-#include "Include/SSFIObject.h"
+#include "Include/SSFCore.h"
+#include "Include/SSFErrors.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCObject : public SSFIObject
+class SSFCObject
 {
-#pragma region Object Base Interface
+#pragma region Object
 
 public:
     /**
@@ -62,7 +63,7 @@ public:
      */
     virtual void Release(SSFObjectErrors &Errors) = 0;
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
 
 public:
     SSFCObject();

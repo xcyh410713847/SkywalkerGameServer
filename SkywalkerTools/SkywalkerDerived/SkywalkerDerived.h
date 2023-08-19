@@ -15,6 +15,7 @@
 #define SKYWALKER_DERIVED_NAMESPACE_END } // namespace SKYWALKER_DERIVED_NAMESPACE
 
 SKYWALKER_DERIVED_NAMESPACE_BEGIN
+
 template <typename DerivedType, typename BaseType>
 class TIsDerived
 {

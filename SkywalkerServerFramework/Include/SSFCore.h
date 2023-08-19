@@ -38,7 +38,7 @@
 /**
  * 使用命名空间
  */
-#define SKYWALKER_SF_NAMESPACE_USE using namespace Skywalker::ServerFramework;
+#define SKYWALKER_SF_NAMESPACE_USE using namespace SKYWALKER_SF_NAMESPACE;
 
 /**
  * 导出
@@ -100,5 +100,37 @@
     for (auto Iterator = Container.begin(); Iterator != Container.end(); ++Iterator)
 
 #pragma endregion Iterator Macro
+
+#pragma region Pointer Macro
+
+SKYWALKER_SF_NAMESPACE_BEGIN
+
+/**
+ * 对象
+ */
+class SSFCObject;
+#define SKYWALKER_SF_PTR_OBJECT SKYWALKER_SF_PTR(SSFObject)
+
+/**
+ * 插件管理器
+ */
+class SSFCPluginManager;
+#define SKYWALKER_SF_PTR_PLUGIN_MANAGER SKYWALKER_SF_PTR(SSFCPluginManager)
+
+/**
+ * 插件
+ */
+class SSFCPlugin;
+#define SKYWALKER_SF_PTR_PLUGIN SKYWALKER_SF_PTR(SSFCPlugin)
+
+/**
+ * 模块
+ */
+class SSFCModule;
+#define SKYWALKER_SF_PTR_MODULE SKYWALKER_SF_PTR(SSFCModule)
+
+SKYWALKER_SF_NAMESPACE_END
+
+#pragma endregion Pointer Macro
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__

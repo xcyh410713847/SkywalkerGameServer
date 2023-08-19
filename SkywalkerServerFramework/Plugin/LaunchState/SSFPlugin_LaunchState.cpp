@@ -27,7 +27,7 @@ SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManage
 
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
-#pragma region Object Base Interface
+#pragma region Object
 
 void SSFCPlugin_LaunchState::Init(SSFObjectErrors &Errors)
 {
@@ -64,4 +64,4 @@ void SSFCPlugin_LaunchState::Destroy(SSFObjectErrors &Errors)
     // TODO Shyfan 插件管理器Destroy
 }
 
-#pragma endregion Object Base Interface
+#pragma endregion Object
