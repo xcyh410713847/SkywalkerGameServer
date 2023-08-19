@@ -156,6 +156,7 @@ private:
  * 注册插件
  */
 #define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, ClassName)                                \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCPlugin));                         \
     SSFPluginErrors ClassName##Errors;                                                        \
     PluginManager->RegisterPlugin(ClassName##Errors, new ClassName(PluginManager));           \
     if (ClassName##Errors.IsValid())                                                          \
@@ -167,6 +168,7 @@ private:
  * 注销插件
  */
 #define SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, ClassName)                                \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCPlugin));                           \
     SSFPluginErrors ClassName##Errors;                                                          \
     PluginManager->UnregisterPlugin(ClassName##Errors, PluginManager->GetPlugin((#ClassName))); \
     if (ClassName##Errors.IsValid())                                                            \
