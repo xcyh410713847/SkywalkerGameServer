@@ -12,6 +12,7 @@
 #include "SkywalkerDerived/SkywalkerDerived.h"
 
 #include "Include/SSFCore.h"
+#include "Include/SSFCreator.h"
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
@@ -153,7 +154,7 @@ private:
 #define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, ClassName)                                \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFOPlugin));                         \
     SSFPluginErrors ClassName##Errors;                                                        \
-    PluginManager->RegisterPlugin(ClassName##Errors, new ClassName(PluginManager));           \
+    PluginManager->RegisterPlugin(ClassName##Errors, NewObject<ClassName>(PluginManager));    \
     if (ClassName##Errors.IsValid())                                                          \
     {                                                                                         \
         SKYWALKER_SF_ERROR_TRACE(ClassName##Errors, SkywalkerSFError_Plugin_Register_Failed); \
@@ -178,7 +179,7 @@ private:
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCModule));                                                                \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(Plugin, SSFOPlugin));                                                                   \
     SSFModuleErrors ClassName##Errors;                                                                                               \
-    PluginManager->RegisterModule(ClassName##Errors, Plugin, new ClassName(PluginManager));                                          \
+    PluginManager->RegisterModule(ClassName##Errors, Plugin, NewObject<ClassName>(PluginManager));                                   \
     if (ClassName##Errors.IsValid())                                                                                                 \
     {                                                                                                                                \
         SKYWALKER_SF_ERROR_TRACE(ClassName##Errors, SkywalkerSFError_Module_Register_Failed, "PluginManager RegisterModule Failed"); \
