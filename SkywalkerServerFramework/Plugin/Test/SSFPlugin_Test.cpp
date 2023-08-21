@@ -1,17 +1,17 @@
 ﻿/*************************************************************************
-**文件: SkywalkerServerFramework\Plugin\Network\SSFPlugin_Network.cpp
+**文件: SkywalkerServerFramework\Plugin\Test\SSFPlugin_Test.cpp
 **作者: shyfan
-**日期: 2023/08/15 20:06:04
-**功能: 网络插件
+**日期: 2023/08/21 19:55:34
+**功能: 测试插件
 *************************************************************************/
 
-#include "SSFPlugin_Network.h"
+#include "SSFPlugin_Test.h"
 
 SKYWALKER_SF_NAMESPACE_USE
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 
-#define SKYWALKER_SF_PLUGIN_CLASS SSFOPlugin_Network
+#define SKYWALKER_SF_PLUGIN_CLASS SSFOPlugin_Test
 
 #pragma region 插件导出
 

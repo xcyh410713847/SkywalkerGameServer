@@ -5,6 +5,8 @@
 # 功能:
 # #########################################################################
 
+add_subdirectory(Test)
+
 add_subdirectory(LaunchState)
 
 add_subdirectory(Network)
