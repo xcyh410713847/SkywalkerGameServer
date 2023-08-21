@@ -7,14 +7,10 @@
 
 #include "SSFPluginManager.h"
 
-#include "Include/SSFILog.h"
-
 #include "Core/Plugin/SSFPlugin.h"
 #include "Core/Module/SSFModule.h"
 
 SKYWALKER_SF_NAMESPACE_USE
-
-SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 SKYWALKER_SINGLETON_IMPLEMENT(SSFOPluginManager);
 
@@ -34,6 +30,13 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
     if (PluginErrors.IsValid())
     {
         SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPlugin Failed");
+        return;
+    }
+
+    StartPlugin(PluginErrors);
+    if (PluginErrors.IsValid())
+    {
+        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "StartPlugin Failed");
         return;
     }
 
@@ -255,55 +258,29 @@ void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
     // TODO Shyfan 临时写的
     PluginNameMap.insert(std::make_pair("SSFPlugin_Network", true));
     PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
+    PluginNameMap.insert(std::make_pair("SSFPlugin_Test", true));
 }
 
 void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
-        if (IterName->second)
-        {
-            LoadPluginLib(Errors, IterName->first);
-            if (Errors.IsValid())
-            {
-                return;
-            }
-        }
+        const std::string LibraryName = IterName->first;
+        SKYWALKER_SF_REGISTER_LIBRARY(LibraryName);
     }
 }
 
-void SSFOPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName)
+void SSFOPluginManager::StartPlugin(SSFPluginErrors &Errors)
 {
-    if (DynamicLibMap.find(PluginName) != DynamicLibMap.end())
+    SKYWALKER_SF_COMMON_ITERATOR(IterLib, DynamicLibMap)
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_Repeated);
-        return;
+        DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)IterLib->second->GetSymbol("DllStartPlugin");
+        if (DllStartPluginFunc == nullptr)
+        {
+            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_EntryNullptr);
+            continue;
+        }
+
+        DllStartPluginFunc((SKYWALKER_SF_PTR_PLUGIN_MANAGER)(this));
     }
-
-    SSFDynamicLib *DynamicLib = new SSFDynamicLib(PluginName);
-    if (DynamicLib == nullptr)
-    {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_DynamicLibNullptr);
-        return;
-    }
-
-    DynamicLibMap.insert(std::make_pair(PluginName, DynamicLib));
-
-    // 加载
-    if (!DynamicLib->Load())
-    {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_Failed);
-        return;
-    }
-
-    DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)DynamicLib->GetSymbol("DllStartPlugin");
-    if (DllStartPluginFunc == nullptr)
-    {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_EntryNullptr);
-        return;
-    }
-
-    DllStartPluginFunc((SKYWALKER_SF_PTR_PLUGIN_MANAGER)(this));
-
-    SKYWALKER_SF_LOG_INFO("LoadPluginLib " << PluginName << " Success");
 }
