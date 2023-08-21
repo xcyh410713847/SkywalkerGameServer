@@ -54,16 +54,6 @@
 #pragma region Function Macro
 
 /**
- * 释放对象
- */
-#define SKYWALKER_SF_RELEASE(Obj) \
-    if (Obj)                      \
-    {                             \
-        Obj->Release();           \
-        Obj = nullptr;            \
-    }
-
-/**
  * 获取类名
  */
 #define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)

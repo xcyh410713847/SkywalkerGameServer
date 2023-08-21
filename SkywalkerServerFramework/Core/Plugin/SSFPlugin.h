@@ -12,6 +12,7 @@
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
+#include "Core/Module/SSFModule.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

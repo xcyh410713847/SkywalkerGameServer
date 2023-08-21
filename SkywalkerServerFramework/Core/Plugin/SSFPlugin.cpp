@@ -13,41 +13,67 @@ SKYWALKER_SF_NAMESPACE_USE
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Init
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Init(Errors);
+    }
 }
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Awake
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Awake(Errors);
+    }
 }
 
 void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Start
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Start(Errors);
+    }
 }
 
 void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    // TODO Shyfan 插件管理器Tick
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Tick(Errors, DelayMS);
+    }
 }
 
 void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Stop
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Stop(Errors);
+    }
 }
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Sleep
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Sleep(Errors);
+    }
 }
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
-    // TODO Shyfan 插件管理器Destroy
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Destroy(Errors);
+    }
 }
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    {
+        ((SSFOModule *)IterModule->second)->Release(Errors);
+    }
+
     delete this;
 }
 
