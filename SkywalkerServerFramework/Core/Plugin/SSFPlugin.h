@@ -8,8 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 
-#include <memory>
-
 #include "Include/SSFCore.h"
 
 #include "Core/Object/SSFObject.h"
