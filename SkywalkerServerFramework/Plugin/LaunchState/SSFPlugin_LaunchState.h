@@ -15,7 +15,7 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCPlugin_LaunchState : public SSFCPlugin
+class SSFCPlugin_LaunchState : public SSFOPlugin
 {
 #pragma region Object
 
@@ -59,7 +59,7 @@ public:
 
 public:
     SSFCPlugin_LaunchState(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFCPlugin(InPluginManager)
+        : SSFOPlugin(InPluginManager)
     {
     }
     virtual ~SSFCPlugin_LaunchState(){};

@@ -14,11 +14,11 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCDynamicLib
+class SSFDynamicLib
 {
 public:
-    SSFCDynamicLib(const std::string &InName);
-    virtual ~SSFCDynamicLib();
+    SSFDynamicLib(const std::string &InName);
+    virtual ~SSFDynamicLib();
 
     bool Load();
     bool Unload();
@@ -36,7 +36,7 @@ private:
 /**
  * SSFCDynamicLib 指针
  */
-#define SKYWALKER_SF_PTR_DYNAMIC_LIB SKYWALKER_SF_SHARED_PTR(SSFCDynamicLib)
+#define SKYWALKER_SF_PTR_DYNAMIC_LIB SKYWALKER_SF_SHARED_PTR(SSFDynamicLib)
 
 SKYWALKER_SF_NAMESPACE_END
 

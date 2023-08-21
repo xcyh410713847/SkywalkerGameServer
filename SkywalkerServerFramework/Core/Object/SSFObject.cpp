@@ -9,10 +9,26 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFCObject::SSFCObject()
+SSFObject::SSFObject()
 {
 }
 
-SSFCObject::~SSFCObject()
+SSFObject::~SSFObject()
 {
 }
+
+void SSFObject::Init(SSFObjectErrors &Errors) {}
+
+void SSFObject::Awake(SSFObjectErrors &Errors) {}
+
+void SSFObject::Start(SSFObjectErrors &Errors) {}
+
+void SSFObject::Tick(SSFObjectErrors &Errors, int DelayMS) {}
+
+void SSFObject::Stop(SSFObjectErrors &Errors) {}
+
+void SSFObject::Sleep(SSFObjectErrors &Errors) {}
+
+void SSFObject::Destroy(SSFObjectErrors &Errors) {}
+
+void SSFObject::Release(SSFObjectErrors &Errors) {}

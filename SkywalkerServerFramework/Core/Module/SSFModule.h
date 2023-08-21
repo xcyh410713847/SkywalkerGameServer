@@ -14,7 +14,7 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCModule : public SSFCObject
+class SSFOModule : public SSFObject
 {
 #pragma region Object
 
@@ -62,8 +62,8 @@ public:
 #pragma endregion Object
 
 public:
-    SSFCModule();
-    virtual ~SSFCModule();
+    SSFOModule();
+    virtual ~SSFOModule();
 
     /**
      * 获取模块名称

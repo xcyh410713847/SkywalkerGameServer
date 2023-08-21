@@ -22,10 +22,10 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 /**
  * 插件管理器
  */
-class SSFCPluginManager
-    : public SSFCObject
+class SSFOPluginManager
+    : public SSFObject
 {
-    SKYWALKER_SINGLETON_DECLARE(SSFCPluginManager);
+    SKYWALKER_SINGLETON_DECLARE(SSFOPluginManager);
 
 #pragma region Object
 
@@ -131,8 +131,8 @@ private:
     /**
      * 插件
      */
-    typedef void (*DLL_START_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFCPluginManager));
-    typedef void (*DLL_STOP_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFCPluginManager));
+    typedef void (*DLL_START_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFOPluginManager));
+    typedef void (*DLL_STOP_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFOPluginManager));
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
     typedef SSFMap<std::string, SKYWALKER_SF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
@@ -148,15 +148,10 @@ private:
 };
 
 /**
- * SSFIPluginManager 指针
- */
-#define SKYWALKER_SF_PTR_PLUGIN_MANAGER SKYWALKER_SF_PTR(SSFCPluginManager)
-
-/**
  * 注册插件
  */
 #define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, ClassName)                                \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCPlugin));                         \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFOPlugin));                         \
     SSFPluginErrors ClassName##Errors;                                                        \
     PluginManager->RegisterPlugin(ClassName##Errors, new ClassName(PluginManager));           \
     if (ClassName##Errors.IsValid())                                                          \
@@ -168,7 +163,7 @@ private:
  * 注销插件
  */
 #define SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, ClassName)                                \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCPlugin));                           \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFOPlugin));                           \
     SSFPluginErrors ClassName##Errors;                                                          \
     PluginManager->UnregisterPlugin(ClassName##Errors, PluginManager->GetPlugin((#ClassName))); \
     if (ClassName##Errors.IsValid())                                                            \
@@ -181,7 +176,7 @@ private:
  */
 #define SKYWALKER_SF_CREATE_MODULE(PluginManager, Plugin, ClassName)                                                                 \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCModule));                                                                \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(Plugin, SSFCPlugin));                                                                   \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(Plugin, SSFOPlugin));                                                                   \
     SSFModuleErrors ClassName##Errors;                                                                                               \
     PluginManager->RegisterModule(ClassName##Errors, Plugin, new ClassName(PluginManager));                                          \
     if (ClassName##Errors.IsValid())                                                                                                 \
@@ -198,7 +193,7 @@ private:
  */
 #define SKYWALKER_SF_DESTROY_MODULE(PluginManager, Plugin, ClassName)                                                                    \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ClassName, SSFCModule));                                                                    \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(Plugin, SSFCPlugin));                                                                       \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(Plugin, SSFOPlugin));                                                                       \
     SSFModuleErrors ClassName##Errors;                                                                                                   \
     PluginManager->UnregisterModule(ClassName##Errors, Plugin, PluginManager->GetModule((#ClassName)));                                  \
     if (ClassName##Errors.IsValid())                                                                                                     \

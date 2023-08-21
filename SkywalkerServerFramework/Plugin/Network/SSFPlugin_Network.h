@@ -13,7 +13,7 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCPlugin_Network : public SSFCPlugin
+class SSFOPlugin_Network : public SSFOPlugin
 {
 #pragma region Object
 
@@ -56,11 +56,11 @@ public:
 #pragma endregion Object
 
 public:
-    SSFCPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFCPlugin(InPluginManager)
+    SSFOPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOPlugin(InPluginManager)
     {
     }
-    virtual ~SSFCPlugin_Network(){};
+    virtual ~SSFOPlugin_Network(){};
 
     /**
      * 获取插件名称

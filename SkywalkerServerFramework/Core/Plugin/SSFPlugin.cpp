@@ -11,80 +11,80 @@ SKYWALKER_SF_NAMESPACE_USE
 
 #pragma region Object
 
-void SSFCPlugin::Init(SSFObjectErrors &Errors)
+void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Init
 }
 
-void SSFCPlugin::Awake(SSFObjectErrors &Errors)
+void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Awake
 }
 
-void SSFCPlugin::Start(SSFObjectErrors &Errors)
+void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Start
 }
 
-void SSFCPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     // TODO Shyfan 插件管理器Tick
 }
 
-void SSFCPlugin::Stop(SSFObjectErrors &Errors)
+void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Stop
 }
 
-void SSFCPlugin::Sleep(SSFObjectErrors &Errors)
+void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Sleep
 }
 
-void SSFCPlugin::Destroy(SSFObjectErrors &Errors)
+void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Destroy
 }
 
-void SSFCPlugin::Release(SSFObjectErrors &Errors)
+void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
     delete this;
 }
 
 #pragma endregion Object
 
-SSFCPlugin::SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+SSFOPlugin::SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
     : PluginManager(InPluginManager)
 {
 }
 
-SSFCPlugin::~SSFCPlugin()
+SSFOPlugin::~SSFOPlugin()
 {
 }
 
 template <typename T>
 SKYWALKER_SF_PTR(T)
-SSFCPlugin::GetModule(const std::string &ModuleName)
+SSFOPlugin::GetModule(const std::string &ModuleName)
 {
     return nullptr;
 }
 
-void SSFCPlugin::Install(SSFModuleErrors &Errors)
+void SSFOPlugin::Install(SSFModuleErrors &Errors)
 {
     // TODO Shyfan 插件管理器Install
 }
 
-void SSFCPlugin::Uninstall(SSFModuleErrors &Errors)
+void SSFOPlugin::Uninstall(SSFModuleErrors &Errors)
 {
     // TODO Shyfan 插件管理器Uninstall
 }
 
-void SSFCPlugin::AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module)
+void SSFOPlugin::AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module)
 {
     // TODO Shyfan 插件管理器AddModule
 }
 
-void SSFCPlugin::RemoveModule(const std::string &ModuleName)
+void SSFOPlugin::RemoveModule(const std::string &ModuleName)
 {
     // TODO Shyfan 插件管理器RemoveModule
 }

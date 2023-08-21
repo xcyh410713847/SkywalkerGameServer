@@ -16,11 +16,11 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
-SKYWALKER_SINGLETON_IMPLEMENT(SSFCPluginManager);
+SKYWALKER_SINGLETON_IMPLEMENT(SSFOPluginManager);
 
 #pragma region Object
 
-void SSFCPluginManager::Init(SSFObjectErrors &Errors)
+void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
@@ -39,63 +39,63 @@ void SSFCPluginManager::Init(SSFObjectErrors &Errors)
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Init(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Init(Errors);
     }
 }
 
-void SSFCPluginManager::Awake(SSFObjectErrors &Errors)
+void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Awake(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Awake(Errors);
     }
 }
 
-void SSFCPluginManager::Start(SSFObjectErrors &Errors)
+void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Start(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Start(Errors);
     }
 }
 
-void SSFCPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Tick(Errors, DelayMS);
+        ((SSFOPlugin *)IterPlugin->second)->Tick(Errors, DelayMS);
     }
 }
 
-void SSFCPluginManager::Stop(SSFObjectErrors &Errors)
+void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Stop(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Stop(Errors);
     }
 }
 
-void SSFCPluginManager::Sleep(SSFObjectErrors &Errors)
+void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Sleep(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Sleep(Errors);
     }
 }
 
-void SSFCPluginManager::Destroy(SSFObjectErrors &Errors)
+void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Destroy(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Destroy(Errors);
     }
 }
 
-void SSFCPluginManager::Release(SSFObjectErrors &Errors)
+void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
-        ((SSFCPlugin *)IterPlugin->second)->Release(Errors);
+        ((SSFOPlugin *)IterPlugin->second)->Release(Errors);
     }
 
     delete this;
@@ -105,7 +105,7 @@ void SSFCPluginManager::Release(SSFObjectErrors &Errors)
 
 #pragma region SSFIPluginManager
 
-void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
+void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -130,7 +130,7 @@ void SSFCPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR
     PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
-void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
+void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -155,7 +155,7 @@ void SSFCPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_P
     PluginMap.erase(it);
 }
 
-SKYWALKER_SF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginName)
+SKYWALKER_SF_PTR_PLUGIN SSFOPluginManager::GetPlugin(const std::string &PluginName)
 {
     TMap_Plugin::iterator it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
@@ -166,7 +166,7 @@ SKYWALKER_SF_PTR_PLUGIN SSFCPluginManager::GetPlugin(const std::string &PluginNa
     return nullptr;
 }
 
-void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
+void SSFOPluginManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -204,7 +204,7 @@ void SSFCPluginManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR
     ModuleToPluginMap.insert(std::make_pair(ModuleName, PluginName));
 }
 
-void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
+void SSFOPluginManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module)
 {
     if (!SKYWALKER_SF_PTR_VALID(Plugin))
     {
@@ -242,7 +242,7 @@ void SSFCPluginManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_P
     ModuleToPluginMap.erase(it);
 }
 
-SKYWALKER_SF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleName)
+SKYWALKER_SF_PTR_MODULE SSFOPluginManager::GetModule(const std::string &ModuleName)
 {
     // TODO Shyfan 临时写的
     return nullptr;
@@ -250,14 +250,14 @@ SKYWALKER_SF_PTR_MODULE SSFCPluginManager::GetModule(const std::string &ModuleNa
 
 #pragma endregion SSFIPluginManager
 
-void SSFCPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
+void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 {
     // TODO Shyfan 临时写的
     PluginNameMap.insert(std::make_pair("SSFPlugin_Network", true));
     PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
 }
 
-void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
+void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
 {
     SKYWALKER_SF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
@@ -272,7 +272,7 @@ void SSFCPluginManager::LoadPlugin(SSFPluginErrors &Errors)
     }
 }
 
-void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName)
+void SSFOPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string &PluginName)
 {
     if (DynamicLibMap.find(PluginName) != DynamicLibMap.end())
     {
@@ -280,7 +280,7 @@ void SSFCPluginManager::LoadPluginLib(SSFPluginErrors &Errors, const std::string
         return;
     }
 
-    SSFCDynamicLib *DynamicLib = new SSFCDynamicLib(PluginName);
+    SSFDynamicLib *DynamicLib = new SSFDynamicLib(PluginName);
     if (DynamicLib == nullptr)
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_DynamicLibNullptr);

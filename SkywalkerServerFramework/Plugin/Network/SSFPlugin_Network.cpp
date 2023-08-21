@@ -15,12 +15,12 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_API void DllStartPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)
 {
-    SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, SSFCPlugin_Network);
+    SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, SSFOPlugin_Network);
 }
 
 SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)
 {
-    SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, SSFCPlugin_Network);
+    SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, SSFOPlugin_Network);
 }
 
 #pragma endregion 插件导出
@@ -29,37 +29,37 @@ SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManage
 
 #pragma region Object
 
-void SSFCPlugin_Network::Init(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Init(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Init
 }
 
-void SSFCPlugin_Network::Awake(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Awake(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Awake
 }
 
-void SSFCPlugin_Network::Start(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Start(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Start
 }
 
-void SSFCPlugin_Network::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFOPlugin_Network::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     // TODO Shyfan 插件管理器Tick
 }
 
-void SSFCPlugin_Network::Stop(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Stop(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Stop
 }
 
-void SSFCPlugin_Network::Sleep(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Sleep(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Sleep
 }
 
-void SSFCPlugin_Network::Destroy(SSFObjectErrors &Errors)
+void SSFOPlugin_Network::Destroy(SSFObjectErrors &Errors)
 {
     // TODO Shyfan 插件管理器Destroy
 }

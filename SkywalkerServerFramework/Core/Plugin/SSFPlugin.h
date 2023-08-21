@@ -17,8 +17,8 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCPlugin
-    : public SSFCObject
+class SSFOPlugin
+    : public SSFObject
 {
 #pragma region Object
 
@@ -66,8 +66,8 @@ public:
 #pragma endregion Object
 
 public:
-    SSFCPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
-    virtual ~SSFCPlugin();
+    SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
+    virtual ~SSFOPlugin();
 
     /**
      * 获取插件名称
@@ -75,7 +75,7 @@ public:
      */
     virtual const std::string GetName()
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFCPlugin);
+        return SKYWALKER_SF_CLASS_NAME(SSFOPlugin);
     };
 
     /**

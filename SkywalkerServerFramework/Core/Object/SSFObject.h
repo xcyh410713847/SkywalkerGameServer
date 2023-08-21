@@ -13,61 +13,57 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFCObject
+class SSFObject
 {
-#pragma region Object
+public:
+	SSFObject();
+	virtual ~SSFObject();
 
 public:
-    /**
-     * 调用循序
-     * Init -> Awake -> Start -> Tick -> Stop -> Sleep -> Destroy
-     */
+	/**
+	 * 调用循序
+	 * Init -> Awake -> Start -> Tick -> Stop -> Sleep -> Destroy
+	 */
 
-    /**
-     * 初始化
-     */
-    virtual void Init(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 初始化
+	 */
+	virtual void Init(SSFObjectErrors &Errors);
 
-    /**
-     * 唤醒
-     */
-    virtual void Awake(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 唤醒
+	 */
+	virtual void Awake(SSFObjectErrors &Errors);
 
-    /**
-     * 开始
-     */
-    virtual void Start(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 开始
+	 */
+	virtual void Start(SSFObjectErrors &Errors);
 
-    /**
-     * Tick
-     */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) = 0;
+	/**
+	 * Tick
+	 */
+	virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
 
-    /**
-     * 结束
-     */
-    virtual void Stop(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 结束
+	 */
+	virtual void Stop(SSFObjectErrors &Errors);
 
-    /**
-     * 休眠
-     */
-    virtual void Sleep(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 休眠
+	 */
+	virtual void Sleep(SSFObjectErrors &Errors);
 
-    /**
-     * 销毁
-     */
-    virtual void Destroy(SSFObjectErrors &Errors) = 0;
+	/**
+	 * 销毁
+	 */
+	virtual void Destroy(SSFObjectErrors &Errors);
 
-    /**
-     * 释放
-     */
-    virtual void Release(SSFObjectErrors &Errors) = 0;
-
-#pragma endregion Object
-
-public:
-    SSFCObject();
-    virtual ~SSFCObject();
+	/**
+	 * 释放
+	 */
+	virtual void Release(SSFObjectErrors &Errors);
 };
 
 SKYWALKER_SF_NAMESPACE_END

@@ -108,26 +108,26 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 /**
  * 对象
  */
-class SSFCObject;
+class SSFObject;
 #define SKYWALKER_SF_PTR_OBJECT SKYWALKER_SF_PTR(SSFObject)
 
 /**
  * 插件管理器
  */
-class SSFCPluginManager;
-#define SKYWALKER_SF_PTR_PLUGIN_MANAGER SKYWALKER_SF_PTR(SSFCPluginManager)
+class SSFOPluginManager;
+#define SKYWALKER_SF_PTR_PLUGIN_MANAGER SKYWALKER_SF_PTR(SSFOPluginManager)
 
 /**
  * 插件
  */
-class SSFCPlugin;
-#define SKYWALKER_SF_PTR_PLUGIN SKYWALKER_SF_PTR(SSFCPlugin)
+class SSFOPlugin;
+#define SKYWALKER_SF_PTR_PLUGIN SKYWALKER_SF_PTR(SSFOPlugin)
 
 /**
  * 模块
  */
-class SSFCModule;
-#define SKYWALKER_SF_PTR_MODULE SKYWALKER_SF_PTR(SSFCModule)
+class SSFOModule;
+#define SKYWALKER_SF_PTR_MODULE SKYWALKER_SF_PTR(SSFOModule)
 
 SKYWALKER_SF_NAMESPACE_END
 
