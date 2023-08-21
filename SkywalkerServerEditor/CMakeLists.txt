@@ -48,6 +48,6 @@ add_executable(${skywalker_server_editor_name}
 
 SkywalkerGameEditor_Export(${skywalker_server_editor_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_server_editor_name} ${skywalker_server_editor_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_server_editor_name} ${skywalker_server_editor_dir})
 
 SkywalkerServerEditor_MessageDebug("End Build ${skywalker_server_editor_name}")

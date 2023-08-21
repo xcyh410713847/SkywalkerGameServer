@@ -5,7 +5,7 @@
 # 功能:
 # #########################################################################
 
-set(skywalker_server_framework_core_name "SSFCore")
+set(skywalker_server_framework_core_name "SSFCore" CACHE STRING "Skywalker Server Framework Core Library")
 
 file(GLOB skywalker_server_framework_core_source_cpp
     */*.cpp
@@ -27,4 +27,4 @@ endif()
 
 SkywalkerServerFramework_Export(${skywalker_server_framework_core_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_server_framework_core_name} ${skywalker_server_server_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_server_framework_core_name} ${skywalker_server_server_dir})

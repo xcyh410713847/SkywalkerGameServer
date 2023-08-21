@@ -15,12 +15,12 @@ function(SkywalkerServerFramework_MessageDebug info)
 endfunction()
 
 # 设置项目名称
-set(skywalker_server_framework_name "SkywalkerServerFramework")
+set(skywalker_server_framework_name "SkywalkerServerFramework" CACHE STRING "Skywalker Server Framework 项目名称")
 
 # 项目名称
 project(${skywalker_server_framework_name})
 
-SkywalkerServerFramework_MessageDebug("Start Build ${skywalker_server_framework_name}")
+SkywalkerServerFramework_MessageDebug(" Start Build ${skywalker_server_framework_name} ")
 
 # 导出宏
 macro(SkywalkerServerFramework_Export TargetName)
@@ -28,7 +28,7 @@ macro(SkywalkerServerFramework_Export TargetName)
 endmacro()
 
 # SkywalkerTools 路径
-set(skywalker_tools_path "../SkywalkerTools")
+set(skywalker_tools_path " ../SkywalkerTools ")
 
 include_directories(
     ${skywalker_tools_path}
@@ -46,11 +46,11 @@ add_library(${skywalker_server_framework_name} STATIC
 )
 
 target_link_libraries(${skywalker_server_framework_name} PRIVATE
-    SSFCore
+    ${skywalker_server_framework_core_name}
 )
 
 SkywalkerServerFramework_Export(${skywalker_server_framework_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_server_framework_name} ${skywalker_server_server_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_server_framework_name} ${skywalker_server_server_dir})
 
-SkywalkerServerFramework_MessageDebug("End Build ${skywalker_server_framework_name}")
+SkywalkerServerFramework_MessageDebug(" End Build ${skywalker_server_framework_name} ")

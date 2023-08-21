@@ -29,4 +29,4 @@ target_link_libraries(${skywalker_server_plugin_name} PRIVATE
 
 SkywalkerServerFramework_Export(${skywalker_server_plugin_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_server_plugin_name} ${skywalker_server_server_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_server_plugin_name} ${skywalker_server_server_dir})

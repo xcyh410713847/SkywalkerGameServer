@@ -43,6 +43,6 @@ add_executable(${skywalker_game_client_name}
 
 SkywalkerGameClient_Export(${skywalker_game_client_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_game_client_name} ${skywalker_server_client_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_game_client_name} ${skywalker_server_client_dir})
 
 SkywalkerGameClient_MessageDebug("End Build ${skywalker_game_client_name}")

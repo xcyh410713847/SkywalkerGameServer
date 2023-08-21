@@ -38,9 +38,6 @@ include_directories(
 )
 
 # 创建执行文件
-# 设置 SkywalkerServerFramework 静态库库的名称
-set(skywalker_server_framework_name "SkywalkerServerFramework")
-
 add_executable(${skywalker_game_server_name}
     SkywalkerGameServer.cpp
 )
@@ -51,6 +48,6 @@ target_link_libraries(${skywalker_game_server_name} PRIVATE
 
 SkywalkerGameServer_Export(${skywalker_game_server_name})
 
-SkywalkerServer_CopyToTarget(${skywalker_game_server_name} ${skywalker_server_server_DIR})
+SkywalkerServer_CopyToTarget(${skywalker_game_server_name} ${skywalker_server_server_dir})
 
 SkywalkerGameServer_MessageDebug("End Build ${skywalker_game_server_name}")

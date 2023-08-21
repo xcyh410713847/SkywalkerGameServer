@@ -34,20 +34,20 @@ set(skywalker_server_mode_Library "Library" CACHE STRING "skywalker_server_mode_
 set(skywalker_server_MODE ${skywalker_server_mode_Project_Debug} CACHE STRING "skywalker_server_MODE")
 
 # 导出相关
-set(skywalker_server_output_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "skywalker_server_output_PATH")
-set(skywalker_server_server_DIR "Server" CACHE STRING "skywalker_server_server_DIR")
-set(skywalker_server_editor_DIR "Editor" CACHE STRING "skywalker_server_editor_DIR")
-set(skywalker_server_client_DIR "Client" CACHE STRING "skywalker_server_client_DIR")
+set(skywalker_server_output_path ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "skywalker_server_output_path")
+set(skywalker_server_server_dir "Server" CACHE STRING "skywalker_server_server_dir")
+set(skywalker_server_editor_dir "Editor" CACHE STRING "skywalker_server_editor_dir")
+set(skywalker_server_client_dir "Client" CACHE STRING "skywalker_server_client_dir")
 
 # 编译完成后拷贝到指定目录
 macro(SkywalkerServer_CopyToTarget TargetName DirName)
     if(${skywalker_server_MODE} MATCHES ${skywalker_server_mode_Project_Release})
-        SkywalkerServer_MessageDebug("Copy ${TargetName} To ${skywalker_server_output_PATH}/${DirName}")
+        SkywalkerServer_MessageDebug("Copy ${TargetName} To ${skywalker_server_output_path}/${DirName}")
 
         add_custom_command(TARGET ${TargetName} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
             $<TARGET_FILE:${TargetName}>
-            ${skywalker_server_output_PATH}/${DirName}/$<TARGET_FILE_NAME:${TargetName}>
+            ${skywalker_server_output_path}/${DirName}/$<TARGET_FILE_NAME:${TargetName}>
         )
     endif()
 endmacro()
@@ -55,20 +55,20 @@ endmacro()
 # 导出宏
 macro(SkywalkerServer_Export TargetName ProjectName)
     if(${skywalker_server_MODE} MATCHES ${skywalker_server_mode_Project_Debug})
-        SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_PATH}")
+        SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_path}")
 
         set_target_properties(${TargetName} PROPERTIES
-            LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}
-            ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}
-            RUNTIME_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}
+            LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_output_path}
+            ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_output_path}
+            RUNTIME_OUTPUT_DIRECTORY ${skywalker_server_output_path}
         )
     else()
-        SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_PATH}/${ProjectName}")
+        SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_path}/${ProjectName}")
 
         set_target_properties(${TargetName} PROPERTIES
-            LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
-            ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
-            RUNTIME_OUTPUT_DIRECTORY ${skywalker_server_output_PATH}/${ProjectName}
+            LIBRARY_OUTPUT_DIRECTORY ${skywalker_server_output_path}/${ProjectName}
+            ARCHIVE_OUTPUT_DIRECTORY ${skywalker_server_output_path}/${ProjectName}
+            RUNTIME_OUTPUT_DIRECTORY ${skywalker_server_output_path}/${ProjectName}
         )
     endif()
 endmacro()
