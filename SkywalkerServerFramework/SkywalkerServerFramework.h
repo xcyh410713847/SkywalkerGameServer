@@ -10,8 +10,6 @@
 
 #include <csignal>
 
-#include "SkywalkerSingleton/SkywalkerSingleton.h"
-
 #include "Include/SSFCore.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
