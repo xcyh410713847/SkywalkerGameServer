@@ -54,6 +54,10 @@ endmacro()
 
 # 导出宏
 macro(SkywalkerServer_Export TargetName ProjectName)
+    if(UNIX)
+        set_target_properties(${TargetName} PROPERTIES PREFIX "")
+    endif()
+
     if(${skywalker_server_MODE} MATCHES ${skywalker_server_mode_Project_Debug})
         SkywalkerServer_MessageDebug("Export ${TargetName} To ${skywalker_server_output_path}")
 
