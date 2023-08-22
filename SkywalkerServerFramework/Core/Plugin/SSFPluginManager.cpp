@@ -14,8 +14,6 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
-SKYWALKER_SINGLETON_IMPLEMENT(SSFOPluginManager);
-
 #pragma region Object
 
 void SSFOPluginManager::Init(SSFObjectErrors &Errors)

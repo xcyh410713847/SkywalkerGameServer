@@ -27,8 +27,8 @@ bool CSkywalkerServerFramework::Start()
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
-    // 插件管理器初始化
-    SSFOPluginManager *PluginManager = SSFOPluginManager::GetInstance();
+    // 创建插件管理器
+    PluginManager = new SSFOPluginManager();
 
     // Init
     SSFObjectErrors ObjectErrors;
@@ -57,7 +57,7 @@ bool CSkywalkerServerFramework::Tick()
     SKYWALKER_PLATFORM_SLEEP(1000);
 
     SSFObjectErrors ObjectErrors;
-    SSFOPluginManager::GetInstance()->Tick(ObjectErrors, 1000);
+    PluginManager->Tick(ObjectErrors, 1000);
 
     signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
 
@@ -74,13 +74,13 @@ void CSkywalkerServerFramework::Stop()
     SSFObjectErrors ObjectErrors;
 
     // Stop
-    SSFOPluginManager::GetInstance()->Stop(ObjectErrors);
+    PluginManager->Stop(ObjectErrors);
 
     // Destroy
-    SSFOPluginManager::GetInstance()->Destroy(ObjectErrors);
+    PluginManager->Destroy(ObjectErrors);
 
     // Release
-    SSFOPluginManager::GetInstance()->Release(ObjectErrors);
+    PluginManager->Release(ObjectErrors);
 
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;

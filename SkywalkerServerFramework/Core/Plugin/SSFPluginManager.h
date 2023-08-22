@@ -27,8 +27,6 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFOPluginManager
     : public SSFObject
 {
-    SKYWALKER_SINGLETON_DECLARE(SSFOPluginManager);
-
 #pragma region Object
 
 public:

@@ -49,6 +49,8 @@ public:
 private:
     typedef ESkywalkerServerFrameworkRunningState ERunningState;
     ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Create;
+
+    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
 };
 
 SKYWALKER_SF_NAMESPACE_END
