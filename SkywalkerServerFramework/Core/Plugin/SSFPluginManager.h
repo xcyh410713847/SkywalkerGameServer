@@ -21,8 +21,6 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
-
 /**
  * 插件管理器
  */
@@ -173,7 +171,7 @@ private:
         SKYWALKER_SF_ERROR_TRACE(LibraryName##Errors, SkywalkerSFError_Plugin_Load_Failed);            \
         return;                                                                                        \
     }                                                                                                  \
-    SKYWALKER_SF_LOG_INFO("Register Library [" << LibraryName << "] Success");
+    SKYWALKER_SF_LOG_INFO_H("Register Library [" << LibraryName << "] Success");
 
 /**
  * 注册插件
@@ -188,7 +186,7 @@ private:
         SKYWALKER_SF_ERROR_TRACE(ClassName##Errors,                        \
                                  SkywalkerSFError_Plugin_Register_Failed); \
     }                                                                      \
-    SKYWALKER_SF_LOG_INFO("Register Plugin [" << Plugin->GetName() << "] Success");
+    SKYWALKER_SF_LOG_INFO_H("Register Plugin [" << Plugin->GetName() << "] Success");
 
 /**
  * 注销插件
@@ -203,7 +201,7 @@ private:
         SKYWALKER_SF_ERROR_TRACE(ClassName##Errors,                          \
                                  SkywalkerSFError_Plugin_Unregister_Failed); \
     }                                                                        \
-    SKYWALKER_SF_LOG_INFO("Unregister Plugin [" << #ClassName << "] Success");
+    SKYWALKER_SF_LOG_INFO_H("Unregister Plugin [" << #ClassName << "] Success");
 
 /**
  * 注册模块
@@ -228,7 +226,7 @@ private:
                                  SkywalkerSFError_Module_Register_Failed, \
                                  "Plugin AddModule Failed");              \
     }                                                                     \
-    SKYWALKER_SF_LOG_INFO("Register Module [" << Plugin->GetName() << "-" << #ClassName << "] Success");
+    SKYWALKER_SF_LOG_INFO_H("Register Module [" << Plugin->GetName() << "-" << #ClassName << "] Success");
 
 /**
  * 注销模块
@@ -251,7 +249,7 @@ private:
                                  SkywalkerSFError_Module_Unregister_Failed,  \
                                  "Plugin RemoveModule Failed");              \
     }                                                                        \
-    SKYWALKER_SF_LOG_INFO("Unregister Module [" << Plugin->GetName() << "-" << #ClassName << "] Success");
+    SKYWALKER_SF_LOG_INFO_H("Unregister Module [" << Plugin->GetName() << "-" << #ClassName << "] Success");
 
 SKYWALKER_SF_NAMESPACE_END
 
