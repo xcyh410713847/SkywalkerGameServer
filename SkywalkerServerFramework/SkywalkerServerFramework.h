@@ -24,10 +24,15 @@ enum class ESkywalkerServerFrameworkRunningState
     SkywalkerServerFrameworkRunningState_Create = 0, // 创建
     SkywalkerServerFrameworkRunningState_Starting,   // 启动中
     SkywalkerServerFrameworkRunningState_Running,    // 运行中
-    SkywalkerServerFrameworkRunningState_Pausing,    // 暂停中
     SkywalkerServerFrameworkRunningState_Stopping,   // 停止中
     SkywalkerServerFrameworkRunningState_Stoped,     // 已停止
 };
+
+/**
+ * 运行状态
+ */
+typedef ESkywalkerServerFrameworkRunningState ERunningState;
+static ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Create;
 
 /**
  * Skywalker Server Framework
@@ -37,19 +42,19 @@ class CSkywalkerServerFramework
     SKYWALKER_SINGLETON_DECLARE(CSkywalkerServerFramework);
 
 public:
+    /**
+     * 信号处理函数
+     */
     static void SignalHandler(int Signal);
 
 public:
     bool Start();
     bool Tick();
-    void Stop();
+    bool Stop();
 
     bool IsRunning() const;
 
 private:
-    typedef ESkywalkerServerFrameworkRunningState ERunningState;
-    ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Create;
-
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
 };
 
@@ -64,9 +69,8 @@ SKYWALKER_SF_NAMESPACE_END
     {                                                                                                \
         return 1;                                                                                    \
     }                                                                                                \
-    while (pSkywalkerServerFramework->IsRunning())                                                   \
+    while (pSkywalkerServerFramework->Tick())                                                        \
     {                                                                                                \
-        pSkywalkerServerFramework->Tick();                                                           \
     }                                                                                                \
     pSkywalkerServerFramework->Stop();                                                               \
     pSkywalkerServerFramework->DestroyInstance();

@@ -17,7 +17,7 @@ SKYWALKER_SINGLETON_IMPLEMENT(CSkywalkerServerFramework);
 
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
-    SKYWALKER_SF_LOG_DEBUG("Received signal: " << Signal);
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
 }
 
 bool CSkywalkerServerFramework::Start()
@@ -64,12 +64,9 @@ bool CSkywalkerServerFramework::Tick()
     return true;
 }
 
-void CSkywalkerServerFramework::Stop()
+bool CSkywalkerServerFramework::Stop()
 {
     SKYWALKER_SF_LOG_INFO("Stop SkywalkerServerFramework");
-
-    // 进入停止中状态
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
 
     SSFObjectErrors ObjectErrors;
 
@@ -84,10 +81,11 @@ void CSkywalkerServerFramework::Stop()
 
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
+
+    return true;
 }
 
 bool CSkywalkerServerFramework::IsRunning() const
 {
-    return RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Running ||
-           RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Pausing;
+    return RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Running;
 }
