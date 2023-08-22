@@ -8,20 +8,29 @@
 #ifndef __SKYWALKER_SINGLETON_H__
 #define __SKYWALKER_SINGLETON_H__
 
+/**
+ * 声明
+ */
 #define SKYWALKER_SINGLETON_DECLARE(Class) \
+private:                                   \
+    static Class *Instance;                \
+                                           \
 public:                                    \
     static Class *GetInstance();           \
     static void DestroyInstance();         \
                                            \
-private:                                   \
-    static Class *Instance;                \
-    Class();                               \
-    ~Class();                              \
-    Class(const Class &);                  \
-    Class &operator=(const Class &);
+protected:                                 \
+    Class() = default;                     \
+    virtual ~Class() = default;            \
+    Class(const Class &) = delete;         \
+    Class &operator=(const Class &) = delete;
 
+/**
+ * 定义
+ */
 #define SKYWALKER_SINGLETON_IMPLEMENT(Class) \
     Class *Class::Instance = nullptr;        \
+                                             \
     Class *Class::GetInstance()              \
     {                                        \
         if (Instance == nullptr)             \
@@ -30,6 +39,7 @@ private:                                   \
         }                                    \
         return Instance;                     \
     }                                        \
+                                             \
     void Class::DestroyInstance()            \
     {                                        \
         if (Instance != nullptr)             \
@@ -37,10 +47,6 @@ private:                                   \
             delete Instance;                 \
             Instance = nullptr;              \
         }                                    \
-    }                                        \
-    Class::Class() {}                        \
-    Class::~Class() {}                       \
-    Class::Class(const Class &) {}           \
-    Class &Class::operator=(const Class &) { return *this; }
+    }
 
 #endif // __SKYWALKER_SINGLETON_H__
