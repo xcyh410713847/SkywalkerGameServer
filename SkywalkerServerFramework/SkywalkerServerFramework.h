@@ -39,8 +39,6 @@ static ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunni
  */
 class CSkywalkerServerFramework
 {
-    SKYWALKER_SINGLETON_DECLARE(CSkywalkerServerFramework);
-
 public:
     /**
      * 信号处理函数
@@ -63,16 +61,16 @@ SKYWALKER_SF_NAMESPACE_END
 /**
  * Skywalker Server Framework 启动宏
  */
-#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                                 \
-    CSkywalkerServerFramework *pSkywalkerServerFramework = CSkywalkerServerFramework::GetInstance(); \
-    if (!pSkywalkerServerFramework->Start())                                                         \
-    {                                                                                                \
-        return 1;                                                                                    \
-    }                                                                                                \
-    while (pSkywalkerServerFramework->Tick())                                                        \
-    {                                                                                                \
-    }                                                                                                \
-    pSkywalkerServerFramework->Stop();                                                               \
-    pSkywalkerServerFramework->DestroyInstance();
+#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                        \
+    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework(); \
+    if (!pSkywalkerServerFramework->Start())                                                \
+    {                                                                                       \
+        return 1;                                                                           \
+    }                                                                                       \
+    while (pSkywalkerServerFramework->Tick())                                               \
+    {                                                                                       \
+    }                                                                                       \
+    pSkywalkerServerFramework->Stop();                                                      \
+    delete pSkywalkerServerFramework;
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__
