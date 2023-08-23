@@ -12,15 +12,14 @@ add_definitions(
 
 set(skywalker_server_plugin_name "SSFPlugin_Test")
 
-file(GLOB skywalker_server_plugin_source_cpp
-    *.cpp)
+include_directories(
+    ./Public
+)
 
-file(GLOB skywalker_server_plugin_source_h
-    *.h)
+SkywalkerServer_Source()
 
 add_library(${skywalker_server_plugin_name} SHARED
-    ${skywalker_server_plugin_source_cpp}
-    ${skywalker_server_plugin_source_h}
+    ${skywalker_server_source}
 )
 
 target_link_libraries(${skywalker_server_plugin_name} PRIVATE

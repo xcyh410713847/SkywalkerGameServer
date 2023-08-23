@@ -35,13 +35,6 @@ include_directories(
     ./
 )
 
-# 生成可执行文件
-file(GLOB skywalker_server_editor_source_cpp
-    *.cpp)
-
-file(GLOB skywalker_server_editor_source_h
-    *.h)
-
 add_executable(${skywalker_server_editor_name}
     SkywalkerServerEditor.cpp
 )

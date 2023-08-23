@@ -43,6 +43,7 @@ add_subdirectory(Plugin)
 
 add_library(${skywalker_server_framework_name} STATIC
     SkywalkerServerFramework.cpp
+    SkywalkerServerFramework.h
 )
 
 target_link_libraries(${skywalker_server_framework_name} PRIVATE

@@ -77,6 +77,20 @@ macro(SkywalkerServer_Export TargetName ProjectName)
     endif()
 endmacro()
 
+# 源码宏
+macro(SkywalkerServer_Source)
+    file(GLOB skywalker_server_source
+
+        # cpp
+        *.cpp
+        */*.cpp
+
+        # h
+        *.h
+        */*.h
+    )
+endmacro()
+
 # SkywalkerServerFramework
 add_subdirectory(SkywalkerServerFramework)
 

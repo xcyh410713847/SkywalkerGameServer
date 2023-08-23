@@ -7,17 +7,10 @@
 
 set(skywalker_server_framework_core_name "SSFCore" CACHE STRING "Skywalker Server Framework Core Library")
 
-file(GLOB skywalker_server_framework_core_source_cpp
-    */*.cpp
-)
-
-file(GLOB skywalker_server_framework_core_source_h
-    */*.h
-)
+SkywalkerServer_Source()
 
 add_library(${skywalker_server_framework_core_name} STATIC
-    ${skywalker_server_framework_core_source_cpp}
-    ${skywalker_server_framework_core_source_h}
+    ${skywalker_server_source}
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
