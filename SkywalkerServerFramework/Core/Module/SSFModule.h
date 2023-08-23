@@ -62,7 +62,7 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOModule();
+    SSFOModule(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOModule();
 
     /**
@@ -71,8 +71,11 @@ public:
      */
     virtual const std::string GetName()
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFCModule);
+        return SKYWALKER_SF_CLASS_NAME(SSFOModule);
     };
+
+protected:
+    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
 };
 
 SKYWALKER_SF_NAMESPACE_END

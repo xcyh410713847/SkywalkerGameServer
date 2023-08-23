@@ -78,6 +78,16 @@ public:
     };
 
     /**
+     * 加入模块
+     */
+    void AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module);
+
+    /**
+     * 移除模块
+     */
+    void RemoveModule(const std::string &ModuleName);
+
+    /**
      * 获取模块
      * @param ModuleName 模块名称
      * @return 模块
@@ -90,22 +100,12 @@ private:
     /**
      * 安装
      */
-    void Install(SSFModuleErrors &Errors);
+    virtual void Install(SSFModuleErrors &Errors);
 
     /**
      * 卸载
      */
-    void Uninstall(SSFModuleErrors &Errors);
-
-    /**
-     * 加入模块
-     */
-    void AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module);
-
-    /**
-     * 移除模块
-     */
-    void RemoveModule(const std::string &ModuleName);
+    virtual void Uninstall(SSFModuleErrors &Errors);
 
 protected:
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;

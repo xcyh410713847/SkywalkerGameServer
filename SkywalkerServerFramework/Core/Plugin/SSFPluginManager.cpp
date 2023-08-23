@@ -160,7 +160,7 @@ void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_P
 
 SKYWALKER_SF_PTR_PLUGIN SSFOPluginManager::GetPlugin(const std::string &PluginName)
 {
-    TMap_Plugin::iterator it = PluginMap.find(PluginName);
+    auto it = PluginMap.find(PluginName);
     if (it != PluginMap.end())
     {
         return it->second;

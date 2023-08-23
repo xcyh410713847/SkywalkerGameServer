@@ -7,6 +7,8 @@
 
 #include "SSFPlugin_Test.h"
 
+#include "SSFModule_PublicTest.h"
+
 SKYWALKER_SF_NAMESPACE_USE
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
@@ -28,3 +30,16 @@ SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManage
 #pragma endregion 插件导出
 
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
+
+#pragma region SSFOPlugin
+
+void SSFOPlugin_Test::Install(SSFModuleErrors &Errors)
+{
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest);
+}
+
+void SSFOPlugin_Test::Uninstall(SSFModuleErrors &Errors)
+{
+}
+
+#pragma endregion SSFOPlugin

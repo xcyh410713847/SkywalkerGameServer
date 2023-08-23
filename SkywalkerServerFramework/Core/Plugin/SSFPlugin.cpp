@@ -13,6 +13,10 @@ SKYWALKER_SF_NAMESPACE_USE
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
+    // 加载模块
+    SSFModuleErrors ModuleErrors;
+    Install(ModuleErrors);
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Init(Errors);
@@ -65,6 +69,9 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
     {
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
     }
+
+    SSFModuleErrors ModuleErrors;
+    Uninstall(ModuleErrors);
 }
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)

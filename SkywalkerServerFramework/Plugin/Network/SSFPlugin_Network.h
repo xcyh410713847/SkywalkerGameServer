@@ -28,7 +28,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFCPlugin_Network);
+        return SKYWALKER_SF_CLASS_NAME(SSFOPlugin_Network);
     };
 };
 
