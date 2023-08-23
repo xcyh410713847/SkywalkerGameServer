@@ -18,6 +18,8 @@ SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Init");
+
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
@@ -48,6 +50,8 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Awake");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Awake(Errors);
@@ -56,6 +60,8 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Start");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Start(Errors);
@@ -72,6 +78,8 @@ void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Stop");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Stop(Errors);
@@ -80,6 +88,8 @@ void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Sleep");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Sleep(Errors);
@@ -88,6 +98,8 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Destroy");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Destroy(Errors);
@@ -96,6 +108,8 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Release");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Release(Errors);

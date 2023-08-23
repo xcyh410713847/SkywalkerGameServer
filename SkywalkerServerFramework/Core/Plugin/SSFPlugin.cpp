@@ -7,18 +7,26 @@
 
 #include "SSFPlugin.h"
 
+#include "Include/SSFILog.h"
+
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
 #pragma region Object
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Init");
+
     // 加载模块
     Install(Errors);
 }
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Awake");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Awake(Errors);
@@ -27,6 +35,8 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Start");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Start(Errors);
@@ -43,6 +53,8 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Stop");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Stop(Errors);
@@ -51,6 +63,8 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Sleep");
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Sleep(Errors);
@@ -59,6 +73,7 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Destroy");
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
@@ -67,6 +82,8 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG("Release");
+
     Uninstall(Errors);
 
     delete this;
