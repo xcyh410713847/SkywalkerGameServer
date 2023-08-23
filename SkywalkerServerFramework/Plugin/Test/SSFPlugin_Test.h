@@ -15,6 +15,9 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFOPlugin_Test : public SSFOPlugin
 {
+#pragma region Object
+#pragma endregion Object
+
 public:
     SSFOPlugin_Test(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOPlugin(InPluginManager)
