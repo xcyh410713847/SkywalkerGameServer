@@ -91,6 +91,31 @@ macro(SkywalkerServer_Source)
     )
 endmacro()
 
+# 插件宏
+macro(SkywalkerServer_Plugin PlugName DirName)
+    add_definitions(
+        -DSKYWALKER_SF_DYNAMIC_PLUGIN
+    )
+
+    include_directories(
+        ./Public
+    )
+
+    SkywalkerServer_Source()
+
+    add_library(${PlugName} SHARED
+        ${skywalker_server_source}
+    )
+
+    target_link_libraries(${PlugName} PRIVATE
+        SSFCore
+    )
+
+    SkywalkerServer_Export(${PlugName} ${DirName})
+
+    SkywalkerServer_CopyToTarget(${PlugName} ${skywalker_server_server_dir})
+endmacro()
+
 # SkywalkerServerFramework
 add_subdirectory(SkywalkerServerFramework)
 
