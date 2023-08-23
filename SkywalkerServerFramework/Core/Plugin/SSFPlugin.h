@@ -89,12 +89,11 @@ public:
 
     /**
      * 获取模块
-     * @param ModuleName 模块名称
      * @return 模块
      */
     template <typename T>
     SKYWALKER_SF_PTR(T)
-    GetModule(const std::string &ModuleName);
+    GetModule();
 
 private:
     /**

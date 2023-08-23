@@ -71,6 +71,9 @@ bool CSkywalkerServerFramework::Stop()
     // Stop
     PluginManager->Stop(ObjectErrors);
 
+    // Sleep
+    PluginManager->Sleep(ObjectErrors);
+
     // Destroy
     PluginManager->Destroy(ObjectErrors);
 

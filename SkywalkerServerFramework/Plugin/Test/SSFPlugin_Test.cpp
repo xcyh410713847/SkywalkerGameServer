@@ -35,11 +35,12 @@ SKYWALKER_SF_API void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManage
 
 void SSFOPlugin_Test::Install(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest);
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest)
 }
 
 void SSFOPlugin_Test::Uninstall(SSFModuleErrors &Errors)
 {
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest)
 }
 
 #pragma endregion SSFOPlugin
