@@ -13,11 +13,15 @@ SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
+#define SKYWALKER_SF_LOG_DEBUG_PLUGIN(content) SKYWALKER_SF_LOG_DEBUG(GetName() << " " << content)
+
 #pragma region Object
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Init");
+    SSFObject::Init(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Init");
 
     // 加载模块
     Install(Errors);
@@ -25,7 +29,9 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Awake");
+    SSFObject::Awake(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Awake");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -35,7 +41,9 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Start");
+    SSFObject::Start(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Start");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -45,6 +53,8 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
+    SSFObject::Tick(Errors, DelayMS);
+
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Tick(Errors, DelayMS);
@@ -53,7 +63,9 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Stop");
+    SSFObject::Stop(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Stop");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -63,7 +75,9 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Sleep");
+    SSFObject::Sleep(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Sleep");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -73,7 +87,9 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Destroy");
+    SSFObject::Destroy(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Destroy");
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
@@ -82,7 +98,9 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Release");
+    SSFObject::Release(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Release");
 
     Uninstall(Errors);
 

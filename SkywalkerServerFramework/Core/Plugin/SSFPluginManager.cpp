@@ -7,6 +7,7 @@
 
 #include "SSFPluginManager.h"
 
+#include "Core/Object/SSFObject.h"
 #include "Core/Plugin/SSFPlugin.h"
 #include "Core/Module/SSFModule.h"
 
@@ -18,6 +19,8 @@ SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
+    SSFObject::Init(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Init");
 
     SSFPluginErrors PluginErrors;
@@ -50,6 +53,8 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
+    SSFObject::Awake(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Awake");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -60,6 +65,8 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
+    SSFObject::Start(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Start");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -70,6 +77,8 @@ void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
+    SSFObject::Tick(Errors, DelayMS);
+
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Tick(Errors, DelayMS);
@@ -78,6 +87,8 @@ void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 {
+    SSFObject::Stop(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Stop");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -88,6 +99,8 @@ void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 {
+    SSFObject::Sleep(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Sleep");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -98,6 +111,8 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 {
+    SSFObject::Destroy(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Destroy");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -108,6 +123,8 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
+    SSFObject::Release(Errors);
+
     SKYWALKER_SF_LOG_DEBUG("Release");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)

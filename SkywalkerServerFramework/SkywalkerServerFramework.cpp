@@ -20,7 +20,7 @@ void CSkywalkerServerFramework::SignalHandler(int Signal)
 
 bool CSkywalkerServerFramework::Start()
 {
-    SKYWALKER_SF_LOG_INFO("Start SkywalkerServerFramework ");
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Begin");
 
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
@@ -40,6 +40,8 @@ bool CSkywalkerServerFramework::Start()
 
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
+
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Finish");
 
     return true;
 }
@@ -64,7 +66,7 @@ bool CSkywalkerServerFramework::Tick()
 
 bool CSkywalkerServerFramework::Stop()
 {
-    SKYWALKER_SF_LOG_INFO("Stop SkywalkerServerFramework");
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Begin");
 
     SSFObjectErrors ObjectErrors;
 
@@ -82,6 +84,8 @@ bool CSkywalkerServerFramework::Stop()
 
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
+
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Finish");
 
     return true;
 }
