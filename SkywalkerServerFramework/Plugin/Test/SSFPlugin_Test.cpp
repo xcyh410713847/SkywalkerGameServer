@@ -7,9 +7,13 @@
 
 #include "SSFPlugin_Test.h"
 
+#include "Include/SSFILog.h"
+
 #include "SSFModule_PublicTest.h"
 
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 

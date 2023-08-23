@@ -7,7 +7,11 @@
 
 #include "SSFPlugin_LaunchState.h"
 
+#include "Include/SSFILog.h"
+
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SSFPlugin_LaunchState, LogLevel_Debug);
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 

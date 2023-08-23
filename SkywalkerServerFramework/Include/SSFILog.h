@@ -45,8 +45,6 @@ enum ELogLevel
 #define SKYWALKER_SF_LOG_PRINT(Level, Content) \
     if (Level >= SSFLogModuleShowLevel)        \
         std::cout << Content << std::endl;
-#define SKYWALKER_SF_LOG_PRINT_H(Level, Content) \
-    std::cout << Content << std::endl;
 
 /**
  * 调试
@@ -59,8 +57,6 @@ enum ELogLevel
  */
 #define SKYWALKER_SF_LOG_INFO(Content) \
     SKYWALKER_SF_LOG_PRINT(LogLevel_Info, "[Info      ]" << SKYWALKER_SF_LOG_MODULE << SKYWALKER_SF_LOG_FILE_LINE << Content)
-#define SKYWALKER_SF_LOG_INFO_H(Content) \
-    SKYWALKER_SF_LOG_PRINT_H(LogLevel_Info, "[Info      ]" << SKYWALKER_SF_LOG_FILE_LINE << Content)
 
 /**
  * 警告
