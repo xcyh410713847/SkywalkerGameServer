@@ -63,6 +63,11 @@ struct SSFError
 {
     ESkywalkerSFError Error;
     std::string ErrorDesc;
+    SSFError()
+        : Error(SkywalkerSFError_Unknow),
+          ErrorDesc("")
+    {
+    }
 
     SSFError(ESkywalkerSFError InError)
         : Error(InError),
@@ -71,9 +76,16 @@ struct SSFError
     }
 
     SSFError(ESkywalkerSFError InError, std::string InErrorDesc)
-        : Error(InError),
-          ErrorDesc(InErrorDesc)
+        : Error(InError), ErrorDesc(InErrorDesc) {}
+
+    std::string GetContent()
     {
+        std::string content = "Error: " + std::to_string(Error);
+        if (!ErrorDesc.empty())
+        {
+            content += ", ErrorDesc: " + ErrorDesc;
+        }
+        return content;
     }
 };
 

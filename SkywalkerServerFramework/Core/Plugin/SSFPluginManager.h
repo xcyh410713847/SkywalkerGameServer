@@ -173,32 +173,38 @@ private:
 /**
  * 注册插件
  */
-#define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginName)            \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));     \
-    SSFPluginErrors PluginName##Errors;                                    \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = NewObject<PluginName>(PluginManager); \
-    PluginManager->RegisterPlugin(PluginName##Errors, Plugin);             \
-    if (PluginName##Errors.IsValid())                                      \
-    {                                                                      \
-        SKYWALKER_SF_ERROR_TRACE(PluginName##Errors,                       \
-                                 SkywalkerSFError_Plugin_Register_Failed); \
-    }                                                                      \
-    SKYWALKER_SF_LOG_INFO("Register Plugin [" << Plugin->GetName() << "] Success");
+#define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginName)                                                    \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                             \
+    SSFPluginErrors PluginName##Errors;                                                                            \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = NewObject<PluginName>(PluginManager);                                         \
+    PluginManager->RegisterPlugin(PluginName##Errors, Plugin);                                                     \
+    if (PluginName##Errors.IsValid())                                                                              \
+    {                                                                                                              \
+        auto FirstError = PluginName##Errors.GetFirstError();                                                      \
+        SKYWALKER_SF_LOG_INFO("Register Plugin [" << Plugin->GetName() << "] Failed " << FirstError.GetContent()); \
+    }                                                                                                              \
+    else                                                                                                           \
+    {                                                                                                              \
+        SKYWALKER_SF_LOG_INFO("Register Plugin [" << Plugin->GetName() << "] Success");                            \
+    }
 
 /**
  * 注销插件
  */
-#define SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginName)             \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));        \
-    SSFPluginErrors PluginName##Errors;                                       \
-    PluginManager->UnregisterPlugin(PluginName##Errors,                       \
-                                    PluginManager->GetPlugin((#PluginName))); \
-    if (PluginName##Errors.IsValid())                                         \
-    {                                                                         \
-        SKYWALKER_SF_ERROR_TRACE(PluginName##Errors,                          \
-                                 SkywalkerSFError_Plugin_Unregister_Failed);  \
-    }                                                                         \
-    SKYWALKER_SF_LOG_INFO("Unregister Plugin [" << #PluginName << "] Success");
+#define SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginName)                                                    \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                               \
+    SSFPluginErrors PluginName##Errors;                                                                              \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));                                        \
+    PluginManager->UnregisterPlugin(PluginName##Errors, Plugin);                                                     \
+    if (PluginName##Errors.IsValid())                                                                                \
+    {                                                                                                                \
+        auto FirstError = PluginName##Errors.GetFirstError();                                                        \
+        SKYWALKER_SF_LOG_INFO("Unregister Plugin [" << Plugin->GetName() << "] Failed " << FirstError.GetContent()); \
+    }                                                                                                                \
+    else                                                                                                             \
+    {                                                                                                                \
+        SKYWALKER_SF_LOG_INFO("Unregister Plugin [" << Plugin->GetName() << "] Success");                            \
+    }
 
 /**
  * 注册模块
