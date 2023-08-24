@@ -44,9 +44,11 @@
  * 导出
  */
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-#define SKYWALKER_SF_API extern "C" __declspec(dllexport)
+#define SKYWALKER_SF_DLL_EXPORT extern "C" __declspec(dllexport)
+#define SKYWALKER_SF_API __declspec(dllexport)
 #else
-#define SKYWALKER_SF_API extern "C" __attribute__((visibility("default")))
+#define SKYWALKER_SF_DLL_EXPORT extern "C" __attribute__((visibility("default")))
+#define SKYWALKER_SF_API __attribute__((visibility("default")))
 #endif
 
 #pragma endregion Common Macro
