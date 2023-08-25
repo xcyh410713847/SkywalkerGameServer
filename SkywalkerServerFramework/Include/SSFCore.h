@@ -81,6 +81,11 @@
  */
 #define SKYWALKER_SF_SHARED_PTR(T) std::shared_ptr<T>
 
+/**
+ * Cast
+ */
+#define SKYWALKER_SF_POINT_CAST(T) dynamic_cast<SKYWALKER_SF_PTR(T)>
+
 #pragma endregion Common Type
 
 #pragma region Iterator Macro

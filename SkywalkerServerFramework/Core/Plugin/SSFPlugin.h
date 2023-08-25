@@ -102,7 +102,6 @@ public:
     SKYWALKER_SF_PTR(T)
     GetModule()
     {
-        // TODO Shyfan 继承类型判断
         SKYWALKER_SF_PTR_MODULE Module = GetModule(SKYWALKER_SF_CLASS_NAME(T));
         auto Iter = ModuleMap.find(SKYWALKER_SF_CLASS_NAME(T));
         if (Module == nullptr)
@@ -110,7 +109,7 @@ public:
             return nullptr;
         }
 
-        return dynamic_cast<SKYWALKER_SF_PTR(T)>(Module);
+        return SKYWALKER_SF_POINT_CAST(T)(Module);
     }
 
 private:

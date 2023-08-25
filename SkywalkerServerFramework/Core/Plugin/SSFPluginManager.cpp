@@ -277,8 +277,19 @@ void SSFOPluginManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_P
 
 SKYWALKER_SF_PTR_MODULE SSFOPluginManager::GetModule(const std::string &ModuleName)
 {
-    // TODO Shyfan 临时写的
-    return nullptr;
+    auto Iter = ModuleToPluginMap.find(ModuleName);
+    if (Iter == ModuleToPluginMap.end())
+    {
+        return nullptr;
+    }
+
+    SKYWALKER_SF_PTR_PLUGIN Plugin = GetPlugin(Iter->second);
+    if (Plugin == nullptr)
+    {
+        return nullptr;
+    }
+
+    return Plugin->GetModule(ModuleName);
 }
 
 #pragma endregion SSFIPluginManager
