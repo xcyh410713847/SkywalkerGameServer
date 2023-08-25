@@ -9,6 +9,8 @@
 
 #include "Include/SSFILog.h"
 
+// #define SKYWALKER_SF_START_AND_STOP
+
 SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
@@ -48,6 +50,10 @@ bool CSkywalkerServerFramework::Start()
 
 bool CSkywalkerServerFramework::Tick()
 {
+#ifdef SKYWALKER_SF_START_AND_STOP
+    return false;
+#endif // SKYWALKER_SF_START_AND_STOP
+
     if (!IsRunning())
     {
         return false;

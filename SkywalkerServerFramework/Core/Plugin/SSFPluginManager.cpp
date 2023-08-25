@@ -19,9 +19,9 @@ SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
-    SSFObject::Init(Errors);
-
     SKYWALKER_SF_LOG_DEBUG("Init");
+
+    SSFObject::Init(Errors);
 
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
@@ -53,9 +53,9 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
-    SSFObject::Awake(Errors);
-
     SKYWALKER_SF_LOG_DEBUG("Awake");
+
+    SSFObject::Awake(Errors);
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -65,9 +65,9 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
-    SSFObject::Start(Errors);
-
     SKYWALKER_SF_LOG_DEBUG("Start");
+
+    SSFObject::Start(Errors);
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -87,48 +87,49 @@ void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 {
-    SSFObject::Stop(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG("Stop");
-
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Stop(Errors);
     }
+
+    SSFObject::Stop(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG("Stop");
 }
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 {
-    SSFObject::Sleep(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG("Sleep");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Sleep(Errors);
     }
+
+    SSFObject::Sleep(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG("Sleep");
 }
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 {
-    SSFObject::Destroy(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG("Destroy");
-
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Destroy(Errors);
     }
+
+    SSFObject::Destroy(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG("Destroy");
 }
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Release");
-
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Release(Errors);
     }
+
+    SKYWALKER_SF_LOG_DEBUG("Release");
 
     SSFObject::Release(Errors);
 }

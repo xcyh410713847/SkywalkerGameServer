@@ -241,7 +241,7 @@ private:
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));          \
                                                                                 \
     SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));   \
-    SKYWALKER_SF_PTR_MODULE Module = Plugin->GetModule<ModuleName>();           \
+    SKYWALKER_SF_PTR_MODULE Module = Plugin->GetModule(#ModuleName);            \
     SSFModuleErrors ModuleName##Errors;                                         \
     PluginManager->UnregisterModule(ModuleName##Errors, Plugin, Module);        \
     if (ModuleName##Errors.IsValid())                                           \

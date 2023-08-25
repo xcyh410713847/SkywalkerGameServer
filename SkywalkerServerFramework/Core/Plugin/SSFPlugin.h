@@ -91,6 +91,11 @@ public:
 
     /**
      * 获取模块
+     */
+    SKYWALKER_SF_PTR_MODULE GetModule(const std::string &ModuleName);
+
+    /**
+     * 获取模块
      * @return 模块
      */
     template <typename T>
@@ -98,18 +103,14 @@ public:
     GetModule()
     {
         // TODO Shyfan 继承类型判断
+        SKYWALKER_SF_PTR_MODULE Module = GetModule(SKYWALKER_SF_CLASS_NAME(T));
         auto Iter = ModuleMap.find(SKYWALKER_SF_CLASS_NAME(T));
-        if (Iter != ModuleMap.end())
+        if (Module == nullptr)
         {
-            SKYWALKER_SF_PTR_MODULE Module = Iter->second;
-
-            SKYWALKER_SF_PTR(T)
-            pT = dynamic_cast<SKYWALKER_SF_PTR(T)>(Module);
-
-            return pT;
+            return nullptr;
         }
 
-        return nullptr;
+        return dynamic_cast<SKYWALKER_SF_PTR(T)>(Module);
     }
 
 private:

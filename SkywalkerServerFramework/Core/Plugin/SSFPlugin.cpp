@@ -19,9 +19,9 @@ SKYWALKER_SF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
-    SSFObject::Init(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_PLUGIN("Init");
+
+    SSFObject::Init(Errors);
 
     // 加载模块
     Install(Errors);
@@ -29,9 +29,9 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
-    SSFObject::Awake(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_PLUGIN("Awake");
+
+    SSFObject::Awake(Errors);
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -41,9 +41,9 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
-    SSFObject::Start(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_PLUGIN("Start");
+
+    SSFObject::Start(Errors);
 
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -63,44 +63,45 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
-    SSFObject::Stop(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Stop");
-
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Stop(Errors);
     }
+
+    SSFObject::Stop(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Stop");
 }
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
-    SSFObject::Sleep(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Sleep");
-
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Sleep(Errors);
     }
+
+    SSFObject::Sleep(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Sleep");
 }
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
-    SSFObject::Destroy(Errors);
-
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Destroy");
     SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
     }
+
+    SSFObject::Destroy(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Destroy");
 }
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Release");
-
     Uninstall(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Release");
 
     SSFObject::Release(Errors);
 }
@@ -164,4 +165,15 @@ void SSFOPlugin::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODU
     }
 
     ModuleMap.erase(Iter);
+}
+
+SKYWALKER_SF_PTR_MODULE SSFOPlugin::GetModule(const std::string &ModuleName)
+{
+    auto Iter = ModuleMap.find(ModuleName);
+    if (Iter != ModuleMap.end())
+    {
+        return Iter->second;
+    }
+
+    return nullptr;
 }

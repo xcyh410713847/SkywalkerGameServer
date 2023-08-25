@@ -19,23 +19,23 @@ SKYWALKER_SF_LOG_DEFINE(SSFModule, LogLevel_Debug);
 
 void SSFOModule::Init(SSFObjectErrors &Errors)
 {
-    SSFObject::Init(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_MODULE("Init");
+
+    SSFObject::Init(Errors);
 }
 
 void SSFOModule::Awake(SSFObjectErrors &Errors)
 {
-    SSFObject::Awake(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_MODULE("Awake");
+
+    SSFObject::Awake(Errors);
 }
 
 void SSFOModule::Start(SSFObjectErrors &Errors)
 {
-    SSFObject::Start(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_MODULE("Start");
+
+    SSFObject::Start(Errors);
 }
 
 void SSFOModule::Tick(SSFObjectErrors &Errors, int DelayMS)
@@ -45,27 +45,29 @@ void SSFOModule::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOModule::Stop(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Stop");
-
     SSFObject::Stop(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Stop");
 }
 
 void SSFOModule::Sleep(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Sleep");
-
     SSFObject::Sleep(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Sleep");
 }
 
 void SSFOModule::Destroy(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Destroy");
-
     SSFObject::Destroy(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Destroy");
 }
 
 void SSFOModule::Release(SSFObjectErrors &Errors)
 {
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Release");
+
     SSFObject::Release(Errors);
 }
 
