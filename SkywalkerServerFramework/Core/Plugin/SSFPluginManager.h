@@ -17,6 +17,7 @@
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
 #include "Core/DynamicLib/SSFDynamicLib.h"
+#include "Core/Module/SSFModuleManager.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
@@ -24,7 +25,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
  * 插件管理器
  */
 class SSFOPluginManager
-    : public SSFObject
+    : public SSFOModuleManager
 {
 #pragma region Object
 
@@ -91,25 +92,6 @@ public:
      */
     virtual SKYWALKER_SF_PTR_PLUGIN GetPlugin(const std::string &PluginName);
 
-    /**
-     * 注册模块
-     * @param Module 模块
-     */
-    virtual void RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module);
-
-    /**
-     * 注销模块
-     * @param Module 模块
-     */
-    virtual void UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_PLUGIN Plugin, SKYWALKER_SF_PTR_MODULE Module);
-
-    /**
-     * 获取模块
-     * @param ModuleName 模块名称
-     * @return 模块
-     */
-    virtual SKYWALKER_SF_PTR_MODULE GetModule(const std::string &ModuleName);
-
 private:
     /**
      * 加载插件配置
@@ -140,10 +122,6 @@ private:
     TMap_PluginName PluginNameMap;
     TMap_DynamicLib DynamicLibMap;
     TMap_Plugin PluginMap;
-
-    // 模块映射
-    typedef SSFMap<std::string, std::string> TMap_ModuleToPlugin;
-    TMap_ModuleToPlugin ModuleToPluginMap;
 };
 
 /**
@@ -213,16 +191,17 @@ private:
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));        \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));        \
                                                                               \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName)); \
     SSFModuleErrors ModuleName##Errors;                                       \
     SKYWALKER_SF_PTR_MODULE Module = NewObject<ModuleName>(PluginManager);    \
-    PluginManager->RegisterModule(ModuleName##Errors, Plugin, Module);        \
+    PluginManager->RegisterModule(ModuleName##Errors, Module);                \
     if (ModuleName##Errors.IsValid())                                         \
     {                                                                         \
         SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                           \
                                 SkywalkerSFError_Module_Register_Failed,      \
                                 "PluginManager RegisterModule Failed");       \
     }                                                                         \
+                                                                              \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName)); \
     Plugin->RegisterModule(ModuleName##Errors, Module);                       \
     if (ModuleName##Errors.IsValid())                                         \
     {                                                                         \
@@ -243,7 +222,7 @@ private:
     SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));   \
     SKYWALKER_SF_PTR_MODULE Module = Plugin->GetModule(#ModuleName);            \
     SSFModuleErrors ModuleName##Errors;                                         \
-    PluginManager->UnregisterModule(ModuleName##Errors, Plugin, Module);        \
+    PluginManager->UnregisterModule(ModuleName##Errors, Module);                \
     if (ModuleName##Errors.IsValid())                                           \
     {                                                                           \
         SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                             \
