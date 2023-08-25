@@ -21,6 +21,8 @@ enum ELogLevel
     LogLevel_Fatal,     // 致命
 };
 
+#define SKYWALKER_SF_LOG_LEVEL LogLevel_Debug
+
 /**
  * 显示文件名，行号和函数名
  */
@@ -42,8 +44,8 @@ enum ELogLevel
 /**
  * 日志打印
  */
-#define SKYWALKER_SF_LOG_PRINT(Level, Content) \
-    if (Level >= SSFLogModuleShowLevel)        \
+#define SKYWALKER_SF_LOG_PRINT(Level, Content)                             \
+    if (Level >= SSFLogModuleShowLevel && Level >= SKYWALKER_SF_LOG_LEVEL) \
         std::cout << Content << std::endl;
 
 /**
