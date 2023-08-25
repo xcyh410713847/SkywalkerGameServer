@@ -12,12 +12,12 @@
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
-#include "Core/Module/SSFModule.h"
+#include "Core/Module/SSFModuleManager.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFOPlugin
-    : public SSFObject
+    : public SSFOModuleManager
 {
 #pragma region Object
 
@@ -77,41 +77,6 @@ public:
         return SKYWALKER_SF_CLASS_NAME(SSFOPlugin);
     };
 
-    /**
-     * 注册模块
-     * @param Module 模块
-     */
-    virtual void RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module);
-
-    /**
-     * 注销模块
-     * @param Module 模块
-     */
-    virtual void UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module);
-
-    /**
-     * 获取模块
-     */
-    SKYWALKER_SF_PTR_MODULE GetModule(const std::string &ModuleName);
-
-    /**
-     * 获取模块
-     * @return 模块
-     */
-    template <typename T>
-    SKYWALKER_SF_PTR(T)
-    GetModule()
-    {
-        SKYWALKER_SF_PTR_MODULE Module = GetModule(SKYWALKER_SF_CLASS_NAME(T));
-        auto Iter = ModuleMap.find(SKYWALKER_SF_CLASS_NAME(T));
-        if (Module == nullptr)
-        {
-            return nullptr;
-        }
-
-        return SKYWALKER_SF_POINT_CAST(T)(Module);
-    }
-
 private:
     /**
      * 安装
@@ -125,16 +90,6 @@ private:
 
 protected:
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
-
-private:
-    /**
-     * 模块
-     */
-    typedef SSFMap<std::string, bool> TMap_ModuleName;
-    typedef std::map<std::string, SKYWALKER_SF_PTR_MODULE> TMap_Module;
-
-    TMap_ModuleName ModuleNameMap;
-    TMap_Module ModuleMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END
