@@ -31,4 +31,7 @@ void SSFObject::Sleep(SSFObjectErrors &Errors) {}
 
 void SSFObject::Destroy(SSFObjectErrors &Errors) {}
 
-void SSFObject::Release(SSFObjectErrors &Errors) {}
+void SSFObject::Release(SSFObjectErrors &Errors)
+{
+    delete this;
+}

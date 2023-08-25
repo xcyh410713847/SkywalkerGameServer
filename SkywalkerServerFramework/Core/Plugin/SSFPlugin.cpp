@@ -98,13 +98,11 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
-    SSFObject::Release(Errors);
-
     SKYWALKER_SF_LOG_DEBUG_PLUGIN("Release");
 
     Uninstall(Errors);
 
-    delete this;
+    SSFObject::Release(Errors);
 }
 
 #pragma endregion Object
@@ -118,29 +116,52 @@ SSFOPlugin::~SSFOPlugin()
 {
 }
 
-template <typename T>
-SKYWALKER_SF_PTR(T)
-SSFOPlugin::GetModule()
+void SSFOPlugin::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module)
 {
-    return nullptr;
+    if (!SKYWALKER_SF_PTR_VALID(Module))
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin Register Module nullptr");
+        return;
+    }
+
+    const std::string &ModuleName = Module->GetName();
+    if (ModuleName.empty())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
+        return;
+    }
+
+    auto Iter = ModuleMap.find(ModuleName);
+    if (Iter != ModuleMap.end())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat, "Plugin Register Module Repeat");
+        return;
+    }
+
+    ModuleMap.insert(std::make_pair(ModuleName, Module));
 }
 
-void SSFOPlugin::Install(SSFModuleErrors &Errors)
+void SSFOPlugin::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module)
 {
-    // TODO Shyfan 插件管理器Install
-}
+    if (!SKYWALKER_SF_PTR_VALID(Module))
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
+        return;
+    }
 
-void SSFOPlugin::Uninstall(SSFModuleErrors &Errors)
-{
-    // TODO Shyfan 插件管理器Uninstall
-}
+    const std::string &ModuleName = Module->GetName();
+    if (ModuleName.empty())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
+        return;
+    }
 
-void SSFOPlugin::AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module)
-{
-    // TODO Shyfan 插件管理器AddModule
-}
+    auto Iter = ModuleMap.find(ModuleName);
+    if (Iter == ModuleMap.end())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NotFound, "Plugin Unregister Module NotFound");
+        return;
+    }
 
-void SSFOPlugin::RemoveModule(const std::string &ModuleName)
-{
-    // TODO Shyfan 插件管理器RemoveModule
+    ModuleMap.erase(Iter);
 }

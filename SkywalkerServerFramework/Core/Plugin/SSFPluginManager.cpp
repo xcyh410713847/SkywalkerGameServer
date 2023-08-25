@@ -123,8 +123,6 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
-    SSFObject::Release(Errors);
-
     SKYWALKER_SF_LOG_DEBUG("Release");
 
     SKYWALKER_SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -132,7 +130,7 @@ void SSFOPluginManager::Release(SSFObjectErrors &Errors)
         ((SSFOPlugin *)IterPlugin->second)->Release(Errors);
     }
 
-    delete this;
+    SSFObject::Release(Errors);
 }
 
 #pragma endregion Object
@@ -154,8 +152,8 @@ void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_PTR
         return;
     }
 
-    TMap_Plugin::iterator it = PluginMap.find(PluginName);
-    if (it != PluginMap.end())
+    auto Iter = PluginMap.find(PluginName);
+    if (Iter != PluginMap.end())
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_Repeat);
         return;
@@ -179,14 +177,14 @@ void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SKYWALKER_SF_P
         return;
     }
 
-    TMap_Plugin::iterator it = PluginMap.find(PluginName);
-    if (it == PluginMap.end())
+    auto Iter = PluginMap.find(PluginName);
+    if (Iter == PluginMap.end())
     {
         SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NotFound)
         return;
     }
 
-    PluginMap.erase(it);
+    PluginMap.erase(Iter);
 }
 
 SKYWALKER_SF_PTR_PLUGIN SSFOPluginManager::GetPlugin(const std::string &PluginName)

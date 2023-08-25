@@ -7,7 +7,69 @@
 
 #include "SSFModule.h"
 
+#include "Include/SSFILog.h"
+
 SKYWALKER_SF_NAMESPACE_USE
+
+SKYWALKER_SF_LOG_DEFINE(SSFModule, LogLevel_Debug);
+
+#define SKYWALKER_SF_LOG_DEBUG_MODULE(content) SKYWALKER_SF_LOG_DEBUG(GetName() << " " << content)
+
+#pragma region Object
+
+void SSFOModule::Init(SSFObjectErrors &Errors)
+{
+    SSFObject::Init(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Init");
+}
+
+void SSFOModule::Awake(SSFObjectErrors &Errors)
+{
+    SSFObject::Awake(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Awake");
+}
+
+void SSFOModule::Start(SSFObjectErrors &Errors)
+{
+    SSFObject::Start(Errors);
+
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Start");
+}
+
+void SSFOModule::Tick(SSFObjectErrors &Errors, int DelayMS)
+{
+    SSFObject::Tick(Errors, DelayMS);
+}
+
+void SSFOModule::Stop(SSFObjectErrors &Errors)
+{
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Stop");
+
+    SSFObject::Stop(Errors);
+}
+
+void SSFOModule::Sleep(SSFObjectErrors &Errors)
+{
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Sleep");
+
+    SSFObject::Sleep(Errors);
+}
+
+void SSFOModule::Destroy(SSFObjectErrors &Errors)
+{
+    SKYWALKER_SF_LOG_DEBUG_MODULE("Destroy");
+
+    SSFObject::Destroy(Errors);
+}
+
+void SSFOModule::Release(SSFObjectErrors &Errors)
+{
+    SSFObject::Release(Errors);
+}
+
+#pragma endregion Object
 
 SSFOModule::SSFOModule(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
     : PluginManager(InPluginManager)

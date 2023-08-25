@@ -78,14 +78,16 @@ public:
     };
 
     /**
-     * 加入模块
+     * 注册模块
+     * @param Module 模块
      */
-    void AddModule(const std::string &ModuleName, SKYWALKER_SF_PTR_MODULE Module);
+    virtual void RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module);
 
     /**
-     * 移除模块
+     * 注销模块
+     * @param Module 模块
      */
-    void RemoveModule(const std::string &ModuleName);
+    virtual void UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module);
 
     /**
      * 获取模块
@@ -93,18 +95,33 @@ public:
      */
     template <typename T>
     SKYWALKER_SF_PTR(T)
-    GetModule();
+    GetModule()
+    {
+        // TODO Shyfan 继承类型判断
+        auto Iter = ModuleMap.find(SKYWALKER_SF_CLASS_NAME(T));
+        if (Iter != ModuleMap.end())
+        {
+            SKYWALKER_SF_PTR_MODULE Module = Iter->second;
+
+            SKYWALKER_SF_PTR(T)
+            pT = dynamic_cast<SKYWALKER_SF_PTR(T)>(Module);
+
+            return pT;
+        }
+
+        return nullptr;
+    }
 
 private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors);
+    virtual void Install(SSFModuleErrors &Errors){};
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors);
+    virtual void Uninstall(SSFModuleErrors &Errors){};
 
 protected:
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;

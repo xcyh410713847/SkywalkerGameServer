@@ -209,54 +209,56 @@ private:
 /**
  * 注册模块
  */
-#define SKYWALKER_SF_REGISTER_MODULE(PluginManager, PluginName, ModuleName)                          \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));                               \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                               \
-                                                                                                     \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));                        \
-    SSFModuleErrors ModuleName##Errors;                                                              \
-    PluginManager->RegisterModule(ModuleName##Errors, Plugin, NewObject<ModuleName>(PluginManager)); \
-    if (ModuleName##Errors.IsValid())                                                                \
-    {                                                                                                \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                  \
-                                SkywalkerSFError_Module_Register_Failed,                             \
-                                "PluginManager RegisterModule Failed");                              \
-    }                                                                                                \
-    Plugin->AddModule((#ModuleName), PluginManager->GetModule((#ModuleName)));                       \
-    if (ModuleName##Errors.IsValid())                                                                \
-    {                                                                                                \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                  \
-                                SkywalkerSFError_Module_Register_Failed,                             \
-                                "Plugin AddModule Failed");                                          \
-    }                                                                                                \
-    SKYWALKER_SF_LOG_INFO("Register Module [" << #ModuleName << "] Success");                        \
-    // Plugin->GetModule<ModuleName>()->Init(ModuleName##Errors);
+#define SKYWALKER_SF_REGISTER_MODULE(PluginManager, PluginName, ModuleName)   \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));        \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));        \
+                                                                              \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName)); \
+    SSFModuleErrors ModuleName##Errors;                                       \
+    SKYWALKER_SF_PTR_MODULE Module = NewObject<ModuleName>(PluginManager);    \
+    PluginManager->RegisterModule(ModuleName##Errors, Plugin, Module);        \
+    if (ModuleName##Errors.IsValid())                                         \
+    {                                                                         \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                           \
+                                SkywalkerSFError_Module_Register_Failed,      \
+                                "PluginManager RegisterModule Failed");       \
+    }                                                                         \
+    Plugin->RegisterModule(ModuleName##Errors, Module);                       \
+    if (ModuleName##Errors.IsValid())                                         \
+    {                                                                         \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                           \
+                                SkywalkerSFError_Module_Register_Failed,      \
+                                "Plugin RegisterModule Failed");              \
+    }                                                                         \
+    SKYWALKER_SF_LOG_INFO("Register Module [" << #ModuleName << "] Success"); \
+    Module->Init(ModuleName##Errors);
 
 /**
  * 注销模块
  */
-#define SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, PluginName, ModuleName)                             \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));                                    \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                    \
-                                                                                                          \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));                             \
-    SSFModuleErrors ModuleName##Errors;                                                                   \
-    PluginManager->UnregisterModule(ModuleName##Errors, Plugin, PluginManager->GetModule((#ModuleName))); \
-    if (ModuleName##Errors.IsValid())                                                                     \
-    {                                                                                                     \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                       \
-                                SkywalkerSFError_Module_Unregister_Failed,                                \
-                                "PluginManager UnregisterModule Failed");                                 \
-    }                                                                                                     \
-    Plugin->RemoveModule((#ModuleName));                                                                  \
-    if (ModuleName##Errors.IsValid())                                                                     \
-    {                                                                                                     \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                       \
-                                SkywalkerSFError_Module_Unregister_Failed,                                \
-                                "Plugin RemoveModule Failed");                                            \
-    }                                                                                                     \
-    SKYWALKER_SF_LOG_INFO("Unregister Module [" << #ModuleName << "] Success");                           \
-    // Plugin->GetModule<ModuleName>()->Release(ModuleName##Errors);
+#define SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, PluginName, ModuleName)   \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));          \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));          \
+                                                                                \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = PluginManager->GetPlugin((#PluginName));   \
+    SKYWALKER_SF_PTR_MODULE Module = Plugin->GetModule<ModuleName>();           \
+    SSFModuleErrors ModuleName##Errors;                                         \
+    PluginManager->UnregisterModule(ModuleName##Errors, Plugin, Module);        \
+    if (ModuleName##Errors.IsValid())                                           \
+    {                                                                           \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                             \
+                                SkywalkerSFError_Module_Unregister_Failed,      \
+                                "PluginManager UnregisterModule Failed");       \
+    }                                                                           \
+    Plugin->UnregisterModule(ModuleName##Errors, Module);                       \
+    if (ModuleName##Errors.IsValid())                                           \
+    {                                                                           \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                             \
+                                SkywalkerSFError_Module_Unregister_Failed,      \
+                                "Plugin UnregisterModule Failed");              \
+    }                                                                           \
+    SKYWALKER_SF_LOG_INFO("Unregister Module [" << #ModuleName << "] Success"); \
+    Module->Release(ModuleName##Errors);
 
 SKYWALKER_SF_NAMESPACE_END
 
