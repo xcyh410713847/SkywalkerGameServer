@@ -9,6 +9,8 @@
 
 #include "Include/SSFILog.h"
 
+#include "SSFModule_TCP.h"
+
 SKYWALKER_SF_NAMESPACE_USE
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Network, LogLevel_Debug);
@@ -32,3 +34,17 @@ SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER Plugi
 #pragma endregion 插件导出
 
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
+
+#pragma region SSFOPlugin
+
+void SSFOPlugin_Network::Install(SSFModuleErrors &Errors)
+{
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_TCP)
+}
+
+void SSFOPlugin_Network::Uninstall(SSFModuleErrors &Errors)
+{
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_TCP)
+}
+
+#pragma endregion SSFOPlugin

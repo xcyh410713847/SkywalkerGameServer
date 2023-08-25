@@ -99,6 +99,7 @@ macro(SkywalkerServer_Plugin PlugName DirName)
 
     include_directories(
         ./Public
+        ./Private
     )
 
     SkywalkerServer_Source()

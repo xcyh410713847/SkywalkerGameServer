@@ -33,6 +33,21 @@ public:
     {
         return SKYWALKER_SF_CLASS_NAME(SSFOPlugin_Network);
     };
+
+#pragma region SSFOPlugin
+
+private:
+    /**
+     * 安装
+     */
+    virtual void Install(SSFModuleErrors &Errors) override;
+
+    /**
+     * 卸载
+     */
+    virtual void Uninstall(SSFModuleErrors &Errors) override;
+
+#pragma endregion SSFOPlugin
 };
 
 SKYWALKER_SF_NAMESPACE_END
