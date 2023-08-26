@@ -17,7 +17,7 @@ SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 
-#define SKYWALKER_SF_PLUGIN_CLASS SSFOPlugin_Test
+#define SKYWALKER_SF_PLUGIN_CLASS SSFPlugin_Test
 
 #pragma region 插件导出
 
@@ -37,14 +37,14 @@ SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER Plugi
 
 #pragma region SSFOPlugin
 
-void SSFOPlugin_Test::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Test::Install(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest)
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_PublicTest)
 }
 
-void SSFOPlugin_Test::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Test::Uninstall(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Test, SSFOModule_PublicTest)
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_PublicTest)
 }
 
 #pragma endregion SSFOPlugin
