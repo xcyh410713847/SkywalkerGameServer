@@ -15,11 +15,29 @@
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 /**
- * 创建对象上下文
+ * 对象创建上下文
  */
 struct SSFObjectCreatorContext
 {
+    SSFObjectCreatorContext()
+    {
+        memset(this, 0, sizeof(SSFObjectCreatorContext));
+    }
 };
+
+template <typename T>
+SKYWALKER_SF_PTR(T)
+NewObject()
+{
+    if (!SKYWALKER_IS_DERIVED(T, SSFObject))
+    {
+        return nullptr;
+    }
+
+    SSFObjectCreatorContext Context;
+
+    return new T(Context);
+}
 
 template <typename T>
 SKYWALKER_SF_PTR(T)
