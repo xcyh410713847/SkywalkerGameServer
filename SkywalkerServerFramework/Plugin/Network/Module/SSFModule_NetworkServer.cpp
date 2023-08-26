@@ -15,7 +15,7 @@ SKYWALKER_SF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 
 #pragma region Object
 
-void SSFOModule_NetworkServer::Init(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
 {
     SSFOModule::Init(Errors);
 
@@ -23,12 +23,12 @@ void SSFOModule_NetworkServer::Init(SSFObjectErrors &Errors)
     ClientSocket = INVALID_SOCKET;
 }
 
-void SSFOModule_NetworkServer::Awake(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
 {
     SSFOModule::Awake(Errors);
 }
 
-void SSFOModule_NetworkServer::Start(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
 {
     SSFOModule::Start(Errors);
 
@@ -71,7 +71,7 @@ void SSFOModule_NetworkServer::Start(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSFOModule::Tick(Errors, DelayMS);
 
@@ -111,7 +111,7 @@ void SSFOModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 }
 
-void SSFOModule_NetworkServer::Stop(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 {
     SSFOModule::Stop(Errors);
 
@@ -119,17 +119,17 @@ void SSFOModule_NetworkServer::Stop(SSFObjectErrors &Errors)
     WSACleanup();
 }
 
-void SSFOModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
 {
     SSFOModule::Sleep(Errors);
 }
 
-void SSFOModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
 {
     SSFOModule::Destroy(Errors);
 }
 
-void SSFOModule_NetworkServer::Release(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Release(SSFObjectErrors &Errors)
 {
     SSFOModule::Release(Errors);
 }

@@ -18,7 +18,7 @@ SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Network, LogLevel_Debug);
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 
-#define SKYWALKER_SF_PLUGIN_CLASS SSFOPlugin_Network
+#define SKYWALKER_SF_PLUGIN_CLASS SSFPlugin_Network
 
 #pragma region 插件导出
 
@@ -38,16 +38,16 @@ SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER Plugi
 
 #pragma region SSFOPlugin
 
-void SSFOPlugin_Network::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Network::Install(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkServer)
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkClient)
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkServer)
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkClient)
 }
 
-void SSFOPlugin_Network::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Network::Uninstall(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkServer)
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkClient)
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkServer)
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkClient)
 }
 
 #pragma endregion SSFOPlugin

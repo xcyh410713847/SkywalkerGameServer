@@ -14,14 +14,14 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFOModule_NetworkClient : public SSFOModule
+class SSFModule_NetworkClient : public SSFOModule
 {
 public:
-    SSFOModule_NetworkClient(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFModule_NetworkClient(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)
     {
     }
-    virtual ~SSFOModule_NetworkClient(){};
+    virtual ~SSFModule_NetworkClient(){};
 
     /**
      * 获取模块名称
@@ -29,7 +29,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFOModule_NetworkClient);
+        return SKYWALKER_SF_CLASS_NAME(SSFModule_NetworkClient);
     };
 };
 

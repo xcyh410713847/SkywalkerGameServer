@@ -18,7 +18,7 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFOModule_NetworkServer : public SSFOModule
+class SSFModule_NetworkServer : public SSFOModule
 {
 #pragma region Object
 
@@ -66,11 +66,11 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOModule_NetworkServer(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFModule_NetworkServer(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)
     {
     }
-    virtual ~SSFOModule_NetworkServer(){};
+    virtual ~SSFModule_NetworkServer(){};
 
     /**
      * 获取模块名称
@@ -78,7 +78,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFOModule_NetworkServer);
+        return SKYWALKER_SF_CLASS_NAME(SSFModule_NetworkServer);
     };
 
 private:

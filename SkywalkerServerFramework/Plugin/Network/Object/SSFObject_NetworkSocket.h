@@ -14,7 +14,7 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFOObject_NetworkSocket : public SSFObject
+class SSFObject_NetworkSocket : public SSFObject
 {
 };
 
