@@ -15,17 +15,17 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFOPlugin_LaunchState : public SSFOPlugin
+class SSFPlugin_LaunchState : public SSFOPlugin
 {
 #pragma region Object
 #pragma endregion Object
 
 public:
-    SSFOPlugin_LaunchState(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFPlugin_LaunchState(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOPlugin(InPluginManager)
     {
     }
-    virtual ~SSFOPlugin_LaunchState(){};
+    virtual ~SSFPlugin_LaunchState(){};
 
     /**
      * 获取插件名称
@@ -33,7 +33,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFOPlugin_LaunchState);
+        return SKYWALKER_SF_CLASS_NAME(SSFPlugin_LaunchState);
     }
 };
 

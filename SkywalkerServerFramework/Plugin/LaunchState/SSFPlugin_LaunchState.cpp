@@ -15,7 +15,7 @@ SKYWALKER_SF_LOG_DEFINE(SSFPlugin_LaunchState, LogLevel_Debug);
 
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 
-#define SKYWALKER_SF_PLUGIN_CLASS SSFOPlugin_LaunchState
+#define SKYWALKER_SF_PLUGIN_CLASS SSFPlugin_LaunchState
 
 #pragma region 插件导出
 
