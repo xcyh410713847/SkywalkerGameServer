@@ -10,6 +10,8 @@
 #include "Include/SSFILog.h"
 
 #include "SSFModule_TCP.h"
+#include "SSFModule_NetworkServer.h"
+#include "SSFModule_NetworkClient.h"
 
 SKYWALKER_SF_NAMESPACE_USE
 
@@ -40,11 +42,15 @@ SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER Plugi
 void SSFOPlugin_Network::Install(SSFModuleErrors &Errors)
 {
     SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_TCP)
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkServer)
+    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkClient)
 }
 
 void SSFOPlugin_Network::Uninstall(SSFModuleErrors &Errors)
 {
     SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_TCP)
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkServer)
+    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFOPlugin_Network, SSFOModule_NetworkClient)
 }
 
 #pragma endregion SSFOPlugin
