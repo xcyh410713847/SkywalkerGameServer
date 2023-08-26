@@ -73,6 +73,9 @@ public:
 #pragma endregion Object
 
 public:
+    SSFOPluginManager(SSFObjectCreatorContext &Context) : SSFOModuleManager(Context) {}
+    virtual ~SSFOPluginManager() {}
+
     /**
      * 注册插件
      * @param Plugin 插件
@@ -154,7 +157,8 @@ private:
 #define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginName)                                                    \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                             \
     SSFPluginErrors PluginName##Errors;                                                                            \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = NewObject<PluginName>(PluginManager);                                         \
+    SSFObjectCreatorContext PluginName##Content;                                                                   \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = NewObject<PluginName>(PluginName##Content, PluginManager);                    \
     PluginManager->RegisterPlugin(PluginName##Errors, Plugin);                                                     \
     if (PluginName##Errors.IsValid())                                                                              \
     {                                                                                                              \
@@ -187,28 +191,29 @@ private:
 /**
  * 注册模块
  */
-#define SKYWALKER_SF_REGISTER_MODULE(PluginManager, PluginName, ModuleName)                          \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));                               \
-    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                               \
-                                                                                                     \
-    SSFModuleErrors ModuleName##Errors;                                                              \
-    SKYWALKER_SF_PTR_MODULE ModuleName##Module = NewObject<ModuleName>(PluginManager);               \
-    PluginManager->RegisterModule(ModuleName##Errors, ModuleName##Module);                           \
-    if (ModuleName##Errors.IsValid())                                                                \
-    {                                                                                                \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                  \
-                                SkywalkerSFError_Module_Register_Failed,                             \
-                                "PluginManager RegisterModule Failed");                              \
-    }                                                                                                \
-                                                                                                     \
-    PluginManager->GetPlugin((#PluginName))->RegisterModule(ModuleName##Errors, ModuleName##Module); \
-    if (ModuleName##Errors.IsValid())                                                                \
-    {                                                                                                \
-        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                  \
-                                SkywalkerSFError_Module_Register_Failed,                             \
-                                "Plugin RegisterModule Failed");                                     \
-    }                                                                                                \
-    SKYWALKER_SF_LOG_INFO("Register Module [" << #ModuleName << "] Success");                        \
+#define SKYWALKER_SF_REGISTER_MODULE(PluginManager, PluginName, ModuleName)                                 \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(ModuleName, SSFOModule));                                      \
+    SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                      \
+                                                                                                            \
+    SSFModuleErrors ModuleName##Errors;                                                                     \
+    SSFObjectCreatorContext ModuleName##Content;                                                            \
+    SKYWALKER_SF_PTR_MODULE ModuleName##Module = NewObject<ModuleName>(ModuleName##Content, PluginManager); \
+    PluginManager->RegisterModule(ModuleName##Errors, ModuleName##Module);                                  \
+    if (ModuleName##Errors.IsValid())                                                                       \
+    {                                                                                                       \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                         \
+                                SkywalkerSFError_Module_Register_Failed,                                    \
+                                "PluginManager RegisterModule Failed");                                     \
+    }                                                                                                       \
+                                                                                                            \
+    PluginManager->GetPlugin((#PluginName))->RegisterModule(ModuleName##Errors, ModuleName##Module);        \
+    if (ModuleName##Errors.IsValid())                                                                       \
+    {                                                                                                       \
+        SKYWALKER_SF_ERROR_DESC(ModuleName##Errors,                                                         \
+                                SkywalkerSFError_Module_Register_Failed,                                    \
+                                "Plugin RegisterModule Failed");                                            \
+    }                                                                                                       \
+    SKYWALKER_SF_LOG_INFO("Register Module [" << #ModuleName << "] Success");                               \
     ModuleName##Module->Init(ModuleName##Errors);
 
 /**

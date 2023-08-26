@@ -19,6 +19,9 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFOModuleManager : public SSFObject
 {
 public:
+    SSFOModuleManager(SSFObjectCreatorContext &Context) : SSFObject(Context) {}
+    virtual ~SSFOModuleManager() {}
+
     /**
      * 注册模块
      * @param Module 模块

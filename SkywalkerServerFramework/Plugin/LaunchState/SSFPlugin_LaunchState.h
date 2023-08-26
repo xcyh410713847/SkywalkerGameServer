@@ -21,8 +21,8 @@ class SSFPlugin_LaunchState : public SSFOPlugin
 #pragma endregion Object
 
 public:
-    SSFPlugin_LaunchState(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_LaunchState(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOPlugin(Context, InPluginManager)
     {
     }
     virtual ~SSFPlugin_LaunchState(){};

@@ -108,8 +108,8 @@ void SSFOPlugin::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOPlugin::SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-    : PluginManager(InPluginManager)
+SSFOPlugin::SSFOPlugin(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    : SSFOModuleManager(Context), PluginManager(InPluginManager)
 {
 }
 

@@ -28,7 +28,8 @@ bool CSkywalkerServerFramework::Start()
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
     // 创建插件管理器
-    PluginManager = new SSFOPluginManager();
+    SSFObjectCreatorContext Context;
+    PluginManager = NewObject<SSFOPluginManager>(Context);
 
     // Init
     SSFObjectErrors ObjectErrors;

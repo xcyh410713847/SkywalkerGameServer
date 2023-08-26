@@ -14,26 +14,33 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-template <typename T, typename M>
+/**
+ * 创建对象上下文
+ */
+struct SSFObjectCreatorContext
+{
+};
+
+template <typename T>
 SKYWALKER_SF_PTR(T)
-NewObject()
+NewObject(SSFObjectCreatorContext &Context)
 {
     if (!SKYWALKER_IS_DERIVED(T, SSFObject))
     {
         return nullptr;
     }
-    return new T();
+    return new T(Context);
 }
 
 template <typename T, typename M>
 SKYWALKER_SF_PTR(T)
-NewObject(M *Manager)
+NewObject(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR(M) Manager)
 {
     if (!SKYWALKER_IS_DERIVED(T, SSFObject))
     {
         return nullptr;
     }
-    return new T(Manager);
+    return new T(Context, Manager);
 }
 
 SKYWALKER_SF_NAMESPACE_END

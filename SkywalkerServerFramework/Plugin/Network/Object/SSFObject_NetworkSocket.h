@@ -16,6 +16,9 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFObject_NetworkSocket : public SSFObject
 {
+public:
+    SSFObject_NetworkSocket(SSFObjectCreatorContext &Context);
+    virtual ~SSFObject_NetworkSocket();
 };
 
 SKYWALKER_SF_NAMESPACE_END

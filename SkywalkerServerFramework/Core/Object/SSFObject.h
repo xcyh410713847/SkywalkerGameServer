@@ -10,13 +10,14 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
+#include "Include/SSFCreator.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFObject
 {
 public:
-	SSFObject();
+	SSFObject(SSFObjectCreatorContext &Context);
 	virtual ~SSFObject();
 
 public:

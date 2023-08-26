@@ -9,7 +9,7 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFObject::SSFObject()
+SSFObject::SSFObject(SSFObjectCreatorContext &Context)
 {
 }
 

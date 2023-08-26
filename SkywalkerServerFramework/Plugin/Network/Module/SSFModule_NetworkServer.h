@@ -66,8 +66,8 @@ public:
 #pragma endregion Object
 
 public:
-    SSFModule_NetworkServer(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(InPluginManager)
+    SSFModule_NetworkServer(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOModule(Context, InPluginManager)
     {
     }
     virtual ~SSFModule_NetworkServer(){};
