@@ -1,8 +1,8 @@
 ﻿/*************************************************************************
-**文件: SkywalkerServerFramework\Plugin\Test\Public\SSFModule_PublicTest.h
+**文件: SkywalkerServerFramework\Plugin\Test\Module\SSFModule_PublicTest.h
 **作者: shyfan
-**日期: 2023/08/23 12:08:42
-**功能: Public 测试模块
+**日期: 2023/08/26 15:38:23
+**功能: 测试模块
 *************************************************************************/
 
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_PUBLIC_TEST_H__
