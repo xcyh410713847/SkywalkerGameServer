@@ -38,6 +38,7 @@ set(skywalker_server_output_path ${CMAKE_CURRENT_SOURCE_DIR}/Bin CACHE STRING "s
 set(skywalker_server_server_dir "Server" CACHE STRING "skywalker_server_server_dir")
 set(skywalker_server_editor_dir "Editor" CACHE STRING "skywalker_server_editor_dir")
 set(skywalker_server_client_dir "Client" CACHE STRING "skywalker_server_client_dir")
+set(skywalker_server_tool_dir "Tool" CACHE STRING "skywalker_server_tool_dir")
 
 # 编译完成后拷贝到指定目录
 macro(SkywalkerServer_CopyToTarget TargetName DirName)
@@ -128,5 +129,8 @@ add_subdirectory(SkywalkerGameServer)
 
 # SkywalkerGameClient
 add_subdirectory(SkywalkerGameClient)
+
+# SkywalkerScript
+add_subdirectory(SkywalkerScript)
 
 SkywalkerServer_MessageDebug("End Build ${skywalker_server_name}")
