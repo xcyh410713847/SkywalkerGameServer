@@ -11,8 +11,8 @@ SKYWALKER_SCRIPT_NAMESPACE_USE
 
 int main(int argc, char *argv[])
 {
-    CSkywalkerScriptParse *ScriptParse = new CSkywalkerScriptParse();
-    ScriptParse->LoadScript("TestScript.skywalkerC");
+    // CSkywalkerScriptParse *ScriptParse = new CSkywalkerScriptParse();
+    // ScriptParse->LoadScript("TestScript.skywalkerC");
 
     return 0;
 }
