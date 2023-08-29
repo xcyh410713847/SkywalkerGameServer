@@ -12,5 +12,8 @@ _deps
 
 build/
 .vscode/
-Bin/
 .cache/
+Bin/*.pdb
+Bin/*.exe
+Bin/*.lib
+Bin/*.dll
