@@ -5,11 +5,14 @@
 **功能: SkywalkerScript
 *************************************************************************/
 
-#include <iostream>
+#include "Include/SkywalkerScriptParse.h"
+
+SKYWALKER_SCRIPT_NAMESPACE_USE
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Hello SkywalkerScript" << std::endl;
+    CSkywalkerScriptParse *ScriptParse = new CSkywalkerScriptParse();
+    ScriptParse->LoadScript("TestScript.skywalkerC");
 
     return 0;
 }
