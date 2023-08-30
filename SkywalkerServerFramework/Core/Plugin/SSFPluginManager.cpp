@@ -10,6 +10,7 @@
 #include "Core/Object/SSFObject.h"
 #include "Core/Plugin/SSFPlugin.h"
 #include "Core/Module/SSFModule.h"
+#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 SKYWALKER_SF_NAMESPACE_USE
 
@@ -203,6 +204,13 @@ SKYWALKER_SF_PTR_PLUGIN SSFOPluginManager::GetPlugin(const std::string &PluginNa
 
 void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
 {
+    PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
+    if (!PluginScriptParse->LoadScript("ServerPlugin.skywalkerC"))
+    {
+        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+        return;
+    }
+
     // TODO Shyfan 临时写的
     PluginNameMap.insert(std::make_pair("SSFPlugin_Network", true));
     PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));

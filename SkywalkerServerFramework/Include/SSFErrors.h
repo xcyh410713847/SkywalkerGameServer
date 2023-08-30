@@ -30,6 +30,7 @@ enum ESkywalkerSFError
     SkywalkerSFError_Plugin_Unregister_nullptr,     // 注销插件为空
     SkywalkerSFError_Plugin_Unregister_NameEmpty,   // 注销插件名称为空
     SkywalkerSFError_Plugin_Unregister_NotFound,    // 注销插件未找到
+    SkywalkerSFError_Plugin_Load_ConfigNullptr,     // 插件配置为空
     SkywalkerSFError_Plugin_Load_Repeated,          // 插件重复加载
     SkywalkerSFError_Plugin_Load_DynamicLibNullptr, // 动态库为空
     SkywalkerSFError_Plugin_Load_Failed,            // 插件加载失败

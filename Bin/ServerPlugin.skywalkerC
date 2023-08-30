@@ -1,0 +1,6 @@
+﻿Plugin
+    Name=SSFPlugin_Test
+Plugin
+    Name=SSFPlugin_Network
+Plugin
+    Name=SSFPlugin_LaunchState

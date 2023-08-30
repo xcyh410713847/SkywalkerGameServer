@@ -10,6 +10,8 @@
 
 #include "SkywalkerDerived/SkywalkerDerived.h"
 
+#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+
 #include "Include/SSFCore.h"
 #include "Include/SSFCreator.h"
 #include "Include/SSFILog.h"
@@ -112,9 +114,6 @@ private:
     void StartPlugin(SSFPluginErrors &Errors);
 
 private:
-    /**
-     * 插件
-     */
     typedef void (*DLL_START_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFOPluginManager));
     typedef void (*DLL_STOP_PLUGIN_FUNC)(SKYWALKER_SF_PTR(SSFOPluginManager));
 
@@ -125,6 +124,8 @@ private:
     TMap_PluginName PluginNameMap;
     TMap_DynamicLib DynamicLibMap;
     TMap_Plugin PluginMap;
+
+    SKYWALKER_PTR_SCRIPT_PARSE PluginScriptParse = nullptr;
 };
 
 /**
