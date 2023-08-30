@@ -20,7 +20,7 @@
 #define SKYWALKER_SCRIPT_NAMESPACE_END } // namespace SKYWALKER_SCRIPT_NAMESPACE
 #define SKYWALKER_SCRIPT_NAMESPACE_USE using namespace SKYWALKER_SCRIPT_NAMESPACE;
 
-#define SKYWALKER_SCRIPT_PRINT(Content) std::cout << Content << std::endl;
+#define SKYWALKER_SCRIPT_PRINT(Content) std::cout << __LINE__ << " " << Content << std::endl;
 
 SKYWALKER_SCRIPT_NAMESPACE_BEGIN
 
@@ -229,7 +229,7 @@ public:
         std::ifstream InFile(InScriptName);
         if (!InFile.is_open())
         {
-            SKYWALKER_SCRIPT_PRINT("Open Script failed.");
+            SKYWALKER_SCRIPT_PRINT("Open Script: " << InScriptName << " failed.");
             return false;
         }
 
@@ -247,7 +247,7 @@ public:
             int Result = LineParse(Line.c_str(), Line.length(), LayerLevel, Node);
             if (Result <= SkywalkerLineParseResult_Failed)
             {
-                SKYWALKER_SCRIPT_PRINT("Line " << LineNum << " parse failed.");
+                SKYWALKER_SCRIPT_PRINT("Script: " << InScriptName << " Line " << LineNum << " parse failed.");
                 return false;
             }
 
@@ -258,7 +258,7 @@ public:
 
             if (!RecursiveNode(LastLayerLevel, LastNode, LayerLevel, Node))
             {
-                SKYWALKER_SCRIPT_PRINT("Line " << LineNum << " recursive failed.");
+                SKYWALKER_SCRIPT_PRINT("Script: " << InScriptName << " Line " << LineNum << " recursive failed.");
                 return false;
             }
 
@@ -348,7 +348,7 @@ private:
         int LayerLevelDiff = LastLayerLevel - LayerLevel;
         if (LayerLevelDiff < -1)
         {
-            SKYWALKER_SCRIPT_PRINT("跨级了，不允许跨级");
+            SKYWALKER_SCRIPT_PRINT("LayerLevelDiff < -1, LastLayerLevel = " << LastLayerLevel << ", LayerLevel = " << LayerLevel);
             return false;
         }
 
@@ -357,7 +357,7 @@ private:
         {
             if (LastNode == nullptr)
             {
-                SKYWALKER_SCRIPT_PRINT("父节点为空, 无法添加");
+                SKYWALKER_SCRIPT_PRINT("ParentNode is nullptr, can't add child node.");
                 return false;
             }
             Node->SetParentNode(LastNode);
@@ -372,7 +372,7 @@ private:
             LastNode = LastNode->GetParentNode();
             if (LastNode == nullptr)
             {
-                SKYWALKER_SCRIPT_PRINT("父节点为空, 无法添加");
+                SKYWALKER_SCRIPT_PRINT("ParentNode is nullptr, can't add child node.");
                 return false;
             }
 
@@ -391,14 +391,21 @@ private:
 
             if (LastNode == nullptr)
             {
-                SKYWALKER_SCRIPT_PRINT("同级节点为空, 无法添加");
+                SKYWALKER_SCRIPT_PRINT("LastNode is nullptr, can't add get ParentNode.");
                 return false;
             }
 
             LastNode = LastNode->GetParentNode();
             if (LastNode == nullptr)
             {
-                SKYWALKER_SCRIPT_PRINT("父节点为空, 无法添加");
+                if (LayerLevel == 0)
+                {
+                    ScriptNodeMap.insert(std::make_pair(Node->GetNodeName(), Node));
+
+                    return true;
+                }
+
+                SKYWALKER_SCRIPT_PRINT("ParentNode is nullptr, can't add child node.");
                 return false;
             }
 
