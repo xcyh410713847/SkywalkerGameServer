@@ -14,6 +14,8 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include "SSFObject_NetworkSocket.h"
+
 #pragma comment(lib, "ws2_32.lib")
 
 SKYWALKER_SF_NAMESPACE_BEGIN
@@ -83,8 +85,8 @@ public:
 
 private:
     WSADATA wsaData;
-    SOCKET ServerSocket;
-    SOCKET ClientSocket;
+    SOCKET ServerSocket = INVALID_SOCKET;
+    SOCKET ClientSocket = INVALID_SOCKET;
 };
 
 SKYWALKER_SF_NAMESPACE_END
