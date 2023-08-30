@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <vector>
 #include <string>
 
 #define SKYWALKER_SCRIPT_NAMESPACE Skywalker::Script
@@ -41,7 +42,7 @@ public:
     CSkywalkerScriptNode()
         : NodeName(nullptr), NodeValue(nullptr), ParentNode(nullptr)
     {
-        ChildNodeMap.clear();
+        ChildNodeVector.clear();
     }
     virtual ~CSkywalkerScriptNode()
     {
@@ -148,21 +149,44 @@ public:
      */
     void AddChildNode(CSkywalkerScriptNode *InChildNode)
     {
-        this->ChildNodeMap.insert(std::make_pair(InChildNode->GetNodeName(), InChildNode));
+        ChildNodeVector.push_back(InChildNode);
     }
 
     /**
-     * 获取子节点
+     * 通过名称获取子节点
      */
-    CSkywalkerScriptNode *GetChildNode(const char *InChildNodeName) const
+    CSkywalkerScriptNode *GetChildNodeFromName(const char *InChildNodeName) const
     {
-        auto Iter = this->ChildNodeMap.find(InChildNodeName);
-        if (Iter != this->ChildNodeMap.end())
+        for (auto ChildNode : ChildNodeVector)
         {
-            return Iter->second;
+            if (0 == strcmp(ChildNode->GetNodeName(), InChildNodeName))
+            {
+                return ChildNode;
+            }
         }
 
         return nullptr;
+    }
+
+    /**
+     * 通过索引获取子节点
+     */
+    CSkywalkerScriptNode *GetChildNodeFromIndex(int InIndex) const
+    {
+        if (InIndex < 0 || InIndex >= ChildNodeVector.size())
+        {
+            return nullptr;
+        }
+
+        return ChildNodeVector[InIndex];
+    }
+
+    /**
+     * 获取子节点数量
+     */
+    int GetChildNodeNum() const
+    {
+        return ChildNodeVector.size();
     }
 
 #pragma endregion 子节点操作
@@ -208,8 +232,8 @@ private:
     char *NodeName;
     char *NodeValue;
 
-    CSkywalkerScriptNode *ParentNode;                           // 父节点
-    std::map<std::string, CSkywalkerScriptNode *> ChildNodeMap; // 子节点
+    CSkywalkerScriptNode *ParentNode;                    // 父节点
+    std::vector<CSkywalkerScriptNode *> ChildNodeVector; // 子节点
 };
 
 /**
@@ -236,7 +260,8 @@ public:
         // 逐行读取
         std::string Line;
         int LineNum = 0;
-        CSkywalkerScriptNode *LastNode = nullptr;
+        RootNode = new CSkywalkerScriptNode();
+        CSkywalkerScriptNode *LastNode = RootNode;
         int LastLayerLevel = 0;
         while (getline(InFile, Line))
         {
@@ -267,6 +292,14 @@ public:
         }
 
         return true;
+    }
+
+    /**
+     * 获取根节点
+     */
+    CSkywalkerScriptNode *GetRootNode() const
+    {
+        return RootNode;
     }
 
 private:
@@ -329,7 +362,7 @@ private:
         }
 
         // 计算层级
-        LayerLevel = SpaceNum / 4;
+        LayerLevel = SpaceNum / 4 + 1;
 
         Content[++ContentIndex] = '\0';
         if (!OutNode->ParseNode(Content, ContentIndex + 1))
@@ -345,6 +378,12 @@ private:
      */
     bool RecursiveNode(int &LastLayerLevel, CSkywalkerScriptNode *LastNode, int &LayerLevel, CSkywalkerScriptNode *Node)
     {
+        if (LastNode == nullptr)
+        {
+            SKYWALKER_SCRIPT_PRINT("LastNode is nullptr, can't add child node.");
+            return false;
+        }
+
         int LayerLevelDiff = LastLayerLevel - LayerLevel;
         if (LayerLevelDiff < -1)
         {
@@ -355,19 +394,14 @@ private:
         // 子节点
         if (LayerLevelDiff == -1)
         {
-            if (LastNode == nullptr)
-            {
-                SKYWALKER_SCRIPT_PRINT("ParentNode is nullptr, can't add child node.");
-                return false;
-            }
             Node->SetParentNode(LastNode);
             LastNode->AddChildNode(Node);
 
             return true;
         }
 
-        // 上级节点
-        while (LayerLevelDiff > 0)
+        // 找上级节点
+        while (LayerLevelDiff >= 0)
         {
             LastNode = LastNode->GetParentNode();
             if (LastNode == nullptr)
@@ -379,51 +413,19 @@ private:
             --LayerLevelDiff;
         }
 
-        // 同级节点
-        if (LayerLevelDiff == 0)
-        {
-            if (LastLayerLevel == 0)
-            {
-                ScriptNodeMap.insert(std::make_pair(Node->GetNodeName(), Node));
-
-                return true;
-            }
-
-            if (LastNode == nullptr)
-            {
-                SKYWALKER_SCRIPT_PRINT("LastNode is nullptr, can't add get ParentNode.");
-                return false;
-            }
-
-            LastNode = LastNode->GetParentNode();
-            if (LastNode == nullptr)
-            {
-                if (LayerLevel == 0)
-                {
-                    ScriptNodeMap.insert(std::make_pair(Node->GetNodeName(), Node));
-
-                    return true;
-                }
-
-                SKYWALKER_SCRIPT_PRINT("ParentNode is nullptr, can't add child node.");
-                return false;
-            }
-
-            Node->SetParentNode(LastNode);
-            LastNode->AddChildNode(Node);
-
-            return true;
-        }
+        Node->SetParentNode(LastNode);
+        LastNode->AddChildNode(Node);
 
         return true;
     }
 
 private:
-    std::map<std::string, CSkywalkerScriptNode *> ScriptNodeMap;
+    CSkywalkerScriptNode *RootNode = nullptr;
 };
 
 SKYWALKER_SCRIPT_NAMESPACE_END
 
 #define SKYWALKER_PTR_SCRIPT_PARSE SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse *
+#define SKYWALKER_PTR_SCRIPT_NODE SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptNode *
 
 #endif // __SKYWALKER_SCRIPT_PARSE_H__

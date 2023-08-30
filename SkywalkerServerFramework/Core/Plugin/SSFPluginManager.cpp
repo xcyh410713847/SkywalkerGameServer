@@ -211,10 +211,31 @@ void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
         return;
     }
 
-    // TODO Shyfan 临时写的
-    PluginNameMap.insert(std::make_pair("SSFPlugin_Network", true));
-    PluginNameMap.insert(std::make_pair("SSFPlugin_LaunchState", true));
-    PluginNameMap.insert(std::make_pair("SSFPlugin_Test", true));
+    SKYWALKER_PTR_SCRIPT_NODE RootNode = PluginScriptParse->GetRootNode();
+    if (RootNode == nullptr)
+    {
+        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+        return;
+    }
+
+    for (int i = 0; i < RootNode->GetChildNodeNum(); i++)
+    {
+        SKYWALKER_PTR_SCRIPT_NODE PluginNode = RootNode->GetChildNodeFromIndex(i);
+        if (PluginNode == nullptr)
+        {
+            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+            continue;
+        }
+
+        SKYWALKER_PTR_SCRIPT_NODE NameNode = PluginNode->GetChildNodeFromName("Name");
+        if (NameNode == nullptr)
+        {
+            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+            continue;
+        }
+
+        PluginNameMap.insert(std::make_pair(NameNode->GetNodeValueString(), true));
+    }
 }
 
 void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
