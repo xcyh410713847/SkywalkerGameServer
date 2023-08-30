@@ -12,6 +12,7 @@
 #include <string>
 #include <assert.h>
 #include <memory>
+#include <list>
 
 #include "SSFPlatform.h"
 
