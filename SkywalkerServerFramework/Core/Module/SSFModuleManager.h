@@ -48,7 +48,6 @@ public:
     GetModule()
     {
         SKYWALKER_SF_PTR_MODULE Module = GetModule(SKYWALKER_SF_CLASS_NAME(T));
-        auto Iter = ModuleMap.find(SKYWALKER_SF_CLASS_NAME(T));
         if (Module == nullptr)
         {
             return nullptr;
