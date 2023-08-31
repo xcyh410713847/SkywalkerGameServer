@@ -10,12 +10,39 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
-#include "Include/SSFCreator.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
+/**
+ * 对象创建上下文
+ */
+struct SSFObjectCreatorContext
+{
+	SSFObjectCreatorContext()
+	{
+		memset(this, 0, sizeof(SSFObjectCreatorContext));
+	}
+};
+
+static const SSFObjectCreatorContext SSFObjectCreatorContextDefault;
+
 class SSFObject
 {
+#pragma region NewObject
+
+public:
+	template <typename T, typename... Params>
+	static SKYWALKER_SF_PTR(T) NewObject(Params... param)
+	{
+		if (!SKYWALKER_IS_DERIVED(T, SSFObject))
+		{
+			return nullptr;
+		}
+		return new T(param...);
+	}
+
+#pragma endregion NewObject
+
 public:
 	SSFObject();
 	virtual ~SSFObject();
@@ -70,5 +97,7 @@ public:
 };
 
 SKYWALKER_SF_NAMESPACE_END
+
+#define SSF_NEW_OBJECT(T, ...) SKYWALKER_SF_NAMESPACE::SSFObject::NewObject<T>(__VA_ARGS__)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

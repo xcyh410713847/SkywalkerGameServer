@@ -13,7 +13,6 @@
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 #include "Include/SSFCore.h"
-#include "Include/SSFCreator.h"
 #include "Include/SSFILog.h"
 
 #include "Core/Object/SSFObject.h"
@@ -158,7 +157,7 @@ private:
 #define SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginName)                                                    \
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                                             \
     SSFPluginErrors PluginName##Errors;                                                                            \
-    SKYWALKER_SF_PTR_PLUGIN Plugin = NewObject<PluginName>(PluginManager);                                         \
+    SKYWALKER_SF_PTR_PLUGIN Plugin = SSF_NEW_OBJECT(PluginName, PluginManager);                                    \
     PluginManager->RegisterPlugin(PluginName##Errors, Plugin);                                                     \
     if (PluginName##Errors.IsValid())                                                                              \
     {                                                                                                              \
@@ -196,7 +195,7 @@ private:
     SKYWALKER_SF_ASSERT(SKYWALKER_IS_DERIVED(PluginName, SSFOPlugin));                               \
                                                                                                      \
     SSFModuleErrors ModuleName##Errors;                                                              \
-    SKYWALKER_SF_PTR_MODULE ModuleName##Module = NewObject<ModuleName>(PluginManager);               \
+    SKYWALKER_SF_PTR_MODULE ModuleName##Module = SSF_NEW_OBJECT(ModuleName, PluginManager);          \
     PluginManager->RegisterModule(ModuleName##Errors, ModuleName##Module);                           \
     if (ModuleName##Errors.IsValid())                                                                \
     {                                                                                                \
