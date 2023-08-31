@@ -10,8 +10,8 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFObjectPool::SSFObjectPool(SSFObjectCreatorContext &Context)
-    : SSFObject(Context)
+SSFObjectPool::SSFObjectPool()
+    : SSFObject()
 {
 }
 

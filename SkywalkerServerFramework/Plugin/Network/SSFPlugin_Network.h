@@ -19,8 +19,8 @@ class SSFPlugin_Network : public SSFOPlugin
 #pragma endregion Object
 
 public:
-    SSFPlugin_Network(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(Context, InPluginManager)
+    SSFPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOPlugin(InPluginManager)
     {
     }
     virtual ~SSFPlugin_Network(){};

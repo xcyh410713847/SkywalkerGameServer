@@ -19,8 +19,8 @@ class SSFPlugin_Test : public SSFOPlugin
 #pragma endregion Object
 
 public:
-    SSFPlugin_Test(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(Context, InPluginManager)
+    SSFPlugin_Test(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOPlugin(InPluginManager)
     {
     }
     virtual ~SSFPlugin_Test(){};

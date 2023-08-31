@@ -9,13 +9,15 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFObject::SSFObject(SSFObjectCreatorContext &Context)
+SSFObject::SSFObject()
 {
 }
 
 SSFObject::~SSFObject()
 {
 }
+
+void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context) {}
 
 void SSFObject::Init(SSFObjectErrors &Errors) {}
 

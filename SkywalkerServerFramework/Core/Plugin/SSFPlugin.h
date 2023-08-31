@@ -65,7 +65,7 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOPlugin(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
+    SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOPlugin();
 
     /**

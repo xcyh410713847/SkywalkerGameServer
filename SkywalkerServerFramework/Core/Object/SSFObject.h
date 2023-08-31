@@ -17,14 +17,16 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFObject
 {
 public:
-	SSFObject(SSFObjectCreatorContext &Context);
+	SSFObject();
 	virtual ~SSFObject();
 
 public:
 	/**
 	 * 调用循序
-	 * Init -> Awake -> Start -> Tick -> Stop -> Sleep -> Destroy
+	 * Create -> Init -> Awake -> Start -> Tick -> Stop -> Sleep -> Destroy -> Release
 	 */
+
+	virtual void Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context);
 
 	/**
 	 * 初始化

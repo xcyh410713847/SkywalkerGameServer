@@ -9,8 +9,8 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
-SSFObject_NetworkSocket::SSFObject_NetworkSocket(SSFObjectCreatorContext &Context)
-    : SSFObject(Context)
+SSFObject_NetworkSocket::SSFObject_NetworkSocket()
+    : SSFObject()
 {
 }
 

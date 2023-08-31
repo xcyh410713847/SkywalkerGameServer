@@ -19,7 +19,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFOModuleManager : public SSFObject
 {
 public:
-    SSFOModuleManager(SSFObjectCreatorContext &Context) : SSFObject(Context) {}
+    SSFOModuleManager() : SSFObject() {}
     virtual ~SSFOModuleManager() {}
 
     /**

@@ -17,8 +17,8 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFModule_TestOne : public SSFOModule
 {
 public:
-    SSFModule_TestOne(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(Context, InPluginManager)
+    SSFModule_TestOne(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+        : SSFOModule(InPluginManager)
     {
     }
     virtual ~SSFModule_TestOne(){};

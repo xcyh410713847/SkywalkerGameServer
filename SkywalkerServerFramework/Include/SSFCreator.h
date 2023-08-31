@@ -33,32 +33,18 @@ NewObject()
     {
         return nullptr;
     }
-
-    SSFObjectCreatorContext Context;
-
-    return new T(Context);
-}
-
-template <typename T>
-SKYWALKER_SF_PTR(T)
-NewObject(SSFObjectCreatorContext &Context)
-{
-    if (!SKYWALKER_IS_DERIVED(T, SSFObject))
-    {
-        return nullptr;
-    }
-    return new T(Context);
+    return new T();
 }
 
 template <typename T, typename M>
 SKYWALKER_SF_PTR(T)
-NewObject(SSFObjectCreatorContext &Context, SKYWALKER_SF_PTR(M) Manager)
+NewObject(SKYWALKER_SF_PTR(M) Manager)
 {
     if (!SKYWALKER_IS_DERIVED(T, SSFObject))
     {
         return nullptr;
     }
-    return new T(Context, Manager);
+    return new T(Manager);
 }
 
 SKYWALKER_SF_NAMESPACE_END

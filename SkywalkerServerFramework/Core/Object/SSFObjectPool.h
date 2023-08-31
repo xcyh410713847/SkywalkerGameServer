@@ -17,7 +17,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 class SSFObjectPool : public SSFObject
 {
 public:
-    SSFObjectPool(SSFObjectCreatorContext &Context);
+    SSFObjectPool();
     virtual ~SSFObjectPool();
 
     /**
