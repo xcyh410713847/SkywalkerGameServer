@@ -43,16 +43,9 @@ public:
      */
     T *Get()
     {
-        if (Pool.empty())
-        {
-            return new T();
-        }
-        else
-        {
-            T *obj = Pool.front();
-            Pool.pop_front();
-            return obj;
-        }
+        T *obj = Pool.front();
+        Pool.pop_front();
+        return obj;
     }
 
     /** 回收对象
@@ -79,5 +72,8 @@ public:
 };
 
 SKYWALKER_POOL_NAMESPACE_END
+
+#define SKYWALKER_POOL_PTR(T) SKYWALKER_POOL_NAMESPACE::CSkywalkerPool<T> *
+#define SKYWALKER_POOL_NEW(T, MaxSize) new SKYWALKER_POOL_NAMESPACE::CSkywalkerPool<T>(MaxSize);
 
 #endif // __SKYWALKER_POOL_H__

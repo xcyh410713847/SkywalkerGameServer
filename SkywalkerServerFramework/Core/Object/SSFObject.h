@@ -8,8 +8,12 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
 
+#include "SkywalkerPool/SkywalkerPool.h"
+
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
+
+#include "Core/Map/SSFMap.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
@@ -30,15 +34,58 @@ class SSFObject
 {
 #pragma region NewObject
 
+private:
+	static SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> ObjectPoolMap;
+
 public:
 	template <typename T, typename... Params>
 	static SKYWALKER_SF_PTR(T) NewObject(Params... param)
 	{
-		if (!SKYWALKER_IS_DERIVED(T, SSFObject))
+		// 从对象池中获取对象
+		std::string ClassName = typeid(T).name();
+		auto Iterator = SSFObject::ObjectPoolMap.find(ClassName);
+		if (Iterator != SSFObject::ObjectPoolMap.end())
 		{
-			return nullptr;
+			SKYWALKER_POOL_PTR(SSFObject)
+			ObjectPool = Iterator->second;
+			if (SKYWALKER_SF_PTR_VALID(ObjectPool))
+			{
+				SSFObject *Object = ObjectPool->Get();
+				if (SKYWALKER_SF_PTR_VALID(Object))
+				{
+					return (T *)Object;
+				}
+			}
 		}
+
 		return new T(param...);
+	}
+
+	static bool RemoveObject(SKYWALKER_SF_PTR_OBJECT Object)
+	{
+		if (!SKYWALKER_SF_PTR_VALID(Object))
+		{
+			return false;
+		}
+
+		// 回收对象
+		std::string ClassName = typeid(Object).name();
+		auto Iterator = SSFObject::ObjectPoolMap.find(ClassName);
+		if (Iterator == SSFObject::ObjectPoolMap.end())
+		{
+			return false;
+		}
+
+		SKYWALKER_POOL_PTR(SSFObject)
+		ObjectPool = Iterator->second;
+		if (!SKYWALKER_SF_PTR_VALID(ObjectPool))
+		{
+			return false;
+		}
+
+		ObjectPool->Recycle(Object);
+
+		return true;
 	}
 
 #pragma endregion NewObject

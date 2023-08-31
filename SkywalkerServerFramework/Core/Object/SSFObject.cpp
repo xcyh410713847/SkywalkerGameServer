@@ -9,6 +9,8 @@
 
 SKYWALKER_SF_NAMESPACE_USE
 
+SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> SSFObject::ObjectPoolMap;
+
 SSFObject::SSFObject()
 {
 }
@@ -35,5 +37,5 @@ void SSFObject::Destroy(SSFObjectErrors &Errors) {}
 
 void SSFObject::Release(SSFObjectErrors &Errors)
 {
-    delete this;
+    SSFObject::RemoveObject(this);
 }
