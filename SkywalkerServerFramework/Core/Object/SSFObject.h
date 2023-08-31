@@ -68,6 +68,12 @@ public:
 			return false;
 		}
 
+		if (!Object->IsEnablePool())
+		{
+			delete Object;
+			return true;
+		}
+
 		// 回收对象
 		std::string ClassName = Object->GetObjectClassName();
 		auto Iterator = SSFObject::ObjectPoolMap.find(ClassName);
@@ -109,6 +115,11 @@ public:
 	 * @return 类名称
 	 */
 	virtual const std::string GetObjectClassName() = 0;
+
+	/**
+	 * 是否启用对象池
+	 */
+	virtual bool IsEnablePool() = 0;
 
 public:
 	/**
@@ -166,7 +177,15 @@ public:                                                     \
 	virtual const std::string GetObjectClassName() override \
 	{                                                       \
 		return SKYWALKER_SF_CLASS_NAME(Class);              \
-	};
+	};                                                      \
+                                                            \
+	bool IsEnablePool() override                            \
+	{                                                       \
+		return EnablePool;                                  \
+	};                                                      \
+                                                            \
+protected:                                                  \
+	bool EnablePool = false;
 
 /**
  * 创建对象
