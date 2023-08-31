@@ -42,7 +42,7 @@ public:
 	static SKYWALKER_SF_PTR(T) NewObject(Params... param)
 	{
 		// 从对象池中获取对象
-		std::string ClassName = typeid(T).name();
+		std::string ClassName = SKYWALKER_SF_CLASS_NAME(T);
 		auto Iterator = SSFObject::ObjectPoolMap.find(ClassName);
 		if (Iterator != SSFObject::ObjectPoolMap.end())
 		{
@@ -69,11 +69,21 @@ public:
 		}
 
 		// 回收对象
-		std::string ClassName = typeid(Object).name();
+		std::string ClassName = Object->GetObjectClassName();
 		auto Iterator = SSFObject::ObjectPoolMap.find(ClassName);
 		if (Iterator == SSFObject::ObjectPoolMap.end())
 		{
-			return false;
+			// 创建对象池
+			SKYWALKER_POOL_PTR(SSFObject)
+			ObjectPool = SKYWALKER_POOL_NEW(SSFObject, 100);
+
+			SSFObject::ObjectPoolMap.insert(std::make_pair(ClassName, ObjectPool));
+
+			Iterator = SSFObject::ObjectPoolMap.find(ClassName);
+			if (Iterator == SSFObject::ObjectPoolMap.end())
+			{
+				return false;
+			}
 		}
 
 		SKYWALKER_POOL_PTR(SSFObject)
@@ -93,6 +103,12 @@ public:
 public:
 	SSFObject();
 	virtual ~SSFObject();
+
+	/**
+	 * 获取类名称
+	 * @return 类名称
+	 */
+	virtual const std::string GetObjectClassName() = 0;
 
 public:
 	/**
@@ -145,6 +161,16 @@ public:
 
 SKYWALKER_SF_NAMESPACE_END
 
+#define SSF_OBJECT_CLASS(Class)                             \
+public:                                                     \
+	virtual const std::string GetObjectClassName() override \
+	{                                                       \
+		return SKYWALKER_SF_CLASS_NAME(Class);              \
+	};
+
+/**
+ * 创建对象
+ */
 #define SSF_NEW_OBJECT(T, ...) SKYWALKER_SF_NAMESPACE::SSFObject::NewObject<T>(__VA_ARGS__)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

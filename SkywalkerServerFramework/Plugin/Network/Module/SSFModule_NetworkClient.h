@@ -16,6 +16,8 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFModule_NetworkClient : public SSFOModule
 {
+    SSF_OBJECT_CLASS(SSFModule_NetworkClient)
+
 public:
     SSFModule_NetworkClient(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)

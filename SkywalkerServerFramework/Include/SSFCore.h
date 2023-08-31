@@ -59,7 +59,7 @@
 /**
  * 获取类名
  */
-#define SKYWALKER_SF_CLASS_NAME(ClassName) (#ClassName)
+#define SKYWALKER_SF_CLASS_NAME(ClassName) typeid(ClassName).name()
 
 /**
  * 断言

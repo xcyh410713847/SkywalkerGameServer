@@ -15,8 +15,7 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFPlugin_Network : public SSFOPlugin
 {
-#pragma region Object
-#pragma endregion Object
+    SSF_OBJECT_CLASS(SSFPlugin_Network)
 
 public:
     SSFPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)

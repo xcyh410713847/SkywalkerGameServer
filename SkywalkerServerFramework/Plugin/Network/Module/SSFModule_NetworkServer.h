@@ -22,6 +22,8 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFModule_NetworkServer : public SSFOModule
 {
+    SSF_OBJECT_CLASS(SSFModule_NetworkServer)
+
 #pragma region Object
 
 public:

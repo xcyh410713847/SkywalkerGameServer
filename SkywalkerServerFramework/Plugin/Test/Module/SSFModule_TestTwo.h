@@ -16,6 +16,8 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFModule_TestTwo : public SSFOModule
 {
+    SSF_OBJECT_CLASS(SSFModule_TestTwo)
+
 public:
     SSFModule_TestTwo(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)
