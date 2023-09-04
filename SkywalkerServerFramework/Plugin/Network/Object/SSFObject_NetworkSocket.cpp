@@ -12,8 +12,16 @@ SKYWALKER_SF_NAMESPACE_USE
 SSFObject_NetworkSocket::SSFObject_NetworkSocket()
     : SSFObject()
 {
+    EnablePool = true;
 }
 
 SSFObject_NetworkSocket::~SSFObject_NetworkSocket()
 {
+}
+
+void SSFObject_NetworkSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context)
+{
+    SSFObject::Create(Errors, Context);
+
+    Socket = Context.Socket;
 }

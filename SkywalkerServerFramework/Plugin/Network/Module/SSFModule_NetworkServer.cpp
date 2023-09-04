@@ -19,8 +19,9 @@ void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
 {
     SSFOModule::Init(Errors);
 
-    ServerSocket = INVALID_SOCKET;
     ClientSocket = INVALID_SOCKET;
+
+    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
 }
 
 void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
@@ -37,14 +38,21 @@ void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
         SKYWALKER_SF_LOG_ERROR("Failed to initialize winsock")
         return;
     }
+
+    SSFNetworkSocketCreatorContext Context;
+
     // 创建服务器套接字
-    ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (ServerSocket == INVALID_SOCKET)
+    Context.Socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (Context.Socket == INVALID_SOCKET)
     {
         SKYWALKER_SF_LOG_ERROR("Failed to create socket")
         WSACleanup();
         return;
     }
+
+    ServerNetworkSocket->Create(Errors, Context);
+
+    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
 
     SKYWALKER_SF_LOG_DEBUG("ServerSocket: " << ServerSocket)
 
@@ -99,6 +107,8 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
     else
     {
+        SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
+
         ClientSocket = accept(ServerSocket, NULL, NULL);
         if (ClientSocket == INVALID_SOCKET)
         {
@@ -114,6 +124,8 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 {
     SSFOModule::Stop(Errors);
+
+    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
 
     closesocket(ServerSocket);
     WSACleanup();

@@ -14,6 +14,11 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
+struct SSFNetworkSocketCreatorContext : public SSFObjectCreatorContext
+{
+    SOCKET Socket;
+};
+
 class SSFObject_NetworkSocket : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFObject_NetworkSocket)
@@ -21,8 +26,23 @@ class SSFObject_NetworkSocket : public SSFObject
 public:
     SSFObject_NetworkSocket();
     virtual ~SSFObject_NetworkSocket();
+
+    void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
+
+    SOCKET GetSocket() const
+    {
+        return Socket;
+    }
+
+private:
+    /**
+     * 套接字
+     */
+    SOCKET Socket;
 };
 
 SKYWALKER_SF_NAMESPACE_END
+
+#define SSF_PRT_NETWORK_SOCKET SKYWALKER_SF_PTR(SSFObject_NetworkSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_NETWORK_SOCKET_H__

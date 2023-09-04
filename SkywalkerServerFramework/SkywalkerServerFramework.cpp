@@ -9,7 +9,7 @@
 
 #include "Include/SSFILog.h"
 
-#define SKYWALKER_SF_START_AND_STOP
+// #define SKYWALKER_SF_START_AND_STOP
 
 SKYWALKER_SF_NAMESPACE_USE
 

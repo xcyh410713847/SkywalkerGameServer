@@ -15,6 +15,7 @@
 #include "Core/Module/SSFModule.h"
 
 #include "SSFObject_NetworkSocket.h"
+#include "SSFObject_NetworkSocket.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -87,8 +88,9 @@ public:
 
 private:
     WSADATA wsaData;
-    SOCKET ServerSocket = INVALID_SOCKET;
     SOCKET ClientSocket = INVALID_SOCKET;
+
+    SSF_PRT_NETWORK_SOCKET ServerNetworkSocket = nullptr;
 };
 
 SKYWALKER_SF_NAMESPACE_END
