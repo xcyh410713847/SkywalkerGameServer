@@ -87,6 +87,12 @@ public:
     };
 
 private:
+    /**
+     * 创建网络服务器
+     */
+    void CreateNetworkServer(SSFNetworkErrors &Errors);
+
+private:
     WSADATA wsaData;
     SOCKET ClientSocket = INVALID_SOCKET;
 

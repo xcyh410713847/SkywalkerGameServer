@@ -20,8 +20,6 @@ void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
     SSFOModule::Init(Errors);
 
     ClientSocket = INVALID_SOCKET;
-
-    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
 }
 
 void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
@@ -33,50 +31,7 @@ void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
 {
     SSFOModule::Start(Errors);
 
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-    {
-        SKYWALKER_SF_LOG_ERROR("Failed to initialize winsock")
-        return;
-    }
-
-    SSFNetworkSocketCreatorContext Context;
-
-    // 创建服务器套接字
-    Context.Socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (Context.Socket == INVALID_SOCKET)
-    {
-        SKYWALKER_SF_LOG_ERROR("Failed to create socket")
-        WSACleanup();
-        return;
-    }
-
-    ServerNetworkSocket->Create(Errors, Context);
-
-    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
-
-    SKYWALKER_SF_LOG_DEBUG("ServerSocket: " << ServerSocket)
-
-    // 绑定IP地址和端口号
-    sockaddr_in serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(9527); // 设置端口号
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
-    {
-        SKYWALKER_SF_LOG_ERROR("Failed to bind address to the socket")
-        closesocket(ServerSocket);
-        WSACleanup();
-        return;
-    }
-
-    // 监听和接受连接请求
-    if (listen(ServerSocket, SOMAXCONN) == SOCKET_ERROR)
-    {
-        SKYWALKER_SF_LOG_ERROR("Failed to listen")
-        closesocket(ServerSocket);
-        WSACleanup();
-        return;
-    }
+    CreateNetworkServer(Errors);
 }
 
 void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
@@ -147,3 +102,58 @@ void SSFModule_NetworkServer::Release(SSFObjectErrors &Errors)
 }
 
 #pragma endregion Object
+
+void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
+{
+    if (Errors.IsValid())
+    {
+        return;
+    }
+
+    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Init_Failed, "Failed to initialize winsock")
+        return;
+    }
+
+    // 创建服务器套接字
+    SSFNetworkSocketCreatorContext Context;
+    Context.Socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (Context.Socket == INVALID_SOCKET)
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Socket_CreateFailed, "Failed to create socket")
+        WSACleanup();
+        return;
+    }
+
+    ServerNetworkSocket->Create(Errors, Context);
+    ServerNetworkSocket->Init(Errors);
+    ServerNetworkSocket->Awake(Errors);
+    ServerNetworkSocket->Start(Errors);
+
+    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
+
+    // 绑定IP地址和端口号
+    sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(9527); // 设置端口号
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Socket_BindFailed, "Failed to bind address to the socket")
+        closesocket(ServerSocket);
+        WSACleanup();
+        return;
+    }
+
+    // 监听和接受连接请求
+    if (listen(ServerSocket, SOMAXCONN) == SOCKET_ERROR)
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Socket_ListenFailed, "Failed to listen")
+        closesocket(ServerSocket);
+        WSACleanup();
+        return;
+    }
+}

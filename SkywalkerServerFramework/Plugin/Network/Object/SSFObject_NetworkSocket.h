@@ -27,18 +27,32 @@ public:
     SSFObject_NetworkSocket();
     virtual ~SSFObject_NetworkSocket();
 
+    /**
+     * 创建
+     */
     void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
 
+    /**
+     * 获取套接字
+     */
     SOCKET GetSocket() const
     {
         return Socket;
+    }
+
+    /**
+     * 是否有效
+     */
+    bool IsSocketValid() const
+    {
+        return Socket != INVALID_SOCKET;
     }
 
 private:
     /**
      * 套接字
      */
-    SOCKET Socket;
+    SOCKET Socket = INVALID_SOCKET;
 };
 
 SKYWALKER_SF_NAMESPACE_END
