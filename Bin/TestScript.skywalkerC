@@ -1,6 +1,0 @@
-ServerConfig
-    Plugins
-        Plugin
-            Name=1
-        Plugin
-            Name=2
