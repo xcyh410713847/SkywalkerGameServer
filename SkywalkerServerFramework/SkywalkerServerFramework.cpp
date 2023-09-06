@@ -17,6 +17,9 @@ SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
+
+    SKYWALKER_SF_LOG_DEBUG("SignalHandler Signal: " << Signal);
+
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
 }
 
@@ -43,6 +46,8 @@ bool CSkywalkerServerFramework::Start()
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
+    signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
+
     SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Finish");
 
     return true;
@@ -64,8 +69,6 @@ bool CSkywalkerServerFramework::Tick()
 
     SSFObjectErrors ObjectErrors;
     PluginManager->Tick(ObjectErrors, 1000);
-
-    signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
 
     return true;
 }
