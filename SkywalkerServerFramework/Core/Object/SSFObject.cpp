@@ -7,7 +7,7 @@
 
 #include "SSFObject.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> SSFObject::ObjectPoolMap;
 

@@ -9,7 +9,7 @@
 
 #include "Core/Plugin/SSFPlugin.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module)
 {

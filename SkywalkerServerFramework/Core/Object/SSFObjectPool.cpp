@@ -8,7 +8,7 @@
 #include "SSFObjectPool.h"
 #include "Include/SSFErrors.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SSFObjectPool::SSFObjectPool()
     : SSFObject()

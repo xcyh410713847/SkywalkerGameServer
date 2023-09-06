@@ -16,6 +16,11 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFObject_ServerSocket : public SSFObject_NetworkSocket
 {
+public:
+    /**
+     * 创建
+     */
+    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
 };
 
 SKYWALKER_SF_NAMESPACE_END

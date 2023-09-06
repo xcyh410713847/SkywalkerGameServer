@@ -13,7 +13,7 @@
 #include "SSFModule_TestTwo.h"
 #include "SSFModule_TestThree.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
 

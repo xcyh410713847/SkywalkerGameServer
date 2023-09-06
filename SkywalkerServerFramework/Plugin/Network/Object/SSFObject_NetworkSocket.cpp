@@ -7,7 +7,7 @@
 
 #include "SSFObject_NetworkSocket.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SSFObject_NetworkSocket::SSFObject_NetworkSocket()
     : SSFObject()
@@ -24,4 +24,8 @@ void SSFObject_NetworkSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCr
     SSFObject::Create(Errors, Context);
 
     Socket = Context.Socket;
+
+    Init(Errors);
+    Awake(Errors);
+    Start(Errors);
 }

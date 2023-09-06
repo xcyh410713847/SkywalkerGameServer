@@ -30,7 +30,7 @@ public:
     /**
      * 创建
      */
-    void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
+    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
 
     /**
      * 获取套接字

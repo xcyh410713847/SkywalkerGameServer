@@ -39,7 +39,7 @@
 /**
  * 使用命名空间
  */
-#define SKYWALKER_SF_NAMESPACE_USE using namespace SKYWALKER_SF_NAMESPACE;
+#define SKYWALKER_SF_NAMESPACE_USING using namespace SKYWALKER_SF_NAMESPACE;
 
 /**
  * 导出

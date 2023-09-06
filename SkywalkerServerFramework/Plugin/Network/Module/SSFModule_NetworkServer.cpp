@@ -10,7 +10,7 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 
@@ -119,9 +119,6 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
     }
 
     ServerNetworkSocket->Create(Errors, Context);
-    ServerNetworkSocket->Init(Errors);
-    ServerNetworkSocket->Awake(Errors);
-    ServerNetworkSocket->Start(Errors);
 
     SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
 
@@ -164,9 +161,6 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
     SSFNetworkSocketCreatorContext Context;
     Context.Socket = ClientSocket;
     ClientNetworkSocket->Create(Errors, Context);
-    ClientNetworkSocket->Init(Errors);
-    ClientNetworkSocket->Awake(Errors);
-    ClientNetworkSocket->Start(Errors);
 
     ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
 

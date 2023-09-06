@@ -12,7 +12,7 @@
 #include "Core/Module/SSFModule.h"
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 

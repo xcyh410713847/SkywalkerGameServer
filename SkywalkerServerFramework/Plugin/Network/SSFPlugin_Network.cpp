@@ -12,7 +12,7 @@
 #include "SSFModule_NetworkServer.h"
 #include "SSFModule_NetworkClient.h"
 
-SKYWALKER_SF_NAMESPACE_USE
+SKYWALKER_SF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Network, LogLevel_Debug);
 
