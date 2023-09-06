@@ -15,8 +15,8 @@
 #include "Core/Module/SSFModule.h"
 #include "Core/Map/SSFMap.h"
 
-#include "SSFObject_NetworkSocket.h"
-#include "SSFObject_NetworkSocket.h"
+#include "SSFObject_ServerSocket.h"
+#include "SSFObject_ClientSocket.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -101,9 +101,9 @@ private:
 private:
     WSADATA wsaData;
 
-    SSF_PRT_NETWORK_SOCKET ServerNetworkSocket = nullptr;
+    SSF_PRT_SERVER_SOCKET ServerNetworkSocket = nullptr;
 
-    SSFMap<SOCKET, SSF_PRT_NETWORK_SOCKET> ClientNetworkSocketMap;
+    SSFMap<SOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END

@@ -41,7 +41,7 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 
     SKYWALKER_SF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
     {
-        SSF_PRT_NETWORK_SOCKET ClientNetworkSocket = Iter->second;
+        SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = Iter->second;
 
         SOCKET ClientSocket = ClientNetworkSocket->GetSocket();
 
@@ -100,7 +100,7 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
         return;
     }
 
-    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
+    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_ServerSocket);
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
@@ -158,7 +158,7 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
         return;
     }
 
-    SSF_PRT_NETWORK_SOCKET ClientNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
+    SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = SSF_NEW_OBJECT(SSFObject_ClientSocket);
 
     // 创建客户端套接字
     SSFNetworkSocketCreatorContext Context;
