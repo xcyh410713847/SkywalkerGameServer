@@ -7,6 +7,7 @@
 
 #include "SSFModule_NetworkServer.h"
 
+#include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
 SKYWALKER_SF_NAMESPACE_USE
@@ -18,8 +19,6 @@ SKYWALKER_SF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
 {
     SSFOModule::Init(Errors);
-
-    ClientSocket = INVALID_SOCKET;
 }
 
 void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
@@ -38,9 +37,14 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSFOModule::Tick(Errors, DelayMS);
 
-    // 接受客户端连接
-    if (ClientSocket != INVALID_SOCKET)
+    CreateNetworkClient(Errors);
+
+    SKYWALKER_SF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
     {
+        SSF_PRT_NETWORK_SOCKET ClientNetworkSocket = Iter->second;
+
+        SOCKET ClientSocket = ClientNetworkSocket->GetSocket();
+
         // 与客户端进行数据通信
         char buffer[1024];
         int bytesReceived;
@@ -59,20 +63,6 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
         SKYWALKER_SF_LOG_DEBUG("Received: " << buffer)
         // 回复客户端
         send(ClientSocket, buffer, bytesReceived, 0);
-    }
-    else
-    {
-        SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
-
-        ClientSocket = accept(ServerSocket, NULL, NULL);
-        if (ClientSocket == INVALID_SOCKET)
-        {
-            closesocket(ServerSocket);
-            WSACleanup();
-            return;
-        }
-
-        SKYWALKER_SF_LOG_DEBUG("ClientSocket: " << ClientSocket)
     }
 }
 
@@ -156,4 +146,29 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
         WSACleanup();
         return;
     }
+}
+
+void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
+{
+    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
+
+    SOCKET ClientSocket = accept(ServerSocket, NULL, NULL);
+    if (ClientSocket == INVALID_SOCKET)
+    {
+        return;
+    }
+
+    SSF_PRT_NETWORK_SOCKET ClientNetworkSocket = SSF_NEW_OBJECT(SSFObject_NetworkSocket);
+
+    // 创建客户端套接字
+    SSFNetworkSocketCreatorContext Context;
+    Context.Socket = ClientSocket;
+    ClientNetworkSocket->Create(Errors, Context);
+    ClientNetworkSocket->Init(Errors);
+    ClientNetworkSocket->Awake(Errors);
+    ClientNetworkSocket->Start(Errors);
+
+    ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
+
+    SKYWALKER_SF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
 }

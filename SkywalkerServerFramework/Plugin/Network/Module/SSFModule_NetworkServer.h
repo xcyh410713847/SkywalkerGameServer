@@ -13,6 +13,7 @@
 #include "Include/SSFCore.h"
 
 #include "Core/Module/SSFModule.h"
+#include "Core/Map/SSFMap.h"
 
 #include "SSFObject_NetworkSocket.h"
 #include "SSFObject_NetworkSocket.h"
@@ -92,11 +93,17 @@ private:
      */
     void CreateNetworkServer(SSFNetworkErrors &Errors);
 
+    /**
+     * 创建网络客户端
+     */
+    void CreateNetworkClient(SSFNetworkErrors &Errors);
+
 private:
     WSADATA wsaData;
-    SOCKET ClientSocket = INVALID_SOCKET;
 
     SSF_PRT_NETWORK_SOCKET ServerNetworkSocket = nullptr;
+
+    SSFMap<SOCKET, SSF_PRT_NETWORK_SOCKET> ClientNetworkSocketMap;
 };
 
 SKYWALKER_SF_NAMESPACE_END
