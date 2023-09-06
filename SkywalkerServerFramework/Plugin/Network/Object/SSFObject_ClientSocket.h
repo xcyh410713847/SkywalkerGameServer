@@ -16,6 +16,12 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFObject_ClientSocket : public SSFObject_NetworkSocket
 {
+#pragma region Object
+
+public:
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+
+#pragma endregion Object
 };
 
 SKYWALKER_SF_NAMESPACE_END

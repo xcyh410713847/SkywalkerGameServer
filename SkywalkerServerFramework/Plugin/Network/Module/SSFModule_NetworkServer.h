@@ -100,9 +100,7 @@ private:
 
 private:
     WSADATA wsaData;
-
     SSF_PRT_SERVER_SOCKET ServerNetworkSocket = nullptr;
-
     SSFMap<SOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 };
 

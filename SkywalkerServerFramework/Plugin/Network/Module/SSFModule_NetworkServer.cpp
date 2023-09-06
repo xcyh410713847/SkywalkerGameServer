@@ -41,28 +41,7 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 
     SKYWALKER_SF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
     {
-        SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = Iter->second;
-
-        SOCKET ClientSocket = ClientNetworkSocket->GetSocket();
-
-        // 与客户端进行数据通信
-        char buffer[1024];
-        int bytesReceived;
-
-        // 接收客户端发送的数据
-        bytesReceived = recv(ClientSocket, buffer, sizeof(buffer), 0);
-        if (bytesReceived <= 0)
-        {
-            SKYWALKER_SF_LOG_DEBUG("ClientSocket " << ClientSocket << " disconnected")
-            closesocket(ClientSocket);
-            ClientSocket = INVALID_SOCKET;
-            return;
-        }
-
-        // 处理接收到的数据
-        SKYWALKER_SF_LOG_DEBUG("Received: " << buffer)
-        // 回复客户端
-        send(ClientSocket, buffer, bytesReceived, 0);
+        Iter->second->Tick(Errors, DelayMS);
     }
 }
 
@@ -110,7 +89,10 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
     Context.Socket = socket(AF_INET, SOCK_STREAM, 0);
     if (Context.Socket == INVALID_SOCKET)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Socket_CreateFailed, "Failed to create socket")
+        SKYWALKER_SF_ERROR_DESC_TRACE(
+            Errors,
+            SkywalkerSFError_Network_Socket_CreateFailed,
+            "Failed to create socket")
         WSACleanup();
         return;
     }
@@ -120,9 +102,17 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
 {
-    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
+    if (!ServerNetworkSocket->IsSocketValid())
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(
+            Errors,
+            SkywalkerSFError_Network_Socket_CreateFailed,
+            "Create ClientSocket Failed, Because ServerSocket is Invalid")
 
-    SOCKET ClientSocket = accept(ServerSocket, NULL, NULL);
+        return;
+    }
+
+    SOCKET ClientSocket = accept(ServerNetworkSocket->GetSocket(), NULL, NULL);
     if (ClientSocket == INVALID_SOCKET)
     {
         return;
