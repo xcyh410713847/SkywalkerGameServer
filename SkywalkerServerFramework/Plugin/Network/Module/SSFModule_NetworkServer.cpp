@@ -70,10 +70,7 @@ void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 {
     SSFOModule::Stop(Errors);
 
-    SOCKET ServerSocket = ServerNetworkSocket->GetSocket();
-
-    closesocket(ServerSocket);
-    WSACleanup();
+    ServerNetworkSocket->Stop(Errors);
 }
 
 void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)

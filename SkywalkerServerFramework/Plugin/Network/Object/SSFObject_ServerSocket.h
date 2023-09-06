@@ -16,11 +16,18 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFObject_ServerSocket : public SSFObject_NetworkSocket
 {
+#pragma region Object
+
+public:
+    virtual void Stop(SSFObjectErrors &Errors) override;
+
+#pragma endregion Object
+
 public:
     /**
      * 创建
      */
-    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
+    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context) override;
 };
 
 SKYWALKER_SF_NAMESPACE_END

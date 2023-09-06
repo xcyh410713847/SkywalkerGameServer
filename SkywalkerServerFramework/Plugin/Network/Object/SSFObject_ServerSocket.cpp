@@ -9,6 +9,18 @@
 
 SKYWALKER_SF_NAMESPACE_USING
 
+#pragma region Object
+
+void SSFObject_ServerSocket::Stop(SSFObjectErrors &Errors)
+{
+    SSFObject_NetworkSocket::Stop(Errors);
+
+    closesocket(GetSocket());
+    WSACleanup();
+}
+
+#pragma endregion Object
+
 void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context)
 {
     SSFObject_NetworkSocket::Create(Errors, Context);
