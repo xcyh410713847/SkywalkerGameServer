@@ -102,7 +102,7 @@ void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
 {
-    if (!ServerNetworkSocket->IsSocketValid())
+    if (ServerNetworkSocket->IsSocketInvalid())
     {
         SKYWALKER_SF_ERROR_DESC_TRACE(
             Errors,
