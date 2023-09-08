@@ -27,6 +27,22 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
 
     SOCKET ServerSocket = GetSocket();
 
+    // 设置套接字为非阻塞模式
+    u_long mode = 1; // 将非阻塞模式设置为1
+
+    // 设置套接字为非阻塞模式
+    int result = ioctlsocket(ServerSocket, FIONBIO, &mode);
+    if (result == SOCKET_ERROR)
+    {
+        SKYWALKER_SF_ERROR_DESC_TRACE(
+            Errors,
+            SkywalkerSFError_Network_Socket_SetFailed,
+            "Failed to set socket to non-blocking mode");
+        closesocket(ServerSocket);
+        WSACleanup();
+        return;
+    }
+
     // 绑定IP地址和端口号
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;

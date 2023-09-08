@@ -66,6 +66,7 @@ enum ESkywalkerSFError
     SkywalkerSFError_Network_Socket_CreateFailed, // 创建套接字失败
     SkywalkerSFError_Network_Socket_BindFailed,   // 绑定套接字失败
     SkywalkerSFError_Network_Socket_ListenFailed, // 监听套接字失败
+    SkywalkerSFError_Network_Socket_SetFailed,    // 设置套接字失败
 
 #pragma endregion 网络错误
 
