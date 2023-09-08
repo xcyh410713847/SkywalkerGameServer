@@ -29,9 +29,6 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     bytesReceived = recv(ClientSocket, buffer, sizeof(buffer), 0);
     if (bytesReceived <= 0)
     {
-        SKYWALKER_SF_LOG_DEBUG("ClientSocket " << ClientSocket << " disconnected")
-        closesocket(ClientSocket);
-        ClientSocket = INVALID_SOCKET;
         return;
     }
 
