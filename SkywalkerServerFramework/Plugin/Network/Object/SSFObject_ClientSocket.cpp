@@ -19,7 +19,16 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSFObject_NetworkSocket::Tick(Errors, DelayMS);
 
+    // 获取客户端套接字
     SOCKET ClientSocket = GetSocket();
+
+    // 检查客户端套接字是否有效
+    if (IsSocketInvalid())
+    {
+        return;
+    }
+
+    // TODO Shyfan 检查客户端套接字连接状态
 
     // 与客户端进行数据通信
     char buffer[1024];

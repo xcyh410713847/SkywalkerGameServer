@@ -41,11 +41,19 @@ public:
     }
 
     /**
+     * 是否无效
+     */
+    bool IsSocketInvalid() const
+    {
+        return Socket == INVALID_SOCKET;
+    }
+
+    /**
      * 是否有效
      */
     bool IsSocketValid() const
     {
-        return Socket != INVALID_SOCKET;
+        return !IsSocketInvalid();
     }
 
 private:
