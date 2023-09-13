@@ -65,7 +65,7 @@ bool CSkywalkerServerFramework::Tick()
     }
 
     // TODO Shyfan 临时
-    SKYWALKER_PLATFORM_SLEEP(1000);
+    // SKYWALKER_PLATFORM_SLEEP(1000);
 
     SSFObjectErrors ObjectErrors;
     PluginManager->Tick(ObjectErrors, 1000);

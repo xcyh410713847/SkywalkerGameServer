@@ -30,7 +30,7 @@ void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
 {
     SSFOModule::Start(Errors);
 
-    CreateNetworkServer(Errors);
+    StartNetworkServer(Errors);
 }
 
 void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
@@ -50,6 +50,8 @@ void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
     SSFOModule::Stop(Errors);
 
     ServerNetworkSocket->Stop(Errors);
+
+    WSACleanup();
 }
 
 void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
@@ -69,35 +71,34 @@ void SSFModule_NetworkServer::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-void SSFModule_NetworkServer::CreateNetworkServer(SSFNetworkErrors &Errors)
+void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
 {
     if (Errors.IsValid())
     {
         return;
     }
 
-    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_ServerSocket);
-
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Network_Init_Failed, "Failed to initialize winsock")
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+                                      SkywalkerSFError_Network_Init_Failed,
+                                      "Failed to initialize winsock")
         return;
     }
 
     // 创建服务器套接字
+    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_ServerSocket);
     SSFNetworkSocketCreatorContext Context;
-    Context.Socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (Context.Socket == INVALID_SOCKET)
+    ServerNetworkSocket->Create(Errors, Context);
+
+    if (Errors.IsValid())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(
-            Errors,
-            SkywalkerSFError_Network_Socket_CreateFailed,
-            "Failed to create socket")
+        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+                                      SkywalkerSFError_Network_Start_Failed,
+                                      "Failed to start network server")
         WSACleanup();
         return;
     }
-
-    ServerNetworkSocket->Create(Errors, Context);
 }
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)

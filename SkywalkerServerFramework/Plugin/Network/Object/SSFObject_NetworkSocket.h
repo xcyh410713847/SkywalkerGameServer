@@ -17,6 +17,12 @@ SKYWALKER_SF_NAMESPACE_BEGIN
 struct SSFNetworkSocketCreatorContext : public SSFObjectCreatorContext
 {
     SOCKET Socket;
+
+    SSFNetworkSocketCreatorContext()
+        : SSFObjectCreatorContext(),
+          Socket(INVALID_SOCKET)
+    {
+    }
 };
 
 class SSFObject_NetworkSocket : public SSFObject
@@ -56,7 +62,7 @@ public:
         return !IsSocketInvalid();
     }
 
-private:
+protected:
     /**
      * 套接字
      */

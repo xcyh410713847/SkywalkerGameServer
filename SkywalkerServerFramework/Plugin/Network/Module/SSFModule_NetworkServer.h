@@ -89,9 +89,9 @@ public:
 
 private:
     /**
-     * 创建网络服务器
+     * 开启网络服务器
      */
-    void CreateNetworkServer(SSFNetworkErrors &Errors);
+    void StartNetworkServer(SSFNetworkErrors &Errors);
 
     /**
      * 创建网络客户端

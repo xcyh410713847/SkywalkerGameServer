@@ -63,6 +63,7 @@ enum ESkywalkerSFError
 
     SkywalkerSFError_Network_Error = 400,         // 网络错误
     SkywalkerSFError_Network_Init_Failed,         // 网络初始化失败
+    SkywalkerSFError_Network_Start_Failed,        // 网络启动失败
     SkywalkerSFError_Network_Socket_CreateFailed, // 创建套接字失败
     SkywalkerSFError_Network_Socket_BindFailed,   // 绑定套接字失败
     SkywalkerSFError_Network_Socket_ListenFailed, // 监听套接字失败
