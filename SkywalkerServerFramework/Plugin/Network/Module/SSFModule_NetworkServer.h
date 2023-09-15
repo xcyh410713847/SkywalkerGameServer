@@ -8,8 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__
 
-#include <windows.h>
-
 #include "Include/SSFCore.h"
 
 #include "Core/Module/SSFModule.h"
@@ -17,8 +15,6 @@
 
 #include "SSFObject_ServerSocket.h"
 #include "SSFObject_ClientSocket.h"
-
-#pragma comment(lib, "ws2_32.lib")
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 

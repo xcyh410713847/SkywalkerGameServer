@@ -11,6 +11,8 @@
 #include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Plugin/SSFPlugin.h"
 
+#pragma comment(lib, "ws2_32.lib")
+
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 class SSFPlugin_Network : public SSFOPlugin
