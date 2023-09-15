@@ -10,7 +10,8 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 
-#include <Windows.h>
+#include <winsock2.h>
+#include <windows.h>
 
 #define SKYWALKER_PLATFORM_WINDOWS
 
