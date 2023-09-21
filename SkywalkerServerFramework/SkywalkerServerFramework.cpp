@@ -30,6 +30,8 @@ bool CSkywalkerServerFramework::Start()
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
+    FrameworkTimer.Reset();
+
     // 创建插件管理器
     PluginManager = SSF_NEW_OBJECT(SSFOPluginManager);
 
@@ -48,7 +50,8 @@ bool CSkywalkerServerFramework::Start()
 
     signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
 
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Finish");
+    FrameworkTimer.Tick();
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");
 
     return true;
 }
@@ -64,11 +67,10 @@ bool CSkywalkerServerFramework::Tick()
         return false;
     }
 
-    // TODO Shyfan 临时
-    // SKYWALKER_PLATFORM_SLEEP(1000);
+    FrameworkTimer.Tick();
 
     SSFObjectErrors ObjectErrors;
-    PluginManager->Tick(ObjectErrors, 1000);
+    PluginManager->Tick(ObjectErrors, FrameworkTimer.GetDeltaTime());
 
     return true;
 }
@@ -94,7 +96,7 @@ bool CSkywalkerServerFramework::Stop()
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
 
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Finish");
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Finish, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
 
     return true;
 }

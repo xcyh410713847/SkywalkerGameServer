@@ -12,6 +12,8 @@
 
 #include "Include/SSFCore.h"
 
+#include "SkywalkerTimer/SkywalkerTimer.h"
+
 #include "Core/Plugin/SSFPluginManager.h"
 
 SKYWALKER_SF_NAMESPACE_BEGIN
@@ -52,6 +54,8 @@ public:
 
 private:
     SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
+
+    SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer FrameworkTimer;
 };
 
 SKYWALKER_SF_NAMESPACE_END
