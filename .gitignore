@@ -17,3 +17,4 @@ Bin/*.pdb
 Bin/*.exe
 Bin/*.lib
 Bin/*.dll
+Bin/Debug
