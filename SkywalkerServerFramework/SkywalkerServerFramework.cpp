@@ -25,12 +25,12 @@ void CSkywalkerServerFramework::SignalHandler(int Signal)
 
 bool CSkywalkerServerFramework::Start()
 {
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Begin");
-
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
     FrameworkTimer.Reset();
+
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer.GetStartTime() << "s")
 
     // 创建插件管理器
     PluginManager = SSF_NEW_OBJECT(SSFOPluginManager);
@@ -96,7 +96,8 @@ bool CSkywalkerServerFramework::Stop()
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
 
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Finish, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
+    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer.GetCurrTime()
+                                                                 << "s, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
 
     return true;
 }

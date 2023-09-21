@@ -82,6 +82,30 @@ public:
         return DeltaTime;
     }
 
+    /**
+     * 获得启动时间(s)
+     */
+    float GetStartTime() const
+    {
+        return (float)(((BaseTime)*SecondsPerCount));
+    }
+
+    /**
+     * 获得启动时的格林威治时间(s)
+     */
+    float GetStartGMTTime() const
+    {
+        return (float)(((BaseTime)*SecondsPerCount) + 8 * 3600);
+    }
+
+    /**
+     * 获得当前时间(s)
+     */
+    float GetCurrTime() const
+    {
+        return (float)(((CurrTime)*SecondsPerCount));
+    }
+
 private:
     double SecondsPerCount;
 
