@@ -133,6 +133,10 @@ SKYWALKER_SF_NAMESPACE_END
 
 #pragma region Plugin Macro
 
+/**
+ * 插件导出
+ */
+#ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
 #define SKYWALKER_SF_PLUGIN_EXPORT(PluginClass)                                                \
     SKYWALKER_SF_DLL_EXPORT void DllStartPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager) \
     {                                                                                          \
@@ -143,6 +147,9 @@ SKYWALKER_SF_NAMESPACE_END
     {                                                                                          \
         SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                            \
     }
+#else
+#define SKYWALKER_SF_PLUGIN_EXPORT(PluginClass)
+#endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
 #pragma endregion Plugin Macro
 
