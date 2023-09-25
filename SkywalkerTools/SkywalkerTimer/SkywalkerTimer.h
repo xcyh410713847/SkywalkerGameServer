@@ -9,6 +9,7 @@
 #define __SKYWALKER_TIMER_H__
 
 #include <windows.h>
+#include <ctime>
 
 #define SKYWALKER_TIMER_NAMESPACE Skywalker::Timer
 #define SKYWALKER_TIMER_NAMESPACE_BEGIN \
@@ -46,6 +47,7 @@ public:
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
 
         BaseTime = CurrTime;
+        BaseGMTTime = std::time(nullptr);
         PrevTime = CurrTime;
     }
 
@@ -69,9 +71,9 @@ public:
     /**
      * 获取总时间(s)
      */
-    float GetTotalTime() const
+    double GetTotalTime() const
     {
-        return (float)(((CurrTime - BaseTime) * SecondsPerCount));
+        return (double)(((CurrTime - BaseTime) * SecondsPerCount));
     }
 
     /**
@@ -85,31 +87,40 @@ public:
     /**
      * 获得启动时间(s)
      */
-    float GetStartTime() const
+    double GetStartTime() const
     {
-        return (float)(((BaseTime)*SecondsPerCount));
-    }
-
-    /**
-     * 获得启动时的格林威治时间(s)
-     */
-    float GetStartGMTTime() const
-    {
-        return (float)(((BaseTime)*SecondsPerCount) + 8 * 3600);
+        return (double)(((BaseTime)*SecondsPerCount));
     }
 
     /**
      * 获得当前时间(s)
      */
-    float GetCurrTime() const
+    double GetCurrTime() const
     {
-        return (float)(((CurrTime)*SecondsPerCount));
+        return (double)(((CurrTime)*SecondsPerCount));
+    }
+
+    /**
+     * 获得启动时的格林威治时间(s)
+     */
+    __int64 GetStartGMTTime() const
+    {
+        return BaseGMTTime;
+    }
+
+    /**
+     * 获得当前的格林威治时间(s)
+     */
+    __int64 GetCurrGMTTime() const
+    {
+        return std::time(nullptr);
     }
 
 private:
     double SecondsPerCount;
 
     __int64 BaseTime;
+    __int64 BaseGMTTime;
     __int64 PrevTime;
     __int64 CurrTime;
     __int64 DeltaTime; // (ms)Time between current frame and last frame
