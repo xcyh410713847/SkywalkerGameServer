@@ -131,4 +131,19 @@ SKYWALKER_SF_NAMESPACE_END
 
 #pragma endregion Pointer Macro
 
+#pragma region Plugin Macro
+
+#define SKYWALKER_SF_PLUGIN_EXPORT(PluginClass)                                                \
+    SKYWALKER_SF_DLL_EXPORT void DllStartPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager) \
+    {                                                                                          \
+        SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginClass);                              \
+    }                                                                                          \
+                                                                                               \
+    SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)  \
+    {                                                                                          \
+        SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                            \
+    }
+
+#pragma endregion Plugin Macro
+
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
