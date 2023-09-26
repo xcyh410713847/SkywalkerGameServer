@@ -7,6 +7,8 @@
 
 add_subdirectory(Test)
 
+add_subdirectory(Level)
+
 add_subdirectory(Network)
 
 add_subdirectory(Profiler)
