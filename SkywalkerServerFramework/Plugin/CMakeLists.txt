@@ -9,6 +9,8 @@ add_subdirectory(Test)
 
 add_subdirectory(Actor)
 
+add_subdirectory(AI)
+
 add_subdirectory(DB)
 
 add_subdirectory(Level)
