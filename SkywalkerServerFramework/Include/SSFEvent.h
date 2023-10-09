@@ -8,7 +8,33 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFEvent_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFEvent_H__
 
+#include "SSFCore.h"
+
 #pragma region 事件类型
+
+struct SSFEventType
+{
+    SSFEventType()
+    {
+        memset(this, 0, sizeof(SSFEventType));
+    }
+
+    SSFEventType(int InMainType, int InSubType)
+    {
+        this->MainType = InMainType;
+        this->SubType = InSubType;
+    }
+
+    void SetType(int InMainType, int InSubType)
+    {
+        this->MainType = InMainType;
+        this->SubType = InSubType;
+    }
+
+private:
+    int MainType = 0;
+    int SubType = 0;
+};
 
 // 事件主类型
 enum SSFEventMainType

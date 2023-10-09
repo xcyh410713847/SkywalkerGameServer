@@ -14,9 +14,9 @@
 
 SKYWALKER_SF_NAMESPACE_BEGIN
 
-class SSFEventManager : public SSFObject
+class SSFOEventManager : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFEventManager)
+    SSF_OBJECT_CLASS(SSFOEventManager)
 };
 
 SKYWALKER_SF_NAMESPACE_END

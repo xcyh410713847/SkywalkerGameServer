@@ -11,6 +11,6 @@
 
 SKYWALKER_SF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFEventManager, LogLevel_Debug);
+SKYWALKER_SF_LOG_DEFINE(SSFOEventManager, LogLevel_Debug);
 
 #define SKYWALKER_SF_LOG_DEBUG_MODULE(content) SKYWALKER_SF_LOG_DEBUG(GetObjectClassName() << " " << content)

@@ -23,3 +23,27 @@ SSFObject_Event::SSFObject_Event()
 SSFObject_Event::~SSFObject_Event()
 {
 }
+
+SKYWALKER_SF_PTR(SSFObject_Event)
+SSFObject_Event::SetEventType(SSFEventType InEventType)
+{
+    this->EventType = InEventType;
+
+    return this;
+}
+
+SKYWALKER_SF_PTR(SSFObject_Event)
+SSFObject_Event::SetEventType(int InMainType, int InSubType)
+{
+    this->EventType.SetType(InMainType, InSubType);
+
+    return this;
+}
+
+SKYWALKER_SF_PTR(SSFObject_Event)
+SSFObject_Event::SetEventSkin(SSF_PTR_EVENT_SKIN InEventSkin)
+{
+    this->EventSkin = InEventSkin;
+
+    return this;
+}
