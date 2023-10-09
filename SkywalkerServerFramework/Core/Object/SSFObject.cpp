@@ -7,17 +7,11 @@
 
 #include "SSFObject.h"
 
+#include "Include/SSFILog.h"
+
 SKYWALKER_SF_NAMESPACE_USING
 
-SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> SSFObject::ObjectPoolMap;
-
-SSFObject::SSFObject()
-{
-}
-
-SSFObject::~SSFObject()
-{
-}
+SKYWALKER_SF_LOG_DEFINE(SSFObject, LogLevel_Debug);
 
 void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context) {}
 
@@ -37,5 +31,5 @@ void SSFObject::Destroy(SSFObjectErrors &Errors) {}
 
 void SSFObject::Release(SSFObjectErrors &Errors)
 {
-    SSFObject::RemoveObject(this);
+    SSFObjectSimple::RemoveObject(this);
 }

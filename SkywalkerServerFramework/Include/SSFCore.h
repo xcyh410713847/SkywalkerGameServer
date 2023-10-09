@@ -104,6 +104,12 @@
 SKYWALKER_SF_NAMESPACE_BEGIN
 
 /**
+ * 简单对象
+ */
+class SSFObjectSimple;
+#define SKYWALKER_SF_PTR_OBJECT_SIMPLE SKYWALKER_SF_PTR(SSFObjectSimple)
+
+/**
  * 对象
  */
 class SSFObject;
