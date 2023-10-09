@@ -22,3 +22,8 @@ SSFObjectSimple::SSFObjectSimple()
 SSFObjectSimple::~SSFObjectSimple()
 {
 }
+
+void SSFObjectSimple::Release()
+{
+    SSFObjectSimple::RemoveObject(this);
+}

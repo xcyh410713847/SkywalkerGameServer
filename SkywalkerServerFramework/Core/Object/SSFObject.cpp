@@ -31,5 +31,5 @@ void SSFObject::Destroy(SSFObjectErrors &Errors) {}
 
 void SSFObject::Release(SSFObjectErrors &Errors)
 {
-    SSFObjectSimple::RemoveObject(this);
+    SSFObjectSimple::Release();
 }

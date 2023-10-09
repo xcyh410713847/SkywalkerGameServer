@@ -107,6 +107,11 @@ public:
      * 是否启用对象池
      */
     virtual bool IsEnablePool() = 0;
+
+    /**
+     * 释放
+     */
+    virtual void Release();
 };
 
 SKYWALKER_SF_NAMESPACE_END
