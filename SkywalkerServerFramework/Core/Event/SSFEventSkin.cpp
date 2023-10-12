@@ -11,4 +11,4 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFEventSkin, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFEventSkin, LogLevel_Debug);

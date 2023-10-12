@@ -12,7 +12,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFObject_Event, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFObject_Event, LogLevel_Debug);
 
 SSFObject_Event::SSFObject_Event()
     : SSFObjectSimple()

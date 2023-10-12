@@ -11,7 +11,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFObject_ClientSocket, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFObject_ClientSocket, LogLevel_Debug);
 
 #pragma region Object
 
@@ -42,7 +42,7 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 
     // 处理接收到的数据
-    SKYWALKER_SF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
+    SSF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
     // 回复客户端
     send(ClientSocket, buffer, bytesReceived, 0);
 }

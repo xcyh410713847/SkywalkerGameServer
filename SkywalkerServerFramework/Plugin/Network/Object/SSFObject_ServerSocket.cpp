@@ -27,7 +27,7 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     Socket = socket(AF_INET, SOCK_STREAM, 0);
     if (Socket == INVALID_SOCKET)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Socket_CreateFailed,
                                       "Failed to create socket")
         return;
@@ -42,7 +42,7 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     int result = ioctlsocket(ServerSocket, FIONBIO, &mode);
     if (result == SOCKET_ERROR)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Socket_SetFailed,
                                       "Failed to set socket to non-blocking mode");
         closesocket(ServerSocket);
@@ -56,7 +56,7 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Socket_BindFailed,
                                       "Failed to bind address to the socket")
         closesocket(ServerSocket);
@@ -66,7 +66,7 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     // 监听和接受连接请求
     if (listen(ServerSocket, SOMAXCONN) == SOCKET_ERROR)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Socket_ListenFailed,
                                       "Failed to listen")
         closesocket(ServerSocket);

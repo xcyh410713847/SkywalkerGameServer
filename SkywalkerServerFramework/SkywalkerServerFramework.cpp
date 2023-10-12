@@ -9,16 +9,14 @@
 
 #include "Include/SSFILog.h"
 
-// #define SKYWALKER_SF_START_AND_STOP
-
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
+SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 void CSkywalkerServerFramework::SignalHandler(int Signal)
 {
 
-    SKYWALKER_SF_LOG_DEBUG("SignalHandler Signal: " << Signal);
+    SSF_LOG_DEBUG("SignalHandler Signal: " << Signal);
 
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
 }
@@ -30,7 +28,7 @@ bool CSkywalkerServerFramework::Start()
 
     FrameworkTimer.Reset();
 
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer.GetStartTime() << "s")
+    SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer.GetStartTime() << "s")
 
     // 创建插件管理器
     PluginManager = SSF_NEW_OBJECT(SSFOPluginManager);
@@ -51,17 +49,13 @@ bool CSkywalkerServerFramework::Start()
     signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
 
     FrameworkTimer.Tick();
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");
+    SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");
 
     return true;
 }
 
 bool CSkywalkerServerFramework::Tick()
 {
-#ifdef SKYWALKER_SF_START_AND_STOP
-    return false;
-#endif // SKYWALKER_SF_START_AND_STOP
-
     if (!IsRunning())
     {
         return false;
@@ -77,7 +71,7 @@ bool CSkywalkerServerFramework::Tick()
 
 bool CSkywalkerServerFramework::Stop()
 {
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Begin");
+    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin");
 
     SSFObjectErrors ObjectErrors;
 
@@ -96,8 +90,8 @@ bool CSkywalkerServerFramework::Stop()
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
 
-    SKYWALKER_SF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer.GetCurrTime()
-                                                                 << "s, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
+    SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer.GetCurrTime()
+                                                        << "s, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
 
     return true;
 }

@@ -11,29 +11,29 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFModule, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFModule, LogLevel_Debug);
 
-#define SKYWALKER_SF_LOG_DEBUG_MODULE(content) SKYWALKER_SF_LOG_DEBUG(GetName() << " " << content)
+#define SSF_LOG_DEBUG_MODULE(content) SSF_LOG_DEBUG(GetName() << " " << content)
 
 #pragma region Object
 
 void SSFOModule::Init(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Init");
+    SSF_LOG_DEBUG_MODULE("Init");
 
     SSFObject::Init(Errors);
 }
 
 void SSFOModule::Awake(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Awake");
+    SSF_LOG_DEBUG_MODULE("Awake");
 
     SSFObject::Awake(Errors);
 }
 
 void SSFOModule::Start(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Start");
+    SSF_LOG_DEBUG_MODULE("Start");
 
     SSFObject::Start(Errors);
 }
@@ -47,26 +47,26 @@ void SSFOModule::Stop(SSFObjectErrors &Errors)
 {
     SSFObject::Stop(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Stop");
+    SSF_LOG_DEBUG_MODULE("Stop");
 }
 
 void SSFOModule::Sleep(SSFObjectErrors &Errors)
 {
     SSFObject::Sleep(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Sleep");
+    SSF_LOG_DEBUG_MODULE("Sleep");
 }
 
 void SSFOModule::Destroy(SSFObjectErrors &Errors)
 {
     SSFObject::Destroy(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Destroy");
+    SSF_LOG_DEBUG_MODULE("Destroy");
 }
 
 void SSFOModule::Release(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_MODULE("Release");
+    SSF_LOG_DEBUG_MODULE("Release");
 
     SSFObject::Release(Errors);
 }

@@ -15,7 +15,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
 
 SSF_PLUGIN_EXPORT(SSFPlugin_Test)
 
@@ -23,16 +23,16 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Test)
 
 void SSFPlugin_Test::Install(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
-    SKYWALKER_SF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
+    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
+    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
+    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
 }
 
 void SSFPlugin_Test::Uninstall(SSFModuleErrors &Errors)
 {
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
-    SKYWALKER_SF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
+    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
+    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
+    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
 }
 
 #pragma endregion SSFOPlugin

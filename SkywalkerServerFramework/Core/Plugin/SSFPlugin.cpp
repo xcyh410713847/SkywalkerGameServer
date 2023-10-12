@@ -11,15 +11,15 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
-#define SKYWALKER_SF_LOG_DEBUG_PLUGIN(content) SKYWALKER_SF_LOG_DEBUG(GetName() << " " << content)
+#define SSF_LOG_DEBUG_PLUGIN(content) SSF_LOG_DEBUG(GetName() << " " << content)
 
 #pragma region Object
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Init");
+    SSF_LOG_DEBUG_PLUGIN("Init");
 
     SSFObject::Init(Errors);
 
@@ -29,7 +29,7 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Awake");
+    SSF_LOG_DEBUG_PLUGIN("Awake");
 
     SSFObject::Awake(Errors);
 
@@ -41,7 +41,7 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Start");
+    SSF_LOG_DEBUG_PLUGIN("Start");
 
     SSFObject::Start(Errors);
 
@@ -70,7 +70,7 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 
     SSFObject::Stop(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Stop");
+    SSF_LOG_DEBUG_PLUGIN("Stop");
 }
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
@@ -82,7 +82,7 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 
     SSFObject::Sleep(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Sleep");
+    SSF_LOG_DEBUG_PLUGIN("Sleep");
 }
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
@@ -94,14 +94,14 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 
     SSFObject::Destroy(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Destroy");
+    SSF_LOG_DEBUG_PLUGIN("Destroy");
 }
 
 void SSFOPlugin::Release(SSFObjectErrors &Errors)
 {
     Uninstall(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG_PLUGIN("Release");
+    SSF_LOG_DEBUG_PLUGIN("Release");
 
     SSFObject::Release(Errors);
 }

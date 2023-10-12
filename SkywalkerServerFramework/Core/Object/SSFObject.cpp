@@ -11,7 +11,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFObject, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFObject, LogLevel_Debug);
 
 void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context) {}
 

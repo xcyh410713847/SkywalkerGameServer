@@ -14,13 +14,13 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
 #pragma region Object
 
 void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Init");
+    SSF_LOG_DEBUG("Init");
 
     SSFObject::Init(Errors);
 
@@ -28,21 +28,21 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
     {
-        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPluginConfig Failed");
+        SSF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPluginConfig Failed");
         return;
     }
 
     LoadPlugin(PluginErrors);
     if (PluginErrors.IsValid())
     {
-        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPlugin Failed");
+        SSF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "LoadPlugin Failed");
         return;
     }
 
     StartPlugin(PluginErrors);
     if (PluginErrors.IsValid())
     {
-        SKYWALKER_SF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "StartPlugin Failed");
+        SSF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "StartPlugin Failed");
         return;
     }
 
@@ -54,7 +54,7 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Awake");
+    SSF_LOG_DEBUG("Awake");
 
     SSFObject::Awake(Errors);
 
@@ -66,7 +66,7 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_LOG_DEBUG("Start");
+    SSF_LOG_DEBUG("Start");
 
     SSFObject::Start(Errors);
 
@@ -95,7 +95,7 @@ void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 
     SSFObject::Stop(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG("Stop");
+    SSF_LOG_DEBUG("Stop");
 }
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
@@ -108,7 +108,7 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 
     SSFObject::Sleep(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG("Sleep");
+    SSF_LOG_DEBUG("Sleep");
 }
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
@@ -120,7 +120,7 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 
     SSFObject::Destroy(Errors);
 
-    SKYWALKER_SF_LOG_DEBUG("Destroy");
+    SSF_LOG_DEBUG("Destroy");
 }
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
@@ -130,7 +130,7 @@ void SSFOPluginManager::Release(SSFObjectErrors &Errors)
         ((SSFOPlugin *)IterPlugin->second)->Release(Errors);
     }
 
-    SKYWALKER_SF_LOG_DEBUG("Release");
+    SSF_LOG_DEBUG("Release");
 
     SSFObject::Release(Errors);
 }
@@ -143,21 +143,21 @@ void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
 {
     if (!SSF_PTR_VALID(Plugin))
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_nullptr);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_nullptr);
         return;
     }
 
     std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_NameEmpty);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_NameEmpty);
         return;
     }
 
     auto Iter = PluginMap.find(PluginName);
     if (Iter != PluginMap.end())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_Repeat);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_Repeat);
         return;
     }
 
@@ -168,21 +168,21 @@ void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN
 {
     if (!SSF_PTR_VALID(Plugin))
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_nullptr);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_nullptr);
         return;
     }
 
     std::string PluginName = Plugin->GetName();
     if (PluginName.empty())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NameEmpty);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NameEmpty);
         return;
     }
 
     auto Iter = PluginMap.find(PluginName);
     if (Iter == PluginMap.end())
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NotFound)
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NotFound)
         return;
     }
 
@@ -207,14 +207,14 @@ void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (!PluginScriptParse->LoadScript("ServerPlugin.skywalkerC"))
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
         return;
     }
 
     SKYWALKER_PTR_SCRIPT_NODE RootNode = PluginScriptParse->GetRootNode();
     if (RootNode == nullptr)
     {
-        SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+        SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
         return;
     }
 
@@ -223,14 +223,14 @@ void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
         SKYWALKER_PTR_SCRIPT_NODE PluginNode = RootNode->GetChildNodeFromIndex(i);
         if (PluginNode == nullptr)
         {
-            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+            SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
             continue;
         }
 
         SKYWALKER_PTR_SCRIPT_NODE NameNode = PluginNode->GetChildNodeFromName("Name");
         if (NameNode == nullptr)
         {
-            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
+            SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
             continue;
         }
 
@@ -243,7 +243,7 @@ void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
     SSF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
         const std::string LibraryName = IterName->first;
-        SKYWALKER_SF_REGISTER_LIBRARY(LibraryName);
+        SSF_REGISTER_LIBRARY(LibraryName);
     }
 }
 
@@ -254,7 +254,7 @@ void SSFOPluginManager::StartPlugin(SSFPluginErrors &Errors)
         DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)IterLib->second->GetSymbol("DllStartPlugin");
         if (DllStartPluginFunc == nullptr)
         {
-            SKYWALKER_SF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_EntryNullptr);
+            SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_EntryNullptr);
             continue;
         }
 

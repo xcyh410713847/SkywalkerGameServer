@@ -30,13 +30,13 @@ public:
 private:
     std::string Name;
 
-    SKYWALKER_SF_DYNAMIC_LIB_HANDLE Instance;
+    SKYWALKER_DYNAMIC_LIB_HANDLE Instance;
 };
 
 /**
  * SSFCDynamicLib 指针
  */
-#define SKYWALKER_SF_PTR_DYNAMIC_LIB SSF_SHARED_PTR(SSFDynamicLib)
+#define SSF_PTR_DYNAMIC_LIB SSF_SHARED_PTR(SSFDynamicLib)
 
 SSF_NAMESPACE_END
 

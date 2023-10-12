@@ -11,7 +11,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Actor, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFPlugin_Actor, LogLevel_Debug);
 
 SSF_PLUGIN_EXPORT(SSFPlugin_Actor)
 

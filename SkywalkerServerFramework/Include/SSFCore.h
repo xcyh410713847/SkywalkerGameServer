@@ -140,12 +140,12 @@ SSF_NAMESPACE_END
 #define SSF_PLUGIN_EXPORT(PluginClass)                                       \
     SSF_DLL_EXPORT void DllStartPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager) \
     {                                                                        \
-        SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginClass);            \
+        SSF_REGISTER_PLUGIN(PluginManager, PluginClass);                     \
     }                                                                        \
                                                                              \
     SSF_DLL_EXPORT void DllStopPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager)  \
     {                                                                        \
-        SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);          \
+        SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                   \
     }
 #else
 #define SSF_PLUGIN_EXPORT(PluginClass)

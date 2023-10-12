@@ -123,29 +123,29 @@ typedef SkywalkerSFErrors SSFNetworkErrors;
 /**
  * 不带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR(CppErrors, Error) \
-    SSFError error(Error);                   \
+#define SSF_ERROR(CppErrors, Error) \
+    SSFError error(Error);          \
     SKYWALKER_ERRORS_WRAP(CppErrors, error)
 
 /**
  * 不带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR_DESC(CppErrors, Error, ErrorDesc) \
-    SSFError error(Error, ErrorDesc);                        \
+#define SSF_ERROR_DESC(CppErrors, Error, ErrorDesc) \
+    SSFError error(Error, ErrorDesc);               \
     SKYWALKER_ERRORS_WRAP(CppErrors, error)
 
 /**
  * 带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR_TRACE(CppErrors, Error) \
-    SSFError error(Error);                         \
+#define SSF_ERROR_TRACE(CppErrors, Error) \
+    SSFError error(Error);                \
     SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)
 
 /**
  * 带堆栈的错误
  */
-#define SKYWALKER_SF_ERROR_DESC_TRACE(CppErrors, Error, ErrorDesc) \
-    SSFError error(Error, ErrorDesc);                              \
+#define SSF_ERROR_DESC_TRACE(CppErrors, Error, ErrorDesc) \
+    SSFError error(Error, ErrorDesc);                     \
     SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, error)
 
 #pragma endregion 错误宏

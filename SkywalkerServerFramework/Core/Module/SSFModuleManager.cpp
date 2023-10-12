@@ -15,21 +15,21 @@ void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE M
 {
     if (!SSF_PTR_VALID(Module))
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin Register Module nullptr");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin Register Module nullptr");
         return;
     }
 
     const std::string &ModuleName = Module->GetName();
     if (ModuleName.empty())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
         return;
     }
 
     auto Iter = ModuleMap.find(ModuleName);
     if (Iter != ModuleMap.end())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat, "Plugin Register Module Repeat");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat, "Plugin Register Module Repeat");
         return;
     }
 
@@ -40,21 +40,21 @@ void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE
 {
     if (!SSF_PTR_VALID(Module))
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
         return;
     }
 
     const std::string &ModuleName = Module->GetName();
     if (ModuleName.empty())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
         return;
     }
 
     auto Iter = ModuleMap.find(ModuleName);
     if (Iter == ModuleMap.end())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NotFound, "Plugin Unregister Module NotFound");
+        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NotFound, "Plugin Unregister Module NotFound");
         return;
     }
 

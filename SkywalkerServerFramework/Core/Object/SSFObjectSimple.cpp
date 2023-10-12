@@ -11,7 +11,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFObjectSimple, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFObjectSimple, LogLevel_Debug);
 
 SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObjectSimple)> SSFObjectSimple::ObjectPoolMap;
 

@@ -12,7 +12,7 @@
 
 SSF_NAMESPACE_USING
 
-SKYWALKER_SF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 
 #pragma region Object
 
@@ -80,7 +80,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Init_Failed,
                                       "Failed to initialize winsock")
         return;
@@ -93,7 +93,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
 
     if (Errors.IsValid())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(Errors,
                                       SkywalkerSFError_Network_Start_Failed,
                                       "Failed to start network server")
         WSACleanup();
@@ -105,7 +105,7 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
 {
     if (ServerNetworkSocket->IsSocketInvalid())
     {
-        SKYWALKER_SF_ERROR_DESC_TRACE(
+        SSF_ERROR_DESC_TRACE(
             Errors,
             SkywalkerSFError_Network_Socket_CreateFailed,
             "Create ClientSocket Failed, Because ServerSocket is Invalid")
@@ -128,5 +128,5 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
 
     ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
 
-    SKYWALKER_SF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
+    SSF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
 }
