@@ -13,14 +13,14 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Network : public SSFOPlugin
 {
     SSF_OBJECT_CLASS(SSFPlugin_Network)
 
 public:
-    SSFPlugin_Network(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFPlugin_Network(SSF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOPlugin(InPluginManager)
     {
     }
@@ -32,7 +32,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFPlugin_Network);
+        return SSF_CLASS_NAME(SSFPlugin_Network);
     };
 
 #pragma region SSFOPlugin
@@ -51,6 +51,6 @@ private:
 #pragma endregion SSFOPlugin
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__

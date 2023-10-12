@@ -7,7 +7,7 @@
 
 #include "SSFDynamicLib.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SSFDynamicLib::SSFDynamicLib(const std::string &InName)
 {

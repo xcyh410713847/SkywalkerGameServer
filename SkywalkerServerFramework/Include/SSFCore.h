@@ -21,36 +21,25 @@
 /**
  * 定义命名空间
  */
-#define SKYWALKER_SF_NAMESPACE Skywalker::ServerFramework
+#define SSF_NAMESPACE Skywalker::ServerFramework
 
 /**
  * 命名空间开始
  */
-#define SKYWALKER_SF_NAMESPACE_BEGIN \
-    namespace SKYWALKER_SF_NAMESPACE \
+#define SSF_NAMESPACE_BEGIN \
+    namespace SSF_NAMESPACE \
     {
 
 /**
  * 命名空间结束
  */
-#define SKYWALKER_SF_NAMESPACE_END \
+#define SSF_NAMESPACE_END \
     } // Skywalker::ServerFramework
 
 /**
  * 使用命名空间
  */
-#define SKYWALKER_SF_NAMESPACE_USING using namespace SKYWALKER_SF_NAMESPACE;
-
-/**
- * 导出
- */
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-#define SKYWALKER_SF_DLL_EXPORT extern "C" __declspec(dllexport)
-#define SKYWALKER_SF_API __declspec(dllexport)
-#else
-#define SKYWALKER_SF_DLL_EXPORT extern "C" __attribute__((visibility("default")))
-#define SKYWALKER_SF_API __attribute__((visibility("default")))
-#endif
+#define SSF_NAMESPACE_USING using namespace SSF_NAMESPACE;
 
 #pragma endregion Common Macro
 
@@ -59,33 +48,38 @@
 /**
  * 获取类名
  */
-#define SKYWALKER_SF_CLASS_NAME(ClassName) typeid(ClassName).name()
+#define SSF_CLASS_NAME(ClassName) typeid(ClassName).name()
 
 /**
  * 断言
  */
-#define SKYWALKER_SF_ASSERT(Condition) assert((Condition))
+#define SSF_ASSERT(Condition) assert((Condition))
 
 #pragma endregion Function Macro
 
 #pragma region Common Type
 
 /**
- * 普通指针
+ * 裸指针
  */
-#define SKYWALKER_SF_PTR(T) T *
-#define SKYWALKER_SF_CONST_PTR(T) const T *
-#define SKYWALKER_SF_PTR_VALID(Obj) (Obj != nullptr)
+#define SSF_PTR(T) T *
+#define SSF_CONST_PTR(T) const T *
+#define SSF_PTR_VALID(Obj) (Obj != nullptr)
 
 /**
- * 共享指针
+ * 智能指针
  */
-#define SKYWALKER_SF_SHARED_PTR(T) std::shared_ptr<T>
+#define SSF_UNIQUE_PTR(T) std::unique_ptr<T>
+#define SSF_CONST_UNIQUE_PTR(T) std::unique_ptr<const T>
+#define SSF_SHARED_PTR(T) std::shared_ptr<T>
+#define SSF_CONST_SHARED_PTR(T) std::shared_ptr<const T>
+#define SSF_WEAK_PTR(T) std::weak_ptr<T>
+#define SSF_CONST_WEAK_PTR(T) std::weak_ptr<const T>
 
 /**
  * Cast
  */
-#define SKYWALKER_SF_POINT_CAST(T) dynamic_cast<SKYWALKER_SF_PTR(T)>
+#define SSF_PTR_CAST(T) dynamic_cast<SSF_PTR(T)>
 
 #pragma endregion Common Type
 
@@ -94,46 +88,46 @@
 /**
  * 通用迭代器
  */
-#define SKYWALKER_SF_COMMON_ITERATOR(Iterator, Container) \
+#define SSF_COMMON_ITERATOR(Iterator, Container) \
     for (auto Iterator = Container.begin(); Iterator != Container.end(); ++Iterator)
 
 #pragma endregion Iterator Macro
 
 #pragma region Pointer Macro
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 /**
  * 简单对象
  */
 class SSFObjectSimple;
-#define SKYWALKER_SF_PTR_OBJECT_SIMPLE SKYWALKER_SF_PTR(SSFObjectSimple)
+#define SSF_PTR_OBJECT_SIMPLE SSF_PTR(SSFObjectSimple)
 
 /**
  * 对象
  */
 class SSFObject;
-#define SKYWALKER_SF_PTR_OBJECT SKYWALKER_SF_PTR(SSFObject)
+#define SSF_PTR_OBJECT SSF_PTR(SSFObject)
 
 /**
  * 插件管理器
  */
 class SSFOPluginManager;
-#define SKYWALKER_SF_PTR_PLUGIN_MANAGER SKYWALKER_SF_PTR(SSFOPluginManager)
+#define SSF_PTR_PLUGIN_MANAGER SSF_PTR(SSFOPluginManager)
 
 /**
  * 插件
  */
 class SSFOPlugin;
-#define SKYWALKER_SF_PTR_PLUGIN SKYWALKER_SF_PTR(SSFOPlugin)
+#define SSF_PTR_PLUGIN SSF_PTR(SSFOPlugin)
 
 /**
  * 模块
  */
 class SSFOModule;
-#define SKYWALKER_SF_PTR_MODULE SKYWALKER_SF_PTR(SSFOModule)
+#define SSF_PTR_MODULE SSF_PTR(SSFOModule)
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #pragma endregion Pointer Macro
 
@@ -143,18 +137,18 @@ SKYWALKER_SF_NAMESPACE_END
  * 插件导出
  */
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
-#define SKYWALKER_SF_PLUGIN_EXPORT(PluginClass)                                                \
-    SKYWALKER_SF_DLL_EXPORT void DllStartPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager) \
-    {                                                                                          \
-        SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginClass);                              \
-    }                                                                                          \
-                                                                                               \
-    SKYWALKER_SF_DLL_EXPORT void DllStopPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager)  \
-    {                                                                                          \
-        SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                            \
+#define SSF_PLUGIN_EXPORT(PluginClass)                                       \
+    SSF_DLL_EXPORT void DllStartPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager) \
+    {                                                                        \
+        SKYWALKER_SF_REGISTER_PLUGIN(PluginManager, PluginClass);            \
+    }                                                                        \
+                                                                             \
+    SSF_DLL_EXPORT void DllStopPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager)  \
+    {                                                                        \
+        SKYWALKER_SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);          \
     }
 #else
-#define SKYWALKER_SF_PLUGIN_EXPORT(PluginClass)
+#define SSF_PLUGIN_EXPORT(PluginClass)
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
 #pragma endregion Plugin Macro

@@ -16,7 +16,7 @@
 
 #include "Core/Plugin/SSFPluginManager.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 // Skywalker Server Framework 运行状态
 enum class ESkywalkerServerFrameworkRunningState
@@ -53,12 +53,12 @@ public:
     bool IsRunning() const;
 
 private:
-    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
+    SSF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
 
     SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer FrameworkTimer;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 /**
  * Skywalker Server Framework 启动宏

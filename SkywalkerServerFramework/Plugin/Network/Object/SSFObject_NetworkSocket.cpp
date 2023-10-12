@@ -7,7 +7,7 @@
 
 #include "SSFObject_NetworkSocket.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SSFObject_NetworkSocket::SSFObject_NetworkSocket()
     : SSFObject()

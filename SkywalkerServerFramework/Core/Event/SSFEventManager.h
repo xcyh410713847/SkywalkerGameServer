@@ -12,13 +12,13 @@
 
 #include "Core/Object/SSFObject.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFOEventManager : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFOEventManager)
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFEventManager_H__

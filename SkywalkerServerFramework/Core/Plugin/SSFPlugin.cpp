@@ -9,7 +9,7 @@
 
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
@@ -33,7 +33,7 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
     SSFObject::Awake(Errors);
 
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Awake(Errors);
     }
@@ -45,7 +45,7 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
 
     SSFObject::Start(Errors);
 
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Start(Errors);
     }
@@ -55,7 +55,7 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSFObject::Tick(Errors, DelayMS);
 
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Tick(Errors, DelayMS);
     }
@@ -63,7 +63,7 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Stop(Errors);
     }
@@ -75,7 +75,7 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Sleep(Errors);
     }
@@ -87,7 +87,7 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
-    SKYWALKER_SF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
     }
@@ -108,7 +108,7 @@ void SSFOPlugin::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOPlugin::SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+SSFOPlugin::SSFOPlugin(SSF_PTR_PLUGIN_MANAGER InPluginManager)
     : SSFOModuleManager(), PluginManager(InPluginManager)
 {
 }

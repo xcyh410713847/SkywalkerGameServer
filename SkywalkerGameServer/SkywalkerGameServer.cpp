@@ -7,7 +7,7 @@
 
 #include "SkywalkerServerFramework.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {

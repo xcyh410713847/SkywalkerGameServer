@@ -10,11 +10,11 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Profiler, LogLevel_Debug);
 
-SKYWALKER_SF_PLUGIN_EXPORT(SSFPlugin_Profiler)
+SSF_PLUGIN_EXPORT(SSFPlugin_Profiler)
 
 #pragma region SSFOPlugin
 

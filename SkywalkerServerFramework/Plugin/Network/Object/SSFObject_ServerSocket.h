@@ -12,7 +12,7 @@
 
 #include "SSFObject_NetworkSocket.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFObject_ServerSocket : public SSFObject_NetworkSocket
 {
@@ -30,8 +30,8 @@ public:
     virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context) override;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
-#define SSF_PRT_SERVER_SOCKET SKYWALKER_SF_PTR(SSFObject_ServerSocket)
+#define SSF_PRT_SERVER_SOCKET SSF_PTR(SSFObject_ServerSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_SERVER_SOCKET_H__

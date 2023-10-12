@@ -9,11 +9,11 @@
 
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFPlugin_Video, LogLevel_Debug);
 
-SKYWALKER_SF_PLUGIN_EXPORT(SSFPlugin_Video)
+SSF_PLUGIN_EXPORT(SSFPlugin_Video)
 
 #pragma region SSFOPlugin
 

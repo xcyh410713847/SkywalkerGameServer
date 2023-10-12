@@ -11,14 +11,14 @@
 #include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Plugin/SSFPlugin.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Test : public SSFOPlugin
 {
     SSF_OBJECT_CLASS(SSFPlugin_Test)
 
 public:
-    SSFPlugin_Test(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFPlugin_Test(SSF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOPlugin(InPluginManager)
     {
     }
@@ -30,7 +30,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFPlugin_Test);
+        return SSF_CLASS_NAME(SSFPlugin_Test);
     };
 
 #pragma region SSFOPlugin
@@ -49,6 +49,6 @@ private:
 #pragma endregion SSFOPlugin
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_TEST_H__

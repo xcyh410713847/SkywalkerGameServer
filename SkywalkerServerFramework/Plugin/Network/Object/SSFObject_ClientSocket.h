@@ -12,7 +12,7 @@
 
 #include "SSFObject_NetworkSocket.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFObject_ClientSocket : public SSFObject_NetworkSocket
 {
@@ -24,8 +24,8 @@ public:
 #pragma endregion Object
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
-#define SSF_PRT_CLIENT_SOCKET SKYWALKER_SF_PTR(SSFObject_ClientSocket)
+#define SSF_PRT_CLIENT_SOCKET SSF_PTR(SSFObject_ClientSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_CLIENT_SOCKET_H__

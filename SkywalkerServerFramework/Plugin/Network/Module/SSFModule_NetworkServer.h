@@ -16,7 +16,7 @@
 #include "SSFObject_ServerSocket.h"
 #include "SSFObject_ClientSocket.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFModule_NetworkServer : public SSFOModule
 {
@@ -68,7 +68,7 @@ public:
 #pragma endregion Object
 
 public:
-    SSFModule_NetworkServer(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFModule_NetworkServer(SSF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)
     {
     }
@@ -80,7 +80,7 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFModule_NetworkServer);
+        return SSF_CLASS_NAME(SSFModule_NetworkServer);
     };
 
 private:
@@ -100,6 +100,6 @@ private:
     SSFMap<SOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__

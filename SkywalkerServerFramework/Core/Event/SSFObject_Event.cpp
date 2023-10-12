@@ -10,7 +10,7 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFObject_Event, LogLevel_Debug);
 
@@ -24,7 +24,7 @@ SSFObject_Event::~SSFObject_Event()
 {
 }
 
-SKYWALKER_SF_PTR(SSFObject_Event)
+SSF_PTR(SSFObject_Event)
 SSFObject_Event::SetEventType(SSFEventType InEventType)
 {
     this->EventType = InEventType;
@@ -32,7 +32,7 @@ SSFObject_Event::SetEventType(SSFEventType InEventType)
     return this;
 }
 
-SKYWALKER_SF_PTR(SSFObject_Event)
+SSF_PTR(SSFObject_Event)
 SSFObject_Event::SetEventType(int InMainType, int InSubType)
 {
     this->EventType.SetType(InMainType, InSubType);
@@ -40,7 +40,7 @@ SSFObject_Event::SetEventType(int InMainType, int InSubType)
     return this;
 }
 
-SKYWALKER_SF_PTR(SSFObject_Event)
+SSF_PTR(SSFObject_Event)
 SSFObject_Event::SetEventSkin(SSF_PTR_EVENT_SKIN InEventSkin)
 {
     this->EventSkin = InEventSkin;

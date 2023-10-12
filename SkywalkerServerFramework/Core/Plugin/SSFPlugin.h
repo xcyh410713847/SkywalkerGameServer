@@ -14,7 +14,7 @@
 #include "Core/Map/SSFMap.h"
 #include "Core/Module/SSFModuleManager.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFOPlugin
     : public SSFOModuleManager
@@ -65,7 +65,7 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOPlugin(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
+    SSFOPlugin(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOPlugin();
 
     /**
@@ -74,7 +74,7 @@ public:
      */
     virtual const std::string GetName()
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFOPlugin);
+        return SSF_CLASS_NAME(SSFOPlugin);
     };
 
 private:
@@ -89,9 +89,9 @@ private:
     virtual void Uninstall(SSFModuleErrors &Errors){};
 
 protected:
-    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
+    SSF_PTR_PLUGIN_MANAGER PluginManager;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__

@@ -12,7 +12,7 @@
 
 #include "Core/Object/SSFObject.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFOModule : public SSFObject
 {
@@ -62,7 +62,7 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOModule(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager);
+    SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOModule();
 
     /**
@@ -71,13 +71,13 @@ public:
      */
     virtual const std::string GetName()
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFOModule);
+        return SSF_CLASS_NAME(SSFOModule);
     };
 
 protected:
-    SKYWALKER_SF_PTR_PLUGIN_MANAGER PluginManager;
+    SSF_PTR_PLUGIN_MANAGER PluginManager;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__

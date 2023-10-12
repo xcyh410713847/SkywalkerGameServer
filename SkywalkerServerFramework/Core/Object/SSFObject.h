@@ -13,7 +13,7 @@
 
 #include "SSFObjectSimple.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 /**
  * 对象创建上下文
@@ -79,6 +79,6 @@ public:
 	virtual void Release(SSFObjectErrors &Errors);
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

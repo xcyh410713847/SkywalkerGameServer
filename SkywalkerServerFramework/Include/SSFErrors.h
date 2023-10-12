@@ -12,7 +12,7 @@
 
 #include "SSFCore.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 enum ESkywalkerSFError
 {
@@ -150,6 +150,6 @@ typedef SkywalkerSFErrors SSFNetworkErrors;
 
 #pragma endregion 错误宏
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_ERRORS_H__

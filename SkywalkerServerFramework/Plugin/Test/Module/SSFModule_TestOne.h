@@ -12,14 +12,14 @@
 
 #include "Core/Module/SSFModule.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFModule_TestOne : public SSFOModule
 {
     SSF_OBJECT_CLASS(SSFModule_TestOne)
 
 public:
-    SSFModule_TestOne(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+    SSFModule_TestOne(SSF_PTR_PLUGIN_MANAGER InPluginManager)
         : SSFOModule(InPluginManager)
     {
     }
@@ -31,10 +31,10 @@ public:
      */
     virtual const std::string GetName() override
     {
-        return SKYWALKER_SF_CLASS_NAME(SSFModule_TestOne);
+        return SSF_CLASS_NAME(SSFModule_TestOne);
     };
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_ONE_H__

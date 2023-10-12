@@ -15,7 +15,7 @@
 
 #include "SSFEventSkin.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFObject_Event : public SSFObjectSimple
 {
@@ -28,19 +28,19 @@ public:
     /**
      * 设置事件类型
      */
-    SKYWALKER_SF_PTR(SSFObject_Event)
+    SSF_PTR(SSFObject_Event)
     SetEventType(SSFEventType InEventType);
 
     /**
      * 设置事件类型
      */
-    SKYWALKER_SF_PTR(SSFObject_Event)
+    SSF_PTR(SSFObject_Event)
     SetEventType(int InMainType, int InSubType);
 
     /**
      * 设置事件皮肤
      */
-    SKYWALKER_SF_PTR(SSFObject_Event)
+    SSF_PTR(SSFObject_Event)
     SetEventSkin(SSF_PTR_EVENT_SKIN InEventSkin);
 
 private:
@@ -48,6 +48,6 @@ private:
     SSF_PTR_EVENT_SKIN EventSkin;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFObject_Event_H__

@@ -10,6 +10,8 @@
 
 #include "SSFCore.h"
 
+SSF_NAMESPACE_BEGIN
+
 #pragma region 事件类型
 
 struct SSFEventType
@@ -48,5 +50,7 @@ enum SSFEventMainType
 #pragma region 事件注册
 
 #pragma endregion 事件注册
+
+SSF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFEvent_H__

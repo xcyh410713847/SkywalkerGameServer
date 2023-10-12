@@ -7,7 +7,7 @@
 
 #include "SSFObject_ServerSocket.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 #pragma region Object
 

@@ -10,7 +10,7 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 
@@ -39,7 +39,7 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 
     CreateNetworkClient(Errors);
 
-    SKYWALKER_SF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
+    SSF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
     {
         Iter->second->Tick(Errors, DelayMS);
     }

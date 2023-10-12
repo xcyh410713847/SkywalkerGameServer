@@ -12,7 +12,7 @@
 
 #include "Core/Object/SSFObject.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 struct SSFNetworkSocketCreatorContext : public SSFObjectCreatorContext
 {
@@ -69,8 +69,8 @@ protected:
     SOCKET Socket = INVALID_SOCKET;
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
-#define SSF_PRT_NETWORK_SOCKET SKYWALKER_SF_PTR(SSFObject_NetworkSocket)
+#define SSF_PRT_NETWORK_SOCKET SSF_PTR(SSFObject_NetworkSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_NETWORK_SOCKET_H__

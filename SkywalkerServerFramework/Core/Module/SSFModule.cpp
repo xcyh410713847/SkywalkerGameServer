@@ -9,7 +9,7 @@
 
 #include "Include/SSFILog.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
 SKYWALKER_SF_LOG_DEFINE(SSFModule, LogLevel_Debug);
 
@@ -73,7 +73,7 @@ void SSFOModule::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOModule::SSFOModule(SKYWALKER_SF_PTR_PLUGIN_MANAGER InPluginManager)
+SSFOModule::SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager)
     : SSFObject(), PluginManager(InPluginManager)
 {
 }

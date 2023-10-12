@@ -14,7 +14,7 @@
 
 #include "Core/Map/SSFMap.h"
 
-SKYWALKER_SF_NAMESPACE_BEGIN
+SSF_NAMESPACE_BEGIN
 
 class SSFObjectSimple
 {
@@ -26,19 +26,19 @@ private:
 
 public:
     template <typename T, typename... Params>
-    static SKYWALKER_SF_PTR(T) NewObject(Params... param)
+    static SSF_PTR(T) NewObject(Params... param)
     {
         // 从对象池中获取对象
-        std::string ClassName = SKYWALKER_SF_CLASS_NAME(T);
+        std::string ClassName = SSF_CLASS_NAME(T);
         auto Iterator = SSFObjectSimple::ObjectPoolMap.find(ClassName);
         if (Iterator != SSFObjectSimple::ObjectPoolMap.end())
         {
             SKYWALKER_POOL_PTR(SSFObjectSimple)
             ObjectPool = Iterator->second;
-            if (SKYWALKER_SF_PTR_VALID(ObjectPool))
+            if (SSF_PTR_VALID(ObjectPool))
             {
                 SSFObjectSimple *Object = ObjectPool->Get();
-                if (SKYWALKER_SF_PTR_VALID(Object))
+                if (SSF_PTR_VALID(Object))
                 {
                     return (T *)Object;
                 }
@@ -48,9 +48,9 @@ public:
         return new T(param...);
     }
 
-    static bool RemoveObject(SKYWALKER_SF_PTR_OBJECT_SIMPLE Object)
+    static bool RemoveObject(SSF_PTR_OBJECT_SIMPLE Object)
     {
-        if (!SKYWALKER_SF_PTR_VALID(Object))
+        if (!SSF_PTR_VALID(Object))
         {
             return false;
         }
@@ -81,7 +81,7 @@ public:
 
         SKYWALKER_POOL_PTR(SSFObjectSimple)
         ObjectPool = Iterator->second;
-        if (!SKYWALKER_SF_PTR_VALID(ObjectPool))
+        if (!SSF_PTR_VALID(ObjectPool))
         {
             return false;
         }
@@ -114,13 +114,13 @@ public:
     virtual void Release();
 };
 
-SKYWALKER_SF_NAMESPACE_END
+SSF_NAMESPACE_END
 
 #define SSF_OBJECT_CLASS(Class)                             \
 public:                                                     \
     virtual const std::string GetObjectClassName() override \
     {                                                       \
-        return SKYWALKER_SF_CLASS_NAME(Class);              \
+        return SSF_CLASS_NAME(Class);                       \
     };                                                      \
                                                             \
     bool IsEnablePool() override                            \
@@ -134,6 +134,6 @@ protected:                                                  \
 /**
  * 创建对象
  */
-#define SSF_NEW_OBJECT(T, ...) SKYWALKER_SF_NAMESPACE::SSFObjectSimple::NewObject<T>(__VA_ARGS__)
+#define SSF_NEW_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewObject<T>(__VA_ARGS__)
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFObjectSimple_H__

@@ -9,11 +9,11 @@
 
 #include "Core/Plugin/SSFPlugin.h"
 
-SKYWALKER_SF_NAMESPACE_USING
+SSF_NAMESPACE_USING
 
-void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module)
+void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
 {
-    if (!SKYWALKER_SF_PTR_VALID(Module))
+    if (!SSF_PTR_VALID(Module))
     {
         SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin Register Module nullptr");
         return;
@@ -36,9 +36,9 @@ void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR
     ModuleMap.insert(std::make_pair(ModuleName, Module));
 }
 
-void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_PTR_MODULE Module)
+void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
 {
-    if (!SKYWALKER_SF_PTR_VALID(Module))
+    if (!SSF_PTR_VALID(Module))
     {
         SKYWALKER_SF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
         return;
@@ -61,7 +61,7 @@ void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SKYWALKER_SF_P
     ModuleMap.erase(Iter);
 }
 
-SKYWALKER_SF_PTR_MODULE SSFOModuleManager::GetModule(const std::string &ModuleName)
+SSF_PTR_MODULE SSFOModuleManager::GetModule(const std::string &ModuleName)
 {
     auto Iter = ModuleMap.find(ModuleName);
     if (Iter != ModuleMap.end())
