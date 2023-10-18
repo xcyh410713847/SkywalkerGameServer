@@ -16,7 +16,7 @@
 
 #include "SSFPlatform.h"
 
-#pragma region Common Macro
+#pragma region Namespace Macro
 
 /**
  * 定义命名空间
@@ -41,7 +41,9 @@
  */
 #define SSF_NAMESPACE_USING using namespace SSF_NAMESPACE;
 
-#pragma endregion Common Macro
+#pragma endregion Namespace Macro
+
+SSF_NAMESPACE_BEGIN
 
 #pragma region Function Macro
 
@@ -95,8 +97,6 @@
 
 #pragma region Pointer Macro
 
-SSF_NAMESPACE_BEGIN
-
 /**
  * 简单对象
  */
@@ -127,8 +127,6 @@ class SSFOPlugin;
 class SSFOModule;
 #define SSF_PTR_MODULE SSF_PTR(SSFOModule)
 
-SSF_NAMESPACE_END
-
 #pragma endregion Pointer Macro
 
 #pragma region Plugin Macro
@@ -152,5 +150,29 @@ SSF_NAMESPACE_END
 #endif // SKYWALKER_SF_DYNAMIC_PLUGIN
 
 #pragma endregion Plugin Macro
+
+#pragma region typedef
+
+typedef bool SSFBool;
+typedef char SSFByte;
+typedef unsigned char SSFUByte;
+typedef short SSFShort;
+typedef unsigned short SSFUShort;
+typedef int SSFInt;
+typedef unsigned int SSFUInt;
+typedef long SSFLong;
+typedef unsigned long SSFULong;
+typedef long long SSFLongLong;
+typedef unsigned long long SSFULongLong;
+typedef float SSFFloat;
+typedef double SSFDouble;
+typedef std::string SSFString;
+
+#define TRUE 1
+#define FALSE 0
+
+#pragma endregion typedef
+
+SSF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_CORE_H__
