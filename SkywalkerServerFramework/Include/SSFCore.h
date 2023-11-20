@@ -67,6 +67,7 @@ SSF_NAMESPACE_BEGIN
 #define SSF_PTR(T) T *
 #define SSF_CONST_PTR(T) const T *
 #define SSF_PTR_VALID(Obj) (Obj != nullptr)
+#define SSF_PTR_INVALID(Obj) (Obj == nullptr)
 
 /**
  * 智能指针
@@ -81,7 +82,8 @@ SSF_NAMESPACE_BEGIN
 /**
  * Cast
  */
-#define SSF_PTR_CAST(T) dynamic_cast<SSF_PTR(T)>
+#define SSF_PTR_DYNAMIC_CAST(T) dynamic_cast<SSF_PTR(T)>
+#define SSF_PTR_STATIC_CAST(T) static_cast<SSF_PTR(T)>
 
 #pragma endregion Common Type
 

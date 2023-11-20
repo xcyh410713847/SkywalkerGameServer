@@ -10,9 +10,11 @@
 #include "Core/Object/SSFObject.h"
 #include "Core/Plugin/SSFPlugin.h"
 #include "Core/Module/SSFModule.h"
+#include "SkywalkerEvent/SkywalkerEvent.h"
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 SSF_NAMESPACE_USING
+SKYWALKER_EVENT_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
@@ -45,6 +47,8 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
         SSF_ERROR_DESC(Errors, SkywalkerSFError_Object_Init_Failed, "StartPlugin Failed");
         return;
     }
+
+    SKYWALKER_REGISTER_EVENT(SSFEventMainType_Plugin, SSFEventSubType_Plugin_Init, std::bind(&SSFOPluginManager::OnEvent_PluginInit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -136,6 +140,36 @@ void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 }
 
 #pragma endregion Object
+
+#pragma region Event
+
+bool SSFOPluginManager::OnEvent_PluginInit(SSFEventMainType MainType,
+                                           SSFEventSubType SubType,
+                                           SSFEventParam Param,
+                                           SSFEventParamSize ParamSize)
+{
+    if (ParamSize != sizeof(SSFEventPluginAll))
+    {
+        return false;
+    }
+
+    SSFEventPluginAll *EventPluginAll = SSF_PTR_STATIC_CAST(SSFEventPluginAll)(Param);
+    if (SSF_PTR_INVALID(EventPluginAll))
+    {
+        return false;
+    }
+
+    if (SSF_PTR_INVALID(EventPluginAll->Plugin))
+    {
+        return false;
+    }
+
+    SSF_LOG_DEBUG("OnEvent_PluginInit: " << EventPluginAll->Plugin->GetName());
+
+    return true;
+}
+
+#pragma endregion Event
 
 #pragma region SSFIPluginManager
 

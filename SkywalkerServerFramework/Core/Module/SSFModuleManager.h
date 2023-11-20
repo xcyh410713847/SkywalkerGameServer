@@ -53,7 +53,7 @@ public:
             return nullptr;
         }
 
-        return SSF_PTR_CAST(T)(Module);
+        return SSF_PTR_DYNAMIC_CAST(T)(Module);
     }
 
 protected:

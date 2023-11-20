@@ -14,6 +14,7 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
+#include "Include/SSFEvent.h"
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Map/SSFMap.h"
@@ -74,6 +75,14 @@ public:
     virtual void Release(SSFObjectErrors &Errors) override;
 
 #pragma endregion Object
+
+#pragma region Event
+
+private:
+    bool OnEvent_PluginInit(SSFEventMainType MainType, SSFEventSubType SubType,
+                            SSFEventParam Param, SSFEventParamSize ParamSize);
+
+#pragma endregion Event
 
 public:
     SSFOPluginManager() : SSFOModuleManager() {}

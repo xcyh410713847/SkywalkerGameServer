@@ -8,8 +8,10 @@
 #include "SSFPlugin.h"
 
 #include "Include/SSFILog.h"
+#include "Include/SSFEvent.h"
 
 SSF_NAMESPACE_USING
+SKYWALKER_EVENT_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
@@ -25,6 +27,11 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
 
     // 加载模块
     Install(Errors);
+
+    // 发送插件初始化事件
+    SSFEventPluginAll EventPluginAll;
+    EventPluginAll.Plugin = this;
+    SKYWALKER_TRIGGER_EVENT(SSFEventMainType_Plugin, SSFEventSubType_Plugin_Init, EventPluginAll);
 }
 
 void SSFOPlugin::Awake(SSFObjectErrors &Errors)
