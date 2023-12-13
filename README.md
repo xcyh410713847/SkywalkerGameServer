@@ -32,6 +32,46 @@
 
 各种独立的工具
 
+## 架构设想
+
+### 关于多线程
+
+分成两部分来设计
+
+#### 单个 `CSkywalkerServerFramework`
+
+每个 `CSkywalkerServerFramework`中本身存在多线程，线程只能在 `CSkywalkerServerFramework`中通信
+
+线程根据功能暂且分
+
+* 网络线程，只用来处理网络消息
+* 资源管理线程，管理服务器的资源
+* 场景线程，管理场景
+* 主线程，负责游戏的逻辑
+
+#### 多个 `CSkywalkerServerFramework`
+
+可以使用多个 `CSkywalkerServerFramework`，将每个 `CSkywalkerServerFramework`当成一个线程，`CSkywalkerServerFramework`之间可以通信
+
+为什么实现多个 `CSkywalkerServerFramework`设计
+
+1. 方便一个编辑器管理全部服务器
+
+### 关于 `CSkywalkerServerFramework`设计
+
+分成三部分组成
+
+#### Core
+
+这中间的代码会生成一个静态链接库
+
+#### SkywalkerServerFramework
+
+会链接 `Core`生成的静态链接库，然后自身也会生成一个静态链接库
+
+#### Plugin
+
+里面存放了各种功能独立的插件(Plugin)，每个插件都会生成一个动态库，通过配置加载需要的动态库即可
 
 ## FAQ记录一些开发过程中遇到的问题
 
