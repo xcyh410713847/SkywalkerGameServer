@@ -11,8 +11,13 @@
 #include "SkywalkerPool/SkywalkerPool.h"
 
 #include "Include/SSFCore.h"
+#include "Include/SSFILog.h"
 
 SSF_NAMESPACE_BEGIN
+
+#define SSF_LOG_DEBUG_OBJECT_SIMPLE(content) SSF_LOG_PRINT_EX(ELogLevel::LogLevel_Debug, "[Debug     ]"             \
+                                                                                             << "[SSFObjectSimple]" \
+                                                                                             << " " << content);
 
 class SSFObjectSimple
 {
@@ -38,10 +43,13 @@ public:
                 SSFObjectSimple *Object = ObjectPool->Get();
                 if (SSF_PTR_VALID(Object))
                 {
+                    SSF_LOG_DEBUG_OBJECT_SIMPLE("NewObject: " << ClassName << " from pool")
                     return (T *)Object;
                 }
             }
         }
+
+        SSF_LOG_DEBUG_OBJECT_SIMPLE("NewObject: " << ClassName << " from new")
 
         return new T(param...);
     }
@@ -53,8 +61,10 @@ public:
             return false;
         }
 
-        if (!Object->IsEnablePool())
+        SSFUInt PoolSize = Object->GetPoolSize();
+        if (PoolSize <= 0)
         {
+            SSF_LOG_DEBUG_OBJECT_SIMPLE("RemoveObject: " << Object->GetObjectClassName() << " not in pool")
             delete Object;
             return true;
         }
@@ -66,7 +76,7 @@ public:
         {
             // 创建对象池
             SKYWALKER_POOL_PTR(SSFObjectSimple)
-            ObjectPool = SKYWALKER_POOL_NEW(SSFObjectSimple, 100);
+            ObjectPool = SKYWALKER_POOL_NEW(SSFObjectSimple, PoolSize);
 
             SSFObjectSimple::ObjectPoolMap.insert(std::make_pair(ClassName, ObjectPool));
 
@@ -86,15 +96,29 @@ public:
 
         ObjectPool->Recycle(Object);
 
+        SSF_LOG_DEBUG_OBJECT_SIMPLE("RemoveObject: " << Object->GetObjectClassName() << " to pool")
+
         return true;
     }
 
 #pragma endregion NewObject
 
+#pragma region SSFObjectSimple
+
 public:
     SSFObjectSimple();
     virtual ~SSFObjectSimple();
 
+    /**
+     * 释放
+     */
+    virtual void Release();
+
+#pragma endregion SSFObjectSimple
+
+#pragma region Object Interface
+
+public:
     /**
      * 获取类名称
      * @return 类名称
@@ -102,32 +126,44 @@ public:
     virtual const std::string GetObjectClassName() = 0;
 
     /**
-     * 是否启用对象池
+     * 获取对象池大小
      */
-    virtual bool IsEnablePool() = 0;
+    virtual const SSFUInt &GetPoolSize() = 0;
 
-    /**
-     * 释放
-     */
-    virtual void Release();
+#pragma endregion Object Interface
 };
 
 SSF_NAMESPACE_END
 
-#define SSF_OBJECT_CLASS(Class)                             \
-public:                                                     \
-    virtual const std::string GetObjectClassName() override \
-    {                                                       \
-        return SSF_CLASS_NAME(Class);                       \
-    };                                                      \
-                                                            \
-    bool IsEnablePool() override                            \
-    {                                                       \
-        return EnablePool;                                  \
-    };                                                      \
-                                                            \
-protected:                                                  \
-    bool EnablePool = false;
+/**
+ * 定义对象类
+ */
+#define SSF_OBJECT_CLASS(Class)                                 \
+public:                                                         \
+    virtual const std::string GetObjectClassName() override     \
+    {                                                           \
+        return SSF_CLASS_NAME(Class);                           \
+    };                                                          \
+                                                                \
+    const SSFUInt &GetPoolSize() override { return PoolSize; }; \
+                                                                \
+protected:                                                      \
+    SSFUInt PoolSize = 0;
+
+/**
+ * 定义对象类，带对象池大小
+ */
+#define SSF_OBJECT_CLASS_POOL(Class, InPoolSize)                \
+public:                                                         \
+    virtual const std::string GetObjectClassName() override     \
+    {                                                           \
+        return SSF_CLASS_NAME(Class);                           \
+    };                                                          \
+                                                                \
+    const SSFUInt &GetPoolSize() override { return PoolSize; }; \
+                                                                \
+protected:                                                      \
+    SSFUInt PoolSize = InPoolSize;
 
 /**
  * 创建对象

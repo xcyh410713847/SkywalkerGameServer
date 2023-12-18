@@ -12,7 +12,6 @@ SSF_NAMESPACE_USING
 SSFObject_NetworkSocket::SSFObject_NetworkSocket()
     : SSFObject()
 {
-    EnablePool = true;
 }
 
 SSFObject_NetworkSocket::~SSFObject_NetworkSocket()

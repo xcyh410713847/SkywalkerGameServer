@@ -44,9 +44,16 @@ enum ELogLevel
 /**
  * 日志打印
  */
-#define SSF_LOG_PRINT(Level, Content)                             \
-    if (Level >= SSFLogModuleShowLevel && Level >= SSF_LOG_LEVEL) \
+#define SSF_LOG_PRINT_EX(Level, Content) \
+    if (Level >= SSF_LOG_LEVEL)          \
         std::cout << Content << std::endl;
+
+/**
+ * 日志打印
+ */
+#define SSF_LOG_PRINT(Level, Content)   \
+    if (Level >= SSFLogModuleShowLevel) \
+    SSF_LOG_PRINT_EX(Level, Content)
 
 /**
  * 调试
