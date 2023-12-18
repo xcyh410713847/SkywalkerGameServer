@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <memory>
 #include <list>
+#include <map>
 
 #include "SSFPlatform.h"
 
@@ -174,6 +175,13 @@ typedef std::string SSFString;
 #define FALSE 0
 
 #pragma endregion typedef
+
+#pragma region Data Structure
+
+template <typename Key, typename Value>
+using SSFMap = std::map<Key, Value>;
+
+#pragma endregion Data Structure
 
 SSF_NAMESPACE_END
 

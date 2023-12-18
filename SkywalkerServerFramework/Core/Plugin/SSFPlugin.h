@@ -11,7 +11,6 @@
 #include "Include/SSFCore.h"
 
 #include "Core/Object/SSFObject.h"
-#include "Core/Map/SSFMap.h"
 #include "Core/Module/SSFModuleManager.h"
 
 SSF_NAMESPACE_BEGIN

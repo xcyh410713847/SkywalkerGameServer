@@ -12,8 +12,6 @@
 
 #include "Include/SSFCore.h"
 
-#include "Core/Map/SSFMap.h"
-
 SSF_NAMESPACE_BEGIN
 
 class SSFObjectSimple

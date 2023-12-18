@@ -11,7 +11,6 @@
 #include "Include/SSFCore.h"
 
 #include "Core/Module/SSFModule.h"
-#include "Core/Map/SSFMap.h"
 
 #include "SSFObject_ServerSocket.h"
 #include "SSFObject_ClientSocket.h"

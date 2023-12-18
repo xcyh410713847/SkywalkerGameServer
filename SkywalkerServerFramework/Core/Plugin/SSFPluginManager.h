@@ -17,7 +17,6 @@
 #include "Include/SSFEvent.h"
 
 #include "Core/Object/SSFObject.h"
-#include "Core/Map/SSFMap.h"
 #include "Core/DynamicLib/SSFDynamicLib.h"
 #include "Core/Module/SSFModuleManager.h"
 
