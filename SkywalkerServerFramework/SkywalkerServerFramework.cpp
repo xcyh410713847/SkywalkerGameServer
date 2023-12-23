@@ -13,14 +13,6 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
-void CSkywalkerServerFramework::SignalHandler(int Signal)
-{
-
-    SSF_LOG_DEBUG("SignalHandler Signal: " << Signal);
-
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
-}
-
 bool CSkywalkerServerFramework::Start()
 {
     // 进入启动中状态
@@ -46,7 +38,7 @@ bool CSkywalkerServerFramework::Start()
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
-    signal(SIGINT, &CSkywalkerServerFramework::SignalHandler);
+    SystemSignal = std::make_unique<SSFSystemSignal>();
 
     FrameworkTimer.Tick();
     SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");

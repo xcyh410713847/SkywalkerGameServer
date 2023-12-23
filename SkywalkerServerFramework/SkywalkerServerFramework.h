@@ -14,6 +14,7 @@
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
 
+#include "Core/Command/SSFSystemSignal.h"
 #include "Core/Plugin/SSFPluginManager.h"
 
 SSF_NAMESPACE_BEGIN
@@ -40,12 +41,6 @@ static ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunni
 class CSkywalkerServerFramework
 {
 public:
-    /**
-     * 信号处理函数
-     */
-    static void SignalHandler(int Signal);
-
-public:
     bool Start();
     bool Tick();
     bool Stop();
@@ -56,6 +51,9 @@ private:
     SSF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
 
     SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer FrameworkTimer;
+
+    SSF_CONST_UNIQUE_PTR(SSFSystemSignal)
+    SystemSignal = nullptr;
 };
 
 SSF_NAMESPACE_END
