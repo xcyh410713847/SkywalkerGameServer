@@ -14,10 +14,16 @@
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
 
-#include "Core/Command/SSFCommandLine.h"
 #include "Core/Plugin/SSFPluginManager.h"
 
+namespace SKYWALKER_TIMER_NAMESPACE
+{
+    class SkywalkerTimer;
+}
+
 SSF_NAMESPACE_BEGIN
+
+class SSFCommandLine;
 
 // Skywalker Server Framework 运行状态
 enum class ESkywalkerServerFrameworkRunningState
@@ -48,11 +54,14 @@ public:
     bool IsRunning() const;
 
 private:
-    SSF_PTR_PLUGIN_MANAGER PluginManager = nullptr;
+    SSF_SHARED_PTR(SSFOPluginManager)
+    PluginManager = nullptr;
 
-    SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer FrameworkTimer;
+    SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
+    FrameworkTimer = nullptr;
 
-    SSFCommandLine CommandLine;
+    SSF_SHARED_PTR(SSFCommandLine)
+    CommandLine = nullptr;
 };
 
 SSF_NAMESPACE_END

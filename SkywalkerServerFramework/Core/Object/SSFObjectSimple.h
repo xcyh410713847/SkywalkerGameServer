@@ -54,6 +54,12 @@ public:
         return new T(param...);
     }
 
+    template <typename T, typename... Params>
+    static SSF_SHARED_PTR(T) NewSharedObject(Params... param)
+    {
+        return SSF_MAKE_SHARED_PTR(T, param...);
+    }
+
     static bool RemoveObject(SSF_PTR_OBJECT_SIMPLE Object)
     {
         if (!SSF_PTR_VALID(Object))
@@ -168,6 +174,7 @@ protected:                                                      \
 /**
  * 创建对象
  */
-#define SSF_NEW_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewObject<T>(__VA_ARGS__)
+#define SSF_NEW_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewObject<T>(__VA_ARGS__);
+#define SSF_NEW_SHARED_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewSharedObject<T>(__VA_ARGS__);
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFObjectSimple_H__

@@ -74,11 +74,22 @@ SSF_NAMESPACE_BEGIN
  * 智能指针
  */
 #define SSF_UNIQUE_PTR(T) std::unique_ptr<T>
+#define SSF_MAKE_UNIQUE_PTR(T) std::make_unique<T>();
+
 #define SSF_CONST_UNIQUE_PTR(T) std::unique_ptr<const T>
+#define SSF_MAKE_CONST_UNIQUE_PTR(T) std::make_unique<const T>();
+
 #define SSF_SHARED_PTR(T) std::shared_ptr<T>
+#define SSF_MAKE_SHARED_PTR(T, ...) std::make_shared<T>(__VA_ARGS__);
+
 #define SSF_CONST_SHARED_PTR(T) std::shared_ptr<const T>
+#define SSF_MAKE_CONST_SHARED_PTR(T) std::make_shared<const T>();
+
 #define SSF_WEAK_PTR(T) std::weak_ptr<T>
+#define SSF_MAKE_WEAK_PTR(T) std::make_weak_ptr<T>();
+
 #define SSF_CONST_WEAK_PTR(T) std::weak_ptr<const T>
+#define SSF_MAKE_CONST_WEAK_PTR(T) std::make_weak_ptr<const T>();
 
 /**
  * Cast

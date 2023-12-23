@@ -9,21 +9,42 @@
 
 #include "Include/SSFILog.h"
 
+#include "Core/Command/SSFCommandLine.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 bool CSkywalkerServerFramework::Start()
 {
+    FrameworkTimer = SSF_MAKE_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer);
+    if (!FrameworkTimer)
+    {
+        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SkywalkerTimer Failed");
+        return false;
+    }
+
+    FrameworkTimer->Reset();
+
+    SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer->GetStartTime() << "s")
+
+    CommandLine = SSF_MAKE_SHARED_PTR(SSFCommandLine);
+    if (!CommandLine)
+    {
+        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFCommandLine Failed");
+        return false;
+    }
+
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
-    FrameworkTimer.Reset();
-
-    SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer.GetStartTime() << "s")
-
     // 创建插件管理器
-    PluginManager = SSF_NEW_OBJECT(SSFOPluginManager);
+    PluginManager = SSF_NEW_SHARED_OBJECT(SSFOPluginManager);
+    if (!PluginManager)
+    {
+        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFOPluginManager Failed");
+        return false;
+    }
 
     // Init
     SSFObjectErrors ObjectErrors;
@@ -38,8 +59,8 @@ bool CSkywalkerServerFramework::Start()
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
-    FrameworkTimer.Tick();
-    SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");
+    FrameworkTimer->Tick();
+    SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer->GetDeltaTime() << "ms");
 
     return true;
 }
@@ -51,10 +72,10 @@ bool CSkywalkerServerFramework::Tick()
         return false;
     }
 
-    FrameworkTimer.Tick();
+    FrameworkTimer->Tick();
 
     SSFObjectErrors ObjectErrors;
-    PluginManager->Tick(ObjectErrors, FrameworkTimer.GetDeltaTime());
+    PluginManager->Tick(ObjectErrors, FrameworkTimer->GetDeltaTime());
 
     return true;
 }
@@ -80,8 +101,8 @@ bool CSkywalkerServerFramework::Stop()
     // 进入已停止状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
 
-    SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer.GetCurrTime()
-                                                        << "s, Elapsed Time: " << FrameworkTimer.GetTotalTime() << "s");
+    SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer->GetCurrTime()
+                                                        << "s, Elapsed Time: " << FrameworkTimer->GetTotalTime() << "s");
 
     return true;
 }
