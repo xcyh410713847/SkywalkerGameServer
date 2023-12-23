@@ -61,16 +61,16 @@ SSF_NAMESPACE_END
 /**
  * Skywalker Server Framework 启动宏
  */
-#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)                                        \
-    CSkywalkerServerFramework *pSkywalkerServerFramework = new CSkywalkerServerFramework(); \
-    if (!pSkywalkerServerFramework->Start())                                                \
-    {                                                                                       \
-        return 1;                                                                           \
-    }                                                                                       \
-    while (pSkywalkerServerFramework->Tick())                                               \
-    {                                                                                       \
-    }                                                                                       \
-    pSkywalkerServerFramework->Stop();                                                      \
-    delete pSkywalkerServerFramework;
+#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv) \
+    SSF_UNIQUE_PTR(CSkywalkerServerFramework)        \
+    SSFramework(new CSkywalkerServerFramework());    \
+    if (!SSFramework->Start())                       \
+    {                                                \
+        return 1;                                    \
+    }                                                \
+    while (SSFramework->Tick())                      \
+    {                                                \
+    }                                                \
+    SSFramework->Stop();
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__
