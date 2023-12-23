@@ -38,8 +38,6 @@ bool CSkywalkerServerFramework::Start()
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
-    SystemSignal = std::make_unique<SSFSystemSignal>();
-
     FrameworkTimer.Tick();
     SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << FrameworkTimer.GetDeltaTime() << "ms");
 

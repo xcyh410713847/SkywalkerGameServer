@@ -1,12 +1,12 @@
 ﻿/*************************************************************************
-**文件: SkywalkerServerFramework\Core\Command\SSFSystemSignal.h
+**文件: SkywalkerServerFramework\Core\Command\SSFOSSignal.h
 **作者: shyfan
 **日期: 2023/12/23 12:16:42
-**功能: 系统信号
+**功能: 操作系统信号
 *************************************************************************/
 
-#ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFSystemSignal_H__
-#define __SKYWALKER_SERVER_FRAMEWORK_SSFSystemSignal_H__
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFOSSignal_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_SSFOSSignal_H__
 
 #include <csignal>
 
@@ -17,11 +17,11 @@ SSF_NAMESPACE_BEGIN
 /**
  * 系统信号
  */
-class SSFSystemSignal
+class SSFOSSignal
 {
 public:
-    SSFSystemSignal();
-    ~SSFSystemSignal();
+    SSFOSSignal();
+    ~SSFOSSignal();
 
     /**
      * 信号处理函数
@@ -32,4 +32,4 @@ public:
 
 SSF_NAMESPACE_END
 
-#endif //__SKYWALKER_SERVER_FRAMEWORK_SSFSystemSignal_H__
+#endif //__SKYWALKER_SERVER_FRAMEWORK_SSFOSSignal_H__

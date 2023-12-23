@@ -14,7 +14,7 @@
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
 
-#include "Core/Command/SSFSystemSignal.h"
+#include "Core/Command/SSFCommandLine.h"
 #include "Core/Plugin/SSFPluginManager.h"
 
 SSF_NAMESPACE_BEGIN
@@ -52,8 +52,7 @@ private:
 
     SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer FrameworkTimer;
 
-    SSF_CONST_UNIQUE_PTR(SSFSystemSignal)
-    SystemSignal = nullptr;
+    SSFCommandLine CommandLine;
 };
 
 SSF_NAMESPACE_END
