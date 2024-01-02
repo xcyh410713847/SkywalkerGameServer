@@ -17,6 +17,10 @@ SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 bool CSkywalkerServerFramework::Start()
 {
+
+    // 打印地址
+    SSF_LOG_INFO("SkywalkerServerFramework Start Begin, Address: " << this);
+
     FrameworkTimer = SSF_MAKE_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer);
     if (!FrameworkTimer)
     {
@@ -83,6 +87,9 @@ bool CSkywalkerServerFramework::Tick()
 bool CSkywalkerServerFramework::Stop()
 {
     SSF_LOG_INFO("SkywalkerServerFramework Stop Begin");
+
+    // 打印地址
+    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin, Address: " << this);
 
     SSFObjectErrors ObjectErrors;
 

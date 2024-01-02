@@ -7,8 +7,9 @@
 
 #include "SSFOSSignal.h"
 
+#include <csignal>
+
 #include "Include/SSFILog.h"
-#include <functional>
 
 SSF_NAMESPACE_USING
 

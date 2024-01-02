@@ -8,8 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_H__
 
-#include <csignal>
-
 #include "Include/SSFCore.h"
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
@@ -53,15 +51,21 @@ public:
 
     bool IsRunning() const;
 
+    SSF_SHARED_PTR(SSFOPluginManager)
+    GetPluginManager() const
+    {
+        return PluginManager;
+    }
+
 private:
     SSF_SHARED_PTR(SSFOPluginManager)
-    PluginManager = nullptr;
+    PluginManager{};
 
     SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
-    FrameworkTimer = nullptr;
+    FrameworkTimer{};
 
     SSF_SHARED_PTR(SSFCommandLine)
-    CommandLine = nullptr;
+    CommandLine{};
 };
 
 SSF_NAMESPACE_END

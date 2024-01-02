@@ -8,8 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFOSSignal_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFOSSignal_H__
 
-#include <csignal>
-
 #include "Include/SSFCore.h"
 
 SSF_NAMESPACE_BEGIN

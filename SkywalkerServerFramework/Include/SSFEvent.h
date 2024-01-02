@@ -8,7 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFEvent_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFEvent_H__
 
-#include "Include/SSFCore.h"
 #include "SkywalkerEvent/SkywalkerEvent.h"
 
 #include "SSFCore.h"
