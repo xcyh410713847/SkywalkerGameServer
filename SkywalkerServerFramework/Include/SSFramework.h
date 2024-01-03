@@ -53,4 +53,17 @@ SSF_NAMESPACE_END
  */
 extern SSF_SHARED_PTR(SSF_NAMESPACE::SkywalkerServerFramework) SSFramework;
 
+/**
+ * Skywalker Server Framework 启动宏
+ */
+#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv) \
+    if (!SSFramework->Start())                       \
+    {                                                \
+        return 1;                                    \
+    }                                                \
+    while (SSFramework->Tick())                      \
+    {                                                \
+    }                                                \
+    SSFramework->Stop();
+
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFramework_H__
