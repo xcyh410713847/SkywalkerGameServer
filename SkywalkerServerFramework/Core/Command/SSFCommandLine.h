@@ -24,7 +24,8 @@ class SSFCommandLine : public SSFObject
     SSF_OBJECT_CLASS(SSFCommandLine);
 
 public:
-    SSFCommandLine(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
+    SSFCommandLine(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+        : SSFObject(InContext, InErrors){};
     virtual ~SSFCommandLine(){};
 
 private:

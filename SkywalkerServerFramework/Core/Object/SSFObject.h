@@ -15,11 +15,15 @@
 
 SSF_NAMESPACE_BEGIN
 
+class CSkywalkerServerFramework;
+
 /**
  * 对象创建上下文
  */
 struct SSFObjectContext
 {
+	SSF_SHARED_PTR(CSkywalkerServerFramework)
+	SSFramework;
 };
 
 static const SSFObjectContext SSFObjectCreatorContextDefault;
@@ -27,9 +31,42 @@ static const SSFObjectContext SSFObjectCreatorContextDefault;
 class SSFObject : public SSFObjectSimple
 {
 public:
-	SSFObject() : SSFObjectSimple(){};
-	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
-	virtual ~SSFObject(){};
+	SSFObject();
+	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+	virtual ~SSFObject();
+
+	/**
+	 * 创建对象
+	 */
+	template <typename T>
+	SSF_SHARED_PTR(T)
+	NewSharedObject();
+
+	/**
+	 * 创建对象
+	 */
+	template <typename T>
+	SSF_SHARED_PTR(T)
+	NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+
+	/**
+	 * 创建对象
+	 */
+	template <typename T>
+	SSF_PTR(T)
+	NewObject();
+
+	/**
+	 * 创建对象
+	 */
+	template <typename T>
+	SSF_PTR(T)
+	NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+
+private:
+	SSFObjectContext Context;
+
+#pragma region Object
 
 public:
 	/**
@@ -79,6 +116,8 @@ public:
 	 * 释放
 	 */
 	virtual void Release(SSFObjectErrors &Errors);
+
+#pragma endregion Object
 };
 
 SSF_NAMESPACE_END

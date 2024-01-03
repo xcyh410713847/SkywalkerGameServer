@@ -62,71 +62,28 @@ public:
      */
     template <typename T>
     SSF_SHARED_PTR(T)
-    NewSharedObject()
-    {
-        // TODO Shyfan 判断是否是继承自SSFObject
-        SSFObjectContext InContext;
-        SSFObjectErrors InErrors;
-        return NewSharedObject<T>(InContext, InErrors);
-    }
+    NewSharedObject();
 
     /**
      * 创建对象
      */
-    template <typename T, typename... Args>
+    template <typename T>
     SSF_SHARED_PTR(T)
-    NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-    {
-        // TODO Shyfan 判断是否是继承自SSFObject
-        SSF_PTR(T)
-        Object = NewObject<T>(InContext, InErrors);
-
-        std::shared_ptr<T> SharedObject(Object);
-
-        return SharedObject;
-    }
+    NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
 
     /**
      * 创建对象
      */
     template <typename T>
     SSF_PTR(T)
-    NewObject()
-    {
-        // TODO Shyfan 判断是否是继承自SSFObject
-        SSFObjectContext InContext;
-        SSFObjectErrors InErrors;
-
-        return NewObject<T>(InContext, InErrors);
-    }
+    NewObject();
 
     /**
      * 创建对象
      */
-    template <typename T, typename... Args>
+    template <typename T>
     SSF_PTR(T)
-    NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-    {
-        // TODO Shyfan 判断是否是继承自SSFObject
-        // 从对象池中获取对象
-        std::string ClassName = SSF_CLASS_NAME(T);
-        auto Iterator = ObjectPoolMap.find(ClassName);
-        if (Iterator != ObjectPoolMap.end())
-        {
-            SKYWALKER_POOL_PTR(SSFObject)
-            ObjectPool = Iterator->second;
-            if (SSF_PTR_VALID(ObjectPool))
-            {
-                SSFObject *Object = ObjectPool->Get();
-                if (SSF_PTR_VALID(Object))
-                {
-                    return (T *)Object;
-                }
-            }
-        }
-
-        return new T(InContext, InErrors);
-    }
+    NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
 
 private:
     SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> ObjectPoolMap;

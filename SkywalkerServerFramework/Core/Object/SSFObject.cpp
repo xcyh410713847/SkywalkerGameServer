@@ -9,9 +9,66 @@
 
 #include "Include/SSFILog.h"
 
+#include "SkywalkerServerFramework.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFObject, LogLevel_Debug);
+
+SSFObject::SSFObject() : SSFObjectSimple()
+{
+}
+
+SSFObject::SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+{
+    Context = InContext;
+}
+
+SSFObject::~SSFObject()
+{
+}
+
+/**
+ * 创建对象
+ */
+template <typename T>
+SSF_SHARED_PTR(T)
+SSFObject::NewSharedObject()
+{
+    return Context.SSFramework->NewSharedObject<T>();
+}
+
+/**
+ * 创建对象
+ */
+template <typename T>
+SSF_SHARED_PTR(T)
+SSFObject::NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+{
+    return Context.SSFramework->NewSharedObject<T>(InContext, InErrors);
+}
+
+/**
+ * 创建对象
+ */
+template <typename T>
+SSF_PTR(T)
+SSFObject::NewObject()
+{
+    return Context.SSFramework->NewObject<T>();
+}
+
+/**
+ * 创建对象
+ */
+template <typename T>
+SSF_PTR(T)
+SSFObject::NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+{
+    return Context.SSFramework->NewObject<T>(InContext, InErrors);
+}
+
+#pragma region Object
 
 void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectContext &Context) {}
 
@@ -33,3 +90,5 @@ void SSFObject::Release(SSFObjectErrors &Errors)
 {
     SSFObjectSimple::Release();
 }
+
+#pragma endregion Object
