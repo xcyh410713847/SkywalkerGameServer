@@ -10,8 +10,7 @@
 #include <csignal>
 
 #include "Include/SSFILog.h"
-
-#include "SkywalkerServerFramework.h"
+#include "Include/SSFramework.h"
 
 SSF_NAMESPACE_USING
 
@@ -30,6 +29,5 @@ void SSFOSSignal::SignalHandler(int Signal)
 {
     SSF_LOG_DEBUG("SignalHandler Signal: " << Signal);
 
-    // TODO Shyfan 通知框架停止
     SSFramework->Close();
 }

@@ -9,50 +9,46 @@
 #define __SKYWALKER_SERVER_FRAMEWORK_H__
 
 #include "Include/SSFCore.h"
+#include "Include/SSFramework.h"
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
 
 SSF_NAMESPACE_BEGIN
 
 class SSFCommandLine;
-class SSFOPluginManager;
-
-// Skywalker Server Framework 运行状态
-enum class ESkywalkerServerFrameworkRunningState
-{
-    SkywalkerServerFrameworkRunningState_Create = 0, // 创建
-    SkywalkerServerFrameworkRunningState_Starting,   // 启动中
-    SkywalkerServerFrameworkRunningState_Running,    // 运行中
-    SkywalkerServerFrameworkRunningState_Stopping,   // 停止中
-};
 
 /**
  * Skywalker Server Framework
  */
-class CSkywalkerServerFramework
+class CSkywalkerServerFramework : public SkywalkerServerFramework
 {
     typedef ESkywalkerServerFrameworkRunningState ERunningState;
+#pragma region SkywalkerServerFramework
 
 public:
-    bool Start();
-    bool Tick();
-    bool Stop();
+    virtual bool Start() override;
+    virtual bool Tick() override;
+    virtual bool Stop() override;
 
     /**
      * 关闭
      */
-    void Close();
+    virtual void Close() override;
 
     /**
      * 是否正在运行
      */
-    bool IsRunning() const;
+    virtual bool IsRunning() const override;
 
-    SSF_SHARED_PTR(SSFOPluginManager)
-    GetPluginManager() const
+    /**
+     * 获取插件管理器
+     */
+    virtual SSF_SHARED_PTR(SSFOPluginManager) GetPluginManager() const override
     {
         return PluginManager;
     }
+
+#pragma endregion SkywalkerServerFramework
 
 private:
     SSF_SHARED_PTR(SSFOPluginManager)
@@ -68,11 +64,6 @@ private:
 };
 
 SSF_NAMESPACE_END
-
-/**
- * 全局 Skywalker Server Framework
- */
-extern SSF_UNIQUE_PTR(SSF_NAMESPACE::CSkywalkerServerFramework) SSFramework;
 
 /**
  * Skywalker Server Framework 启动宏

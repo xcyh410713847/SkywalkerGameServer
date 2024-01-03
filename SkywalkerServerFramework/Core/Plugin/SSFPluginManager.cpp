@@ -25,8 +25,6 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
     SSFObject::Init(Errors);
 
-    SSF_LOG_DEBUG("SSFOPluginManager Address: " << this);
-
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
@@ -130,8 +128,6 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG("Release");
-
-    SSF_LOG_DEBUG("SSFOPluginManager Address: " << this);
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {

@@ -16,8 +16,8 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
-SSF_UNIQUE_PTR(CSkywalkerServerFramework)
-SSFramework = SSF_MAKE_UNIQUE_PTR(CSkywalkerServerFramework);
+SSF_SHARED_PTR(SkywalkerServerFramework)
+SSFramework = SSF_MAKE_SHARED_PTR(CSkywalkerServerFramework);
 
 bool CSkywalkerServerFramework::Start()
 {
@@ -89,10 +89,7 @@ bool CSkywalkerServerFramework::Tick()
 
 bool CSkywalkerServerFramework::Stop()
 {
-    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin");
-
-    // 打印地址
-    SSF_LOG_DEBUG("SkywalkerServerFramework Stop Begin, Address: " << this);
+    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin, Address: " << this);
 
     SSFObjectErrors ObjectErrors;
 
