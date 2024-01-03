@@ -38,7 +38,7 @@ bool CSkywalkerServerFramework::Start()
 
     SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer->GetStartTime() << "s")
 
-    CommandLine = SSF_MAKE_SHARED_PTR(SSFCommandLine);
+    CommandLine = NewSharedObject<SSFCommandLine>();
     if (!CommandLine)
     {
         SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFCommandLine Failed");

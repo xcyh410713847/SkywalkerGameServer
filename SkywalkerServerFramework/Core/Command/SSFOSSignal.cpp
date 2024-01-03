@@ -18,6 +18,7 @@ SSF_LOG_DEFINE(SSFOSSignal, LogLevel_Debug);
 
 SSFOSSignal::SSFOSSignal()
 {
+    // Ctrl+C
     signal(SIGINT, &SSFOSSignal::SignalHandler);
 }
 

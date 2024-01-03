@@ -18,25 +18,27 @@ SSF_NAMESPACE_BEGIN
 /**
  * 对象创建上下文
  */
-struct SSFObjectCreatorContext
+struct SSFObjectContext
 {
-	SSFObjectCreatorContext()
-	{
-		memset(this, 0, sizeof(SSFObjectCreatorContext));
-	}
 };
 
-static const SSFObjectCreatorContext SSFObjectCreatorContextDefault;
+static const SSFObjectContext SSFObjectCreatorContextDefault;
 
 class SSFObject : public SSFObjectSimple
 {
+public:
+	SSFObject() : SSFObjectSimple(){};
+	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
+	virtual ~SSFObject(){};
+
 public:
 	/**
 	 * 调用循序
 	 * Create -> Init -> Awake -> Start -> Tick -> Stop -> Sleep -> Destroy -> Release
 	 */
 
-	virtual void Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context);
+	virtual void
+	Create(SSFObjectErrors &Errors, SSFObjectContext &Context);
 
 	/**
 	 * 初始化

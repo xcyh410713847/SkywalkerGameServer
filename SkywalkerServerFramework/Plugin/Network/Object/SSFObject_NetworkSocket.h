@@ -14,12 +14,12 @@
 
 SSF_NAMESPACE_BEGIN
 
-struct SSFNetworkSocketCreatorContext : public SSFObjectCreatorContext
+struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 {
     SOCKET Socket;
 
     SSFNetworkSocketCreatorContext()
-        : SSFObjectCreatorContext(),
+        : SSFObjectContext(),
           Socket(INVALID_SOCKET)
     {
     }

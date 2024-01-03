@@ -13,7 +13,7 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFObject, LogLevel_Debug);
 
-void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectCreatorContext &Context) {}
+void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectContext &Context) {}
 
 void SSFObject::Init(SSFObjectErrors &Errors) {}
 

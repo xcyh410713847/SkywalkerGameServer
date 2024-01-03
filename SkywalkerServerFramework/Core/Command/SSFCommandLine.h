@@ -12,13 +12,21 @@
 
 #include "SSFOSSignal.h"
 
+#include "Core/Object/SSFObject.h"
+
 SSF_NAMESPACE_BEGIN
 
 /**
  * 命令行
  */
-class SSFCommandLine
+class SSFCommandLine : public SSFObject
 {
+    SSF_OBJECT_CLASS(SSFCommandLine);
+
+public:
+    SSFCommandLine(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
+    virtual ~SSFCommandLine(){};
+
 private:
     /**
      * 系统信号处理
