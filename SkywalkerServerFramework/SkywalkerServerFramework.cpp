@@ -10,6 +10,7 @@
 #include "Include/SSFILog.h"
 
 #include "Core/Command/SSFCommandLine.h"
+#include "Core/Plugin/SSFPluginManager.h"
 
 SSF_NAMESPACE_USING
 
@@ -109,6 +110,10 @@ bool CSkywalkerServerFramework::Stop()
 
     SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer->GetCurrTime()
                                                         << "s, Elapsed Time: " << FrameworkTimer->GetTotalTime() << "s");
+
+    PluginManager = nullptr;
+    FrameworkTimer = nullptr;
+    CommandLine = nullptr;
 
     return true;
 }

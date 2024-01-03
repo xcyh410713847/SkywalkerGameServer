@@ -20,6 +20,9 @@ SSF_NAMESPACE_BEGIN
 class SSFCommandLine
 {
 private:
+    /**
+     * 系统信号处理
+     */
     SSFOSSignal OSSignal;
 };
 

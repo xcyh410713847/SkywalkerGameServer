@@ -12,16 +12,10 @@
 
 #include "SkywalkerTimer/SkywalkerTimer.h"
 
-#include "Core/Plugin/SSFPluginManager.h"
-
-namespace SKYWALKER_TIMER_NAMESPACE
-{
-    class SkywalkerTimer;
-}
-
 SSF_NAMESPACE_BEGIN
 
 class SSFCommandLine;
+class SSFOPluginManager;
 
 // Skywalker Server Framework 运行状态
 enum class ESkywalkerServerFrameworkRunningState
@@ -35,7 +29,7 @@ enum class ESkywalkerServerFrameworkRunningState
 /**
  * Skywalker Server Framework
  */
-class SSF_API CSkywalkerServerFramework
+class CSkywalkerServerFramework
 {
     typedef ESkywalkerServerFrameworkRunningState ERunningState;
 
@@ -75,6 +69,9 @@ private:
 
 SSF_NAMESPACE_END
 
+/**
+ * 全局 Skywalker Server Framework
+ */
 extern SSF_UNIQUE_PTR(SSF_NAMESPACE::CSkywalkerServerFramework) SSFramework;
 
 /**
