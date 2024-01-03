@@ -15,11 +15,16 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
+SSF_UNIQUE_PTR(CSkywalkerServerFramework)
+SSFramework = SSF_MAKE_UNIQUE_PTR(CSkywalkerServerFramework);
+
 bool CSkywalkerServerFramework::Start()
 {
-
     // 打印地址
-    SSF_LOG_INFO("SkywalkerServerFramework Start Begin, Address: " << this);
+    SSF_LOG_DEBUG("SkywalkerServerFramework Start Begin, Address: " << this);
+
+    // 进入启动中状态
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
     FrameworkTimer = SSF_MAKE_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer);
     if (!FrameworkTimer)
@@ -38,9 +43,6 @@ bool CSkywalkerServerFramework::Start()
         SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFCommandLine Failed");
         return false;
     }
-
-    // 进入启动中状态
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
     // 创建插件管理器
     PluginManager = SSF_NEW_SHARED_OBJECT(SSFOPluginManager);
@@ -89,7 +91,7 @@ bool CSkywalkerServerFramework::Stop()
     SSF_LOG_INFO("SkywalkerServerFramework Stop Begin");
 
     // 打印地址
-    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin, Address: " << this);
+    SSF_LOG_DEBUG("SkywalkerServerFramework Stop Begin, Address: " << this);
 
     SSFObjectErrors ObjectErrors;
 
@@ -105,13 +107,15 @@ bool CSkywalkerServerFramework::Stop()
     // Release
     PluginManager->Release(ObjectErrors);
 
-    // 进入已停止状态
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stoped;
-
     SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer->GetCurrTime()
                                                         << "s, Elapsed Time: " << FrameworkTimer->GetTotalTime() << "s");
 
     return true;
+}
+
+void CSkywalkerServerFramework::Close()
+{
+    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
 }
 
 bool CSkywalkerServerFramework::IsRunning() const

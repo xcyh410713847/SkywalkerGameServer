@@ -30,25 +30,28 @@ enum class ESkywalkerServerFrameworkRunningState
     SkywalkerServerFrameworkRunningState_Starting,   // 启动中
     SkywalkerServerFrameworkRunningState_Running,    // 运行中
     SkywalkerServerFrameworkRunningState_Stopping,   // 停止中
-    SkywalkerServerFrameworkRunningState_Stoped,     // 已停止
 };
-
-/**
- * 运行状态
- */
-typedef ESkywalkerServerFrameworkRunningState ERunningState;
-static ERunningState RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Create;
 
 /**
  * Skywalker Server Framework
  */
-class CSkywalkerServerFramework
+class SSF_API CSkywalkerServerFramework
 {
+    typedef ESkywalkerServerFrameworkRunningState ERunningState;
+
 public:
     bool Start();
     bool Tick();
     bool Stop();
 
+    /**
+     * 关闭
+     */
+    void Close();
+
+    /**
+     * 是否正在运行
+     */
     bool IsRunning() const;
 
     SSF_SHARED_PTR(SSFOPluginManager)
@@ -66,16 +69,18 @@ private:
 
     SSF_SHARED_PTR(SSFCommandLine)
     CommandLine{};
+
+    ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
 };
 
 SSF_NAMESPACE_END
+
+extern SSF_UNIQUE_PTR(SSF_NAMESPACE::CSkywalkerServerFramework) SSFramework;
 
 /**
  * Skywalker Server Framework 启动宏
  */
 #define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv) \
-    SSF_UNIQUE_PTR(CSkywalkerServerFramework)        \
-    SSFramework(new CSkywalkerServerFramework());    \
     if (!SSFramework->Start())                       \
     {                                                \
         return 1;                                    \

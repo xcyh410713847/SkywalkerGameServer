@@ -16,7 +16,6 @@
 #include "Include/SSFILog.h"
 #include "Include/SSFEvent.h"
 
-#include "Core/Object/SSFObject.h"
 #include "Core/DynamicLib/SSFDynamicLib.h"
 #include "Core/Module/SSFModuleManager.h"
 
@@ -85,7 +84,7 @@ private:
 
 public:
     SSFOPluginManager() : SSFOModuleManager() {}
-    virtual ~SSFOPluginManager() {}
+    virtual ~SSFOPluginManager() override {}
 
     /**
      * 注册插件

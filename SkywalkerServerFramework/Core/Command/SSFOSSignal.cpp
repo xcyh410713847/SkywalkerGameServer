@@ -11,6 +11,8 @@
 
 #include "Include/SSFILog.h"
 
+#include "SkywalkerServerFramework.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFOSSignal, LogLevel_Debug);
@@ -29,4 +31,5 @@ void SSFOSSignal::SignalHandler(int Signal)
     SSF_LOG_DEBUG("SignalHandler Signal: " << Signal);
 
     // TODO Shyfan 通知框架停止
+    SSFramework->Close();
 }

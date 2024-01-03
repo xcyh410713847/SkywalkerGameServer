@@ -9,7 +9,6 @@
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Plugin/SSFPlugin.h"
-#include "Core/Module/SSFModule.h"
 #include "SkywalkerEvent/SkywalkerEvent.h"
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
@@ -25,6 +24,8 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
     SSF_LOG_DEBUG("Init");
 
     SSFObject::Init(Errors);
+
+    SSF_LOG_DEBUG("SSFOPluginManager Address: " << this);
 
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
@@ -92,18 +93,19 @@ void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG("Stop");
+
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Stop(Errors);
     }
 
     SSFObject::Stop(Errors);
-
-    SSF_LOG_DEBUG("Stop");
 }
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG("Sleep");
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -111,32 +113,39 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
     }
 
     SSFObject::Sleep(Errors);
-
-    SSF_LOG_DEBUG("Sleep");
 }
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG("Destroy");
+
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Destroy(Errors);
     }
 
     SSFObject::Destroy(Errors);
-
-    SSF_LOG_DEBUG("Destroy");
 }
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG("Release");
+
+    SSF_LOG_DEBUG("SSFOPluginManager Address: " << this);
+
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         ((SSFOPlugin *)IterPlugin->second)->Release(Errors);
     }
 
-    SSF_LOG_DEBUG("Release");
+    PluginMap.clear();
+    DynamicLibMap.clear();
+    PluginNameMap.clear();
 
-    SSFObject::Release(Errors);
+    PluginScriptParse = nullptr;
+
+    // 智能指针不需要释放
+    // SSFObject::Release(Errors);
 }
 
 #pragma endregion Object
