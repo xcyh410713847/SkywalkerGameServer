@@ -26,8 +26,10 @@ struct SSFObjectContext
 
 class SSFObject
 {
-public:
-	virtual const std::string &GetObjectClassName() = 0;
+
+protected:
+	SSFString ObjectClassName{};
+	SSFObjectContext ObjectContext;
 
 public:
 	SSFObject(){};
@@ -37,9 +39,12 @@ public:
 	};
 	virtual ~SSFObject(){};
 
-protected:
-	SSFString ObjectClassName{};
-	SSFObjectContext ObjectContext;
+public:
+	/**
+	 * 获取类名
+	 * @return 类名 const std::string &
+	 */
+	virtual const std::string &GetObjectClassName() = 0;
 };
 
 SSF_NAMESPACE_END
