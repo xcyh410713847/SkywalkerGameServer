@@ -54,13 +54,6 @@ void SSFOModule::Destroy(SSFObjectErrors &Errors)
     SSF_LOG_DEBUG_MODULE("Destroy");
 }
 
-void SSFOModule::Release(SSFObjectErrors &Errors)
-{
-    SSF_LOG_DEBUG_MODULE("Release");
-
-    delete this;
-}
-
 #pragma endregion Object
 
 SSFOModule::SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager)

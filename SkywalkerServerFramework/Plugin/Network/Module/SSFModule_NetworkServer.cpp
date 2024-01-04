@@ -64,11 +64,6 @@ void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
     SSFOModule::Destroy(Errors);
 }
 
-void SSFModule_NetworkServer::Release(SSFObjectErrors &Errors)
-{
-    SSFOModule::Release(Errors);
-}
-
 #pragma endregion Object
 
 void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)

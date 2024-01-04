@@ -9,6 +9,7 @@ class SSFObject
     #SSFString ObjectClassName
     #SSFObjectContext ObjectContext
 
+    +virtual void Release(SSFObjectErrors &Errors)
     +{abstract} const std::string &GetObjectClassName()
 }
 

@@ -18,7 +18,7 @@ class SSFOModule : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFOModule);
 
-#pragma region Object
+#pragma region Module
 
 public:
     /**
@@ -56,12 +56,7 @@ public:
      */
     virtual void Destroy(SSFObjectErrors &Errors);
 
-    /**
-     * 释放
-     */
-    virtual void Release(SSFObjectErrors &Errors);
-
-#pragma endregion Object
+#pragma endregion Module
 
 public:
     SSFOModule(){};

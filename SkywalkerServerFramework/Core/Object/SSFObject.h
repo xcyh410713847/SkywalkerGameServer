@@ -39,12 +39,20 @@ public:
 	};
 	virtual ~SSFObject(){};
 
-public:
+	/**
+	 * 释放
+	 */
+	virtual void Release(SSFObjectErrors &Errors)
+	{
+		delete this;
+	};
+
 	/**
 	 * 获取类名
 	 * @return 类名 const std::string &
 	 */
-	virtual const std::string &GetObjectClassName() = 0;
+	virtual const std::string &
+	GetObjectClassName() = 0;
 };
 
 SSF_NAMESPACE_END

@@ -59,11 +59,6 @@ public:
      */
     virtual void Destroy(SSFObjectErrors &Errors) override;
 
-    /**
-     * 释放
-     */
-    virtual void Release(SSFObjectErrors &Errors) override;
-
 #pragma endregion Object
 
 public:
