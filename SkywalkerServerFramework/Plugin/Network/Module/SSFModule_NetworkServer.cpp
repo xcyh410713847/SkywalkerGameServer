@@ -81,21 +81,21 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
         SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Init_Failed,
-                                      "Failed to initialize winsock")
+                             SkywalkerSFError_Network_Init_Failed,
+                             "Failed to initialize winsock")
         return;
     }
 
     // 创建服务器套接字
-    ServerNetworkSocket = SSF_NEW_OBJECT(SSFObject_ServerSocket);
+    ServerNetworkSocket = new SSFObject_ServerSocket();
     SSFNetworkSocketCreatorContext Context;
     ServerNetworkSocket->Create(Errors, Context);
 
     if (Errors.IsValid())
     {
         SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Start_Failed,
-                                      "Failed to start network server")
+                             SkywalkerSFError_Network_Start_Failed,
+                             "Failed to start network server")
         WSACleanup();
         return;
     }
@@ -119,7 +119,7 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
         return;
     }
 
-    SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = SSF_NEW_OBJECT(SSFObject_ClientSocket);
+    SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = new SSFObject_ClientSocket();
 
     // 创建客户端套接字
     SSFNetworkSocketCreatorContext Context;

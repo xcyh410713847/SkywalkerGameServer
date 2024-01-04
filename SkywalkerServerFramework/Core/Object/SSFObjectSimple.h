@@ -11,13 +11,8 @@
 #include "SkywalkerPool/SkywalkerPool.h"
 
 #include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
 
 SSF_NAMESPACE_BEGIN
-
-#define SSF_LOG_DEBUG_OBJECT_SIMPLE(content) SSF_LOG_PRINT_EX(ELogLevel::LogLevel_Debug, "[Debug     ]"             \
-                                                                                             << "[SSFObjectSimple]" \
-                                                                                             << " " << content);
 
 class SSFObjectSimple
 {
@@ -43,13 +38,10 @@ public:
                 SSFObjectSimple *Object = ObjectPool->Get();
                 if (SSF_PTR_VALID(Object))
                 {
-                    SSF_LOG_DEBUG_OBJECT_SIMPLE("NewObject: " << ClassName << " from pool")
                     return (T *)Object;
                 }
             }
         }
-
-        SSF_LOG_DEBUG_OBJECT_SIMPLE("NewObject: " << ClassName << " from new")
 
         return new T(param...);
     }
@@ -70,7 +62,6 @@ public:
         SSFUInt PoolSize = Object->GetPoolSize();
         if (PoolSize <= 0)
         {
-            SSF_LOG_DEBUG_OBJECT_SIMPLE("RemoveObject: " << Object->GetObjectClassName() << " not in pool")
             delete Object;
             return true;
         }
@@ -101,8 +92,6 @@ public:
         }
 
         ObjectPool->Recycle(Object);
-
-        SSF_LOG_DEBUG_OBJECT_SIMPLE("RemoveObject: " << Object->GetObjectClassName() << " to pool")
 
         return true;
     }
@@ -140,11 +129,5 @@ public:
 };
 
 SSF_NAMESPACE_END
-
-/**
- * 创建对象
- */
-#define SSF_NEW_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewObject<T>(__VA_ARGS__);
-#define SSF_NEW_SHARED_OBJECT(T, ...) SSF_NAMESPACE::SSFObjectSimple::NewSharedObject<T>(__VA_ARGS__);
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFObjectSimple_H__

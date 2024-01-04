@@ -168,7 +168,7 @@ private:
 #define SSF_REGISTER_PLUGIN(PluginManager, PluginClass)                                                   \
     SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFOPlugin));                                            \
     SSFPluginErrors PluginClass##Errors;                                                                  \
-    SSF_PTR_PLUGIN Plugin = SSF_NEW_OBJECT(PluginClass, PluginManager);                                   \
+    SSF_PTR_PLUGIN Plugin = new PluginClass(PluginManager);                                               \
     PluginManager->RegisterPlugin(PluginClass##Errors, Plugin);                                           \
     if (PluginClass##Errors.IsValid())                                                                    \
     {                                                                                                     \
@@ -206,7 +206,7 @@ private:
     SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFOPlugin));                                                       \
                                                                                                                      \
     SSFModuleErrors ModuleClass##Errors;                                                                             \
-    SSF_PTR_MODULE ModuleClass##Module = SSF_NEW_OBJECT(ModuleClass, PluginManager);                                 \
+    SSF_PTR_MODULE ModuleClass##Module = new ModuleClass(PluginManager);                                             \
     PluginManager->RegisterModule(ModuleClass##Errors, ModuleClass##Module);                                         \
     if (ModuleClass##Errors.IsValid())                                                                               \
     {                                                                                                                \

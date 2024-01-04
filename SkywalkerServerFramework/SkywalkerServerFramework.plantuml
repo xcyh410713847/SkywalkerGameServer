@@ -1,6 +1,6 @@
 ﻿@startuml SkywalkerServerFramework
 
-class SSFObjectSimple
+struct SSFObjectSimple
 {
 
 }
