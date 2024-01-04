@@ -27,7 +27,7 @@ struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 
 class SSFObject_NetworkSocket : public SSFObject
 {
-    SSF_OBJECT_CLASS_POOL(SSFObject_NetworkSocket, 100)
+    SSF_OBJECT_CLASS(SSFObject_NetworkSocket)
 
 public:
     SSFObject_NetworkSocket();

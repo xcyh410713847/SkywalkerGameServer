@@ -21,43 +21,24 @@ class CSkywalkerServerFramework;
 struct SSFObjectContext
 {
 	SSF_PTR(CSkywalkerServerFramework)
-	SSFramework;
+	SSFramework{};
 };
 
 class SSFObject
 {
 public:
-	SSFObject();
-	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
-	virtual ~SSFObject();
+	static const std::string GetObjectClassName()
+	{
+		return SSF_CLASS_NAME(SSFObject);
+	};
 
-	/**
-	 * 创建对象
-	 */
-	template <typename T>
-	SSF_SHARED_PTR(T)
-	NewSharedObject();
-
-	/**
-	 * 创建对象
-	 */
-	template <typename T>
-	SSF_SHARED_PTR(T)
-	NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
-
-	/**
-	 * 创建对象
-	 */
-	template <typename T>
-	SSF_PTR(T)
-	NewObject();
-
-	/**
-	 * 创建对象
-	 */
-	template <typename T>
-	SSF_PTR(T)
-	NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+public:
+	SSFObject(){};
+	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+	{
+		Context = InContext;
+	};
+	virtual ~SSFObject(){};
 
 private:
 	SSFObjectContext Context;
@@ -68,31 +49,11 @@ SSF_NAMESPACE_END
 /**
  * 定义对象类
  */
-#define SSF_OBJECT_CLASS(Class)                        \
-public:                                                \
-	const std::string GetObjectClassName()             \
-	{                                                  \
-		return SSF_CLASS_NAME(Class);                  \
-	};                                                 \
-                                                       \
-	const SSFUInt &GetPoolSize() { return PoolSize; }; \
-                                                       \
-protected:                                             \
-	SSFUInt PoolSize = 0;
-
-/**
- * 定义对象类，带对象池大小
- */
-#define SSF_OBJECT_CLASS_POOL(Class, InPoolSize)       \
-public:                                                \
-	const std::string GetObjectClassName()             \
-	{                                                  \
-		return SSF_CLASS_NAME(Class);                  \
-	};                                                 \
-                                                       \
-	const SSFUInt &GetPoolSize() { return PoolSize; }; \
-                                                       \
-protected:                                             \
-	SSFUInt PoolSize = InPoolSize;
+#define SSF_OBJECT_CLASS(Class)                   \
+public:                                           \
+	static const std::string GetObjectClassName() \
+	{                                             \
+		return SSF_CLASS_NAME(Class);             \
+	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
