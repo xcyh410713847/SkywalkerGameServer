@@ -11,8 +11,6 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
 
-#include "SSFObjectSimple.h"
-
 SSF_NAMESPACE_BEGIN
 
 class CSkywalkerServerFramework;
@@ -26,7 +24,7 @@ struct SSFObjectContext
 	SSFramework;
 };
 
-class SSFObject : public SSFObjectSimple
+class SSFObject
 {
 public:
 	SSFObject();
@@ -116,6 +114,17 @@ public:
 	virtual void Release(SSFObjectErrors &Errors);
 
 #pragma endregion Object
+
+	/**
+	 * 获取类名称
+	 * @return 类名称
+	 */
+	virtual const std::string GetObjectClassName() = 0;
+
+	/**
+	 * 获取对象池大小
+	 */
+	virtual const SSFUInt &GetPoolSize() = 0;
 };
 
 SSF_NAMESPACE_END

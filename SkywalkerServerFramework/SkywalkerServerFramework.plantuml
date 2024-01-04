@@ -1,10 +1,5 @@
 ﻿@startuml SkywalkerServerFramework
 
-struct SSFObjectSimple
-{
-
-}
-
 class SSFObject
 {
 
@@ -34,9 +29,6 @@ class SSFCommandLine
 {
 
 }
-
-'继承继承自 SSFObjectSimple
-SSFObjectSimple <|-- SSFObject
 
 '继承自 SSFObject
 SSFObject <|-- SSFOModule

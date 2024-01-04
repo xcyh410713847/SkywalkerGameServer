@@ -15,7 +15,7 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFObject, LogLevel_Debug);
 
-SSFObject::SSFObject() : SSFObjectSimple()
+SSFObject::SSFObject()
 {
 }
 
@@ -88,7 +88,7 @@ void SSFObject::Destroy(SSFObjectErrors &Errors) {}
 
 void SSFObject::Release(SSFObjectErrors &Errors)
 {
-    SSFObjectSimple::Release();
+    delete this;
 }
 
 #pragma endregion Object
