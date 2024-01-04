@@ -168,7 +168,7 @@ bool SSFOPluginManager::OnEvent_PluginInit(SSFEventMainType MainType,
         return false;
     }
 
-    SSF_LOG_DEBUG("OnEvent_PluginInit: " << EventPluginAll->Plugin->GetName());
+    SSF_LOG_DEBUG("OnEvent_PluginInit: " << EventPluginAll->Plugin->GetObjectClassName());
 
     return true;
 }
@@ -185,7 +185,7 @@ void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
         return;
     }
 
-    std::string PluginName = Plugin->GetName();
+    std::string PluginName = Plugin->GetObjectClassName();
     if (PluginName.empty())
     {
         SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Register_NameEmpty);
@@ -210,7 +210,7 @@ void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN
         return;
     }
 
-    std::string PluginName = Plugin->GetName();
+    std::string PluginName = Plugin->GetObjectClassName();
     if (PluginName.empty())
     {
         SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NameEmpty);

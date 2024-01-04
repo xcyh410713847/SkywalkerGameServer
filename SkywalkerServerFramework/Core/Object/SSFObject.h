@@ -16,7 +16,7 @@ SSF_NAMESPACE_BEGIN
 class CSkywalkerServerFramework;
 
 /**
- * 对象创建上下文
+ * 对象上下文
  */
 struct SSFObjectContext
 {
@@ -27,21 +27,19 @@ struct SSFObjectContext
 class SSFObject
 {
 public:
-	virtual const std::string GetObjectClassName() = 0;
+	virtual const std::string &GetObjectClassName() = 0;
 
 public:
 	SSFObject(){};
 	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
 	{
-		Context = InContext;
+		ObjectContext = InContext;
 	};
 	virtual ~SSFObject(){};
 
 protected:
 	SSFString ObjectClassName{};
-
-private:
-	SSFObjectContext Context;
+	SSFObjectContext ObjectContext;
 };
 
 SSF_NAMESPACE_END
@@ -49,15 +47,15 @@ SSF_NAMESPACE_END
 /**
  * 定义对象类
  */
-#define SSF_OBJECT_CLASS(Class)                             \
-public:                                                     \
-	virtual const std::string GetObjectClassName() override \
-	{                                                       \
-		if (ObjectClassName.empty())                        \
-		{                                                   \
-			SSF_CLASS_NAME_STR(this, ObjectClassName);      \
-		}                                                   \
-		return ObjectClassName;                             \
+#define SSF_OBJECT_CLASS(Class)                              \
+public:                                                      \
+	virtual const std::string &GetObjectClassName() override \
+	{                                                        \
+		if (ObjectClassName.empty())                         \
+		{                                                    \
+			SSF_CLASS_NAME(this, ObjectClassName);           \
+		}                                                    \
+		return ObjectClassName;                              \
 	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

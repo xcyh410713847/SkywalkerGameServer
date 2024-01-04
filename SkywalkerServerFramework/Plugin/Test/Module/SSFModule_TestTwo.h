@@ -24,15 +24,6 @@ public:
     {
     }
     virtual ~SSFModule_TestTwo(){};
-
-    /**
-     * 获取模块名称
-     * @return 模块名称
-     */
-    virtual const std::string GetName() override
-    {
-        return SSF_CLASS_NAME(SSFModule_TestTwo);
-    };
 };
 
 SSF_NAMESPACE_END

@@ -7,8 +7,6 @@
 
 #include "SSFModuleManager.h"
 
-#include "Core/Plugin/SSFPlugin.h"
-
 SSF_NAMESPACE_USING
 
 void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
@@ -19,7 +17,7 @@ void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE M
         return;
     }
 
-    const std::string &ModuleName = Module->GetName();
+    const std::string &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
@@ -44,7 +42,7 @@ void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE
         return;
     }
 
-    const std::string &ModuleName = Module->GetName();
+    const std::string &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");

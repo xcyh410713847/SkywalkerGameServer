@@ -48,7 +48,9 @@ public:
     SSF_PTR(T)
     GetModule()
     {
-        SSF_PTR_MODULE Module = GetModule(SSF_CLASS_NAME(T));
+        SSFString ModuleName{};
+        SSF_CLASS_NAME(T, ModuleName);
+        SSF_PTR_MODULE Module = GetModule(ModuleName);
         if (Module == nullptr)
         {
             return nullptr;

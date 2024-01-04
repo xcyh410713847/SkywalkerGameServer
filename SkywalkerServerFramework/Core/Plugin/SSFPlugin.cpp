@@ -15,7 +15,7 @@ SKYWALKER_EVENT_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
-#define SSF_LOG_DEBUG_PLUGIN(content) SSF_LOG_DEBUG(GetName() << " " << content)
+#define SSF_LOG_DEBUG_PLUGIN(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
 
 #pragma region Object
 

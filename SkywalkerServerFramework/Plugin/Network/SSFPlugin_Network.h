@@ -8,7 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__
 
-#include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Plugin/SSFPlugin.h"
 
 #pragma comment(lib, "ws2_32.lib")
@@ -25,15 +24,6 @@ public:
     {
     }
     virtual ~SSFPlugin_Network(){};
-
-    /**
-     * 获取插件名称
-     * @return 插件名称
-     */
-    virtual const std::string GetName() override
-    {
-        return SSF_CLASS_NAME(SSFPlugin_Network);
-    };
 
 #pragma region SSFOPlugin
 

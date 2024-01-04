@@ -70,15 +70,6 @@ public:
     SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOModule();
 
-    /**
-     * 获取模块名称
-     * @return 模块名称
-     */
-    virtual const std::string GetName()
-    {
-        return SSF_CLASS_NAME(this);
-    };
-
 protected:
     SSF_PTR_PLUGIN_MANAGER PluginManager;
 };

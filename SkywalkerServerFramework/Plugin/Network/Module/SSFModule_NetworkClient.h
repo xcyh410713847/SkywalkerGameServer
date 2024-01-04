@@ -24,15 +24,6 @@ public:
     {
     }
     virtual ~SSFModule_NetworkClient(){};
-
-    /**
-     * 获取模块名称
-     * @return 模块名称
-     */
-    virtual const std::string GetName() override
-    {
-        return SSF_CLASS_NAME(SSFModule_NetworkClient);
-    };
 };
 
 SSF_NAMESPACE_END

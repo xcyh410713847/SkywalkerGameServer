@@ -52,14 +52,15 @@ SSF_NAMESPACE_BEGIN
 /**
  * 获取类名
  */
-#define SSF_CLASS_NAME(ClassName) typeid(ClassName).name()
-#define SSF_CLASS_NAME_STR(ClassName, ObjectClassName)                           \
-    ObjectClassName = SSF_CLASS_NAME(ClassName);                                 \
-    std::smatch Match;                                                           \
-    std::regex RegexObj(R"(class ([\w:]+))");                                    \
-    if (std::regex_search(ObjectClassName, Match, RegexObj) && Match.size() > 1) \
-    {                                                                            \
-        ObjectClassName = Match[1].str();                                        \
+
+#define SSF_CLASS_NAME(Class, ClassName)                 \
+    ClassName = typeid(Class).name();                    \
+    std::smatch Match;                                   \
+    std::regex RegexObj(R"(class ([\w:]+))");            \
+    if (std::regex_search(ClassName, Match, RegexObj) && \
+        Match.size() > 1)                                \
+    {                                                    \
+        ClassName = Match[1].str();                      \
     }
 
 /**

@@ -8,7 +8,6 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFPlugin_AI_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFPlugin_AI_H__
 
-#include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Plugin/SSFPlugin.h"
 
 SSF_NAMESPACE_BEGIN
@@ -23,15 +22,6 @@ public:
     {
     }
     virtual ~SSFPlugin_AI(){};
-
-    /**
-     * 获取插件名称
-     * @return 插件名称
-     */
-    virtual const std::string GetName() override
-    {
-        return SSF_CLASS_NAME(SSFPlugin_AI);
-    }
 
 #pragma region SSFOPlugin
 

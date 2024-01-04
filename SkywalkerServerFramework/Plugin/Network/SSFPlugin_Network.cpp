@@ -9,6 +9,8 @@
 
 #include "Include/SSFILog.h"
 
+#include "Core/Plugin/SSFPluginManager.h"
+
 #include "SSFModule_NetworkServer.h"
 #include "SSFModule_NetworkClient.h"
 
@@ -23,14 +25,14 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Network)
 
 void SSFPlugin_Network::Install(SSFModuleErrors &Errors)
 {
-    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkServer)
-    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkClient)
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_NetworkServer)
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_NetworkClient)
 }
 
 void SSFPlugin_Network::Uninstall(SSFModuleErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkServer)
-    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Network, SSFModule_NetworkClient)
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_NetworkServer)
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_NetworkClient)
 }
 
 #pragma endregion SSFOPlugin

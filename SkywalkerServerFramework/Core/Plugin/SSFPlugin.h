@@ -10,7 +10,6 @@
 
 #include "Include/SSFCore.h"
 
-#include "Core/Object/SSFObject.h"
 #include "Core/Module/SSFModuleManager.h"
 
 SSF_NAMESPACE_BEGIN
@@ -66,15 +65,6 @@ public:
 public:
     SSFOPlugin(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOPlugin();
-
-    /**
-     * 获取插件名称
-     * @return 插件名称
-     */
-    virtual const std::string GetName() override
-    {
-        return SSF_CLASS_NAME(SSFOPlugin);
-    };
 
 private:
     /**

@@ -9,6 +9,8 @@
 
 #include "Include/SSFILog.h"
 
+#include "Core/Plugin/SSFPluginManager.h"
+
 #include "SSFModule_TestOne.h"
 #include "SSFModule_TestTwo.h"
 #include "SSFModule_TestThree.h"
@@ -23,16 +25,16 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Test)
 
 void SSFPlugin_Test::Install(SSFModuleErrors &Errors)
 {
-    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
-    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
-    SSF_REGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestOne)
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestTwo)
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestThree)
 }
 
 void SSFPlugin_Test::Uninstall(SSFModuleErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestOne)
-    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestTwo)
-    SSF_UNREGISTER_MODULE(PluginManager, SSFPlugin_Test, SSFModule_TestThree)
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestOne)
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestTwo)
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestThree)
 }
 
 #pragma endregion SSFOPlugin

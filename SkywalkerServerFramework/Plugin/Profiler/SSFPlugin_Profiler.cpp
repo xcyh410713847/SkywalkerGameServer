@@ -10,6 +10,8 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
+#include "Core/Plugin/SSFPluginManager.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPlugin_Profiler, LogLevel_Debug);
