@@ -16,6 +16,8 @@ SSF_NAMESPACE_BEGIN
 
 class SSFOModule : public SSFObject
 {
+    SSF_OBJECT_CLASS(SSFOModule);
+
 #pragma region Object
 
 public:
@@ -74,7 +76,7 @@ public:
      */
     virtual const std::string GetName()
     {
-        return SSF_CLASS_NAME(SSFOModule);
+        return SSF_CLASS_NAME(this);
     };
 
 protected:

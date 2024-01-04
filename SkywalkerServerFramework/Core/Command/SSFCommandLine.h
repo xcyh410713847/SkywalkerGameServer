@@ -21,7 +21,7 @@ SSF_NAMESPACE_BEGIN
  */
 class SSFCommandLine : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFCommandLine);
+    SSF_OBJECT_CLASS();
 
 public:
     SSFCommandLine(SSFObjectContext &InContext, SSFObjectErrors &InErrors)

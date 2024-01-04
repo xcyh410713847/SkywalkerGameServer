@@ -27,7 +27,7 @@ SSF_NAMESPACE_BEGIN
 class SSFOPluginManager
     : public SSFOModuleManager
 {
-    SSF_OBJECT_CLASS(SSFOPluginManager)
+    SSF_OBJECT_CLASS()
 
 #pragma region Object
 

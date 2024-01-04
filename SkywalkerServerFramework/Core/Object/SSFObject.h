@@ -27,10 +27,7 @@ struct SSFObjectContext
 class SSFObject
 {
 public:
-	static const std::string GetObjectClassName()
-	{
-		return SSF_CLASS_NAME(SSFObject);
-	};
+	virtual const std::string GetObjectClassName() = 0;
 
 public:
 	SSFObject(){};
@@ -39,6 +36,9 @@ public:
 		Context = InContext;
 	};
 	virtual ~SSFObject(){};
+
+protected:
+	SSFString ObjectClassName{};
 
 private:
 	SSFObjectContext Context;
@@ -49,11 +49,15 @@ SSF_NAMESPACE_END
 /**
  * 定义对象类
  */
-#define SSF_OBJECT_CLASS(Class)                   \
-public:                                           \
-	static const std::string GetObjectClassName() \
-	{                                             \
-		return SSF_CLASS_NAME(Class);             \
+#define SSF_OBJECT_CLASS(Class)                             \
+public:                                                     \
+	virtual const std::string GetObjectClassName() override \
+	{                                                       \
+		if (ObjectClassName.empty())                        \
+		{                                                   \
+			SSF_CLASS_NAME_STR(this, ObjectClassName);      \
+		}                                                   \
+		return ObjectClassName;                             \
 	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__
