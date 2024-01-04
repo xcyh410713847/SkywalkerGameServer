@@ -22,11 +22,9 @@ class CSkywalkerServerFramework;
  */
 struct SSFObjectContext
 {
-	SSF_SHARED_PTR(CSkywalkerServerFramework)
+	SSF_PTR(CSkywalkerServerFramework)
 	SSFramework;
 };
-
-static const SSFObjectContext SSFObjectCreatorContextDefault;
 
 class SSFObject : public SSFObjectSimple
 {
@@ -121,5 +119,35 @@ public:
 };
 
 SSF_NAMESPACE_END
+
+/**
+ * 定义对象类
+ */
+#define SSF_OBJECT_CLASS(Class)                                 \
+public:                                                         \
+	virtual const std::string GetObjectClassName() override     \
+	{                                                           \
+		return SSF_CLASS_NAME(Class);                           \
+	};                                                          \
+                                                                \
+	const SSFUInt &GetPoolSize() override { return PoolSize; }; \
+                                                                \
+protected:                                                      \
+	SSFUInt PoolSize = 0;
+
+/**
+ * 定义对象类，带对象池大小
+ */
+#define SSF_OBJECT_CLASS_POOL(Class, InPoolSize)                \
+public:                                                         \
+	virtual const std::string GetObjectClassName() override     \
+	{                                                           \
+		return SSF_CLASS_NAME(Class);                           \
+	};                                                          \
+                                                                \
+	const SSFUInt &GetPoolSize() override { return PoolSize; }; \
+                                                                \
+protected:                                                      \
+	SSFUInt PoolSize = InPoolSize;
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

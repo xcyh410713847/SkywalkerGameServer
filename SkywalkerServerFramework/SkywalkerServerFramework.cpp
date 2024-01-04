@@ -46,7 +46,7 @@ bool CSkywalkerServerFramework::Start()
     }
 
     // 创建插件管理器
-    PluginManager = SSF_NEW_SHARED_OBJECT(SSFOPluginManager);
+    PluginManager = NewSharedObject<SSFOPluginManager>();
     if (!PluginManager)
     {
         SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFOPluginManager Failed");
@@ -136,6 +136,7 @@ CSkywalkerServerFramework::NewSharedObject()
 {
     // TODO Shyfan 判断是否是继承自SSFObject
     SSFObjectContext InContext;
+    InContext.SSFramework = this;
     SSFObjectErrors InErrors;
     return NewSharedObject<T>(InContext, InErrors);
 }
@@ -165,6 +166,7 @@ CSkywalkerServerFramework::NewObject()
 {
     // TODO Shyfan 判断是否是继承自SSFObject
     SSFObjectContext InContext;
+    InContext.SSFramework = this;
     SSFObjectErrors InErrors;
 
     return NewObject<T>(InContext, InErrors);

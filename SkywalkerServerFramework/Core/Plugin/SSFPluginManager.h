@@ -83,6 +83,8 @@ private:
 #pragma endregion Event
 
 public:
+    SSFOPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModuleManager(InContext, InErrors){};
     SSFOPluginManager() : SSFOModuleManager() {}
     virtual ~SSFOPluginManager() override {}
 

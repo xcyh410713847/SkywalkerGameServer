@@ -18,6 +18,8 @@ SSF_NAMESPACE_BEGIN
 class SSFOModuleManager : public SSFObject
 {
 public:
+    SSFOModuleManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+        : SSFObject(InContext, InErrors){};
     SSFOModuleManager() : SSFObject() {}
     virtual ~SSFOModuleManager() {}
 
