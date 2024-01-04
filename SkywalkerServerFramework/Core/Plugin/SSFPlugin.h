@@ -71,7 +71,7 @@ public:
      * 获取插件名称
      * @return 插件名称
      */
-    virtual const std::string GetName()
+    virtual const std::string GetName() override
     {
         return SSF_CLASS_NAME(SSFOPlugin);
     };

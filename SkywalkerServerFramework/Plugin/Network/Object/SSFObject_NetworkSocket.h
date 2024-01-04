@@ -62,6 +62,12 @@ public:
         return !IsSocketInvalid();
     }
 
+    virtual void Init(SSFObjectErrors &Errors){};
+    virtual void Awake(SSFObjectErrors &Errors){};
+    virtual void Start(SSFObjectErrors &Errors){};
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS){};
+    virtual void Stop(SSFObjectErrors &Errors){};
+
 protected:
     /**
      * 套接字

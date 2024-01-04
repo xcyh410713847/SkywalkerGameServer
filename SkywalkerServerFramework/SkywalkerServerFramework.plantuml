@@ -32,8 +32,10 @@ class SSFCommandLine
 
 '继承自 SSFObject
 SSFObject <|-- SSFOModule
-SSFObject <|-- SSFOModuleManager
 SSFObject <|-- SSFCommandLine
+
+'继承自 SSFOModule
+SSFOModule <|-- SSFOModuleManager
 
 '继承自 SSFOModuleManager
 SSFOModuleManager <|-- SSFOPlugin

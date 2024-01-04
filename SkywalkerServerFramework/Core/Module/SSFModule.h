@@ -22,46 +22,49 @@ public:
     /**
      * 初始化
      */
-    virtual void Init(SSFObjectErrors &Errors) override;
+    virtual void Init(SSFObjectErrors &Errors);
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFObjectErrors &Errors) override;
+    virtual void Awake(SSFObjectErrors &Errors);
 
     /**
      * 开始
      */
-    virtual void Start(SSFObjectErrors &Errors) override;
+    virtual void Start(SSFObjectErrors &Errors);
 
     /**
      * Tick
      */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
 
     /**
      * 结束
      */
-    virtual void Stop(SSFObjectErrors &Errors) override;
+    virtual void Stop(SSFObjectErrors &Errors);
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFObjectErrors &Errors) override;
+    virtual void Sleep(SSFObjectErrors &Errors);
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &Errors) override;
+    virtual void Destroy(SSFObjectErrors &Errors);
 
     /**
      * 释放
      */
-    virtual void Release(SSFObjectErrors &Errors) override;
+    virtual void Release(SSFObjectErrors &Errors);
 
 #pragma endregion Object
 
 public:
+    SSFOModule(){};
+    SSFOModule(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+        : SSFObject(InContext, InErrors){};
     SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOModule();
 

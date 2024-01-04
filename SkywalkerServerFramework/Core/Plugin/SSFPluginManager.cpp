@@ -7,7 +7,6 @@
 
 #include "SSFPluginManager.h"
 
-#include "Core/Object/SSFObject.h"
 #include "Core/Plugin/SSFPlugin.h"
 #include "SkywalkerEvent/SkywalkerEvent.h"
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
@@ -23,7 +22,7 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG("Init");
 
-    SSFObject::Init(Errors);
+    SSFOModuleManager::Init(Errors);
 
     SSFPluginErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
@@ -59,7 +58,7 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG("Awake");
 
-    SSFObject::Awake(Errors);
+    SSFOModuleManager::Awake(Errors);
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -71,7 +70,7 @@ void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG("Start");
 
-    SSFObject::Start(Errors);
+    SSFOModuleManager::Start(Errors);
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -81,7 +80,7 @@ void SSFOPluginManager::Start(SSFObjectErrors &Errors)
 
 void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    SSFObject::Tick(Errors, DelayMS);
+    SSFOModuleManager::Tick(Errors, DelayMS);
 
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -98,7 +97,7 @@ void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
         ((SSFOPlugin *)IterPlugin->second)->Stop(Errors);
     }
 
-    SSFObject::Stop(Errors);
+    SSFOModuleManager::Stop(Errors);
 }
 
 void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
@@ -110,7 +109,7 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
         ((SSFOPlugin *)IterPlugin->second)->Sleep(Errors);
     }
 
-    SSFObject::Sleep(Errors);
+    SSFOModuleManager::Sleep(Errors);
 }
 
 void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
@@ -122,7 +121,7 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
         ((SSFOPlugin *)IterPlugin->second)->Destroy(Errors);
     }
 
-    SSFObject::Destroy(Errors);
+    SSFOModuleManager::Destroy(Errors);
 }
 
 void SSFOPluginManager::Release(SSFObjectErrors &Errors)
@@ -141,7 +140,7 @@ void SSFOPluginManager::Release(SSFObjectErrors &Errors)
     PluginScriptParse = nullptr;
 
     // 智能指针不需要释放
-    // SSFObject::Release(Errors);
+    // SSFOModuleManager::Release(Errors);
 }
 
 #pragma endregion Object

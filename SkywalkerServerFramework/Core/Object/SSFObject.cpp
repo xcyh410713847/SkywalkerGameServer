@@ -68,27 +68,4 @@ SSFObject::NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
     return Context.SSFramework->NewObject<T>(InContext, InErrors);
 }
 
-#pragma region Object
-
-void SSFObject::Create(SSFObjectErrors &Errors, SSFObjectContext &Context) {}
-
-void SSFObject::Init(SSFObjectErrors &Errors) {}
-
-void SSFObject::Awake(SSFObjectErrors &Errors) {}
-
-void SSFObject::Start(SSFObjectErrors &Errors) {}
-
-void SSFObject::Tick(SSFObjectErrors &Errors, int DelayMS) {}
-
-void SSFObject::Stop(SSFObjectErrors &Errors) {}
-
-void SSFObject::Sleep(SSFObjectErrors &Errors) {}
-
-void SSFObject::Destroy(SSFObjectErrors &Errors) {}
-
-void SSFObject::Release(SSFObjectErrors &Errors)
-{
-    delete this;
-}
-
 #pragma endregion Object

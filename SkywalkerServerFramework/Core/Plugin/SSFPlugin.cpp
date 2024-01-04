@@ -23,7 +23,7 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Init");
 
-    SSFObject::Init(Errors);
+    SSFOModuleManager::Init(Errors);
 
     // 加载模块
     Install(Errors);
@@ -38,7 +38,7 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Awake");
 
-    SSFObject::Awake(Errors);
+    SSFOModuleManager::Awake(Errors);
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -50,7 +50,7 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Start");
 
-    SSFObject::Start(Errors);
+    SSFOModuleManager::Start(Errors);
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -60,7 +60,7 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
 
 void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    SSFObject::Tick(Errors, DelayMS);
+    SSFOModuleManager::Tick(Errors, DelayMS);
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -75,7 +75,7 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
         ((SSFOModule *)IterModule->second)->Stop(Errors);
     }
 
-    SSFObject::Stop(Errors);
+    SSFOModuleManager::Stop(Errors);
 
     SSF_LOG_DEBUG_PLUGIN("Stop");
 }
@@ -87,7 +87,7 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
         ((SSFOModule *)IterModule->second)->Sleep(Errors);
     }
 
-    SSFObject::Sleep(Errors);
+    SSFOModuleManager::Sleep(Errors);
 
     SSF_LOG_DEBUG_PLUGIN("Sleep");
 }
@@ -99,7 +99,7 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
         ((SSFOModule *)IterModule->second)->Destroy(Errors);
     }
 
-    SSFObject::Destroy(Errors);
+    SSFOModuleManager::Destroy(Errors);
 
     SSF_LOG_DEBUG_PLUGIN("Destroy");
 }
@@ -110,7 +110,7 @@ void SSFOPlugin::Release(SSFObjectErrors &Errors)
 
     SSF_LOG_DEBUG_PLUGIN("Release");
 
-    SSFObject::Release(Errors);
+    SSFOModuleManager::Release(Errors);
 }
 
 #pragma endregion Object
