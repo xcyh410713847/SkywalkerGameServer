@@ -4,16 +4,29 @@ class SSFObject
 {
 }
 
+'继承自 SSFObject
+SSFObject <|-- SSFOModule
+SSFObject <|-- SSFService
 class SSFOModule
 {
 
 }
 
+class SSFService
+{
+
+}
+
+'继承自 SSFOModule
+SSFOModule <|-- SSFOModuleManager
 class SSFOModuleManager
 {
 
 }
 
+'继承自 SSFOModuleManager
+SSFOModuleManager <|-- SSFOPlugin
+SSFOModuleManager <|-- SSFOPluginManager
 class SSFOPlugin
 {
 
@@ -24,20 +37,22 @@ class SSFOPluginManager
 
 }
 
-class SSFCommandLine
+'继承自 SSFOService
+SSFService <|-- SSFFrameworkService
+SSFService <|-- SSFLevelService
+class SSFFrameworkService
+{
+}
+
+class SSFLevelService
+{
+}
+
+'继承自 SSFOFrameworkService
+SSFFrameworkService <|-- SSFEventService
+class SSFEventService
 {
 
 }
-
-'继承自 SSFObject
-SSFObject <|-- SSFOModule
-SSFObject <|-- SSFCommandLine
-
-'继承自 SSFOModule
-SSFOModule <|-- SSFOModuleManager
-
-'继承自 SSFOModuleManager
-SSFOModuleManager <|-- SSFOPlugin
-SSFOModuleManager <|-- SSFOPluginManager
 
 @enduml
