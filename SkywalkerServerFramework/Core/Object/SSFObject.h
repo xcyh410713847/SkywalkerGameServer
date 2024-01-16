@@ -10,17 +10,16 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
+#include "Include/SSFramework.h"
 
 SSF_NAMESPACE_BEGIN
-
-class CSkywalkerServerFramework;
 
 /**
  * 对象上下文
  */
 struct SSFObjectContext
 {
-	SSF_PTR(CSkywalkerServerFramework)
+	SSF_PTR(SkywalkerServerFramework)
 	SSFramework{};
 };
 
@@ -53,6 +52,15 @@ public:
 	 */
 	virtual const std::string &
 	GetObjectClassName() = 0;
+
+	/**
+	 * 获取框架
+	 */
+	SSF_PTR(SkywalkerServerFramework)
+	GetFramework()
+	{
+		return ObjectContext.SSFramework;
+	};
 };
 
 SSF_NAMESPACE_END

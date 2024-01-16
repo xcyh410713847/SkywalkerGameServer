@@ -18,8 +18,6 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFCommandLine;
-
 /**
  * Skywalker Server Framework
  */
@@ -96,9 +94,6 @@ private:
 
     SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
     FrameworkTimer{};
-
-    SSF_SHARED_PTR(SSFCommandLine)
-    CommandLine{};
 
     ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
 };

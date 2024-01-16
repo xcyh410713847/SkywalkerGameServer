@@ -9,7 +9,6 @@
 
 #include "Include/SSFILog.h"
 
-#include "Core/Command/SSFCommandLine.h"
 #include "Core/Plugin/SSFPluginManager.h"
 
 SSF_NAMESPACE_USING
@@ -37,13 +36,6 @@ bool CSkywalkerServerFramework::Start()
     FrameworkTimer->Reset();
 
     SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer->GetStartTime() << "s")
-
-    CommandLine = NewSharedObject<SSFCommandLine>();
-    if (!CommandLine)
-    {
-        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFCommandLine Failed");
-        return false;
-    }
 
     // 创建插件管理器
     PluginManager = NewSharedObject<SSFOPluginManager>();
@@ -110,7 +102,6 @@ bool CSkywalkerServerFramework::Stop()
 
     PluginManager = nullptr;
     FrameworkTimer = nullptr;
-    CommandLine = nullptr;
 
     return true;
 }

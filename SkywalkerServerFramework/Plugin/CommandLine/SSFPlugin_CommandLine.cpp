@@ -11,6 +11,8 @@
 
 #include "Core/Plugin/SSFPluginManager.h"
 
+#include "Module/SSFModule_OS.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPlugin_CommandLine, LogLevel_Debug);
@@ -21,10 +23,12 @@ SSF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
 
 void SSFPlugin_CommandLine::Install(SSFModuleErrors &Errors)
 {
+    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_OS);
 }
 
 void SSFPlugin_CommandLine::Uninstall(SSFModuleErrors &Errors)
 {
+    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_OS);
 }
 
 #pragma endregion SSFOPlugin

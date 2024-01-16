@@ -15,6 +15,7 @@
 #include <list>
 #include <map>
 #include <regex>
+#include <csignal>
 
 #include "SSFPlatform.h"
 
