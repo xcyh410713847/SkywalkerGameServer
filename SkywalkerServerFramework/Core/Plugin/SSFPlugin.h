@@ -14,6 +14,10 @@
 
 SSF_NAMESPACE_BEGIN
 
+struct SSFPluginContext : public SSFModuleContext
+{
+};
+
 class SSFOPlugin
     : public SSFOModuleManager
 {
@@ -63,19 +67,19 @@ public:
 #pragma endregion Object
 
 public:
-    SSFOPlugin(SSF_PTR_PLUGIN_MANAGER InPluginManager);
+    SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFOPlugin();
 
 private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors){};
+    virtual void Install(SSFObjectErrors &Errors){};
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors){};
+    virtual void Uninstall(SSFObjectErrors &Errors){};
 
 protected:
     SSF_PTR_PLUGIN_MANAGER PluginManager;

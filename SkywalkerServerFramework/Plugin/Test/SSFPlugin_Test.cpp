@@ -23,18 +23,18 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Test)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_Test::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Test::Install(SSFObjectErrors &Errors)
 {
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestOne)
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestTwo)
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_TestThree)
+    SSF_REGISTER_MODULE(SSFModule_TestOne)
+    SSF_REGISTER_MODULE(SSFModule_TestTwo)
+    SSF_REGISTER_MODULE(SSFModule_TestThree)
 }
 
-void SSFPlugin_Test::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Test::Uninstall(SSFObjectErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestOne)
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestTwo)
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_TestThree)
+    SSF_UNREGISTER_MODULE(SSFModule_TestOne)
+    SSF_UNREGISTER_MODULE(SSFModule_TestTwo)
+    SSF_UNREGISTER_MODULE(SSFModule_TestThree)
 }
 
 #pragma endregion SSFOPlugin

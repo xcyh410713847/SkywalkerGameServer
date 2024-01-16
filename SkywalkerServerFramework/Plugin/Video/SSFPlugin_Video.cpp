@@ -19,11 +19,11 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Video)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_Video::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Video::Install(SSFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Video::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Video::Uninstall(SSFObjectErrors &Errors)
 {
 }
 

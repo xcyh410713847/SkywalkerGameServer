@@ -56,9 +56,10 @@ void SSFOModule::Destroy(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOModule::SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-    : SSFObject(), PluginManager(InPluginManager)
+SSFOModule::SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+    : SSFObject(InContext, InErrors)
 {
+    PluginManager = InContext.PluginManager;
 }
 
 SSFOModule::~SSFOModule()

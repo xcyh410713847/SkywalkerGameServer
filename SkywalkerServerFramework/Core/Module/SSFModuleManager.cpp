@@ -9,7 +9,7 @@
 
 SSF_NAMESPACE_USING
 
-void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+void SSFOModuleManager::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
 {
     if (!SSF_PTR_VALID(Module))
     {
@@ -34,7 +34,7 @@ void SSFOModuleManager::RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE M
     ModuleMap.insert(std::make_pair(ModuleName, Module));
 }
 
-void SSFOModuleManager::UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module)
+void SSFOModuleManager::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
 {
     if (!SSF_PTR_VALID(Module))
     {

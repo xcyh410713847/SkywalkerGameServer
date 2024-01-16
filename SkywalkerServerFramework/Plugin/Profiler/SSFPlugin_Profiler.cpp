@@ -20,11 +20,11 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Profiler)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_Profiler::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Profiler::Install(SSFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Profiler::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Profiler::Uninstall(SSFObjectErrors &Errors)
 {
 }
 

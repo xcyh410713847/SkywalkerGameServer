@@ -19,8 +19,8 @@ class SSFPlugin_Network : public SSFOPlugin
     SSF_OBJECT_CLASS(SSFPlugin_Network)
 
 public:
-    SSFPlugin_Network(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_Network(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_Network(){};
@@ -31,12 +31,12 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors) override;
+    virtual void Install(SSFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors) override;
+    virtual void Uninstall(SSFObjectErrors &Errors) override;
 
 #pragma endregion SSFOPlugin
 };

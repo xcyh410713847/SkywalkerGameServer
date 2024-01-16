@@ -16,9 +16,17 @@ class SSFModule_OS : public SSFOModule
 {
     SSF_OBJECT_CLASS(SSFModule_OS)
 
+#pragma region Module
+
+    virtual void Init(SSFObjectErrors &Errors) override;
+
+    virtual void Destroy(SSFObjectErrors &Errors) override;
+
+#pragma endregion Module
+
 public:
-    SSFModule_OS(SSF_PTR_PLUGIN_MANAGER InPluginManager);
-    virtual ~SSFModule_OS();
+    SSFModule_OS(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFModule_OS(){};
 
     /**
      * 信号处理函数

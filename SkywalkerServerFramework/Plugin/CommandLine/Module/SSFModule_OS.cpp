@@ -7,6 +7,9 @@
 
 #include "SSFModule_OS.h"
 
+#include <csignal>
+#include <signal.h>
+
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 #include "Include/SSFramework.h"
@@ -17,17 +20,30 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFModule_OS, LogLevel_Debug);
 
-static SSF_SHARED_PTR(SSFModule_OS) SelfModule;
+static SSF_PTR(SSFModule_OS) SelfModule{};
 
-SSFModule_OS::SSFModule_OS(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-    : SSFOModule(InPluginManager)
+#pragma region Module
+
+void SSFModule_OS::Init(SSFObjectErrors &Errors)
 {
-    SelfModule.reset(this);
-    // Ctrl+C
-    signal(SIGINT, &SSFModule_OS::SignalHandler);
+    SelfModule = this;
+
+    // 注册系统信号处理函数
+    signal(SIGINT, &SSFModule_OS::SignalHandler); // Ctrl+C
 }
 
-SSFModule_OS::~SSFModule_OS()
+void SSFModule_OS::Destroy(SSFObjectErrors &Errors)
+{
+    SelfModule = nullptr;
+
+    // 注销系统信号处理函数
+    signal(SIGINT, SIG_DFL); // Ctrl+C
+}
+
+#pragma endregion Module
+
+SSFModule_OS::SSFModule_OS(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+    : SSFOModule(InContext, InErrors)
 {
 }
 

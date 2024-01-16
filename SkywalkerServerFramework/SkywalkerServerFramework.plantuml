@@ -2,15 +2,6 @@
 
 class SSFObject
 {
-    +SSFObject()
-    +SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-    +virtual ~SSFObject()
-
-    #SSFString ObjectClassName
-    #SSFObjectContext ObjectContext
-
-    +virtual void Release(SSFObjectErrors &Errors)
-    +{abstract} const std::string &GetObjectClassName()
 }
 
 class SSFOModule

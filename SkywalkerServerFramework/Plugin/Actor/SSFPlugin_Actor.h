@@ -17,8 +17,8 @@ class SSFPlugin_Actor : public SSFOPlugin
     SSF_OBJECT_CLASS(SSFPlugin_Actor)
 
 public:
-    SSFPlugin_Actor(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_Actor(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_Actor(){};
@@ -29,12 +29,12 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors) override;
+    virtual void Install(SSFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors) override;
+    virtual void Uninstall(SSFObjectErrors &Errors) override;
 
 #pragma endregion SSFOPlugin
 };

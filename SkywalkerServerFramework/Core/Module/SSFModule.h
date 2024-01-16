@@ -14,6 +14,14 @@
 
 SSF_NAMESPACE_BEGIN
 
+class SSFOPluginManager;
+
+struct SSFModuleContext : public SSFObjectContext
+{
+    SSF_PTR(SSFOPluginManager)
+    PluginManager{};
+};
+
 class SSFOModule : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFOModule);
@@ -59,14 +67,23 @@ public:
 #pragma endregion Module
 
 public:
-    SSFOModule(){};
+    SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
     SSFOModule(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
         : SSFObject(InContext, InErrors){};
-    SSFOModule(SSF_PTR_PLUGIN_MANAGER InPluginManager);
     virtual ~SSFOModule();
 
-protected:
-    SSF_PTR_PLUGIN_MANAGER PluginManager;
+    /**
+     * 获取插件管理器
+     */
+    SSF_PTR(SSFOPluginManager)
+    GetPluginManager()
+    {
+        return PluginManager;
+    };
+
+private:
+    SSF_PTR(SSFOPluginManager)
+    PluginManager;
 };
 
 SSF_NAMESPACE_END

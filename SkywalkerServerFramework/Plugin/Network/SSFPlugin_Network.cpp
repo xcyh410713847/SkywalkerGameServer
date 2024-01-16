@@ -23,16 +23,16 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Network)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_Network::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Network::Install(SSFObjectErrors &Errors)
 {
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_NetworkServer)
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_NetworkClient)
+    SSF_REGISTER_MODULE(SSFModule_NetworkServer)
+    SSF_REGISTER_MODULE(SSFModule_NetworkClient)
 }
 
-void SSFPlugin_Network::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Network::Uninstall(SSFObjectErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_NetworkServer)
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_NetworkClient)
+    SSF_UNREGISTER_MODULE(SSFModule_NetworkServer)
+    SSF_UNREGISTER_MODULE(SSFModule_NetworkClient)
 }
 
 #pragma endregion SSFOPlugin

@@ -115,8 +115,8 @@ void SSFOPlugin::Release(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOPlugin::SSFOPlugin(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-    : SSFOModuleManager(), PluginManager(InPluginManager)
+SSFOPlugin::SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+    : SSFOModuleManager(InContext, InErrors)
 {
 }
 

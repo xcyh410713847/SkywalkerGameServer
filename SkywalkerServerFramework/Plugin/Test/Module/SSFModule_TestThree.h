@@ -19,8 +19,8 @@ class SSFModule_TestThree : public SSFOModule
     SSF_OBJECT_CLASS(SSFModule_TestThree)
 
 public:
-    SSFModule_TestThree(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(InPluginManager)
+    SSFModule_TestThree(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_TestThree(){};

@@ -10,7 +10,6 @@
 
 #include "Include/SSFCore.h"
 
-#include "Core/Object/SSFObject.h"
 #include "Core/Module/SSFModule.h"
 
 SSF_NAMESPACE_BEGIN
@@ -18,22 +17,23 @@ SSF_NAMESPACE_BEGIN
 class SSFOModuleManager : public SSFOModule
 {
 public:
+    SSFOModuleManager(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModule(InContext, InErrors){};
     SSFOModuleManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
         : SSFOModule(InContext, InErrors){};
-    SSFOModuleManager() : SSFOModule() {}
     virtual ~SSFOModuleManager() {}
 
     /**
      * 注册模块
      * @param Module 模块
      */
-    virtual void RegisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module);
+    virtual void RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
 
     /**
      * 注销模块
      * @param Module 模块
      */
-    virtual void UnregisterModule(SSFModuleErrors &Errors, SSF_PTR_MODULE Module);
+    virtual void UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
 
     /**
      * 获取模块

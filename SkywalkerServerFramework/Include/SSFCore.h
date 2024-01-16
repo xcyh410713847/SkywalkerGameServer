@@ -15,7 +15,6 @@
 #include <list>
 #include <map>
 #include <regex>
-#include <csignal>
 
 #include "SSFPlatform.h"
 
@@ -165,7 +164,6 @@ class SSFOModule;
     {                                                                        \
         SSF_REGISTER_PLUGIN(PluginManager, PluginClass);                     \
     }                                                                        \
-                                                                             \
     SSF_DLL_EXPORT void DllStopPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager)  \
     {                                                                        \
         SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                   \

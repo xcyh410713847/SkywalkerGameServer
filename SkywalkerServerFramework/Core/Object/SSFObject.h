@@ -28,13 +28,16 @@ class SSFObject
 
 protected:
 	SSFString ObjectClassName{};
-	SSFObjectContext ObjectContext;
+
+private:
+	SSF_PTR(SkywalkerServerFramework)
+	SSFramework{};
 
 public:
 	SSFObject(){};
 	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
 	{
-		ObjectContext = InContext;
+		SSFramework = InContext.SSFramework;
 	};
 	virtual ~SSFObject(){};
 
@@ -59,7 +62,7 @@ public:
 	SSF_PTR(SkywalkerServerFramework)
 	GetFramework()
 	{
-		return ObjectContext.SSFramework;
+		return SSFramework;
 	};
 };
 

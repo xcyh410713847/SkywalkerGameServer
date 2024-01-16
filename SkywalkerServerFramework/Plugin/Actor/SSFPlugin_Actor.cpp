@@ -19,11 +19,11 @@ SSF_PLUGIN_EXPORT(SSFPlugin_Actor)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_Actor::Install(SSFModuleErrors &Errors)
+void SSFPlugin_Actor::Install(SSFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Actor::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_Actor::Uninstall(SSFObjectErrors &Errors)
 {
 }
 

@@ -21,14 +21,14 @@ SSF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_CommandLine::Install(SSFModuleErrors &Errors)
+void SSFPlugin_CommandLine::Install(SSFObjectErrors &Errors)
 {
-    SSF_REGISTER_MODULE(PluginManager, this, SSFModule_OS);
+    SSF_REGISTER_MODULE(SSFModule_OS);
 }
 
-void SSFPlugin_CommandLine::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_CommandLine::Uninstall(SSFObjectErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(PluginManager, this, SSFModule_OS);
+    SSF_UNREGISTER_MODULE(SSFModule_OS);
 }
 
 #pragma endregion SSFOPlugin

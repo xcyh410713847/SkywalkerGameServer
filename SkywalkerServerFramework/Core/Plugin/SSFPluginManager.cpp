@@ -24,7 +24,7 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
 
     SSFOModuleManager::Init(Errors);
 
-    SSFPluginErrors PluginErrors;
+    SSFObjectErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
     {
@@ -177,7 +177,7 @@ bool SSFOPluginManager::OnEvent_PluginInit(SSFEventMainType MainType,
 
 #pragma region SSFIPluginManager
 
-void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFOPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -202,7 +202,7 @@ void SSFOPluginManager::RegisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN P
     PluginMap.insert(std::make_pair(PluginName, Plugin));
 }
 
-void SSFOPluginManager::UnregisterPlugin(SSFPluginErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFOPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -240,7 +240,7 @@ SSF_PTR_PLUGIN SSFOPluginManager::GetPlugin(const std::string &PluginName)
 
 #pragma endregion SSFIPluginManager
 
-void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
+void SSFOPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
 {
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (!PluginScriptParse->LoadScript("ServerPlugin.skywalkerC"))
@@ -276,7 +276,7 @@ void SSFOPluginManager::LoadPluginConfig(SSFPluginErrors &Errors)
     }
 }
 
-void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
+void SSFOPluginManager::LoadPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
@@ -285,7 +285,7 @@ void SSFOPluginManager::LoadPlugin(SSFPluginErrors &Errors)
     }
 }
 
-void SSFOPluginManager::StartPlugin(SSFPluginErrors &Errors)
+void SSFOPluginManager::StartPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterLib, DynamicLibMap)
     {

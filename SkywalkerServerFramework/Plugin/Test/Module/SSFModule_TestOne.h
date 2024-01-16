@@ -19,8 +19,8 @@ class SSFModule_TestOne : public SSFOModule
     SSF_OBJECT_CLASS(SSFModule_TestOne)
 
 public:
-    SSFModule_TestOne(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(InPluginManager)
+    SSFModule_TestOne(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_TestOne(){};

@@ -109,15 +109,6 @@ typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<SSFError> SkywalkerSFErrors
 // 对象错误
 typedef SkywalkerSFErrors SSFObjectErrors;
 
-// 插件错误
-typedef SkywalkerSFErrors SSFPluginErrors;
-
-// 模块错误
-typedef SkywalkerSFErrors SSFModuleErrors;
-
-// 网络错误
-typedef SkywalkerSFErrors SSFNetworkErrors;
-
 #pragma region 错误宏
 
 /**

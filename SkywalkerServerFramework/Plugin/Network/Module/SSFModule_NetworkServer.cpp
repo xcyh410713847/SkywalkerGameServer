@@ -66,7 +66,7 @@ void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
+void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
 {
     if (Errors.IsValid())
     {
@@ -96,7 +96,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFNetworkErrors &Errors)
     }
 }
 
-void SSFModule_NetworkServer::CreateNetworkClient(SSFNetworkErrors &Errors)
+void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
 {
     if (ServerNetworkSocket->IsSocketInvalid())
     {

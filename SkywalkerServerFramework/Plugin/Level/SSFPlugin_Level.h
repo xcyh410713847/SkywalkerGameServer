@@ -17,8 +17,8 @@ class SSFPlugin_Level : public SSFOPlugin
     SSF_OBJECT_CLASS(SSFPlugin_Level)
 
 public:
-    SSFPlugin_Level(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_Level(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_Level(){};
@@ -28,12 +28,12 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors) override;
+    virtual void Install(SSFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors) override;
+    virtual void Uninstall(SSFObjectErrors &Errors) override;
 
 #pragma endregion SSFOPlugin
 };

@@ -19,11 +19,11 @@ SSF_PLUGIN_EXPORT(SSFPlugin_DB)
 
 #pragma region SSFOPlugin
 
-void SSFPlugin_DB::Install(SSFModuleErrors &Errors)
+void SSFPlugin_DB::Install(SSFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_DB::Uninstall(SSFModuleErrors &Errors)
+void SSFPlugin_DB::Uninstall(SSFObjectErrors &Errors)
 {
 }
 

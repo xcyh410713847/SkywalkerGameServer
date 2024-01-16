@@ -17,8 +17,8 @@ class SSFPlugin_AI : public SSFOPlugin
     SSF_OBJECT_CLASS(SSFPlugin_AI)
 
 public:
-    SSFPlugin_AI(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_AI(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_AI(){};
@@ -29,12 +29,12 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors) override;
+    virtual void Install(SSFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors) override;
+    virtual void Uninstall(SSFObjectErrors &Errors) override;
 
 #pragma endregion SSFOPlugin
 };

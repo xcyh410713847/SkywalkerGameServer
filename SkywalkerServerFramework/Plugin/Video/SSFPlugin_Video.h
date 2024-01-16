@@ -17,8 +17,8 @@ class SSFPlugin_Video : public SSFOPlugin
     SSF_OBJECT_CLASS(SSFPlugin_Video)
 
 public:
-    SSFPlugin_Video(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOPlugin(InPluginManager)
+    SSFPlugin_Video(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_Video(){};
@@ -29,12 +29,12 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFModuleErrors &Errors) override;
+    virtual void Install(SSFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFModuleErrors &Errors) override;
+    virtual void Uninstall(SSFObjectErrors &Errors) override;
 
 #pragma endregion SSFOPlugin
 };

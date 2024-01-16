@@ -62,8 +62,8 @@ public:
 #pragma endregion Object
 
 public:
-    SSFModule_NetworkServer(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(InPluginManager)
+    SSFModule_NetworkServer(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_NetworkServer(){};
@@ -72,12 +72,12 @@ private:
     /**
      * 开启网络服务器
      */
-    void StartNetworkServer(SSFNetworkErrors &Errors);
+    void StartNetworkServer(SSFObjectErrors &Errors);
 
     /**
      * 创建网络客户端
      */
-    void CreateNetworkClient(SSFNetworkErrors &Errors);
+    void CreateNetworkClient(SSFObjectErrors &Errors);
 
 private:
     WSADATA wsaData;

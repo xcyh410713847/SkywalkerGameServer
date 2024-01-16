@@ -19,8 +19,8 @@ class SSFModule_NetworkClient : public SSFOModule
     SSF_OBJECT_CLASS(SSFModule_NetworkClient)
 
 public:
-    SSFModule_NetworkClient(SSF_PTR_PLUGIN_MANAGER InPluginManager)
-        : SSFOModule(InPluginManager)
+    SSFModule_NetworkClient(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+        : SSFOModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_NetworkClient(){};
