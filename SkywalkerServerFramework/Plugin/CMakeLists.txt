@@ -5,18 +5,17 @@
 # 功能:
 # #########################################################################
 
-add_subdirectory(Test)
+# 获取当前目录下所有的文件夹名称
+file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*)
 
-add_subdirectory(Actor)
+SkywalkerServerFramework_MessageDebug(" Start Load ${skywalker_server_framework_name} Plugin")
 
-add_subdirectory(AI)
+# 遍历所有的文件夹
+foreach(subdirectory ${subdirectories})
+    # 如果是文件夹则添加子目录
+    if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${subdirectory})
+        add_subdirectory(${subdirectory})
+    endif()
+endforeach()
 
-add_subdirectory(DB)
-
-add_subdirectory(Level)
-
-add_subdirectory(Network)
-
-add_subdirectory(Profiler)
-
-add_subdirectory(Video)
+SkywalkerServerFramework_MessageDebug(" End Load ${skywalker_server_framework_name} Plugin")
