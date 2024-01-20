@@ -5,8 +5,14 @@ class SSFObject
 }
 
 '继承自 SSFObject
+SSFObject <|-- SSFObjectManager
 SSFObject <|-- SSFOModule
 SSFObject <|-- SSFService
+class SSFObjectManager
+{
+
+}
+
 class SSFOModule
 {
 
@@ -46,13 +52,6 @@ class SSFFrameworkService
 
 class SSFLevelService
 {
-}
-
-'继承自 SSFOFrameworkService
-SSFFrameworkService <|-- SSFEventService
-class SSFEventService
-{
-
 }
 
 @enduml

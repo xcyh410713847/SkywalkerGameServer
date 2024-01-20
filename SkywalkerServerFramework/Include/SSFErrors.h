@@ -56,12 +56,15 @@ enum ESkywalkerSFError
 
     SkywalkerSFError_Object_Error = 300, // 模块错误
     SkywalkerSFError_Object_Init_Failed, // 对象初始化失败
+    SkywalkerSFError_Object_Nullptr,     // 对象为空
+    SkywalkerSFError_Object_GUID_Invalid, // 对象GUID无效
+    SkywalkerSFError_Object_Add_Repeat,  // 对象重复添加
 
 #pragma endregion 对象错误
 
 #pragma region 网络错误
 
-    SkywalkerSFError_Network_Error = 400,         // 网络错误
+    SkywalkerSFError_Network_Error = 400,     // 网络错误
     SkywalkerSFError_Network_Init_Failed,         // 网络初始化失败
     SkywalkerSFError_Network_Start_Failed,        // 网络启动失败
     SkywalkerSFError_Network_Socket_CreateFailed, // 创建套接字失败

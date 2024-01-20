@@ -41,6 +41,11 @@ public:
     virtual bool IsRunning() const = 0;
 
     /**
+     * new一个ObjectGUID
+    */
+    virtual SSFObjectGUID NewObjectGUID() = 0;
+
+    /**
      * 获取插件管理器
      */
     virtual SSF_SHARED_PTR(SSFOPluginManager) GetPluginManager() const = 0;

@@ -116,6 +116,12 @@ bool CSkywalkerServerFramework::IsRunning() const
     return RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Running;
 }
 
+SSFObjectGUID CSkywalkerServerFramework::NewObjectGUID()
+{
+    AddObjectGUID++;
+    return AddObjectGUID;
+}
+
 #pragma region NewObject
 
 /**

@@ -196,12 +196,35 @@ typedef std::string SSFString;
 
 #pragma endregion typedef
 
+#pragma region SSF Advanced typedef
+
+/**
+ * ObjectGUID
+*/
+typedef SSFULongLong SSFObjectGUID;
+#define SSF_OBJECT_INVALID_GUID 0
+#define SSF_OBJECT_GUID_VALID(ObjGUID) (ObjGUID != SSF_OBJECT_INVALID_GUID)
+#define SSF_OBJECT_GUID_INVALID(ObjGUID) (ObjGUID == SSF_OBJECT_INVALID_GUID)
+
+#pragma region SSF Advanced typedef
+
 #pragma region Data Structure
 
 template <typename Key, typename Value>
 using SSFMap = std::map<Key, Value>;
 
 #pragma endregion Data Structure
+
+#pragma region Template Macro
+
+/**
+ * 模板必须继承自 TBase
+*/
+
+#define SSF_TEMPLATE_CLASS(TBase, T) \
+    template <typename T, typename std::enable_if<std::is_base_of<TBase, T>{}, int>::type = 0>
+
+#pragma endregion Template Macro
 
 SSF_NAMESPACE_END
 

@@ -43,6 +43,11 @@ public:
     virtual bool IsRunning() const override;
 
     /**
+     * new一个ObjectGUID
+     */
+    virtual SSFObjectGUID NewObjectGUID() override;
+
+    /**
      * 获取插件管理器
      */
     virtual SSF_SHARED_PTR(SSFOPluginManager) GetPluginManager() const override
@@ -96,6 +101,8 @@ private:
     FrameworkTimer{};
 
     ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
+
+    SSFObjectGUID AddObjectGUID{SSF_OBJECT_INVALID_GUID};
 };
 
 SSF_NAMESPACE_END

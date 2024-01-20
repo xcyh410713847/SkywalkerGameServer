@@ -33,11 +33,16 @@ private:
 	SSF_PTR(SkywalkerServerFramework)
 	SSFramework{};
 
+	SSFObjectGUID ObjectGUID{SSF_OBJECT_INVALID_GUID};
+
 public:
 	SSFObject(){};
 	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
 	{
 		SSFramework = InContext.SSFramework;
+
+		// 生成ObjectGUID
+		ObjectGUID = SSFramework->NewObjectGUID();
 	};
 	virtual ~SSFObject(){};
 
@@ -63,6 +68,14 @@ public:
 	GetFramework()
 	{
 		return SSFramework;
+	};
+
+	/**
+	 * 获取ObjectGUID
+	 */
+	SSFObjectGUID GetObjectGUID()
+	{
+		return ObjectGUID;
 	};
 };
 
