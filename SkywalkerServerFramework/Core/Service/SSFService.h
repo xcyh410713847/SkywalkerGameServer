@@ -14,11 +14,15 @@
 
 SSF_NAMESPACE_BEGIN
 
+struct SSFServiceContext : public SSFObjectContext
+{
+};
+
 class SSFService : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFService)
 
-    SSFService(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+    SSFService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFService();
 };
 

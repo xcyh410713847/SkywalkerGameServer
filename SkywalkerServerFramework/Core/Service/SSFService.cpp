@@ -15,7 +15,7 @@ SSF_LOG_DEFINE(SSFService, LogLevel_Debug);
 
 #define SSF_LOG_DEBUG_MODULE(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
 
-SSFService::SSFService(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+SSFService::SSFService(SSFServiceContext &InContext, SSFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
 }
