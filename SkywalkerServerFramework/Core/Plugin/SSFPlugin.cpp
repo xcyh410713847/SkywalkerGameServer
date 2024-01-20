@@ -50,7 +50,12 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Awake(Errors);
+        auto IterObject = FindObject(IterModule->second);
+        if (SSF_PTR_INVALID(IterObject))
+        {
+            continue;
+        }
+        ((SSFOModule *)IterObject)->Awake(Errors);
     }
 }
 
@@ -60,7 +65,12 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Start(Errors);
+        auto Module = GetModule(IterModule->first);
+        if (SSF_PTR_INVALID(Module))
+        {
+            continue;
+        }
+        Module->Start(Errors);
     }
 }
 
@@ -68,7 +78,12 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Tick(Errors, DelayMS);
+        auto Module = GetModule(IterModule->first);
+        if (SSF_PTR_INVALID(Module))
+        {
+            continue;
+        }
+        Module->Tick(Errors, DelayMS);
     }
 }
 
@@ -76,7 +91,12 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Stop(Errors);
+        auto Module = GetModule(IterModule->first);
+        if (SSF_PTR_INVALID(Module))
+        {
+            continue;
+        }
+        Module->Stop(Errors);
     }
 
     SSF_LOG_DEBUG_PLUGIN("Stop");
@@ -86,7 +106,12 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Sleep(Errors);
+        auto Module = GetModule(IterModule->first);
+        if (SSF_PTR_INVALID(Module))
+        {
+            continue;
+        }
+        Module->Sleep(Errors);
     }
 
     SSF_LOG_DEBUG_PLUGIN("Sleep");
@@ -96,7 +121,12 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
-        ((SSFOModule *)IterModule->second)->Destroy(Errors);
+        auto Module = GetModule(IterModule->first);
+        if (SSF_PTR_INVALID(Module))
+        {
+            continue;
+        }
+        Module->Destroy(Errors);
     }
 
     SSF_LOG_DEBUG_PLUGIN("Destroy");
@@ -174,20 +204,6 @@ void SSFOPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module
         return;
     }
     ModuleMap.erase(Iter);
-}
-
-SSF_PTR_MODULE SSFOPlugin::GetModule(const std::string &ModuleName)
-{
-    auto Iter = ModuleMap.find(ModuleName);
-    if (Iter == ModuleMap.end())
-    {
-        return nullptr;
-    }
-
-    SSFObjectErrors errors;
-    auto IterObject = FindObject(errors, Iter->second);
-
-    return SSF_PTR_DYNAMIC_CAST(SSFOModule)(IterObject);
 }
 
 #pragma endregion Module

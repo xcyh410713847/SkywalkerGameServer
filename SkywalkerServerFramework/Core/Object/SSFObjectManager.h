@@ -26,7 +26,7 @@ public:
 
     /**
      * 加入对象
-    */
+     */
     virtual void AddObject(SSFObjectErrors &Errors, SSF_PTR(Object) AddObject)
     {
         if (!SSF_PTR_VALID(AddObject))
@@ -53,7 +53,7 @@ public:
 
     /**
      * 移除对象
-    */
+     */
     virtual void RemoveObject(SSFObjectErrors &Errors, SSF_PTR(Object) RemoveObject)
     {
         if (!SSF_PTR_VALID(RemoveObject))
@@ -81,19 +81,38 @@ public:
 
     /**
      * 获取对象
-    */
-    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, SSFObjectGUID objectGUID)
+     */
+    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, const SSFObjectGUID& InObjectGUID)
     {
-        if (SSF_OBJECT_GUID_INVALID(objectGUID))
+        if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
         {
             SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_GUID_Invalid, "ObjectManager GetObject GUID Invalid");
             return nullptr;
         }
 
-        auto iter = ObjectMap.find(objectGUID);
+        auto iter = ObjectMap.find(InObjectGUID);
         if (iter == ObjectMap.end())
         {
             SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Add_Repeat, "ObjectManager GetObject NotFound");
+            return nullptr;
+        }
+
+        return iter->second;
+    }
+
+    /**
+     * 获取对象
+     */
+    virtual SSF_PTR(Object) FindObject(const SSFObjectGUID& InObjectGUID)
+    {
+        if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
+        {
+            return nullptr;
+        }
+
+        auto iter = ObjectMap.find(InObjectGUID);
+        if (iter == ObjectMap.end())
+        {
             return nullptr;
         }
 

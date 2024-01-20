@@ -99,7 +99,22 @@ public:
     /**
      * 获取模块
      */
-    SSF_PTR_MODULE GetModule(const std::string &ModuleName);
+    inline SSF_PTR_MODULE GetModule(const std::string &ModuleName)
+    {
+        auto Iter = ModuleMap.find(ModuleName);
+        if (Iter == ModuleMap.end())
+        {
+            return nullptr;
+        }
+
+        auto IterObject = FindObject(Iter->second);
+        if (SSF_PTR_INVALID(IterObject))
+        {
+            return nullptr;
+        }
+
+        return SSF_PTR_DYNAMIC_CAST(SSFOModule)(IterObject);
+    }
 
     /**
      * 获取模块
