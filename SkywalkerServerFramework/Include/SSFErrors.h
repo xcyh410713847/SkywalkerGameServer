@@ -40,31 +40,33 @@ enum ESkywalkerSFError
 
 #pragma region 模块错误
 
-    SkywalkerSFError_Module_Error = 200,          // 模块错误
-    SkywalkerSFError_Module_Register_Failed,      // 注册模块失败
-    SkywalkerSFError_Module_Register_nullptr,     // 注册模块为空
-    SkywalkerSFError_Module_Register_NameEmpty,   // 注册模块名称为空
-    SkywalkerSFError_Module_Register_Repeat,      // 注册模块重复
-    SkywalkerSFError_Module_Unregister_Failed,    // 注销模块失败
-    SkywalkerSFError_Module_Unregister_nullptr,   // 注销模块为空
-    SkywalkerSFError_Module_Unregister_NameEmpty, // 注销模块名称为空
-    SkywalkerSFError_Module_Unregister_NotFound,  // 注销模块未找到
+    SkywalkerSFError_Module_Error = 200,                   // 模块错误
+    SkywalkerSFError_Module_Register_Failed,               // 注册模块失败
+    SkywalkerSFError_Module_Register_nullptr,              // 注册模块为空
+    SkywalkerSFError_Module_Register_NameEmpty,            // 注册模块名称为空
+    SkywalkerSFError_Module_Register_Repeat,               // 注册模块重复
+    SkywalkerSFError_Module_Register_AddObjectFailed,      // 注册模块添加对象失败
+    SkywalkerSFError_Module_Unregister_Failed,             // 注销模块失败
+    SkywalkerSFError_Module_Unregister_nullptr,            // 注销模块为空
+    SkywalkerSFError_Module_Unregister_NameEmpty,          // 注销模块名称为空
+    SkywalkerSFError_Module_Unregister_NotFound,           // 注销模块未找到
+    SkywalkerSFError_Module_Unregister_RemoveObjectFailed, // 注销模块移除对象失败
 
 #pragma endregion 模块错误
 
 #pragma region 对象错误
 
-    SkywalkerSFError_Object_Error = 300, // 模块错误
-    SkywalkerSFError_Object_Init_Failed, // 对象初始化失败
-    SkywalkerSFError_Object_Nullptr,     // 对象为空
+    SkywalkerSFError_Object_Error = 300,  // 模块错误
+    SkywalkerSFError_Object_Init_Failed,  // 对象初始化失败
+    SkywalkerSFError_Object_Nullptr,      // 对象为空
     SkywalkerSFError_Object_GUID_Invalid, // 对象GUID无效
-    SkywalkerSFError_Object_Add_Repeat,  // 对象重复添加
+    SkywalkerSFError_Object_Add_Repeat,   // 对象重复添加
 
 #pragma endregion 对象错误
 
 #pragma region 网络错误
 
-    SkywalkerSFError_Network_Error = 400,     // 网络错误
+    SkywalkerSFError_Network_Error = 400,         // 网络错误
     SkywalkerSFError_Network_Init_Failed,         // 网络初始化失败
     SkywalkerSFError_Network_Start_Failed,        // 网络启动失败
     SkywalkerSFError_Network_Socket_CreateFailed, // 创建套接字失败

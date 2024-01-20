@@ -82,7 +82,7 @@ public:
     /**
      * 获取对象
     */
-    virtual SSF_PTR(Object) GetObject(SSFObjectErrors &Errors, SSFObjectGUID objectGUID)
+    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, SSFObjectGUID objectGUID)
     {
         if (SSF_OBJECT_GUID_INVALID(objectGUID))
         {
@@ -100,7 +100,7 @@ public:
         return iter->second;
     }
 
-protected:
+private:
     SSFMap<SSFObjectGUID, SSF_PTR(Object)> ObjectMap;
 };
 

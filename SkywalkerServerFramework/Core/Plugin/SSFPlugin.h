@@ -10,65 +10,117 @@
 
 #include "Include/SSFCore.h"
 
-#include "Core/Module/SSFModuleManager.h"
+#include "Core/Module/SSFModule.h"
+#include "Core/Object/SSFObjectManager.h"
 
 SSF_NAMESPACE_BEGIN
 
-struct SSFPluginContext : public SSFModuleContext
+struct SSFPluginContext : public SSFObjectContext
 {
+    SSF_PTR(SSFOPluginManager)
+    PluginManager{};
 };
 
-class SSFOPlugin
-    : public SSFOModuleManager
+class SSFOPlugin : public SSFObjectManager<SSFOModule>
 {
-#pragma region Object
+public:
+    SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFOPlugin();
+
+    /**
+     * 获取插件管理器
+     */
+    SSF_PTR(SSFOPluginManager)
+    GetPluginManager()
+    {
+        return PluginManager;
+    };
+
+#pragma region Plugin Process
 
 public:
     /**
      * 初始化
      */
-    virtual void Init(SSFObjectErrors &Errors) override;
+    virtual void Init(SSFObjectErrors &Errors);
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFObjectErrors &Errors) override;
+    virtual void Awake(SSFObjectErrors &Errors);
 
     /**
      * 开始
      */
-    virtual void Start(SSFObjectErrors &Errors) override;
+    virtual void Start(SSFObjectErrors &Errors);
 
     /**
      * Tick
      */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
 
     /**
      * 结束
      */
-    virtual void Stop(SSFObjectErrors &Errors) override;
+    virtual void Stop(SSFObjectErrors &Errors);
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFObjectErrors &Errors) override;
+    virtual void Sleep(SSFObjectErrors &Errors);
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &Errors) override;
+    virtual void Destroy(SSFObjectErrors &Errors);
 
     /**
      * 释放
      */
-    virtual void Release(SSFObjectErrors &Errors) override;
+    virtual void Release(SSFObjectErrors &Errors);
 
-#pragma endregion Object
+#pragma endregion Plugin Process
+
+#pragma region Module
 
 public:
-    SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFOPlugin();
+    /**
+     * 注册模块
+     * @param Module 模块
+     */
+    virtual void RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
+
+    /**
+     * 注销模块
+     * @param Module 模块
+     */
+    virtual void UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
+
+    /**
+     * 获取模块
+     */
+    SSF_PTR_MODULE GetModule(const std::string &ModuleName);
+
+    /**
+     * 获取模块
+     * @return 模块
+     */
+    template <typename T>
+    SSF_PTR(T)
+    GetModule()
+    {
+        SSFString ModuleName{};
+        SSF_CLASS_NAME(T, ModuleName);
+        SSF_PTR_MODULE Module = GetModule(ModuleName);
+        if (Module == nullptr)
+        {
+            return nullptr;
+        }
+
+        return SSF_PTR_DYNAMIC_CAST(T)(Module);
+    }
+
+#pragma endregion Module
 
 private:
     /**
@@ -83,6 +135,8 @@ private:
 
 protected:
     SSF_PTR_PLUGIN_MANAGER PluginManager;
+
+    SSFMap<SSFString, SSFObjectGUID> ModuleMap;
 };
 
 SSF_NAMESPACE_END
