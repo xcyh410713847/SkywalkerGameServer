@@ -15,38 +15,38 @@ SSF_LOG_DEFINE(SSFModule, LogLevel_Debug);
 
 #pragma region Object
 
-void SSFOModule::Init(SSFObjectErrors &Errors)
+void SSFModule::Init(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_MODULE("Init");
 }
 
-void SSFOModule::Awake(SSFObjectErrors &Errors)
+void SSFModule::Awake(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_MODULE("Awake");
 }
 
-void SSFOModule::Start(SSFObjectErrors &Errors)
+void SSFModule::Start(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_MODULE("Start");
 }
 
-void SSFOModule::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFModule::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
 }
 
-void SSFOModule::Stop(SSFObjectErrors &Errors)
+void SSFModule::Stop(SSFObjectErrors &Errors)
 {
 
     SSF_LOG_DEBUG_MODULE("Stop");
 }
 
-void SSFOModule::Sleep(SSFObjectErrors &Errors)
+void SSFModule::Sleep(SSFObjectErrors &Errors)
 {
 
     SSF_LOG_DEBUG_MODULE("Sleep");
 }
 
-void SSFOModule::Destroy(SSFObjectErrors &Errors)
+void SSFModule::Destroy(SSFObjectErrors &Errors)
 {
 
     SSF_LOG_DEBUG_MODULE("Destroy");
@@ -54,12 +54,12 @@ void SSFOModule::Destroy(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-SSFOModule::SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+SSFModule::SSFModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
     Plugin = InContext.Plugin;
 }
 
-SSFOModule::~SSFOModule()
+SSFModule::~SSFModule()
 {
 }

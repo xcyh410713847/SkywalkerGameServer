@@ -14,13 +14,13 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFModule_NetworkClient : public SSFOModule
+class SSFModule_NetworkClient : public SSFModule
 {
     SSF_OBJECT_CLASS(SSFModule_NetworkClient)
 
 public:
     SSFModule_NetworkClient(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
-        : SSFOModule(InContext, InErrors)
+        : SSFModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_NetworkClient(){};

@@ -6,7 +6,7 @@ class SSFObject
 
 '继承自 SSFObject
 SSFObject <|-- SSFObjectManager
-SSFObject <|-- SSFOModule
+SSFObject <|-- SSFModule
 SSFObject <|-- SSFService
 class SSFObjectManager
 {
@@ -16,13 +16,13 @@ class SSFObjectManager
 ' SSFObject 与 SSFObjectManager
 SSFObject *-- "1" SSFObjectManager : "拥有多个 <"
 
-class SSFOModule
+class SSFModule
 {
 
 }
 
-' SSFOModule 与 SSFPlugin
-SSFOModule *-- "1" SSFPlugin : "拥有多个 <"
+' SSFModule 与 SSFPlugin
+SSFModule *-- "1" SSFPlugin : "拥有多个 <"
 
 class SSFService
 {

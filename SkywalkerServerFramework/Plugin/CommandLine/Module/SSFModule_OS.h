@@ -12,7 +12,7 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFModule_OS : public SSFOModule
+class SSFModule_OS : public SSFModule
 {
     SSF_OBJECT_CLASS(SSFModule_OS)
 

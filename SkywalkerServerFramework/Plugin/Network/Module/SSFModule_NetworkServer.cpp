@@ -18,24 +18,24 @@ SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
 
 void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
 {
-    SSFOModule::Init(Errors);
+    SSFModule::Init(Errors);
 }
 
 void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
 {
-    SSFOModule::Awake(Errors);
+    SSFModule::Awake(Errors);
 }
 
 void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
 {
-    SSFOModule::Start(Errors);
+    SSFModule::Start(Errors);
 
     StartNetworkServer(Errors);
 }
 
 void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
-    SSFOModule::Tick(Errors, DelayMS);
+    SSFModule::Tick(Errors, DelayMS);
 
     CreateNetworkClient(Errors);
 
@@ -47,7 +47,7 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 {
-    SSFOModule::Stop(Errors);
+    SSFModule::Stop(Errors);
 
     ServerNetworkSocket->Stop(Errors);
 
@@ -56,12 +56,12 @@ void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 
 void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
 {
-    SSFOModule::Sleep(Errors);
+    SSFModule::Sleep(Errors);
 }
 
 void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
 {
-    SSFOModule::Destroy(Errors);
+    SSFModule::Destroy(Errors);
 }
 
 #pragma endregion Object

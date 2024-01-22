@@ -64,7 +64,7 @@ void SSFPlugin::Awake(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOModule *)IterObject)->Awake(Errors);
+        ((SSFModule *)IterObject)->Awake(Errors);
     }
 }
 

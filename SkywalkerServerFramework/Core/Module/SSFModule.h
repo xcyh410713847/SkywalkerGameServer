@@ -22,9 +22,9 @@ struct SSFModuleContext : public SSFObjectContext
     Plugin{};
 };
 
-class SSFOModule : public SSFObject
+class SSFModule : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFOModule);
+    SSF_OBJECT_CLASS(SSFModule);
 
 #pragma region Module
 
@@ -67,8 +67,8 @@ public:
 #pragma endregion Module
 
 public:
-    SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFOModule();
+    SSFModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFModule();
 
     /**
      * 获取插件

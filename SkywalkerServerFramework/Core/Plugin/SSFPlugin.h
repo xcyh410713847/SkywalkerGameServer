@@ -21,7 +21,7 @@ struct SSFPluginContext : public SSFObjectContext
     PluginManager{};
 };
 
-class SSFPlugin : public SSFObjectManager<SSFOModule>
+class SSFPlugin : public SSFObjectManager<SSFModule>
 {
     SSF_OBJECT_CLASS(SSFPlugin)
 
@@ -115,7 +115,7 @@ public:
             return nullptr;
         }
 
-        return SSF_PTR_DYNAMIC_CAST(SSFOModule)(IterObject);
+        return SSF_PTR_DYNAMIC_CAST(SSFModule)(IterObject);
     }
 
     /**
@@ -126,7 +126,7 @@ public:
     SSF_PTR(ModuleT)
     GetModule()
     {
-        SSF_ASSERT_IS_BASE_OF(SSFOModule, ModuleT);
+        SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleT);
 
         SSFString ModuleName{};
         SSF_CLASS_NAME(ModuleT, ModuleName);

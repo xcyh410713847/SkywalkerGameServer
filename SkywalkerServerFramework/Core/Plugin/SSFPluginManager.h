@@ -230,7 +230,7 @@ private:
  * 注册模块
  */
 #define SSF_REGISTER_MODULE(ModuleClass)                                                             \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFOModule));                                       \
+    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFModule));                                       \
     SSFObjectErrors ModuleClass##Errors;                                                             \
     SSFModuleContext ModuleClass##Context;                                                           \
     ModuleClass##Context.SSFramework = GetFramework();                                               \
@@ -250,7 +250,7 @@ private:
  * 注销模块
  */
 #define SSF_UNREGISTER_MODULE(ModuleClass)                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFOModule));          \
+    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFModule));          \
     SSF_PTR_MODULE ModuleClass##Module = GetModule<ModuleClass>();      \
     SSFObjectErrors ModuleClass##Errors;                                \
     UnregisterModule(ModuleClass##Errors, ModuleClass##Module);         \

@@ -160,8 +160,8 @@ class SSFPlugin;
 /**
  * 模块
  */
-class SSFOModule;
-#define SSF_PTR_MODULE SSF_PTR(SSFOModule)
+class SSFModule;
+#define SSF_PTR_MODULE SSF_PTR(SSFModule)
 
 #pragma endregion Pointer Macro
 

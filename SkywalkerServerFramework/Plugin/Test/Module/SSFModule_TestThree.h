@@ -14,13 +14,13 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFModule_TestThree : public SSFOModule
+class SSFModule_TestThree : public SSFModule
 {
     SSF_OBJECT_CLASS(SSFModule_TestThree)
 
 public:
     SSFModule_TestThree(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
-        : SSFOModule(InContext, InErrors)
+        : SSFModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_TestThree(){};

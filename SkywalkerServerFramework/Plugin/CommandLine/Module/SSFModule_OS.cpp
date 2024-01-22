@@ -43,7 +43,7 @@ void SSFModule_OS::Destroy(SSFObjectErrors &Errors)
 #pragma endregion Module
 
 SSFModule_OS::SSFModule_OS(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
-    : SSFOModule(InContext, InErrors)
+    : SSFModule(InContext, InErrors)
 {
 }
 
