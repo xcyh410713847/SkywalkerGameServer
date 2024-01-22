@@ -22,13 +22,13 @@ SSF_NAMESPACE_BEGIN
 /**
  * 插件管理器
  */
-class SSFOPluginManager : public SSFObjectManager<SSFOPlugin>
+class SSFPluginManager : public SSFObjectManager<SSFOPlugin>
 {
-    SSF_OBJECT_CLASS(SSFOPluginManager)
+    SSF_OBJECT_CLASS(SSFPluginManager)
 
 public:
-    SSFOPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFOPluginManager();
+    SSFPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFPluginManager();
 
     /**
      * 释放
@@ -147,8 +147,8 @@ private:
 #pragma endregion Plugin
 
 private:
-    typedef void (*DLL_START_PLUGIN_FUNC)(SSF_PTR(SSFOPluginManager));
-    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSF_PTR(SSFOPluginManager));
+    typedef void (*DLL_START_PLUGIN_FUNC)(SSF_PTR(SSFPluginManager));
+    typedef void (*DLL_STOP_PLUGIN_FUNC)(SSF_PTR(SSFPluginManager));
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
     typedef SSFMap<std::string, SSF_PTR_DYNAMIC_LIB> TMap_DynamicLib;

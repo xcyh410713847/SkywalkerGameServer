@@ -13,19 +13,17 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
-SSFOPluginManager::SSFOPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+SSFPluginManager::SSFPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
 {
 }
 
-SSFOPluginManager::~SSFOPluginManager()
+SSFPluginManager::~SSFPluginManager()
 {
 }
 
-void SSFOPluginManager::Release(SSFObjectErrors &Errors)
+void SSFPluginManager::Release(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Release");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -48,10 +46,8 @@ void SSFOPluginManager::Release(SSFObjectErrors &Errors)
 
 #pragma region Process
 
-void SSFOPluginManager::Init(SSFObjectErrors &Errors)
+void SSFPluginManager::Init(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Init");
-
     SSFObjectErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
@@ -85,10 +81,8 @@ void SSFOPluginManager::Init(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
+void SSFPluginManager::Awake(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Awake");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -100,10 +94,8 @@ void SSFOPluginManager::Awake(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::Start(SSFObjectErrors &Errors)
+void SSFPluginManager::Start(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Start");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -115,7 +107,7 @@ void SSFOPluginManager::Start(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -128,10 +120,8 @@ void SSFOPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 }
 
-void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
+void SSFPluginManager::Stop(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Stop");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -143,10 +133,8 @@ void SSFOPluginManager::Stop(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
+void SSFPluginManager::Sleep(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Sleep");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -158,10 +146,8 @@ void SSFOPluginManager::Sleep(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
+void SSFPluginManager::Destroy(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG("Destroy");
-
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -177,7 +163,7 @@ void SSFOPluginManager::Destroy(SSFObjectErrors &Errors)
 
 #pragma region Plugin
 
-void SSFOPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -207,7 +193,7 @@ void SSFOPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN P
     PluginMap.insert(std::make_pair(PluginName, Plugin->GetObjectGUID()));
 }
 
-void SSFOPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -238,7 +224,7 @@ void SSFOPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN
     PluginMap.erase(Iter);
 }
 
-void SSFOPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
+void SSFPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
 {
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (!PluginScriptParse->LoadScript("ServerPlugin.skywalkerC"))
@@ -274,7 +260,7 @@ void SSFOPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::LoadPlugin(SSFObjectErrors &Errors)
+void SSFPluginManager::LoadPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
@@ -283,7 +269,7 @@ void SSFOPluginManager::LoadPlugin(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPluginManager::StartPlugin(SSFObjectErrors &Errors)
+void SSFPluginManager::StartPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterLib, DynamicLibMap)
     {

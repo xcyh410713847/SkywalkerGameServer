@@ -148,8 +148,8 @@ class SSFObject;
 /**
  * 插件管理器
  */
-class SSFOPluginManager;
-#define SSF_PTR_PLUGIN_MANAGER SSF_PTR(SSFOPluginManager)
+class SSFPluginManager;
+#define SSF_PTR_PLUGIN_MANAGER SSF_PTR(SSFPluginManager)
 
 /**
  * 插件

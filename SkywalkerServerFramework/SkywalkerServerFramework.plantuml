@@ -31,19 +31,19 @@ class SSFService
 
 '继承自 SSFObjectManager
 SSFObjectManager <|-- SSFOPlugin
-SSFObjectManager <|-- SSFOPluginManager
+SSFObjectManager <|-- SSFPluginManager
 class SSFOPlugin
 {
 
 }
 
-class SSFOPluginManager
+class SSFPluginManager
 {
 
 }
 
-' SSFOPlugin 与 SSFOPluginManager
-SSFOPlugin *-- "1" SSFOPluginManager : "拥有多个 <"
+' SSFOPlugin 与 SSFPluginManager
+SSFOPlugin *-- "1" SSFPluginManager : "拥有多个 <"
 
 '继承自 SSFOService
 SSFService <|-- SSFFrameworkService

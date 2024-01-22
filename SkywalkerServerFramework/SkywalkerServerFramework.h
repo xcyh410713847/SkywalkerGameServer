@@ -52,7 +52,7 @@ public:
     /**
      * 获取插件管理器
      */
-    virtual SSF_SHARED_PTR(SSFOPluginManager) GetPluginManager() const override
+    virtual SSF_SHARED_PTR(SSFPluginManager) GetPluginManager() const override
     {
         return PluginManager;
     }
@@ -96,7 +96,7 @@ private:
 #pragma endregion Object
 
 private:
-    SSF_SHARED_PTR(SSFOPluginManager)
+    SSF_SHARED_PTR(SSFPluginManager)
     PluginManager{};
 
     SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)

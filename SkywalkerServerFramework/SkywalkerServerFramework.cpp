@@ -42,10 +42,10 @@ bool CSkywalkerServerFramework::Start()
     ServiceManager = NewObject<SSFServiceManager<SSFFrameworkService>>();
 
     // 创建插件管理器
-    PluginManager = NewSharedObject<SSFOPluginManager>();
+    PluginManager = NewSharedObject<SSFPluginManager>();
     if (!PluginManager)
     {
-        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFOPluginManager Failed");
+        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFPluginManager Failed");
         return false;
     }
 

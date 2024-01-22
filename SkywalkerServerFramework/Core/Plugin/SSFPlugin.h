@@ -17,7 +17,7 @@ SSF_NAMESPACE_BEGIN
 
 struct SSFPluginContext : public SSFObjectContext
 {
-    SSF_PTR(SSFOPluginManager)
+    SSF_PTR(SSFPluginManager)
     PluginManager{};
 };
 
@@ -32,7 +32,7 @@ public:
     /**
      * 获取插件管理器
      */
-    SSF_PTR(SSFOPluginManager)
+    SSF_PTR(SSFPluginManager)
     GetPluginManager()
     {
         return PluginManager;
