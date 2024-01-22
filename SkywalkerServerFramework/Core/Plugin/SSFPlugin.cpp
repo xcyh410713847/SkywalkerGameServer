@@ -29,6 +29,15 @@ SSFOPlugin::~SSFOPlugin()
 {
 }
 
+void SSFOPlugin::Release(SSFObjectErrors &Errors)
+{
+    Uninstall(Errors);
+
+    SSF_LOG_DEBUG_PLUGIN("Release");
+
+    SSFObjectManager::Release(Errors);
+}
+
 #pragma region Plugin Process
 
 void SSFOPlugin::Init(SSFObjectErrors &Errors)
@@ -130,15 +139,6 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
     }
 
     SSF_LOG_DEBUG_PLUGIN("Destroy");
-}
-
-void SSFOPlugin::Release(SSFObjectErrors &Errors)
-{
-    Uninstall(Errors);
-
-    SSF_LOG_DEBUG_PLUGIN("Release");
-
-    SSFObjectManager::Release(Errors);
 }
 
 #pragma endregion Plugin Process

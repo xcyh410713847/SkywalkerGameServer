@@ -59,7 +59,7 @@ void SSFOModule::Destroy(SSFObjectErrors &Errors)
 SSFOModule::SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
-    PluginManager = InContext.PluginManager;
+    Plugin = InContext.Plugin;
 }
 
 SSFOModule::~SSFOModule()

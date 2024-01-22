@@ -21,20 +21,22 @@ enum ESkywalkerSFError
 
 #pragma region 插件错误
 
-    SkywalkerSFError_Plugin_Error = 100,            // 插件错误
-    SkywalkerSFError_Plugin_Register_Failed,        // 注册插件失败
-    SkywalkerSFError_Plugin_Register_nullptr,       // 注册插件为空
-    SkywalkerSFError_Plugin_Register_NameEmpty,     // 注册插件名称为空
-    SkywalkerSFError_Plugin_Register_Repeat,        // 注册插件重复
-    SkywalkerSFError_Plugin_Unregister_Failed,      // 注销插件失败
-    SkywalkerSFError_Plugin_Unregister_nullptr,     // 注销插件为空
-    SkywalkerSFError_Plugin_Unregister_NameEmpty,   // 注销插件名称为空
-    SkywalkerSFError_Plugin_Unregister_NotFound,    // 注销插件未找到
-    SkywalkerSFError_Plugin_Load_ConfigNullptr,     // 插件配置为空
-    SkywalkerSFError_Plugin_Load_Repeated,          // 插件重复加载
-    SkywalkerSFError_Plugin_Load_DynamicLibNullptr, // 动态库为空
-    SkywalkerSFError_Plugin_Load_Failed,            // 插件加载失败
-    SkywalkerSFError_Plugin_Load_EntryNullptr,      // 插件入口为空
+    SkywalkerSFError_Plugin_Error = 100,                   // 插件错误
+    SkywalkerSFError_Plugin_Register_Failed,               // 注册插件失败
+    SkywalkerSFError_Plugin_Register_nullptr,              // 注册插件为空
+    SkywalkerSFError_Plugin_Register_NameEmpty,            // 注册插件名称为空
+    SkywalkerSFError_Plugin_Register_Repeat,               // 注册插件重复
+    SkywalkerSFError_Plugin_Register_AddObjectFailed,      // 注册插件添加对象失败
+    SkywalkerSFError_Plugin_Unregister_Failed,             // 注销插件失败
+    SkywalkerSFError_Plugin_Unregister_nullptr,            // 注销插件为空
+    SkywalkerSFError_Plugin_Unregister_NameEmpty,          // 注销插件名称为空
+    SkywalkerSFError_Plugin_Unregister_NotFound,           // 注销插件未找到
+    SkywalkerSFError_Plugin_Unregister_RemoveObjectFailed, // 注销插件移除对象失败
+    SkywalkerSFError_Plugin_Load_ConfigNullptr,            // 插件配置为空
+    SkywalkerSFError_Plugin_Load_Repeated,                 // 插件重复加载
+    SkywalkerSFError_Plugin_Load_DynamicLibNullptr,        // 动态库为空
+    SkywalkerSFError_Plugin_Load_Failed,                   // 插件加载失败
+    SkywalkerSFError_Plugin_Load_EntryNullptr,             // 插件入口为空
 
 #pragma endregion 插件错误
 

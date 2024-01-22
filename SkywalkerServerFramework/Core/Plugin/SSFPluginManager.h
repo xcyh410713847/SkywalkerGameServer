@@ -17,76 +17,69 @@
 #include "Include/SSFEvent.h"
 
 #include "Core/DynamicLib/SSFDynamicLib.h"
-#include "Core/Module/SSFModuleManager.h"
+#include "Core/Plugin/SSFPlugin.h"
 
 SSF_NAMESPACE_BEGIN
 
 /**
  * 插件管理器
  */
-class SSFOPluginManager
-    : public SSFOModuleManager
+class SSFOPluginManager : public SSFObjectManager<SSFOPlugin>
 {
     SSF_OBJECT_CLASS(SSFOPluginManager)
 
-#pragma region Object
-
 public:
-    /**
-     * 初始化
-     */
-    virtual void Init(SSFObjectErrors &Errors) override;
-
-    /**
-     * 唤醒
-     */
-    virtual void Awake(SSFObjectErrors &Errors) override;
-
-    /**
-     * 开始
-     */
-    virtual void Start(SSFObjectErrors &Errors) override;
-
-    /**
-     * Tick
-     */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
-
-    /**
-     * 结束
-     */
-    virtual void Stop(SSFObjectErrors &Errors) override;
-
-    /**
-     * 休眠
-     */
-    virtual void Sleep(SSFObjectErrors &Errors) override;
-
-    /**
-     * 销毁
-     */
-    virtual void Destroy(SSFObjectErrors &Errors) override;
+    SSFOPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFOPluginManager();
 
     /**
      * 释放
      */
     virtual void Release(SSFObjectErrors &Errors) override;
 
-#pragma endregion Object
-
-#pragma region Event
-
-private:
-    bool OnEvent_PluginInit(SSFEventMainType MainType, SSFEventSubType SubType,
-                            SSFEventParam Param, SSFEventParamSize ParamSize);
-
-#pragma endregion Event
+#pragma region Process
 
 public:
-    SSFOPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-        : SSFOModuleManager(InContext, InErrors){};
-    virtual ~SSFOPluginManager() override {}
+    /**
+     * 初始化
+     */
+    virtual void Init(SSFObjectErrors &Errors);
 
+    /**
+     * 唤醒
+     */
+    virtual void Awake(SSFObjectErrors &Errors);
+
+    /**
+     * 开始
+     */
+    virtual void Start(SSFObjectErrors &Errors);
+
+    /**
+     * Tick
+     */
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
+
+    /**
+     * 结束
+     */
+    virtual void Stop(SSFObjectErrors &Errors);
+
+    /**
+     * 休眠
+     */
+    virtual void Sleep(SSFObjectErrors &Errors);
+
+    /**
+     * 销毁
+     */
+    virtual void Destroy(SSFObjectErrors &Errors);
+
+#pragma endregion Process
+
+#pragma region Plugin
+
+public:
     /**
      * 注册插件
      * @param Plugin 插件
@@ -104,7 +97,36 @@ public:
      * @param PluginName 插件名称
      * @return 插件
      */
-    virtual SSF_PTR_PLUGIN GetPlugin(const std::string &PluginName);
+    inline SSF_PTR_PLUGIN GetPlugin(const std::string &PluginName)
+    {
+        auto Iter = PluginMap.find(PluginName);
+        if (Iter == PluginMap.end())
+        {
+            return nullptr;
+        }
+
+        auto IterObject = FindObject(Iter->second);
+        if (SSF_PTR_INVALID(IterObject))
+        {
+            return nullptr;
+        }
+
+        return SSF_PTR_DYNAMIC_CAST(SSFOPlugin)(IterObject);
+    }
+
+    /**
+     * 获取插件
+     * @param PluginName 插件名称
+     * @return 插件
+     */
+    template <typename T>
+    SSF_PTR(T)
+    GetPlugin()
+    {
+        SSFString PluginName;
+        SSF_CLASS_NAME(T, PluginName);
+        return SSF_PTR_DYNAMIC_CAST(T)(GetPlugin(PluginName));
+    }
 
 private:
     /**
@@ -122,13 +144,15 @@ private:
      */
     void StartPlugin(SSFObjectErrors &Errors);
 
+#pragma endregion Plugin
+
 private:
     typedef void (*DLL_START_PLUGIN_FUNC)(SSF_PTR(SSFOPluginManager));
     typedef void (*DLL_STOP_PLUGIN_FUNC)(SSF_PTR(SSFOPluginManager));
 
     typedef SSFMap<std::string, bool> TMap_PluginName;
     typedef SSFMap<std::string, SSF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
-    typedef SSFMap<std::string, SSF_PTR_PLUGIN> TMap_Plugin;
+    typedef SSFMap<std::string, SSFObjectGUID> TMap_Plugin;
 
     TMap_PluginName PluginNameMap;
     TMap_DynamicLib DynamicLibMap;
@@ -210,15 +234,8 @@ private:
     SSFObjectErrors ModuleClass##Errors;                                                             \
     SSFModuleContext ModuleClass##Context;                                                           \
     ModuleClass##Context.SSFramework = GetFramework();                                               \
-    ModuleClass##Context.PluginManager = GetPluginManager();                                         \
+    ModuleClass##Context.Plugin = this;                                                              \
     SSF_PTR_MODULE ModuleClass##Module = new ModuleClass(ModuleClass##Context, ModuleClass##Errors); \
-    GetPluginManager()->RegisterModule(ModuleClass##Errors, ModuleClass##Module);                    \
-    if (ModuleClass##Errors.IsValid())                                                               \
-    {                                                                                                \
-        SSF_ERROR_DESC(ModuleClass##Errors,                                                          \
-                       SkywalkerSFError_Module_Register_Failed,                                      \
-                       "PluginManager RegisterModule Failed");                                       \
-    }                                                                                                \
     RegisterModule(ModuleClass##Errors, ModuleClass##Module);                                        \
     if (ModuleClass##Errors.IsValid())                                                               \
     {                                                                                                \
@@ -232,25 +249,18 @@ private:
 /**
  * 注销模块
  */
-#define SSF_UNREGISTER_MODULE(ModuleClass)                                          \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFOModule));                      \
-    SSF_PTR_MODULE ModuleClass##Module = GetModule<ModuleClass>();                  \
-    SSFObjectErrors ModuleClass##Errors;                                            \
-    GetPluginManager()->UnregisterModule(ModuleClass##Errors, ModuleClass##Module); \
-    if (ModuleClass##Errors.IsValid())                                              \
-    {                                                                               \
-        SSF_ERROR_DESC(ModuleClass##Errors,                                         \
-                       SkywalkerSFError_Module_Unregister_Failed,                   \
-                       "PluginManager UnregisterModule Failed");                    \
-    }                                                                               \
-    UnregisterModule(ModuleClass##Errors, ModuleClass##Module);                     \
-    if (ModuleClass##Errors.IsValid())                                              \
-    {                                                                               \
-        SSF_ERROR_DESC(ModuleClass##Errors,                                         \
-                       SkywalkerSFError_Module_Unregister_Failed,                   \
-                       "Plugin UnregisterModule Failed");                           \
-    }                                                                               \
-    SSF_LOG_INFO("Unregister Module [" << #ModuleClass << "] Success");             \
+#define SSF_UNREGISTER_MODULE(ModuleClass)                              \
+    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFOModule));          \
+    SSF_PTR_MODULE ModuleClass##Module = GetModule<ModuleClass>();      \
+    SSFObjectErrors ModuleClass##Errors;                                \
+    UnregisterModule(ModuleClass##Errors, ModuleClass##Module);         \
+    if (ModuleClass##Errors.IsValid())                                  \
+    {                                                                   \
+        SSF_ERROR_DESC(ModuleClass##Errors,                             \
+                       SkywalkerSFError_Module_Unregister_Failed,       \
+                       "Plugin UnregisterModule Failed");               \
+    }                                                                   \
+    SSF_LOG_INFO("Unregister Module [" << #ModuleClass << "] Success"); \
     ModuleClass##Module->Release(ModuleClass##Errors);
 
 SSF_NAMESPACE_END

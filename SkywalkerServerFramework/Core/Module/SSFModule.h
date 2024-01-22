@@ -14,12 +14,12 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFOPluginManager;
+class SSFOPlugin;
 
 struct SSFModuleContext : public SSFObjectContext
 {
-    SSF_PTR(SSFOPluginManager)
-    PluginManager{};
+    SSF_PTR(SSFOPlugin)
+    Plugin{};
 };
 
 class SSFOModule : public SSFObject
@@ -68,22 +68,20 @@ public:
 
 public:
     SSFOModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
-    SSFOModule(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-        : SSFObject(InContext, InErrors){};
     virtual ~SSFOModule();
 
     /**
-     * 获取插件管理器
+     * 获取插件
      */
-    SSF_PTR(SSFOPluginManager)
-    GetPluginManager()
+    SSF_PTR(SSFOPlugin)
+    GetPlugin()
     {
-        return PluginManager;
+        return Plugin;
     };
 
 private:
-    SSF_PTR(SSFOPluginManager)
-    PluginManager;
+    SSF_PTR(SSFOPlugin)
+    Plugin;
 };
 
 SSF_NAMESPACE_END

@@ -36,6 +36,11 @@ public:
         return PluginManager;
     };
 
+    /**
+     * 释放
+     */
+    virtual void Release(SSFObjectErrors &Errors) override;
+
 #pragma region Plugin Process
 
 public:
@@ -73,11 +78,6 @@ public:
      * 销毁
      */
     virtual void Destroy(SSFObjectErrors &Errors);
-
-    /**
-     * 释放
-     */
-    virtual void Release(SSFObjectErrors &Errors);
 
 #pragma endregion Plugin Process
 
@@ -126,13 +126,7 @@ public:
     {
         SSFString ModuleName{};
         SSF_CLASS_NAME(T, ModuleName);
-        SSF_PTR_MODULE Module = GetModule(ModuleName);
-        if (Module == nullptr)
-        {
-            return nullptr;
-        }
-
-        return SSF_PTR_DYNAMIC_CAST(T)(Module);
+        return SSF_PTR_DYNAMIC_CAST(T)(GetModule(ModuleName));
     }
 
 #pragma endregion Module

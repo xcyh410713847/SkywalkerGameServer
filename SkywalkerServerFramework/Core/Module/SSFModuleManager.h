@@ -19,8 +19,6 @@ class SSFOModuleManager : public SSFOModule
 public:
     SSFOModuleManager(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
         : SSFOModule(InContext, InErrors){};
-    SSFOModuleManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-        : SSFOModule(InContext, InErrors){};
     virtual ~SSFOModuleManager() {}
 
     /**
