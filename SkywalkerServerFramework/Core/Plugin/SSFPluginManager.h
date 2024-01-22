@@ -13,8 +13,6 @@
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 #include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
-#include "Include/SSFEvent.h"
 
 #include "Core/DynamicLib/SSFDynamicLib.h"
 #include "Core/Plugin/SSFPlugin.h"

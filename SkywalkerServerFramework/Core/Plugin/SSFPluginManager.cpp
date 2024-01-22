@@ -10,7 +10,6 @@
 #include "Include/SSFILog.h"
 
 SSF_NAMESPACE_USING
-SKYWALKER_EVENT_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFPluginManager, LogLevel_Debug);
 
