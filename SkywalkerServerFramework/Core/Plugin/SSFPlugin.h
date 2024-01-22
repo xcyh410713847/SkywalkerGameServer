@@ -23,6 +23,8 @@ struct SSFPluginContext : public SSFObjectContext
 
 class SSFOPlugin : public SSFObjectManager<SSFOModule>
 {
+    SSF_OBJECT_CLASS(SSFOPlugin)
+
 public:
     SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFOPlugin();
@@ -120,13 +122,15 @@ public:
      * 获取模块
      * @return 模块
      */
-    template <typename T>
-    SSF_PTR(T)
+    template <typename ModuleT>
+    SSF_PTR(ModuleT)
     GetModule()
     {
+        SSF_ASSERT_IS_BASE_OF(SSFOModule, ModuleT);
+
         SSFString ModuleName{};
-        SSF_CLASS_NAME(T, ModuleName);
-        return SSF_PTR_DYNAMIC_CAST(T)(GetModule(ModuleName));
+        SSF_CLASS_NAME(ModuleT, ModuleName);
+        return SSF_PTR_DYNAMIC_CAST(ModuleT)(GetModule(ModuleName));
     }
 
 #pragma endregion Module

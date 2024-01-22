@@ -117,13 +117,15 @@ public:
      * @param PluginName 插件名称
      * @return 插件
      */
-    template <typename T>
-    SSF_PTR(T)
+    template <typename PluginT>
+    SSF_PTR(PluginT)
     GetPlugin()
     {
+        SSF_ASSERT_IS_BASE_OF(SSFOPlugin, PluginT);
+
         SSFString PluginName;
-        SSF_CLASS_NAME(T, PluginName);
-        return SSF_PTR_DYNAMIC_CAST(T)(GetPlugin(PluginName));
+        SSF_CLASS_NAME(PluginT, PluginName);
+        return SSF_PTR_DYNAMIC_CAST(PluginT)(GetPlugin(PluginName));
     }
 
 private:

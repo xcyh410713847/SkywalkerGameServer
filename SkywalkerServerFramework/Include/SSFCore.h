@@ -63,12 +63,24 @@ SSF_NAMESPACE_BEGIN
         ClassName = Match[1].str();                      \
     }
 
+
+
+#pragma endregion Function Macro
+
+#pragma region Assert Macro
+
 /**
  * 断言
  */
 #define SSF_ASSERT(Condition) assert((Condition))
 
-#pragma endregion Function Macro
+/**
+ * 断言 是否继承自 TBase
+ */
+#define SSF_ASSERT_IS_BASE_OF(TBase, T) \
+    static_assert(std::is_base_of<TBase, T>{}, "T must be derived from TBase")
+
+#pragma endregion Assert Macro
 
 #pragma region Common Type
 

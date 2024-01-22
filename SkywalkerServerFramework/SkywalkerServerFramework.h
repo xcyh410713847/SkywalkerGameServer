@@ -15,6 +15,8 @@
 #include "SkywalkerPool/SkywalkerPool.h"
 
 #include "Core/Object/SSFObject.h"
+#include "Core/Service/SSFFrameworkService.h"
+#include "Core/Service/SSFServiceManager.h"
 
 SSF_NAMESPACE_BEGIN
 
@@ -99,6 +101,8 @@ private:
 
     SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
     FrameworkTimer{};
+
+    SSFServiceManager<SSFFrameworkService>* ServiceManager{};
 
     ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
 

@@ -88,11 +88,11 @@ SSF_NAMESPACE_END
 public:                                                      \
 	virtual const std::string &GetObjectClassName() override \
 	{                                                        \
-		if (ObjectClassName.empty())                         \
+		if (this->ObjectClassName.empty())                   \
 		{                                                    \
-			SSF_CLASS_NAME(this, ObjectClassName);           \
+			SSF_CLASS_NAME(this, this->ObjectClassName);     \
 		}                                                    \
-		return ObjectClassName;                              \
+		return this->ObjectClassName;                        \
 	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

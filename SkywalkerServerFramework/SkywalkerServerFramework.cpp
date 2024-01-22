@@ -10,6 +10,8 @@
 #include "Include/SSFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
+#include "Core/Service/FrameworkService/SSFService_Event.h"
+#include "Core/Service/SSFLevelService.h"
 
 SSF_NAMESPACE_USING
 
@@ -36,6 +38,10 @@ bool CSkywalkerServerFramework::Start()
     FrameworkTimer->Reset();
 
     SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer->GetStartTime() << "s")
+
+    ServiceManager = NewObject<SSFServiceManager<SSFFrameworkService>>();
+    ServiceManager->GetService<SSFService_Event>();
+    // ServiceManager->GetService<SSFLevelService>();
 
     // 创建插件管理器
     PluginManager = NewSharedObject<SSFOPluginManager>();
