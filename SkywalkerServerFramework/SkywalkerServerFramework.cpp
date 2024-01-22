@@ -40,8 +40,6 @@ bool CSkywalkerServerFramework::Start()
     SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << FrameworkTimer->GetStartTime() << "s")
 
     ServiceManager = NewObject<SSFServiceManager<SSFFrameworkService>>();
-    ServiceManager->GetService<SSFService_Event>();
-    // ServiceManager->GetService<SSFLevelService>();
 
     // 创建插件管理器
     PluginManager = NewSharedObject<SSFOPluginManager>();

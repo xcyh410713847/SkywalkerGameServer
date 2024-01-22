@@ -64,6 +64,24 @@ public:
 
         SSFString ServiceName{};
         SSF_CLASS_NAME(ServiceT, ServiceName);
+
+        if (ServiceMap.find(ServiceName) == ServiceMap.end())
+        {
+            // 新建一个
+            SSFServiceContext Context{};
+            Context.SSFramework = SSFObject::GetFramework();
+            SSFObjectErrors Errors{};
+            SSF_PTR(ServiceT)
+            NewService = SSFObject::NewObject<ServiceT>(Context, Errors);
+            if (SSF_PTR_INVALID(NewService))
+            {
+                return nullptr;
+            }
+
+            SSFObjectManager<ServiceObject>::AddObject(Errors, NewService);
+            ServiceMap.insert(std::make_pair(ServiceName, NewService->GetObjectGUID()));
+        }
+
         return SSF_PTR_DYNAMIC_CAST(ServiceT)(GetService(ServiceName));
     };
 

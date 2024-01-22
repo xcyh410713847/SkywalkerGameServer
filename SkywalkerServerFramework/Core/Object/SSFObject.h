@@ -77,6 +77,16 @@ public:
 	{
 		return ObjectGUID;
 	};
+
+	/**
+	 * 创建对象
+	 */
+	template <typename ObjectT, typename ContextT>
+	SSF_PTR(ObjectT)
+	NewObject(ContextT &InContext, SSFObjectErrors &InErrors)
+	{
+		return new ObjectT(InContext, InErrors);
+	}
 };
 
 SSF_NAMESPACE_END
