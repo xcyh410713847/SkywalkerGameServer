@@ -30,7 +30,7 @@ enum SSFEEventMainType
 
 #pragma region 插件事件子类型
 
-class SSFOPlugin;
+class SSFPlugin;
 
 /**
  * All 事件
@@ -38,7 +38,7 @@ class SSFOPlugin;
 #define SSFEventSubType_Plugin_All 0
 struct SSFEventPluginAll
 {
-    SSF_PTR(SSFOPlugin)
+    SSF_PTR(SSFPlugin)
     Plugin;
 };
 

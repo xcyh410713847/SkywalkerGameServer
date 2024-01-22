@@ -154,8 +154,8 @@ class SSFPluginManager;
 /**
  * 插件
  */
-class SSFOPlugin;
-#define SSF_PTR_PLUGIN SSF_PTR(SSFOPlugin)
+class SSFPlugin;
+#define SSF_PTR_PLUGIN SSF_PTR(SSFPlugin)
 
 /**
  * 模块

@@ -19,17 +19,17 @@ SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
 
 #define SSF_LOG_DEBUG_PLUGIN(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
 
-SSFOPlugin::SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+SSFPlugin::SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
 {
     PluginManager = InContext.PluginManager;
 }
 
-SSFOPlugin::~SSFOPlugin()
+SSFPlugin::~SSFPlugin()
 {
 }
 
-void SSFOPlugin::Release(SSFObjectErrors &Errors)
+void SSFPlugin::Release(SSFObjectErrors &Errors)
 {
     Uninstall(Errors);
 
@@ -40,7 +40,7 @@ void SSFOPlugin::Release(SSFObjectErrors &Errors)
 
 #pragma region Plugin Process
 
-void SSFOPlugin::Init(SSFObjectErrors &Errors)
+void SSFPlugin::Init(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Init");
 
@@ -53,7 +53,7 @@ void SSFOPlugin::Init(SSFObjectErrors &Errors)
     SKYWALKER_TRIGGER_EVENT(SSFEventMainType_Plugin, SSFEventSubType_Plugin_Init, EventPluginAll);
 }
 
-void SSFOPlugin::Awake(SSFObjectErrors &Errors)
+void SSFPlugin::Awake(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Awake");
 
@@ -68,7 +68,7 @@ void SSFOPlugin::Awake(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPlugin::Start(SSFObjectErrors &Errors)
+void SSFPlugin::Start(SSFObjectErrors &Errors)
 {
     SSF_LOG_DEBUG_PLUGIN("Start");
 
@@ -83,7 +83,7 @@ void SSFOPlugin::Start(SSFObjectErrors &Errors)
     }
 }
 
-void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -96,7 +96,7 @@ void SSFOPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 }
 
-void SSFOPlugin::Stop(SSFObjectErrors &Errors)
+void SSFPlugin::Stop(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -111,7 +111,7 @@ void SSFOPlugin::Stop(SSFObjectErrors &Errors)
     SSF_LOG_DEBUG_PLUGIN("Stop");
 }
 
-void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
+void SSFPlugin::Sleep(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -126,7 +126,7 @@ void SSFOPlugin::Sleep(SSFObjectErrors &Errors)
     SSF_LOG_DEBUG_PLUGIN("Sleep");
 }
 
-void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
+void SSFPlugin::Destroy(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -145,7 +145,7 @@ void SSFOPlugin::Destroy(SSFObjectErrors &Errors)
 
 #pragma region Module
 
-void SSFOPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
+void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
 {
     if (!SSF_PTR_VALID(Module))
     {
@@ -175,7 +175,7 @@ void SSFOPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
     ModuleMap.insert(std::make_pair(ModuleName, Module->GetObjectGUID()));
 }
 
-void SSFOPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
+void SSFPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
 {
     if (!SSF_PTR_VALID(Module))
     {

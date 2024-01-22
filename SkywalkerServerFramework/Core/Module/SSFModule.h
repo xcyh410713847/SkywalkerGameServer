@@ -14,11 +14,11 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFOPlugin;
+class SSFPlugin;
 
 struct SSFModuleContext : public SSFObjectContext
 {
-    SSF_PTR(SSFOPlugin)
+    SSF_PTR(SSFPlugin)
     Plugin{};
 };
 
@@ -73,14 +73,14 @@ public:
     /**
      * 获取插件
      */
-    SSF_PTR(SSFOPlugin)
+    SSF_PTR(SSFPlugin)
     GetPlugin()
     {
         return Plugin;
     };
 
 private:
-    SSF_PTR(SSFOPlugin)
+    SSF_PTR(SSFPlugin)
     Plugin;
 };
 

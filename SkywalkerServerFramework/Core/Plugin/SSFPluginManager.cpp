@@ -31,7 +31,7 @@ void SSFPluginManager::Release(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Release(Errors);
+        ((SSFPlugin *)IterObject)->Release(Errors);
     }
 
     PluginMap.clear();
@@ -77,7 +77,7 @@ void SSFPluginManager::Init(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Init(Errors);
+        ((SSFPlugin *)IterObject)->Init(Errors);
     }
 }
 
@@ -90,7 +90,7 @@ void SSFPluginManager::Awake(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Awake(Errors);
+        ((SSFPlugin *)IterObject)->Awake(Errors);
     }
 }
 
@@ -103,7 +103,7 @@ void SSFPluginManager::Start(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Start(Errors);
+        ((SSFPlugin *)IterObject)->Start(Errors);
     }
 }
 
@@ -116,7 +116,7 @@ void SSFPluginManager::Tick(SSFObjectErrors &Errors, int DelayMS)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Tick(Errors, DelayMS);
+        ((SSFPlugin *)IterObject)->Tick(Errors, DelayMS);
     }
 }
 
@@ -129,7 +129,7 @@ void SSFPluginManager::Stop(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Stop(Errors);
+        ((SSFPlugin *)IterObject)->Stop(Errors);
     }
 }
 
@@ -142,7 +142,7 @@ void SSFPluginManager::Sleep(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Sleep(Errors);
+        ((SSFPlugin *)IterObject)->Sleep(Errors);
     }
 }
 
@@ -155,7 +155,7 @@ void SSFPluginManager::Destroy(SSFObjectErrors &Errors)
         {
             continue;
         }
-        ((SSFOPlugin *)IterObject)->Destroy(Errors);
+        ((SSFPlugin *)IterObject)->Destroy(Errors);
     }
 }
 

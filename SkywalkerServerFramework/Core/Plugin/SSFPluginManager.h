@@ -22,7 +22,7 @@ SSF_NAMESPACE_BEGIN
 /**
  * 插件管理器
  */
-class SSFPluginManager : public SSFObjectManager<SSFOPlugin>
+class SSFPluginManager : public SSFObjectManager<SSFPlugin>
 {
     SSF_OBJECT_CLASS(SSFPluginManager)
 
@@ -109,7 +109,7 @@ public:
             return nullptr;
         }
 
-        return SSF_PTR_DYNAMIC_CAST(SSFOPlugin)(IterObject);
+        return SSF_PTR_DYNAMIC_CAST(SSFPlugin)(IterObject);
     }
 
     /**
@@ -121,7 +121,7 @@ public:
     SSF_PTR(PluginT)
     GetPlugin()
     {
-        SSF_ASSERT_IS_BASE_OF(SSFOPlugin, PluginT);
+        SSF_ASSERT_IS_BASE_OF(SSFPlugin, PluginT);
 
         SSFString PluginName;
         SSF_CLASS_NAME(PluginT, PluginName);
@@ -189,7 +189,7 @@ private:
  * 注册插件
  */
 #define SSF_REGISTER_PLUGIN(PluginManager, PluginClass)                                                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFOPlugin));                                                       \
+    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFPlugin));                                                       \
     SSFObjectErrors PluginClass##Errors;                                                                             \
     SSFPluginContext PluginClass##Context;                                                                           \
     PluginClass##Context.SSFramework = PluginManager->GetFramework();                                                \
@@ -210,7 +210,7 @@ private:
  * 注销插件
  */
 #define SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass)                                                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFOPlugin));                                                         \
+    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFPlugin));                                                         \
     SSFObjectErrors PluginClass##Errors;                                                                               \
     SSFString PluginClassName;                                                                                         \
     SSF_CLASS_NAME(PluginClass, PluginClassName);                                                                      \

@@ -21,7 +21,7 @@ SSF_LOG_DEFINE(SSFPlugin_Test, LogLevel_Debug);
 
 SSF_PLUGIN_EXPORT(SSFPlugin_Test)
 
-#pragma region SSFOPlugin
+#pragma region SSFPlugin
 
 void SSFPlugin_Test::Install(SSFObjectErrors &Errors)
 {
@@ -37,4 +37,4 @@ void SSFPlugin_Test::Uninstall(SSFObjectErrors &Errors)
     SSF_UNREGISTER_MODULE(SSFModule_TestThree)
 }
 
-#pragma endregion SSFOPlugin
+#pragma endregion SSFPlugin

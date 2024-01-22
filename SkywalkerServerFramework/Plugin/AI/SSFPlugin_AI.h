@@ -12,18 +12,18 @@
 
 SSF_NAMESPACE_BEGIN
 
-class SSFPlugin_AI : public SSFOPlugin
+class SSFPlugin_AI : public SSFPlugin
 {
     SSF_OBJECT_CLASS(SSFPlugin_AI)
 
 public:
     SSFPlugin_AI(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
-        : SSFOPlugin(InContext, InErrors)
+        : SSFPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_AI(){};
 
-#pragma region SSFOPlugin
+#pragma region SSFPlugin
 
 private:
     /**
@@ -36,7 +36,7 @@ private:
      */
     virtual void Uninstall(SSFObjectErrors &Errors) override;
 
-#pragma endregion SSFOPlugin
+#pragma endregion SSFPlugin
 };
 
 SSF_NAMESPACE_END

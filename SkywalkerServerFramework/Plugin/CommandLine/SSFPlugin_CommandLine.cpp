@@ -19,7 +19,7 @@ SSF_LOG_DEFINE(SSFPlugin_CommandLine, LogLevel_Debug);
 
 SSF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
 
-#pragma region SSFOPlugin
+#pragma region SSFPlugin
 
 void SSFPlugin_CommandLine::Install(SSFObjectErrors &Errors)
 {
@@ -31,4 +31,4 @@ void SSFPlugin_CommandLine::Uninstall(SSFObjectErrors &Errors)
     SSF_UNREGISTER_MODULE(SSFModule_OS);
 }
 
-#pragma endregion SSFOPlugin
+#pragma endregion SSFPlugin

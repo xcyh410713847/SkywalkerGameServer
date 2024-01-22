@@ -21,7 +21,7 @@ SSF_LOG_DEFINE(SSFPlugin_Network, LogLevel_Debug);
 // 插件导出
 SSF_PLUGIN_EXPORT(SSFPlugin_Network)
 
-#pragma region SSFOPlugin
+#pragma region SSFPlugin
 
 void SSFPlugin_Network::Install(SSFObjectErrors &Errors)
 {
@@ -35,4 +35,4 @@ void SSFPlugin_Network::Uninstall(SSFObjectErrors &Errors)
     SSF_UNREGISTER_MODULE(SSFModule_NetworkClient)
 }
 
-#pragma endregion SSFOPlugin
+#pragma endregion SSFPlugin

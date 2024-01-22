@@ -21,13 +21,13 @@ struct SSFPluginContext : public SSFObjectContext
     PluginManager{};
 };
 
-class SSFOPlugin : public SSFObjectManager<SSFOModule>
+class SSFPlugin : public SSFObjectManager<SSFOModule>
 {
-    SSF_OBJECT_CLASS(SSFOPlugin)
+    SSF_OBJECT_CLASS(SSFPlugin)
 
 public:
-    SSFOPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFOPlugin();
+    SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFPlugin();
 
     /**
      * 获取插件管理器

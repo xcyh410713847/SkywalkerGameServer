@@ -21,8 +21,8 @@ class SSFOModule
 
 }
 
-' SSFOModule 与 SSFOPlugin
-SSFOModule *-- "1" SSFOPlugin : "拥有多个 <"
+' SSFOModule 与 SSFPlugin
+SSFOModule *-- "1" SSFPlugin : "拥有多个 <"
 
 class SSFService
 {
@@ -30,9 +30,9 @@ class SSFService
 }
 
 '继承自 SSFObjectManager
-SSFObjectManager <|-- SSFOPlugin
+SSFObjectManager <|-- SSFPlugin
 SSFObjectManager <|-- SSFPluginManager
-class SSFOPlugin
+class SSFPlugin
 {
 
 }
@@ -42,8 +42,8 @@ class SSFPluginManager
 
 }
 
-' SSFOPlugin 与 SSFPluginManager
-SSFOPlugin *-- "1" SSFPluginManager : "拥有多个 <"
+' SSFPlugin 与 SSFPluginManager
+SSFPlugin *-- "1" SSFPluginManager : "拥有多个 <"
 
 '继承自 SSFOService
 SSFService <|-- SSFFrameworkService
