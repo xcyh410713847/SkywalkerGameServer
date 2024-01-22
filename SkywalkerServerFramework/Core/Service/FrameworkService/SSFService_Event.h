@@ -1,24 +1,24 @@
 ﻿/*************************************************************************
-**文件: SkywalkerServerFramework\Core\Service\SSFLevelService.h
+**文件: SkywalkerServerFramework\Core\Service\FrameworkService\SSFService_Event.h
 **作者: shyfan
-**日期: 2024/01/22 12:28:06
-**功能: SSFLevelService
+**日期: 2024/01/22 11:50:40
+**功能: SSFService_Event
 *************************************************************************/
 
-#ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFLevelService_H__
-#define __SKYWALKER_SERVER_FRAMEWORK_SSFLevelService_H__
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFService_Event_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_SSFService_Event_H__
 
-#include "Core/Service/SSFService.h"
+#include "Core/Service/SSFFrameworkService.h"
 
 SSF_NAMESPACE_BEGIN
 
-class SSFLevelService : public SSFService
+class SSFService_Event : public SSFFrameworkService
 {
-    SSF_OBJECT_CLASS(SSFLevelService)
+    SSF_OBJECT_CLASS(SSFService_Event)
 
 public:
-    SSFLevelService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFLevelService();
+    SSFService_Event(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFService_Event();
 
 #pragma region Process
 
@@ -53,4 +53,4 @@ public:
 
 SSF_NAMESPACE_END
 
-#endif //__SKYWALKER_SERVER_FRAMEWORK_SSFLevelService_H__
+#endif //__SKYWALKER_SERVER_FRAMEWORK_SSFService_Event_H__

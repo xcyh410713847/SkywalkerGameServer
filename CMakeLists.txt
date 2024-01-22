@@ -85,10 +85,12 @@ macro(SkywalkerServer_Source)
         # cpp
         *.cpp
         */*.cpp
+        */*/*.cpp
 
         # h
         *.h
         */*.h
+        */*/*.h
     )
 endmacro()
 

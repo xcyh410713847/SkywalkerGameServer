@@ -1,7 +1,7 @@
 ﻿/*************************************************************************
 **文件: SkywalkerServerFramework\Core\Service\SSFLevelService.cpp
 **作者: shyfan
-**日期: 2024/01/20 15:23:52
+**日期: 2024/01/22 12:28:39
 **功能: SSFLevelService
 *************************************************************************/
 
@@ -21,3 +21,38 @@ SSFLevelService::SSFLevelService(SSFServiceContext &InContext, SSFObjectErrors &
 SSFLevelService::~SSFLevelService()
 {
 }
+
+#pragma region Process
+
+bool SSFLevelService::Init(SSFObjectErrors &InErrors)
+{
+    SSF_LOG_DEBUG_MODULE("Init");
+
+    return true;
+}
+
+bool SSFLevelService::Start(SSFObjectErrors &InErrors)
+{
+    SSF_LOG_DEBUG_MODULE("Start");
+
+    return true;
+}
+
+bool SSFLevelService::Tick(SSFObjectErrors &InErrors)
+{
+    return true;
+}
+
+bool SSFLevelService::Stop(SSFObjectErrors &InErrors)
+{
+    SSF_LOG_DEBUG_MODULE("Stop");
+
+    return true;
+}
+
+void SSFLevelService::Destroy(SSFObjectErrors &InErrors)
+{
+    SSF_LOG_DEBUG_MODULE("Destroy");
+}
+
+#pragma endregion Process

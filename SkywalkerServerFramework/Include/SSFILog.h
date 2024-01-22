@@ -62,6 +62,11 @@ enum ELogLevel
     SSF_LOG_PRINT(LogLevel_Debug, "[Debug     ]" << SSF_LOG_MODULE << SSF_LOG_FILE_LINE << Content)
 
 /**
+ * 调试
+ */
+#define SSF_LOG_DEBUG_MODULE(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
+
+/**
  * 信息
  */
 #define SSF_LOG_INFO(Content) \

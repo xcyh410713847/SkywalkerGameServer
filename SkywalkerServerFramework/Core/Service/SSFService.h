@@ -22,8 +22,39 @@ class SSFService : public SSFObject
 {
     SSF_OBJECT_CLASS(SSFService)
 
+public:
     SSFService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFService();
+
+#pragma region Process
+
+public:
+    /**
+     * 初始化
+     */
+    virtual bool Init(SSFObjectErrors &InErrors) = 0;
+
+    /**
+     * 启动
+     */
+    virtual bool Start(SSFObjectErrors &InErrors) = 0;
+
+    /**
+     * Tick
+     */
+    virtual bool Tick(SSFObjectErrors &InErrors) = 0;
+
+    /**
+     * 停止
+     */
+    virtual bool Stop(SSFObjectErrors &InErrors) = 0;
+
+    /**
+     * 销毁
+     */
+    virtual void Destroy(SSFObjectErrors &InErrors) = 0;
+
+#pragma endregion Process
 };
 
 SSF_NAMESPACE_END

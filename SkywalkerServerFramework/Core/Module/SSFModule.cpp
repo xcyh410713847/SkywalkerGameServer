@@ -13,8 +13,6 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFModule, LogLevel_Debug);
 
-#define SSF_LOG_DEBUG_MODULE(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
-
 #pragma region Object
 
 void SSFOModule::Init(SSFObjectErrors &Errors)
