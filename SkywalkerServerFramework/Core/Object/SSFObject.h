@@ -19,8 +19,6 @@ SSF_NAMESPACE_BEGIN
  */
 struct SSFObjectContext
 {
-	SSF_PTR(SkywalkerServerFramework)
-	SSFramework{};
 };
 
 class SSFObject
@@ -30,19 +28,14 @@ protected:
 	SSFString ObjectClassName{};
 
 private:
-	SSF_PTR(SkywalkerServerFramework)
-	SSFramework{};
+	SSF_PTR(SSFObject)
+	RootObject{};
 
 	SSFObjectGUID ObjectGUID{SSF_OBJECT_INVALID_GUID};
 
 public:
-	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
-	{
-		SSFramework = InContext.SSFramework;
-
-		// 生成ObjectGUID
-		ObjectGUID = SSFramework->NewObjectGUID();
-	};
+	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
+	SSFObject(){};
 	virtual ~SSFObject(){};
 
 	/**
@@ -65,7 +58,7 @@ public:
 	SSF_PTR(SkywalkerServerFramework)
 	GetFramework()
 	{
-		return SSFramework;
+		return SSF_PTR_DYNAMIC_CAST(SkywalkerServerFramework)(GetRootObject());
 	};
 
 	/**
@@ -76,6 +69,23 @@ public:
 		return ObjectGUID;
 	};
 
+private:
+	/**
+	 * 获取 RootObject
+	 */
+	SSF_PTR(SSFObject)
+	GetRootObject()
+	{
+		if (SSF_PTR_INVALID(RootObject))
+		{
+			RootObject = this;
+		}
+
+		return RootObject;
+	};
+#pragma region NewObject
+
+public:
 	/**
 	 * 创建对象
 	 */
@@ -83,7 +93,12 @@ public:
 	SSF_PTR(ObjectT)
 	NewObject(ContextT &InContext, SSFObjectErrors &InErrors)
 	{
-		return new ObjectT(InContext, InErrors);
+		auto Object = new ObjectT(InContext, InErrors);
+
+		Object->RootObject = GetRootObject();
+		Object->ObjectGUID = GetFramework()->NewObjectGUID();
+
+		return Object;
 	}
 
 	/**
@@ -93,9 +108,9 @@ public:
 	SSF_PTR(ObjectT)
 	NewObject(SSFObjectErrors &InErrors)
 	{
-		SSFObjectContext ObjectContext;
-		ObjectContext.SSFramework = SSFramework;
-		return new ObjectT(ObjectContext, InErrors);
+		static SSFObjectContext InContext{};
+		return NewObject<ObjectT>(InContext, InErrors);
+		;
 	}
 
 	/**
@@ -105,7 +120,8 @@ public:
 	SSF_PTR(ObjectT)
 	NewObject(ContextT &InContext)
 	{
-		return new ObjectT(InContext, SSFObjectErrors());
+		SSFObjectErrors Errors{};
+		return NewObject<ObjectT>(InContext, Errors);
 	}
 
 	/**
@@ -115,10 +131,11 @@ public:
 	SSF_PTR(ObjectT)
 	NewObject()
 	{
-		SSFObjectContext ObjectContext;
-		ObjectContext.SSFramework = SSFramework;
-		return new ObjectT(ObjectContext, SSFObjectErrors());
+		SSFObjectErrors Errors{};
+		return NewObject<ObjectT>(Errors);
 	}
+
+#pragma endregion NewObject
 };
 
 SSF_NAMESPACE_END

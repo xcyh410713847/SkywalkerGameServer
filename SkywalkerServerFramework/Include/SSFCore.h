@@ -162,10 +162,9 @@ SSF_NAMESPACE_BEGIN
     SSF_ASSERT_IS_BASE_OF(SSFPlugin, PluginClass);                                                                   \
     SSFObjectErrors PluginClass##Errors;                                                                             \
     SSFPluginContext PluginClass##Context;                                                                           \
-    PluginClass##Context.SSFramework = PluginManager->GetFramework();                                                \
     PluginClass##Context.PluginManager = PluginManager;                                                              \
     SSF_PTR(SSFPlugin)                                                                                               \
-    Plugin = new PluginClass(PluginClass##Context, PluginClass##Errors);                                             \
+    Plugin = PluginManager->NewObject<PluginClass>(PluginClass##Context, PluginClass##Errors);                       \
     PluginManager->RegisterPlugin(PluginClass##Errors, Plugin);                                                      \
     if (PluginClass##Errors.IsValid())                                                                               \
     {                                                                                                                \
@@ -202,22 +201,21 @@ SSF_NAMESPACE_BEGIN
 /**
  * 注册模块
  */
-#define SSF_REGISTER_MODULE(ModuleClass)                                              \
-    SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                                    \
-    SSFObjectErrors ModuleClass##Errors;                                              \
-    SSFModuleContext ModuleClass##Context;                                            \
-    ModuleClass##Context.SSFramework = GetFramework();                                \
-    ModuleClass##Context.Plugin = this;                                               \
-    SSF_PTR(SSFModule)                                                                \
-    ModuleClass##Module = new ModuleClass(ModuleClass##Context, ModuleClass##Errors); \
-    RegisterModule(ModuleClass##Errors, ModuleClass##Module);                         \
-    if (ModuleClass##Errors.IsValid())                                                \
-    {                                                                                 \
-        SSF_ERROR_DESC(ModuleClass##Errors,                                           \
-                       SkywalkerSFError_Module_Register_Failed,                       \
-                       "Plugin RegisterModule Failed");                               \
-    }                                                                                 \
-    SSF_LOG_INFO("Register Module [" << #ModuleClass << "] Success");                 \
+#define SSF_REGISTER_MODULE(ModuleClass)                                                     \
+    SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                                           \
+    SSFObjectErrors ModuleClass##Errors;                                                     \
+    SSFModuleContext ModuleClass##Context;                                                   \
+    ModuleClass##Context.Plugin = this;                                                      \
+    SSF_PTR(SSFModule)                                                                       \
+    ModuleClass##Module = NewObject<ModuleClass>(ModuleClass##Context, ModuleClass##Errors); \
+    RegisterModule(ModuleClass##Errors, ModuleClass##Module);                                \
+    if (ModuleClass##Errors.IsValid())                                                       \
+    {                                                                                        \
+        SSF_ERROR_DESC(ModuleClass##Errors,                                                  \
+                       SkywalkerSFError_Module_Register_Failed,                              \
+                       "Plugin RegisterModule Failed");                                      \
+    }                                                                                        \
+    SSF_LOG_INFO("Register Module [" << #ModuleClass << "] Success");                        \
     ModuleClass##Module->Init(ModuleClass##Errors);
 
 /**

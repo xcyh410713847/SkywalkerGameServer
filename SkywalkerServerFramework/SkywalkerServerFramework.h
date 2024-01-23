@@ -23,9 +23,15 @@ SSF_NAMESPACE_BEGIN
 /**
  * Skywalker Server Framework
  */
-class CSkywalkerServerFramework : public SkywalkerServerFramework
+class CSkywalkerServerFramework : public SkywalkerServerFramework, public SSFObject
 {
     typedef ESkywalkerServerFrameworkRunningState ERunningState;
+
+    SSF_OBJECT_CLASS(CSkywalkerServerFramework);
+
+public:
+    CSkywalkerServerFramework(){};
+    virtual ~CSkywalkerServerFramework(){};
 
 #pragma region SkywalkerServerFramework
 
@@ -58,42 +64,6 @@ public:
     }
 
 #pragma endregion SkywalkerServerFramework
-
-#pragma region Object
-
-public:
-    /**
-     * 创建对象
-     */
-    template <typename T>
-    SSF_SHARED_PTR(T)
-    NewSharedObject();
-
-    /**
-     * 创建对象
-     */
-    template <typename T>
-    SSF_SHARED_PTR(T)
-    NewSharedObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
-
-    /**
-     * 创建对象
-     */
-    template <typename T>
-    SSF_PTR(T)
-    NewObject();
-
-    /**
-     * 创建对象
-     */
-    template <typename T>
-    SSF_PTR(T)
-    NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
-
-private:
-    SSFMap<SSFString, SKYWALKER_POOL_PTR(SSFObject)> ObjectPoolMap;
-
-#pragma endregion Object
 
 private:
     SSF_PTR(SSFPluginManager)
