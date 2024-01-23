@@ -16,12 +16,13 @@ SSF_NAMESPACE_BEGIN
 
 class SSFObject_ClientSocket : public SSFObject_NetworkSocket
 {
-#pragma region Object
+    SSF_OBJECT_CLASS(SSFObject_ClientSocket)
 
 public:
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+    SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFObject_ClientSocket();
 
-#pragma endregion Object
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
 };
 
 SSF_NAMESPACE_END

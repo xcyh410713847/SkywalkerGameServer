@@ -36,7 +36,6 @@ private:
 	SSFObjectGUID ObjectGUID{SSF_OBJECT_INVALID_GUID};
 
 public:
-	SSFObject(){};
 	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
 	{
 		SSFramework = InContext.SSFramework;
@@ -86,6 +85,40 @@ public:
 	NewObject(ContextT &InContext, SSFObjectErrors &InErrors)
 	{
 		return new ObjectT(InContext, InErrors);
+	}
+
+	/**
+	 * 创建对象
+	 */
+	template <typename ObjectT>
+	SSF_PTR(ObjectT)
+	NewObject(SSFObjectErrors &InErrors)
+	{
+		SSFObjectContext ObjectContext;
+		ObjectContext.SSFramework = SSFramework;
+		return new ObjectT(ObjectContext, InErrors);
+	}
+
+	/**
+	 * 创建对象
+	 */
+	template <typename ObjectT, typename ContextT>
+	SSF_PTR(ObjectT)
+	NewObject(ContextT &InContext)
+	{
+		return new ObjectT(InContext, SSFObjectErrors());
+	}
+
+	/**
+	 * 创建对象
+	 */
+	template <typename ObjectT>
+	SSF_PTR(ObjectT)
+	NewObject()
+	{
+		SSFObjectContext ObjectContext;
+		ObjectContext.SSFramework = SSFramework;
+		return new ObjectT(ObjectContext, SSFObjectErrors());
 	}
 };
 

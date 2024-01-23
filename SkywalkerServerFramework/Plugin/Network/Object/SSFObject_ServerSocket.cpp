@@ -7,29 +7,21 @@
 
 #include "SSFObject_ServerSocket.h"
 
+#include "Include/SSFILog.h"
+
 SSF_NAMESPACE_USING
 
-#pragma region Object
+SSF_LOG_DEFINE(SSFObject_ServerSocket, LogLevel_Debug);
 
-void SSFObject_ServerSocket::Stop(SSFObjectErrors &Errors)
+SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+    : SSFObject_NetworkSocket(InContext, InErrors)
 {
-    SSFObject_NetworkSocket::Stop(Errors);
-
-    closesocket(GetSocket());
-}
-
-#pragma endregion Object
-
-void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context)
-{
-    SSFObject_NetworkSocket::Create(Errors, Context);
-
     Socket = socket(AF_INET, SOCK_STREAM, 0);
     if (Socket == INVALID_SOCKET)
     {
-        SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Socket_CreateFailed,
-                                      "Failed to create socket")
+        SSF_ERROR_DESC_TRACE(InErrors,
+                             SkywalkerSFError_Network_Socket_CreateFailed,
+                             "Failed to create socket")
         return;
     }
 
@@ -42,9 +34,9 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     int result = ioctlsocket(ServerSocket, FIONBIO, &mode);
     if (result == SOCKET_ERROR)
     {
-        SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Socket_SetFailed,
-                                      "Failed to set socket to non-blocking mode");
+        SSF_ERROR_DESC_TRACE(InErrors,
+                             SkywalkerSFError_Network_Socket_SetFailed,
+                             "Failed to set socket to non-blocking mode");
         closesocket(ServerSocket);
         return;
     }
@@ -56,9 +48,9 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
     {
-        SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Socket_BindFailed,
-                                      "Failed to bind address to the socket")
+        SSF_ERROR_DESC_TRACE(InErrors,
+                             SkywalkerSFError_Network_Socket_BindFailed,
+                             "Failed to bind address to the socket")
         closesocket(ServerSocket);
         return;
     }
@@ -66,10 +58,21 @@ void SSFObject_ServerSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCre
     // 监听和接受连接请求
     if (listen(ServerSocket, SOMAXCONN) == SOCKET_ERROR)
     {
-        SSF_ERROR_DESC_TRACE(Errors,
-                                      SkywalkerSFError_Network_Socket_ListenFailed,
-                                      "Failed to listen")
+        SSF_ERROR_DESC_TRACE(InErrors,
+                             SkywalkerSFError_Network_Socket_ListenFailed,
+                             "Failed to listen")
         closesocket(ServerSocket);
         return;
     }
+}
+
+SSFObject_ServerSocket::~SSFObject_ServerSocket()
+{
+}
+
+void SSFObject_ServerSocket::Stop(SSFObjectErrors &Errors)
+{
+    SSFObject_NetworkSocket::Stop(Errors);
+
+    closesocket(GetSocket());
 }

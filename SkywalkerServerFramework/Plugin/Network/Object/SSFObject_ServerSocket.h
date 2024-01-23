@@ -16,18 +16,14 @@ SSF_NAMESPACE_BEGIN
 
 class SSFObject_ServerSocket : public SSFObject_NetworkSocket
 {
-#pragma region Object
+    SSF_OBJECT_CLASS(SSFObject_ServerSocket)
 
 public:
+    SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
+    virtual ~SSFObject_ServerSocket();
+
     virtual void Stop(SSFObjectErrors &Errors) override;
 
-#pragma endregion Object
-
-public:
-    /**
-     * 创建
-     */
-    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context) override;
 };
 
 SSF_NAMESPACE_END

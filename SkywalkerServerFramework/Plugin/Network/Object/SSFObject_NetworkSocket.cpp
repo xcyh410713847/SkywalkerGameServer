@@ -9,20 +9,16 @@
 
 SSF_NAMESPACE_USING
 
-SSFObject_NetworkSocket::SSFObject_NetworkSocket()
-    : SSFObject()
+SSFObject_NetworkSocket::SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+    : SSFObject(InContext, InErrors)
 {
+    Socket = InContext.Socket;
+
+    Init(InErrors);
+    Awake(InErrors);
+    Start(InErrors);
 }
 
 SSFObject_NetworkSocket::~SSFObject_NetworkSocket()
 {
-}
-
-void SSFObject_NetworkSocket::Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context)
-{
-    Socket = Context.Socket;
-
-    Init(Errors);
-    Awake(Errors);
-    Start(Errors);
 }

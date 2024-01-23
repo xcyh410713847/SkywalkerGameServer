@@ -13,7 +13,14 @@ SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFObject_ClientSocket, LogLevel_Debug);
 
-#pragma region Object
+SSFObject_ClientSocket::SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+    : SSFObject_NetworkSocket(InContext, InErrors)
+{
+}
+
+SSFObject_ClientSocket::~SSFObject_ClientSocket()
+{
+}
 
 void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
 {
@@ -46,5 +53,3 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     // 回复客户端
     send(ClientSocket, buffer, bytesReceived, 0);
 }
-
-#pragma endregion Object

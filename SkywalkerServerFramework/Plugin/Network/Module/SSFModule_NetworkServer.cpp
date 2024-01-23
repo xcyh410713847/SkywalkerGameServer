@@ -82,9 +82,9 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
     }
 
     // 创建服务器套接字
-    ServerNetworkSocket = new SSFObject_ServerSocket();
     SSFNetworkSocketCreatorContext Context;
-    ServerNetworkSocket->Create(Errors, Context);
+    Context.SSFramework = GetFramework();
+    ServerNetworkSocket = NewObject<SSFObject_ServerSocket>(Context, Errors);
 
     if (Errors.IsValid())
     {
@@ -114,13 +114,11 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
         return;
     }
 
-    SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = new SSFObject_ClientSocket();
-
     // 创建客户端套接字
     SSFNetworkSocketCreatorContext Context;
+    Context.SSFramework = GetFramework();
     Context.Socket = ClientSocket;
-    ClientNetworkSocket->Create(Errors, Context);
-
+    SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = NewObject<SSFObject_ClientSocket>(Context, Errors);
     ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
 
     SSF_LOG_DEBUG("New ClientSocket: " << ClientSocket);

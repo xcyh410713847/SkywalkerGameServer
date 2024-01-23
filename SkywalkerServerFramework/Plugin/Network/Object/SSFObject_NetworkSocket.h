@@ -30,13 +30,8 @@ class SSFObject_NetworkSocket : public SSFObject
     SSF_OBJECT_CLASS(SSFObject_NetworkSocket)
 
 public:
-    SSFObject_NetworkSocket();
+    SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFObject_NetworkSocket();
-
-    /**
-     * 创建
-     */
-    virtual void Create(SSFObjectErrors &Errors, SSFNetworkSocketCreatorContext &Context);
 
     /**
      * 获取套接字
