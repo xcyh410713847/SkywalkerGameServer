@@ -66,11 +66,11 @@ public:
 #pragma endregion SkywalkerServerFramework
 
 private:
-    SSF_PTR(SSFPluginManager)
-    PluginManager{};
-
     SSF_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
     FrameworkTimer{};
+
+    SSF_PTR(SSFPluginManager)
+    PluginManager{};
 
     SSF_PTR(SSFServiceManager<SSFFrameworkService>)
     ServiceManager{};

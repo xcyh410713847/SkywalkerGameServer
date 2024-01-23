@@ -5,9 +5,20 @@ class SSFObject
 }
 
 '继承自 SSFObject
+SSFObject <|-- CSkywalkerServerFramework
 SSFObject <|-- SSFObjectManager
 SSFObject <|-- SSFModule
 SSFObject <|-- SSFService
+
+class SkywalkerServerFramework
+{
+}
+
+SkywalkerServerFramework <|-- CSkywalkerServerFramework
+class CSkywalkerServerFramework
+{
+}
+
 class SSFObjectManager
 {
 
