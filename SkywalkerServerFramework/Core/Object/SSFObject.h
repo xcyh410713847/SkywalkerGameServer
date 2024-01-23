@@ -55,10 +55,9 @@ public:
 
 	/**
 	 * 获取类名
-	 * @return 类名 const std::string &
+	 * @return 类名 const SSFString &
 	 */
-	virtual const std::string &
-	GetObjectClassName() = 0;
+	virtual const SSFString &GetObjectClassName() = 0;
 
 	/**
 	 * 获取框架
@@ -127,15 +126,15 @@ SSF_NAMESPACE_END
 /**
  * 定义对象类
  */
-#define SSF_OBJECT_CLASS(Class)                              \
-public:                                                      \
-	virtual const std::string &GetObjectClassName() override \
-	{                                                        \
-		if (this->ObjectClassName.empty())                   \
-		{                                                    \
-			SSF_CLASS_NAME(this, this->ObjectClassName);     \
-		}                                                    \
-		return this->ObjectClassName;                        \
+#define SSF_OBJECT_CLASS(Class)                            \
+public:                                                    \
+	virtual const SSFString &GetObjectClassName() override \
+	{                                                      \
+		if (this->ObjectClassName.empty())                 \
+		{                                                  \
+			SSF_CLASS_NAME(this, this->ObjectClassName);   \
+		}                                                  \
+		return this->ObjectClassName;                      \
 	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

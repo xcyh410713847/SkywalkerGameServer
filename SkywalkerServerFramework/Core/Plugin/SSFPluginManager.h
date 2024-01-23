@@ -93,7 +93,7 @@ public:
      * @param PluginName 插件名称
      * @return 插件
      */
-    inline SSF_PTR(SSFPlugin) GetPlugin(const std::string &PluginName)
+    inline SSF_PTR(SSFPlugin) GetPlugin(const SSFString &PluginName)
     {
         auto Iter = PluginMap.find(PluginName);
         if (Iter == PluginMap.end())
@@ -148,9 +148,9 @@ private:
     typedef void (*DLL_START_PLUGIN_FUNC)(SSF_PTR(SSFPluginManager));
     typedef void (*DLL_STOP_PLUGIN_FUNC)(SSF_PTR(SSFPluginManager));
 
-    typedef SSFMap<std::string, bool> TMap_PluginName;
-    typedef SSFMap<std::string, SSF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
-    typedef SSFMap<std::string, SSFObjectGUID> TMap_Plugin;
+    typedef SSFMap<SSFString, bool> TMap_PluginName;
+    typedef SSFMap<SSFString, SSF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
+    typedef SSFMap<SSFString, SSFObjectGUID> TMap_Plugin;
 
     TMap_PluginName PluginNameMap;
     TMap_DynamicLib DynamicLibMap;

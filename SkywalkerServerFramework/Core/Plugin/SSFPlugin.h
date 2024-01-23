@@ -101,7 +101,7 @@ public:
     /**
      * 获取模块
      */
-    inline SSF_PTR(SSFModule) GetModule(const std::string &ModuleName)
+    inline SSF_PTR(SSFModule) GetModule(const SSFString &ModuleName)
     {
         auto Iter = ModuleMap.find(ModuleName);
         if (Iter == ModuleMap.end())

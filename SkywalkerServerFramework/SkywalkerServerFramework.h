@@ -91,7 +91,7 @@ public:
     NewObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
 
 private:
-    SSFMap<std::string, SKYWALKER_POOL_PTR(SSFObject)> ObjectPoolMap;
+    SSFMap<SSFString, SKYWALKER_POOL_PTR(SSFObject)> ObjectPoolMap;
 
 #pragma endregion Object
 

@@ -17,18 +17,18 @@ SSF_NAMESPACE_BEGIN
 class SSFDynamicLib
 {
 public:
-    SSFDynamicLib(const std::string &InName);
+    SSFDynamicLib(const SSFString &InName);
     virtual ~SSFDynamicLib();
 
     bool Load();
     bool Unload();
 
-    const std::string &GetName() const;
+    const SSFString &GetName() const;
 
     void *GetSymbol(const char *ProcName);
 
 private:
-    std::string Name;
+    SSFString Name;
 
     SKYWALKER_DYNAMIC_LIB_HANDLE Instance;
 };

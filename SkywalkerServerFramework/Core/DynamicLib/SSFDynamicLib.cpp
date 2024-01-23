@@ -9,7 +9,7 @@
 
 SSF_NAMESPACE_USING
 
-SSFDynamicLib::SSFDynamicLib(const std::string &InName)
+SSFDynamicLib::SSFDynamicLib(const SSFString &InName)
 {
     Name = InName;
     Instance = NULL;
@@ -23,7 +23,7 @@ SSFDynamicLib::~SSFDynamicLib()
 
 bool SSFDynamicLib::Load()
 {
-    std::string Path = SKYWALKER__DYNAMIC_LIB_PATH;
+    SSFString Path = SKYWALKER__DYNAMIC_LIB_PATH;
     Path.append(Name);
 
     Instance = SKYWALKER_DYNAMIC_LIB_LOAD(Path.c_str());

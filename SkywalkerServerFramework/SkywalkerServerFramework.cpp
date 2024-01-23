@@ -184,7 +184,7 @@ CSkywalkerServerFramework::NewObject(SSFObjectContext &InContext, SSFObjectError
 {
     // TODO Shyfan 判断是否是继承自SSFObject
     // 从对象池中获取对象
-    std::string ClassName{};
+    SSFString ClassName{};
     SSF_CLASS_NAME(T, ClassName);
     auto Iterator = ObjectPoolMap.find(ClassName);
     if (Iterator != ObjectPoolMap.end())

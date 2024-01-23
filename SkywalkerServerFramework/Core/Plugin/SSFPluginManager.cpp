@@ -160,7 +160,7 @@ void SSFPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR(SSFPlugin
         return;
     }
 
-    std::string PluginName = Plugin->GetObjectClassName();
+    SSFString PluginName = Plugin->GetObjectClassName();
     if (PluginName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Plugin_Register_NameEmpty, "PluginManager Register Plugin NameEmpty");
@@ -190,7 +190,7 @@ void SSFPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR(SSFPlug
         return;
     }
 
-    std::string PluginName = Plugin->GetObjectClassName();
+    SSFString PluginName = Plugin->GetObjectClassName();
     if (PluginName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Plugin_Unregister_NameEmpty, "PluginManager Unregister Plugin NameEmpty");
@@ -253,7 +253,7 @@ void SSFPluginManager::LoadPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterName, PluginNameMap)
     {
-        const std::string LibraryName = IterName->first;
+        const SSFString LibraryName = IterName->first;
         SSF_REGISTER_LIBRARY(LibraryName);
     }
 }

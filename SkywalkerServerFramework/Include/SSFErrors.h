@@ -83,7 +83,7 @@ enum ESkywalkerSFError
 struct SSFError
 {
     ESkywalkerSFError Error;
-    std::string ErrorDesc;
+    SSFString ErrorDesc;
     SSFError()
         : Error(SkywalkerSFError_Unknow),
           ErrorDesc("")
@@ -96,12 +96,12 @@ struct SSFError
     {
     }
 
-    SSFError(ESkywalkerSFError InError, std::string InErrorDesc)
+    SSFError(ESkywalkerSFError InError, SSFString InErrorDesc)
         : Error(InError), ErrorDesc(InErrorDesc) {}
 
-    std::string GetContent()
+    SSFString GetContent()
     {
-        std::string content = "Error: " + std::to_string(Error);
+        SSFString content = "Error: " + std::to_string(Error);
         if (!ErrorDesc.empty())
         {
             content += ", ErrorDesc: " + ErrorDesc;

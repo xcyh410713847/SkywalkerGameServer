@@ -153,7 +153,7 @@ void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Modul
         return;
     }
 
-    const std::string &ModuleName = Module->GetObjectClassName();
+    const SSFString &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
@@ -183,7 +183,7 @@ void SSFPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Mod
         return;
     }
 
-    const std::string &ModuleName = Module->GetObjectClassName();
+    const SSFString &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
