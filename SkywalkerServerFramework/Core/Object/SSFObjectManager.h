@@ -24,6 +24,22 @@ public:
         : SSFObject(InContext, InErrors){};
     virtual ~SSFObjectManager(){};
 
+    virtual void Release(SSFObjectErrors &Errors) override
+    {
+        SSF_COMMON_ITERATOR(IterService, ObjectMap)
+        {
+            auto IterObject = IterService->second;
+            if (SSF_PTR_INVALID(IterObject))
+            {
+                continue;
+            }
+            IterObject->Release(Errors);
+        }
+        ObjectMap.clear();
+
+        SSFObject::Release(Errors);
+    };
+
     /**
      * 加入对象
      */
@@ -82,7 +98,7 @@ public:
     /**
      * 获取对象
      */
-    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, const SSFObjectGUID& InObjectGUID)
+    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, const SSFObjectGUID &InObjectGUID)
     {
         if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
         {
@@ -103,7 +119,7 @@ public:
     /**
      * 获取对象
      */
-    virtual SSF_PTR(Object) FindObject(const SSFObjectGUID& InObjectGUID)
+    virtual SSF_PTR(Object) FindObject(const SSFObjectGUID &InObjectGUID)
     {
         if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
         {

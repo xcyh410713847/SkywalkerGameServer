@@ -30,6 +30,7 @@ public:
      */
     virtual void Release(SSFObjectErrors &Errors) override
     {
+        ServiceMap.clear();
         SSFObjectManager<ServiceObject>::Release(Errors);
     };
 

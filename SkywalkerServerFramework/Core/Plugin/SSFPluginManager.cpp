@@ -24,24 +24,13 @@ SSFPluginManager::~SSFPluginManager()
 
 void SSFPluginManager::Release(SSFObjectErrors &Errors)
 {
-    SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
-    {
-        auto IterObject = FindObject(IterPlugin->second);
-        if (SSF_PTR_INVALID(IterObject))
-        {
-            continue;
-        }
-        ((SSFPlugin *)IterObject)->Release(Errors);
-    }
-
     PluginMap.clear();
     DynamicLibMap.clear();
     PluginNameMap.clear();
 
     PluginScriptParse = nullptr;
 
-    // 智能指针不需要释放
-    // SSFObjectManager::Release(Errors);
+    SSFObjectManager::Release(Errors);
 }
 
 #pragma region Process

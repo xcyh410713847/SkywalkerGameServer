@@ -48,7 +48,7 @@ public:
     /**
      * 获取插件管理器
      */
-    virtual SSF_SHARED_PTR(SSFPluginManager) GetPluginManager() const = 0;
+    virtual SSF_PTR(SSFPluginManager) GetPluginManager() const = 0;
 };
 
 SSF_NAMESPACE_END

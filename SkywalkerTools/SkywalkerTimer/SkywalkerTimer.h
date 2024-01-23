@@ -39,6 +39,11 @@ public:
     {
     }
 
+    virtual void Release()
+    {
+        delete this;
+    }
+
     /**
      * 重置
      */
@@ -117,13 +122,13 @@ public:
     }
 
 private:
-    double SecondsPerCount;
+    double SecondsPerCount{};
 
-    __int64 BaseTime;
-    __int64 BaseGMTTime;
-    __int64 PrevTime;
-    __int64 CurrTime;
-    __int64 DeltaTime; // (ms)Time between current frame and last frame
+    __int64 BaseTime{};
+    __int64 BaseGMTTime{};
+    __int64 PrevTime{};
+    __int64 CurrTime{};
+    __int64 DeltaTime{-1}; // (ms)Time between current frame and last frame
 };
 
 SKYWALKER_TIMER_NAMESPACE_END

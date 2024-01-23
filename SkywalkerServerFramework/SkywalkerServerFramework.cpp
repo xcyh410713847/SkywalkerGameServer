@@ -28,7 +28,7 @@ bool CSkywalkerServerFramework::Start()
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
-    FrameworkTimer = SSF_MAKE_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer);
+    FrameworkTimer = new SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer();
     if (!FrameworkTimer)
     {
         SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SkywalkerTimer Failed");
@@ -42,7 +42,7 @@ bool CSkywalkerServerFramework::Start()
     ServiceManager = NewObject<SSFServiceManager<SSFFrameworkService>>();
 
     // 创建插件管理器
-    PluginManager = NewSharedObject<SSFPluginManager>();
+    PluginManager = NewObject<SSFPluginManager>();
     if (!PluginManager)
     {
         SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFPluginManager Failed");
@@ -100,11 +100,15 @@ bool CSkywalkerServerFramework::Stop()
 
     // Release
     PluginManager->Release(ObjectErrors);
+    PluginManager = nullptr;
+
+    ServiceManager->Release(ObjectErrors);
+    ServiceManager = nullptr;
 
     SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << FrameworkTimer->GetCurrTime()
                                                         << "s, Elapsed Time: " << FrameworkTimer->GetTotalTime() << "s");
 
-    PluginManager = nullptr;
+    FrameworkTimer->Release();
     FrameworkTimer = nullptr;
 
     return true;

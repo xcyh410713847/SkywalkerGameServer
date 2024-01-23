@@ -52,7 +52,7 @@ public:
     /**
      * 获取插件管理器
      */
-    virtual SSF_SHARED_PTR(SSFPluginManager) GetPluginManager() const override
+    virtual SSF_PTR(SSFPluginManager) GetPluginManager() const override
     {
         return PluginManager;
     }
@@ -96,13 +96,14 @@ private:
 #pragma endregion Object
 
 private:
-    SSF_SHARED_PTR(SSFPluginManager)
+    SSF_PTR(SSFPluginManager)
     PluginManager{};
 
-    SSF_SHARED_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
+    SSF_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
     FrameworkTimer{};
 
-    SSFServiceManager<SSFFrameworkService>* ServiceManager{};
+    SSF_PTR(SSFServiceManager<SSFFrameworkService>)
+    ServiceManager{};
 
     ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
 
