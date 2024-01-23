@@ -90,18 +90,18 @@ public:
      * 注册模块
      * @param Module 模块
      */
-    virtual void RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
+    virtual void RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module);
 
     /**
      * 注销模块
      * @param Module 模块
      */
-    virtual void UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module);
+    virtual void UnregisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module);
 
     /**
      * 获取模块
      */
-    inline SSF_PTR_MODULE GetModule(const std::string &ModuleName)
+    inline SSF_PTR(SSFModule) GetModule(const std::string &ModuleName)
     {
         auto Iter = ModuleMap.find(ModuleName);
         if (Iter == ModuleMap.end())
@@ -147,7 +147,8 @@ private:
     virtual void Uninstall(SSFObjectErrors &Errors){};
 
 protected:
-    SSF_PTR_PLUGIN_MANAGER PluginManager;
+    SSF_PTR(SSFPluginManager)
+    PluginManager;
 
     SSFMap<SSFString, SSFObjectGUID> ModuleMap;
 };

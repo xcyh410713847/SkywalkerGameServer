@@ -63,8 +63,6 @@ SSF_NAMESPACE_BEGIN
         ClassName = Match[1].str();                      \
     }
 
-
-
 #pragma endregion Function Macro
 
 #pragma region Assert Macro
@@ -131,54 +129,20 @@ SSF_NAMESPACE_BEGIN
 
 #pragma endregion Iterator Macro
 
-#pragma region Pointer Macro
-
-/**
- * 简单对象
- */
-class SSFObjectSimple;
-#define SSF_PTR_OBJECT_SIMPLE SSF_PTR(SSFObjectSimple)
-
-/**
- * 对象
- */
-class SSFObject;
-#define SSF_PTR_OBJECT SSF_PTR(SSFObject)
-
-/**
- * 插件管理器
- */
-class SSFPluginManager;
-#define SSF_PTR_PLUGIN_MANAGER SSF_PTR(SSFPluginManager)
-
-/**
- * 插件
- */
-class SSFPlugin;
-#define SSF_PTR_PLUGIN SSF_PTR(SSFPlugin)
-
-/**
- * 模块
- */
-class SSFModule;
-#define SSF_PTR_MODULE SSF_PTR(SSFModule)
-
-#pragma endregion Pointer Macro
-
 #pragma region Plugin Macro
 
 /**
  * 插件导出
  */
 #ifdef SKYWALKER_SF_DYNAMIC_PLUGIN
-#define SSF_PLUGIN_EXPORT(PluginClass)                                       \
-    SSF_DLL_EXPORT void DllStartPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager) \
-    {                                                                        \
-        SSF_REGISTER_PLUGIN(PluginManager, PluginClass);                     \
-    }                                                                        \
-    SSF_DLL_EXPORT void DllStopPlugin(SSF_PTR_PLUGIN_MANAGER PluginManager)  \
-    {                                                                        \
-        SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                   \
+#define SSF_PLUGIN_EXPORT(PluginClass)                                          \
+    SSF_DLL_EXPORT void DllStartPlugin(SSF_PTR(SSFPluginManager) PluginManager) \
+    {                                                                           \
+        SSF_REGISTER_PLUGIN(PluginManager, PluginClass);                        \
+    }                                                                           \
+    SSF_DLL_EXPORT void DllStopPlugin(SSF_PTR(SSFPluginManager) PluginManager)  \
+    {                                                                           \
+        SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                      \
     }
 #else
 #define SSF_PLUGIN_EXPORT(PluginClass)
@@ -212,7 +176,7 @@ typedef std::string SSFString;
 
 /**
  * ObjectGUID
-*/
+ */
 typedef SSFULongLong SSFObjectGUID;
 #define SSF_OBJECT_INVALID_GUID 0
 #define SSF_OBJECT_GUID_VALID(ObjGUID) (ObjGUID != SSF_OBJECT_INVALID_GUID)
@@ -231,7 +195,7 @@ using SSFMap = std::map<Key, Value>;
 
 /**
  * 模板必须继承自 TBase
-*/
+ */
 
 #define SSF_TEMPLATE_CLASS(TBase, T) \
     template <typename T, typename std::enable_if<std::is_base_of<TBase, T>{}, int>::type = 0>

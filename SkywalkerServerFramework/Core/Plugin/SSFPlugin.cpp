@@ -145,7 +145,7 @@ void SSFPlugin::Destroy(SSFObjectErrors &Errors)
 
 #pragma region Module
 
-void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
+void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module)
 {
     if (!SSF_PTR_VALID(Module))
     {
@@ -175,7 +175,7 @@ void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
     ModuleMap.insert(std::make_pair(ModuleName, Module->GetObjectGUID()));
 }
 
-void SSFPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR_MODULE Module)
+void SSFPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module)
 {
     if (!SSF_PTR_VALID(Module))
     {

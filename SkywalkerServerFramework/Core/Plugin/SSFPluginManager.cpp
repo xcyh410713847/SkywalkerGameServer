@@ -152,7 +152,7 @@ void SSFPluginManager::Destroy(SSFObjectErrors &Errors)
 
 #pragma region Plugin
 
-void SSFPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR(SSFPlugin) Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -182,7 +182,7 @@ void SSFPluginManager::RegisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Pl
     PluginMap.insert(std::make_pair(PluginName, Plugin->GetObjectGUID()));
 }
 
-void SSFPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR_PLUGIN Plugin)
+void SSFPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR(SSFPlugin) Plugin)
 {
     if (!SSF_PTR_VALID(Plugin))
     {
@@ -269,7 +269,7 @@ void SSFPluginManager::StartPlugin(SSFObjectErrors &Errors)
             continue;
         }
 
-        DllStartPluginFunc((SSF_PTR_PLUGIN_MANAGER)(this));
+        DllStartPluginFunc((SSF_PTR(SSFPluginManager))(this));
     }
 }
 
