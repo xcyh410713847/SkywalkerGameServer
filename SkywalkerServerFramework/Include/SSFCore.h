@@ -16,6 +16,8 @@
 #include <map>
 #include <regex>
 
+#include "SkywalkerDerived/SkywalkerDerived.h"
+
 #include "SSFPlatform.h"
 
 #pragma region Namespace Macro
@@ -159,7 +161,7 @@ SSF_NAMESPACE_BEGIN
  * 注册插件
  */
 #define SSF_REGISTER_PLUGIN(PluginManager, PluginClass)                                                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFPlugin));                                                        \
+    SSF_ASSERT_IS_BASE_OF(SSFPlugin, PluginClass);                                                                   \
     SSFObjectErrors PluginClass##Errors;                                                                             \
     SSFPluginContext PluginClass##Context;                                                                           \
     PluginClass##Context.SSFramework = PluginManager->GetFramework();                                                \
@@ -181,7 +183,7 @@ SSF_NAMESPACE_BEGIN
  * 注销插件
  */
 #define SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass)                                                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(PluginClass, SSFPlugin));                                                          \
+    SSF_ASSERT_IS_BASE_OF(SSFPlugin, PluginClass);                                                                     \
     SSFObjectErrors PluginClass##Errors;                                                                               \
     SSFString PluginClassName;                                                                                         \
     SSF_CLASS_NAME(PluginClass, PluginClassName);                                                                      \
@@ -203,7 +205,7 @@ SSF_NAMESPACE_BEGIN
  * 注册模块
  */
 #define SSF_REGISTER_MODULE(ModuleClass)                                              \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFModule));                         \
+    SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                                    \
     SSFObjectErrors ModuleClass##Errors;                                              \
     SSFModuleContext ModuleClass##Context;                                            \
     ModuleClass##Context.SSFramework = GetFramework();                                \
@@ -224,7 +226,7 @@ SSF_NAMESPACE_BEGIN
  * 注销模块
  */
 #define SSF_UNREGISTER_MODULE(ModuleClass)                                  \
-    SSF_ASSERT(SKYWALKER_IS_DERIVED(ModuleClass, SSFModule));               \
+    SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                          \
     SSF_PTR(SSFModule)                                                      \
     ModuleClass##Module = GetModule<ModuleClass>();                         \
     SSFObjectErrors ModuleClass##Errors;                                    \
@@ -306,7 +308,6 @@ using SSFMap = std::map<Key, Value>;
 /**
  * 模板必须继承自 TBase
  */
-
 #define SSF_TEMPLATE_CLASS(TBase, T) \
     template <typename T, typename std::enable_if<std::is_base_of<TBase, T>{}, int>::type = 0>
 
