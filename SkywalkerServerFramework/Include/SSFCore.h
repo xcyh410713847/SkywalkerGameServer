@@ -208,7 +208,7 @@ typedef std::string SSFString;
 
 #pragma endregion typedef
 
-#pragma region SSF Advanced typedef
+#pragma region Advanced typedef
 
 /**
  * ObjectGUID
@@ -218,14 +218,14 @@ typedef SSFULongLong SSFObjectGUID;
 #define SSF_OBJECT_GUID_VALID(ObjGUID) (ObjGUID != SSF_OBJECT_INVALID_GUID)
 #define SSF_OBJECT_GUID_INVALID(ObjGUID) (ObjGUID == SSF_OBJECT_INVALID_GUID)
 
-#pragma region SSF Advanced typedef
+#pragma endregion Advanced typedef
 
-#pragma region Data Structure
+#pragma region Container
 
 template <typename Key, typename Value>
 using SSFMap = std::map<Key, Value>;
 
-#pragma endregion Data Structure
+#pragma endregion Container
 
 #pragma region Template Macro
 

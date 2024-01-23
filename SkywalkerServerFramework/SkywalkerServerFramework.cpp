@@ -10,15 +10,13 @@
 #include "Include/SSFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
-#include "Core/Service/FrameworkService/SSFService_Event.h"
-#include "Core/Service/SSFLevelService.h"
 
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SkywalkerServerFramework, LogLevel_Debug);
 
 SSF_SHARED_PTR(SkywalkerServerFramework)
-SSFramework = SSF_MAKE_SHARED_PTR(CSkywalkerServerFramework);
+SSFFramework = SSF_MAKE_SHARED_PTR(CSkywalkerServerFramework);
 
 bool CSkywalkerServerFramework::Start()
 {

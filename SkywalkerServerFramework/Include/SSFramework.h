@@ -42,7 +42,7 @@ public:
 
     /**
      * new一个ObjectGUID
-    */
+     */
     virtual SSFObjectGUID NewObjectGUID() = 0;
 
     /**
@@ -56,19 +56,19 @@ SSF_NAMESPACE_END
 /**
  * 全局 Skywalker Server Framework
  */
-extern SSF_SHARED_PTR(SSF_NAMESPACE::SkywalkerServerFramework) SSFramework;
+extern SSF_SHARED_PTR(SSF_NAMESPACE::SkywalkerServerFramework) SSFFramework;
 
 /**
  * Skywalker Server Framework 启动宏
  */
 #define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv) \
-    if (!SSFramework->Start())                       \
+    if (!SSFFramework->Start())                      \
     {                                                \
         return 1;                                    \
     }                                                \
-    while (SSFramework->Tick())                      \
+    while (SSFFramework->Tick())                     \
     {                                                \
     }                                                \
-    SSFramework->Stop();
+    SSFFramework->Stop();
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFramework_H__
