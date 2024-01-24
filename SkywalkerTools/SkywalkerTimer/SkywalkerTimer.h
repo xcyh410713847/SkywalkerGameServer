@@ -8,8 +8,9 @@
 #ifndef __SKYWALKER_TIMER_H__
 #define __SKYWALKER_TIMER_H__
 
-#include <windows.h>
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
 #include <ctime>
+
 
 #define SKYWALKER_TIMER_NAMESPACE Skywalker::Timer
 #define SKYWALKER_TIMER_NAMESPACE_BEGIN \

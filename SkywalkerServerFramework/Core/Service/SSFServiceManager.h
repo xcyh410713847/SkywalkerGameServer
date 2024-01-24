@@ -70,7 +70,6 @@ public:
         {
             // 新建一个
             SSFServiceContext Context{};
-            Context.SSFramework = SSFObject::GetFramework();
             SSFObjectErrors Errors{};
             SSF_PTR(ServiceT)
             NewService = SSFObject::NewObject<ServiceT>(Context, Errors);
@@ -81,6 +80,9 @@ public:
 
             SSFObjectManager<ServiceObject>::AddObject(Errors, NewService);
             ServiceMap.insert(std::make_pair(ServiceName, NewService->GetObjectGUID()));
+
+            NewService->Init(Errors);
+            NewService->Start(Errors);
         }
 
         return SSF_PTR_DYNAMIC_CAST(ServiceT)(GetService(ServiceName));

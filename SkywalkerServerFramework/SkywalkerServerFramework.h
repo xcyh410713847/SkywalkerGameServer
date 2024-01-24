@@ -11,9 +11,6 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFramework.h"
 
-#include "SkywalkerTimer/SkywalkerTimer.h"
-#include "SkywalkerPool/SkywalkerPool.h"
-
 #include "Core/Object/SSFObject.h"
 #include "Core/Service/SSFFrameworkService.h"
 #include "Core/Service/SSFServiceManager.h"
@@ -32,6 +29,16 @@ class CSkywalkerServerFramework : public SkywalkerServerFramework, public SSFObj
 public:
     CSkywalkerServerFramework(){};
     virtual ~CSkywalkerServerFramework(){};
+
+    /**
+     * 获取 Service
+     */
+    template <typename ServiceT>
+    SSF_PTR(ServiceT)
+    GetService() const
+    {
+        return ServiceManager->GetService<ServiceT>();
+    }
 
 #pragma region SkywalkerServerFramework
 
@@ -66,9 +73,6 @@ public:
 #pragma endregion SkywalkerServerFramework
 
 private:
-    SSF_PTR(SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer)
-    FrameworkTimer{};
-
     SSF_PTR(SSFPluginManager)
     PluginManager{};
 
