@@ -25,6 +25,22 @@ public:
         : SSFObjectManager<ServiceObject>(InContext, InErrors){};
     virtual ~SSFServiceManager(){};
 
+    virtual bool Tick(SSFObjectErrors &Errors)
+    {
+        SSF_COMMON_ITERATOR(IterService, ServiceMap)
+        {
+            auto IterObject = SSFObjectManager<ServiceObject>::FindObject(IterService->second);
+            if (SSF_PTR_INVALID(IterObject))
+            {
+                continue;
+            }
+
+            IterObject->Tick(Errors);
+        }
+
+        return true;
+    }
+
     /**
      * 释放
      */

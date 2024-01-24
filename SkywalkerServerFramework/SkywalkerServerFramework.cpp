@@ -68,11 +68,9 @@ bool CSkywalkerServerFramework::Tick()
 
     SSFObjectErrors ObjectErrors;
 
-    SSF_PTR(SSFService_Timer)
-    TimerService = GetService<SSFService_Timer>();
+    ServiceManager->Tick(ObjectErrors);
 
-    TimerService->Tick(ObjectErrors);
-    PluginManager->Tick(ObjectErrors, TimerService->GetDeltaTime());
+    PluginManager->Tick(ObjectErrors, GetService<SSFService_Timer>()->GetDeltaTime());
 
     return true;
 }
