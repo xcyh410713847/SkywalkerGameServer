@@ -76,7 +76,7 @@ private:
     SSF_PTR(SSFPluginManager)
     PluginManager{};
 
-    SSF_PTR(SSFServiceManager<SSFFrameworkService>)
+    SSF_PTR(SSFFrameworkServiceManager)
     ServiceManager{};
 
     ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};

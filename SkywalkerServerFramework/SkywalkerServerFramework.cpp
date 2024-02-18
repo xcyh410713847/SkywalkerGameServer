@@ -27,7 +27,7 @@ bool CSkywalkerServerFramework::Start()
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
-    ServiceManager = NewObject<SSFServiceManager<SSFFrameworkService>>();
+    ServiceManager = NewObject<SSFFrameworkServiceManager>();
 
     SSF_PTR(SSFService_Timer)
     TimerService = GetService<SSFService_Timer>();

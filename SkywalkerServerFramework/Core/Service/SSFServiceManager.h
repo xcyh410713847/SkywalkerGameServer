@@ -10,10 +10,13 @@
 
 #include "Include/SSFCore.h"
 
-#include "Core/Service/SSFService.h"
 #include "Core/Object/SSFObjectManager.h"
+#include "Core/Service/SSFFrameworkService.h"
+#include "Core/Service/SSFLevelService.h"
 
 SSF_NAMESPACE_BEGIN
+
+class SSFFrameworkService;
 
 SSF_TEMPLATE_CLASS(SSFService, ServiceObject)
 class SSFServiceManager : public SSFObjectManager<ServiceObject>
@@ -107,6 +110,9 @@ public:
 protected:
     SSFMap<SSFString, SSFObjectGUID> ServiceMap;
 };
+
+typedef SSFServiceManager<SSFFrameworkService> SSFFrameworkServiceManager;
+typedef SSFServiceManager<SSFLevelService> SSFLevelServiceManager;
 
 SSF_NAMESPACE_END
 
