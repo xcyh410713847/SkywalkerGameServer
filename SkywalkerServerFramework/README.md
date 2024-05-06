@@ -12,6 +12,18 @@
 
 核心静态库文件
 
+#### Service
+
+单例服务类
+
+##### FrameworkService
+
+依附于 Framework
+
+##### LevelService
+
+依附于 Level
+
 ### Include
 
 头文件
