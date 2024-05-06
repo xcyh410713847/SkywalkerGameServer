@@ -9,9 +9,12 @@ cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
-# 支持C++17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON) # 必须使用C++17
+# 支持C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # 必须使用C++20
+
+# 禁用编译器的扩展
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 function(SkywalkerServer_MessageDebug info)
     message(STATUS "[Skywalker Server] ${info}")
