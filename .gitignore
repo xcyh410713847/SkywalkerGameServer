@@ -18,3 +18,4 @@ Bin/*.exe
 Bin/*.lib
 Bin/*.dll
 Bin/Debug
+Bin/*.a

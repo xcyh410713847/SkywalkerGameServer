@@ -20,6 +20,8 @@
 
 SKYWALKER_TIMER_NAMESPACE_BEGIN
 
+typedef unsigned long long UINT64;
+
 /**
  * 计时器
  */
@@ -28,13 +30,16 @@ class SkywalkerTimer
 public:
     SkywalkerTimer()
         : SecondsPerCount(0.0),
-          DeltaTime(-1),
+          DeltaTime(0),
           PrevTime(0),
           CurrTime(0)
     {
-        __int64 CountsPerSec;
+    #if defined(SKYWALKER_PLATFORM_WINDOWS)
+        UINT64 CountsPerSec;
         QueryPerformanceFrequency((LARGE_INTEGER *)&CountsPerSec);
         SecondsPerCount = 1.0 / (double)CountsPerSec;
+    #else
+    #endif
     }
     virtual ~SkywalkerTimer()
     {
@@ -50,11 +55,14 @@ public:
      */
     void Reset()
     {
+    #if defined(SKYWALKER_PLATFORM_WINDOWS)
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
 
         BaseTime = CurrTime;
         BaseGMTTime = std::time(nullptr);
         PrevTime = CurrTime;
+    #else
+    #endif
     }
 
     /**
@@ -62,6 +70,7 @@ public:
      */
     void Tick()
     {
+    #if defined(SKYWALKER_PLATFORM_WINDOWS)
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
 
         DeltaTime = (CurrTime - PrevTime) * SecondsPerCount;
@@ -72,6 +81,8 @@ public:
         {
             DeltaTime = 0;
         }
+    #else
+    #endif
     }
 
     /**
@@ -85,7 +96,7 @@ public:
     /**
      * 获取帧时间(ms)
      */
-    __int64 GetDeltaTime() const
+    UINT64 GetDeltaTime() const
     {
         return DeltaTime;
     }
@@ -109,7 +120,7 @@ public:
     /**
      * 获得启动时的格林威治时间(s)
      */
-    __int64 GetStartGMTTime() const
+    UINT64 GetStartGMTTime() const
     {
         return BaseGMTTime;
     }
@@ -117,7 +128,7 @@ public:
     /**
      * 获得当前的格林威治时间(s)
      */
-    __int64 GetCurrGMTTime() const
+    UINT64 GetCurrGMTTime() const
     {
         return std::time(nullptr);
     }
@@ -125,11 +136,11 @@ public:
 private:
     double SecondsPerCount{};
 
-    __int64 BaseTime{};
-    __int64 BaseGMTTime{};
-    __int64 PrevTime{};
-    __int64 CurrTime{};
-    __int64 DeltaTime{-1}; // (ms)Time between current frame and last frame
+    UINT64 BaseTime{};
+    UINT64 BaseGMTTime{};
+    UINT64 PrevTime{};
+    UINT64 CurrTime{};
+    UINT64 DeltaTime{0}; // (ms)Time between current frame and last frame
 };
 
 SKYWALKER_TIMER_NAMESPACE_END
