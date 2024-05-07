@@ -95,6 +95,7 @@ SSF_NAMESPACE_BEGIN
  */
 #define SSF_UNIQUE_PTR(T) std::unique_ptr<T>
 #define SSF_MAKE_UNIQUE_PTR(T) std::make_unique<T>();
+#define SSF_UNIQUE_PTR_CAST(T, Obj) std::unique_ptr<T>(dynamic_cast<T *>(Obj))
 
 #define SSF_CONST_UNIQUE_PTR(T) std::unique_ptr<const T>
 #define SSF_MAKE_CONST_UNIQUE_PTR(T) std::make_unique<const T>();

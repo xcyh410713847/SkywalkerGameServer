@@ -14,6 +14,9 @@
 
 SSF_NAMESPACE_BEGIN
 
+/**
+ * 作为客户端，连接其他服务器
+ */
 class SSFModule_NetworkClient : public SSFModule
 {
     SSF_OBJECT_CLASS(SSFModule_NetworkClient)

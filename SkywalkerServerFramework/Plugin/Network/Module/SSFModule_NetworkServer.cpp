@@ -12,7 +12,7 @@
 
 SSF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Debug);
+SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Framework);
 
 #pragma region Object
 
@@ -47,11 +47,9 @@ void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
 
 void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
 {
+    StopNetworkServer(Errors);
+
     SSFModule::Stop(Errors);
-
-    ServerNetworkSocket->Stop(Errors);
-
-    WSACleanup();
 }
 
 void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
@@ -83,7 +81,8 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
 
     // 创建服务器套接字
     SSFNetworkSocketCreatorContext Context;
-    ServerNetworkSocket = NewObject<SSFObject_ServerSocket>(Context, Errors);
+    auto pServerSocket = NewObject<SSFObject_ServerSocket>(Context, Errors);
+    ServerNetworkSocket = SSF_UNIQUE_PTR_CAST(SSFObject_ServerSocket, pServerSocket);
 
     if (Errors.IsValid())
     {
@@ -93,6 +92,15 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
         WSACleanup();
         return;
     }
+
+    SSF_LOG_FRAMEWORK("Create ServerSocket ObjectGUID " << ServerNetworkSocket->GetObjectGUID() << " Socket " << ServerNetworkSocket->GetSocket());
+}
+
+void SSFModule_NetworkServer::StopNetworkServer(SSFObjectErrors &Errors)
+{
+    ServerNetworkSocket->Stop(Errors);
+
+    WSACleanup();
 }
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)

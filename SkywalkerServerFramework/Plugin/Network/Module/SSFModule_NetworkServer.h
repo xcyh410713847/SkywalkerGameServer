@@ -17,6 +17,9 @@
 
 SSF_NAMESPACE_BEGIN
 
+/**
+ * 作为服务器，接受客户端连接
+ */
 class SSFModule_NetworkServer : public SSFModule
 {
     SSF_OBJECT_CLASS(SSFModule_NetworkServer)
@@ -75,13 +78,18 @@ private:
     void StartNetworkServer(SSFObjectErrors &Errors);
 
     /**
+     * 停止网络服务器
+     */
+    void StopNetworkServer(SSFObjectErrors &Errors);
+
+    /**
      * 创建网络客户端
      */
     void CreateNetworkClient(SSFObjectErrors &Errors);
 
 private:
     WSADATA wsaData;
-    SSF_PRT_SERVER_SOCKET ServerNetworkSocket = nullptr;
+    SSF_UNIQUE_PTR(SSFObject_ServerSocket) ServerNetworkSocket = nullptr;
     SSFMap<SOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 };
 
