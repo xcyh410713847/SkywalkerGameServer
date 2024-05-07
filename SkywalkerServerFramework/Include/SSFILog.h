@@ -14,14 +14,15 @@ SSF_NAMESPACE_BEGIN
 
 enum ELogLevel
 {
-    LogLevel_Debug = 0, // 调试
-    LogLevel_Info,      // 信息
-    LogLevel_Warning,   // 警告
-    LogLevel_Error,     // 错误
-    LogLevel_Fatal,     // 致命
+    LogLevel_Framework = 0, // 框架，用于框架内部调试
+    LogLevel_Debug,         // 调试，用于开发调试
+    LogLevel_Info,          // 信息，用于显示信息
+    LogLevel_Warning,       // 警告，用于显示警告
+    LogLevel_Error,         // 错误，用于显示错误
+    LogLevel_Fatal,         // 致命，用于显示致命错误
 };
 
-#define SSF_LOG_LEVEL LogLevel_Debug
+#define SSF_LOG_LEVEL LogLevel_Framework
 
 /**
  * 显示文件名，行号和函数名
@@ -54,6 +55,12 @@ enum ELogLevel
 #define SSF_LOG_PRINT(Level, Content)   \
     if (Level >= SSFLogModuleShowLevel) \
     SSF_LOG_PRINT_EX(Level, Content)
+
+/**
+ * 框架
+ */
+#define SSF_LOG_FRAMEWORK(Content) \
+    SSF_LOG_PRINT(LogLevel_Framework, "[Framework ]" << SSF_LOG_MODULE << SSF_LOG_FILE_LINE << Content)
 
 /**
  * 调试
