@@ -19,3 +19,7 @@ Bin/*.lib
 Bin/*.dll
 Bin/Debug
 Bin/*.a
+Bin/*.so
+Bin/SkywalkerGameServer
+Bin/SkywalkerScript
+Bin/SkywalkerServerEditor
