@@ -14,13 +14,23 @@
 
 SSF_NAMESPACE_BEGIN
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+typedef SOCKET SSFSOCKET;
+#define SSF_INVALID_SOCKET INVALID_SOCKET
+#define SSF_SOCKET_ERROR SOCKET_ERROR
+#else
+typedef int SSFSOCKET;
+#define SSF_INVALID_SOCKET -1
+#define SSF_SOCKET_ERROR -1
+#endif
+
 struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 {
-    SOCKET Socket;
+    SSFSOCKET Socket;
 
     SSFNetworkSocketCreatorContext()
         : SSFObjectContext(),
-          Socket(INVALID_SOCKET)
+          Socket(SSF_INVALID_SOCKET)
     {
     }
 };
@@ -36,7 +46,7 @@ public:
     /**
      * 获取套接字
      */
-    SOCKET GetSocket() const
+    SSFSOCKET GetSocket() const
     {
         return Socket;
     }
@@ -46,7 +56,7 @@ public:
      */
     bool IsSocketInvalid() const
     {
-        return Socket == INVALID_SOCKET;
+        return Socket == SSF_INVALID_SOCKET;
     }
 
     /**
@@ -67,7 +77,7 @@ protected:
     /**
      * 套接字
      */
-    SOCKET Socket = INVALID_SOCKET;
+    SSFSOCKET Socket = SSF_INVALID_SOCKET;
 };
 
 SSF_NAMESPACE_END

@@ -71,6 +71,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
         return;
     }
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
         SSF_ERROR_DESC_TRACE(Errors,
@@ -78,6 +79,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
                              "Failed to initialize winsock")
         return;
     }
+#endif
 
     // 创建服务器套接字
     SSFNetworkSocketCreatorContext Context;
@@ -88,8 +90,10 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
     {
         SSF_ERROR_DESC_TRACE(Errors,
                              SkywalkerSFError_Network_Start_Failed,
-                             "Failed to start network server")
-        WSACleanup();
+                             "Failed to start network server");
+    #if defined (SKYWALKER_PLATFORM_WINDOWS)
+            WSACleanup();
+    #endif
         return;
     }
 
@@ -100,7 +104,9 @@ void SSFModule_NetworkServer::StopNetworkServer(SSFObjectErrors &Errors)
 {
     ServerNetworkSocket->Stop(Errors);
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     WSACleanup();
+#endif
 }
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
@@ -115,8 +121,8 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
         return;
     }
 
-    SOCKET ClientSocket = accept(ServerNetworkSocket->GetSocket(), NULL, NULL);
-    if (ClientSocket == INVALID_SOCKET)
+    SSFSOCKET ClientSocket = accept(ServerNetworkSocket->GetSocket(), NULL, NULL);
+    if (ClientSocket == SSF_INVALID_SOCKET)
     {
         return;
     }

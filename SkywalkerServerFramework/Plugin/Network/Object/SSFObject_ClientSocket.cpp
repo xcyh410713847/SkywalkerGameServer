@@ -27,7 +27,7 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     SSFObject_NetworkSocket::Tick(Errors, DelayMS);
 
     // 获取客户端套接字
-    SOCKET ClientSocket = GetSocket();
+    SSFSOCKET ClientSocket = GetSocket();
 
     // 检查客户端套接字是否有效
     if (IsSocketInvalid())
@@ -42,7 +42,11 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     int bytesReceived;
 
     // 接收客户端发送的数据
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     bytesReceived = recv(ClientSocket, buffer, sizeof(buffer), 0);
+#else
+    bytesReceived = read(ClientSocket, buffer, sizeof(buffer));
+#endif
     if (bytesReceived <= 0)
     {
         return;
@@ -51,5 +55,9 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     // 处理接收到的数据
     SSF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
     // 回复客户端
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     send(ClientSocket, buffer, bytesReceived, 0);
+#else
+    write(ClientSocket, buffer, bytesReceived);
+#endif
 }

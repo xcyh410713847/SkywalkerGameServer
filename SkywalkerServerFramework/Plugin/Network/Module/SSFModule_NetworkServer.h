@@ -88,9 +88,11 @@ private:
     void CreateNetworkClient(SSFObjectErrors &Errors);
 
 private:
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     WSADATA wsaData;
+#endif
     SSF_UNIQUE_PTR(SSFObject_ServerSocket) ServerNetworkSocket = nullptr;
-    SSFMap<SOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
+    SSFMap<SSFSOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 };
 
 SSF_NAMESPACE_END

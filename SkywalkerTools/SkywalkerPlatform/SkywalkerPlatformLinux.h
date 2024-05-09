@@ -13,6 +13,10 @@
 #include <unistd.h>
 #include <dlfcn.h>
 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+
 #define SKYWALKER_PLATFORM_LINUX
 
 #define SKYWALKER_PLATFORM_SLEEP(ms) usleep(ms)
