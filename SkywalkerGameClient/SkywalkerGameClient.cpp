@@ -4,9 +4,16 @@
 **日期: 2023/08/07 11:34:09
 **功能: SkywalkerGameClient
 *************************************************************************/
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#else
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#endif
 #include <iostream>
 
 #pragma comment(lib, "ws2_32.lib")
@@ -15,6 +22,7 @@ int main(int argc, char *argv[])
 {
     std::cout << "Hello SkywalkerGameClient" << std::endl;
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
@@ -71,6 +79,44 @@ int main(int argc, char *argv[])
     // 关闭套接字和清理Winsock库
     closesocket(clientSocket);
     WSACleanup();
+#else
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == -1)
+    {
+        std::cerr << "Socket creation failed" << std::endl;
+        return 1;
+    }
+
+    struct sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(9527);
+    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    if (connect(sock, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == -1)
+    {
+        std::cerr << "Connection failed" << std::endl;
+        return 1;
+    }
+
+    std::string message = "Hello, Server!";
+    if (send(sock, message.c_str(), message.length(), 0) == -1)
+    {
+        std::cerr << "Send failed" << std::endl;
+        return 1;
+    }
+
+    char buffer[1024] = {0};
+    int valread = read(sock, buffer, 1024);
+    if (valread == -1)
+    {
+        std::cerr << "Read failed" << std::endl;
+        return 1;
+    }
+
+    std::cout << "Server response: " << buffer << std::endl;
+
+    close(sock);
+#endif
 
     return 0;
 }
