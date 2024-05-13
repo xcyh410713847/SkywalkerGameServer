@@ -71,7 +71,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
         return;
     }
 
-    SSF_WSA_STARTUP();
+    SSF_NETWORK_STARTUP();
 
     // 创建服务器套接字
     SSFNetworkSocketCreatorContext Context;
@@ -83,7 +83,7 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
         SSF_ERROR_DESC_TRACE(InErrors,
                              SkywalkerSFError_Network_Start_Failed,
                              "Failed to start network server");
-        SSF_WSA_CLEANUP();
+        SSF_NETWORK_CLEANUP();
 
         return;
     }
@@ -95,7 +95,7 @@ void SSFModule_NetworkServer::StopNetworkServer(SSFObjectErrors &Errors)
 {
     ServerNetworkSocket->Stop(Errors);
 
-    SSF_WSA_CLEANUP();
+    SSF_NETWORK_CLEANUP();
 }
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)

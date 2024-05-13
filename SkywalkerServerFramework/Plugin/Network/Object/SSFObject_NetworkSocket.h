@@ -14,26 +14,69 @@
 
 SSF_NAMESPACE_BEGIN
 
+#pragma region 跨平台套接字
+
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
 
+/**
+ * 套接字类型
+ */
 typedef SOCKET SSFSOCKET;
+
+/**
+ * 无效套接字
+ */
 #define SSF_INVALID_SOCKET INVALID_SOCKET
+
+/**
+ * 套接字错误
+ */
 #define SSF_SOCKET_ERROR SOCKET_ERROR
+
+/**
+ * 关闭套接字
+ */
 #define SSF_CLOSE_SOCKET closesocket
-#define SSF_WSA_CLEANUP() WSACleanup()
-#define SSF_WSA_STARTUP()                                                                                    \
+
+/**
+ * 清理网络
+ */
+#define SSF_NETWORK_CLEANUP() WSACleanup()
+
+/**
+ * 启动网络
+ */
+#define SSF_NETWORK_STARTUP()                                                                                    \
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)                                                           \
     {                                                                                                        \
         SSF_ERROR_DESC_TRACE(InErrors, SkywalkerSFError_Network_Init_Failed, "Failed to initialize winsock") \
         return;                                                                                              \
     }
-#define SSF_WSA_DATA WSADATA wsaData
+
+/**
+ * 网络数据
+ */
+#define SSF_NETWORK_DATA \
+    WSADATA wsaData
+
+/**
+ * 创建套接字
+ */
 #define SSF_SOCKET_CREATE(AF, Type) socket(AF, Type, 0)
+
+/**
+ * 读取套接字
+ */
 #define SSF_SOCKET_READ(Socket, Buffer, BufferLength, Flags) recv(Socket, Buffer, BufferLength, Flags)
+
+/**
+ * 写入套接字
+ */
 #define SSF_SOCKET_WRITE(Socket, Buffer, BufferLength, Flags) send(Socket, Buffer, BufferLength, Flags)
+
 /**
  * 设置套接字为非阻塞模式
-*/
+ */
 #define SSF_SOCKET_SET_NONBLOCKING(Socket)                                                                                         \
     {                                                                                                                              \
         u_long mode = 1;                                                                                                           \
@@ -47,26 +90,68 @@ typedef SOCKET SSFSOCKET;
 
 #else
 
+/**
+ * 套接字类型
+ */
 typedef int SSFSOCKET;
+
+/**
+ * 无效套接字
+ */
 #define SSF_INVALID_SOCKET -1
+
+/**
+ * 套接字错误
+ */
 #define SSF_SOCKET_ERROR -1
+
+/**
+ * 关闭套接字
+ */
 #define SSF_CLOSE_SOCKET close
-#define SSF_WSA_CLEANUP()
-#define SSF_WSA_STARTUP()
-#define SSF_WSA_DATA
+
+/**
+ * 初始化网络
+ */
+#define SSF_NETWORK_CLEANUP()
+
+/**
+ * 启动网络
+ */
+#define SSF_NETWORK_STARTUP()
+
+/**
+ * 网络数据
+ */
+#define SSF_NETWORK_DATA
+
+/**
+ * 创建套接字
+ */
 #define SSF_SOCKET_CREATE(AF, Type) socket(AF, Type, IPPROTO_TCP)
+
+/**
+ * 读取套接字
+ */
 #define SSF_SOCKET_READ(Socket, Buffer, BufferLength, Flags) read(Socket, Buffer, BufferLength)
+
+/**
+ * 写入套接字
+ */
 #define SSF_SOCKET_WRITE(Socket, Buffer, BufferLength, Flags) write(Socket, Buffer, BufferLength)
+
 /**
  * 设置套接字为非阻塞模式
-*/
-#define SSF_SOCKET_SET_NONBLOCKING(Socket)                                                                                         \
-    {                                                                                                                              \
-        int flags = fcntl(Socket, F_GETFL, 0);                                                                                     \
-        fcntl(Socket, F_SETFL, flags | O_NONBLOCK);                                                                                \
+ */
+#define SSF_SOCKET_SET_NONBLOCKING(Socket)          \
+    {                                               \
+        int flags = fcntl(Socket, F_GETFL, 0);      \
+        fcntl(Socket, F_SETFL, flags | O_NONBLOCK); \
     }
 
 #endif
+
+#pragma endregion 跨平台套接字
 
 struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 {

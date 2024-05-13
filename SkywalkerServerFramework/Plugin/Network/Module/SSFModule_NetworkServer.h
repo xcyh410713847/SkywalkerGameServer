@@ -88,7 +88,7 @@ private:
     void CreateNetworkClient(SSFObjectErrors &Errors);
 
 private:
-    SSF_WSA_DATA;
+    SSF_NETWORK_DATA;
 
     SSF_UNIQUE_PTR(SSFObject_ServerSocket)
     ServerNetworkSocket = nullptr;
