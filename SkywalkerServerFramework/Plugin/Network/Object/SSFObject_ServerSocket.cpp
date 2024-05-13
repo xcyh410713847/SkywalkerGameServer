@@ -43,7 +43,7 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
         SSF_ERROR_DESC_TRACE(InErrors,
                              SkywalkerSFError_Network_Socket_SetFailed,
                              "Failed to set socket to non-blocking mode");
-        closesocket(ServerSocket);
+        SSF_CLOSE_SOCKET(ServerSocket);
         return;
     }
 #else
@@ -62,11 +62,8 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
                              SkywalkerSFError_Network_Socket_BindFailed,
                              "Failed to bind address to the socket");
         // 关闭套接字
-        #if defined(SKYWALKER_PLATFORM_WINDOWS)
-        closesocket(ServerSocket);
-        #else
-        close(ServerSocket);
-        #endif
+        SSF_CLOSE_SOCKET(ServerSocket);
+
         return;
     }
 
@@ -77,11 +74,8 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
                              SkywalkerSFError_Network_Socket_ListenFailed,
                              "Failed to listen")
         // 关闭套接字
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-        closesocket(ServerSocket);
-#else
-        close(ServerSocket);
-#endif
+        SSF_CLOSE_SOCKET(ServerSocket);
+
         return;
     }
 }
@@ -95,9 +89,5 @@ void SSFObject_ServerSocket::Stop(SSFObjectErrors &Errors)
     SSFObject_NetworkSocket::Stop(Errors);
 
     // 关闭套接字
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    closesocket(GetSocket());
-#else
-    close(GetSocket());
-#endif
+    SSF_CLOSE_SOCKET(GetSocket());
 }

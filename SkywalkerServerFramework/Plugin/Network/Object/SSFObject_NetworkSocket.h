@@ -18,10 +18,14 @@ SSF_NAMESPACE_BEGIN
 typedef SOCKET SSFSOCKET;
 #define SSF_INVALID_SOCKET INVALID_SOCKET
 #define SSF_SOCKET_ERROR SOCKET_ERROR
+#define SSF_CLOSE_SOCKET closesocket
+#define SSF_WSA_CLEANUP WSACleanup
 #else
 typedef int SSFSOCKET;
 #define SSF_INVALID_SOCKET -1
 #define SSF_SOCKET_ERROR -1
+#define SSF_CLOSE_SOCKET close
+#define SSF_WSA_CLEANUP
 #endif
 
 struct SSFNetworkSocketCreatorContext : public SSFObjectContext
@@ -67,11 +71,11 @@ public:
         return !IsSocketInvalid();
     }
 
-    virtual void Init(SSFObjectErrors &Errors){};
-    virtual void Awake(SSFObjectErrors &Errors){};
-    virtual void Start(SSFObjectErrors &Errors){};
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS){};
-    virtual void Stop(SSFObjectErrors &Errors){};
+    virtual void Init(SSFObjectErrors &Errors) {};
+    virtual void Awake(SSFObjectErrors &Errors) {};
+    virtual void Start(SSFObjectErrors &Errors) {};
+    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) {};
+    virtual void Stop(SSFObjectErrors &Errors) {};
 
 protected:
     /**

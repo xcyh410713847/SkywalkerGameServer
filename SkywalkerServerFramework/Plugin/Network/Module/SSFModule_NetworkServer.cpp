@@ -91,9 +91,8 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
         SSF_ERROR_DESC_TRACE(Errors,
                              SkywalkerSFError_Network_Start_Failed,
                              "Failed to start network server");
-    #if defined (SKYWALKER_PLATFORM_WINDOWS)
-            WSACleanup();
-    #endif
+        SSF_WSA_CLEANUP();
+
         return;
     }
 
@@ -104,9 +103,7 @@ void SSFModule_NetworkServer::StopNetworkServer(SSFObjectErrors &Errors)
 {
     ServerNetworkSocket->Stop(Errors);
 
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    WSACleanup();
-#endif
+    SSF_WSA_CLEANUP();
 }
 
 void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
