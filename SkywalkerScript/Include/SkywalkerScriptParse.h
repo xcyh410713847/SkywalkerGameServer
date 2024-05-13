@@ -14,6 +14,8 @@
 #include <vector>
 #include <cstring>
 
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
+
 #define SKYWALKER_SCRIPT_NAMESPACE Skywalker::Script
 #define SKYWALKER_SCRIPT_NAMESPACE_BEGIN \
     namespace SKYWALKER_SCRIPT_NAMESPACE \
@@ -104,10 +106,18 @@ public:
     InitNode(const char *InNodeName, const char *InNodeValue)
     {
         NodeName = new char[strlen(InNodeName) + 1];
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        strcpy_s(this->NodeName, strlen(InNodeName) + 1, InNodeName);
+#else
         strncpy(this->NodeName, InNodeName, strlen(InNodeName) + 1);
+#endif
 
         this->NodeValue = new char[strlen(InNodeValue) + 1];
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        strcpy_s(this->NodeValue, strlen(InNodeValue) + 1, InNodeValue);
+#else
         strncpy(this->NodeValue, InNodeValue, strlen(InNodeValue) + 1);
+#endif
 
             return true;
     }
