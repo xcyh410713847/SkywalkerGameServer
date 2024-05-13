@@ -64,31 +64,23 @@ void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
 
 #pragma endregion Object
 
-void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
 {
-    if (Errors.IsValid())
+    if (InErrors.IsValid())
     {
         return;
     }
 
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-    {
-        SSF_ERROR_DESC_TRACE(Errors,
-                             SkywalkerSFError_Network_Init_Failed,
-                             "Failed to initialize winsock")
-        return;
-    }
-#endif
+    SSF_WSA_STARTUP();
 
     // 创建服务器套接字
     SSFNetworkSocketCreatorContext Context;
-    auto pServerSocket = NewObject<SSFObject_ServerSocket>(Context, Errors);
+    auto pServerSocket = NewObject<SSFObject_ServerSocket>(Context, InErrors);
     ServerNetworkSocket = SSF_UNIQUE_PTR_CAST(SSFObject_ServerSocket, pServerSocket);
 
-    if (Errors.IsValid())
+    if (InErrors.IsValid())
     {
-        SSF_ERROR_DESC_TRACE(Errors,
+        SSF_ERROR_DESC_TRACE(InErrors,
                              SkywalkerSFError_Network_Start_Failed,
                              "Failed to start network server");
         SSF_WSA_CLEANUP();

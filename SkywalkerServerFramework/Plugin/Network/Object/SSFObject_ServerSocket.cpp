@@ -17,11 +17,7 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
     : SSFObject_NetworkSocket(InContext, InErrors)
 {
     // 创建套接字
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    Socket = socket(AF_INET, SOCK_STREAM, 0);
-#else
-    Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-#endif
+    Socket = SSF_SOCKET_CREATE(AF_INET, SOCK_STREAM);
     if (Socket == SSF_INVALID_SOCKET)
     {
         SSF_ERROR_DESC_TRACE(InErrors,
@@ -36,20 +32,7 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
     u_long mode = 1; // 将非阻塞模式设置为1
 
     // 设置套接字为非阻塞模式
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    int result = ioctlsocket(ServerSocket, FIONBIO, &mode);
-    if (result == SSF_SOCKET_ERROR)
-    {
-        SSF_ERROR_DESC_TRACE(InErrors,
-                             SkywalkerSFError_Network_Socket_SetFailed,
-                             "Failed to set socket to non-blocking mode");
-        SSF_CLOSE_SOCKET(ServerSocket);
-        return;
-    }
-#else
-    int flags = fcntl(ServerSocket, F_GETFL, 0);
-    fcntl(ServerSocket, F_SETFL, flags | O_NONBLOCK);
-#endif
+    SSF_SOCKET_SET_NONBLOCKING(ServerSocket);
 
     // 绑定IP地址和端口号
     sockaddr_in serverAddr;

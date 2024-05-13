@@ -39,14 +39,7 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
 
     // 与客户端进行数据通信
     char buffer[1024];
-    int bytesReceived;
-
-    // 接收客户端发送的数据
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    bytesReceived = recv(ClientSocket, buffer, sizeof(buffer), 0);
-#else
-    bytesReceived = read(ClientSocket, buffer, sizeof(buffer));
-#endif
+    int bytesReceived = SSF_SOCKET_READ(ClientSocket, buffer, sizeof(buffer), 0);
     if (bytesReceived <= 0)
     {
         return;
@@ -54,10 +47,7 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
 
     // 处理接收到的数据
     SSF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
+
     // 回复客户端
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    send(ClientSocket, buffer, bytesReceived, 0);
-#else
-    write(ClientSocket, buffer, bytesReceived);
-#endif
+    SSF_SOCKET_WRITE(ClientSocket, buffer, bytesReceived, 0);
 }
