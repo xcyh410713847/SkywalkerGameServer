@@ -12,9 +12,14 @@
 #include <fstream>
 #include <map>
 #include <vector>
-#include <cstring>
 
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
+
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+#include <string>
+#else
+#include <cstring>
+#endif
 
 #define SKYWALKER_SCRIPT_NAMESPACE Skywalker::Script
 #define SKYWALKER_SCRIPT_NAMESPACE_BEGIN \
