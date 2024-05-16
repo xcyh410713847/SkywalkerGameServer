@@ -149,7 +149,7 @@ public:                                                    \
 	{                                                      \
 		if (this->ObjectClassName.empty())                 \
 		{                                                  \
-			SSF_CLASS_NAME(this, this->ObjectClassName);   \
+			SSF_CLASS_NAME(*this, this->ObjectClassName);   \
 		}                                                  \
 		return this->ObjectClassName;                      \
 	};

@@ -26,14 +26,13 @@ public:
 
     virtual void Release(SSFObjectErrors &Errors) override
     {
-        SSF_COMMON_ITERATOR(IterService, ObjectMap)
+        SSF_COMMON_ITERATOR(IterObject, ObjectMap)
         {
-            auto IterObject = IterService->second;
-            if (SSF_PTR_INVALID(IterObject))
+            if (SSF_PTR_INVALID(IterObject->second))
             {
                 continue;
             }
-            IterObject->Release(Errors);
+            IterObject->second->Release(Errors);
         }
         ObjectMap.clear();
 

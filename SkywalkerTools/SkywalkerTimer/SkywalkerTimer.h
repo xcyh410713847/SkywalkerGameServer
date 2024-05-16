@@ -39,6 +39,9 @@ public:
         QueryPerformanceFrequency((LARGE_INTEGER *)&CountsPerSec);
         SecondsPerCount = 1.0 / (double)CountsPerSec;
     #else
+        timespec timeRes;
+        clock_getres(CLOCK_MONOTONIC, &timeRes);
+        SecondsPerCount = static_cast<double>(timeRes.tv_sec) + static_cast<double>(timeRes.tv_nsec) / 1e9;
     #endif
     }
     virtual ~SkywalkerTimer()
@@ -59,10 +62,16 @@ public:
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
 
         BaseTime = CurrTime;
-        BaseGMTTime = std::time(nullptr);
-        PrevTime = CurrTime;
     #else
-    #endif
+        timespec currentTime;
+        clock_gettime(CLOCK_MONOTONIC, &currentTime);
+
+        CurrTime = currentTime.tv_sec * 1000000000 + currentTime.tv_nsec;
+        BaseTime = CurrTime;
+#endif
+
+        BaseGMTTime = std::time(nullptr);
+        PrevTime = BaseTime;
     }
 
     /**
@@ -72,8 +81,13 @@ public:
     {
     #if defined(SKYWALKER_PLATFORM_WINDOWS)
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
-
         DeltaTime = (CurrTime - PrevTime) * SecondsPerCount;
+    #else
+        timespec currentTime;
+        clock_gettime(CLOCK_MONOTONIC, &currentTime);
+        CurrTime = currentTime.tv_sec * 1000000000 + currentTime.tv_nsec;
+        DeltaTime = (CurrTime - PrevTime) / 1000000; // 转换为毫秒
+    #endif
 
         PrevTime = CurrTime;
 
@@ -81,8 +95,6 @@ public:
         {
             DeltaTime = 0;
         }
-    #else
-    #endif
     }
 
     /**
