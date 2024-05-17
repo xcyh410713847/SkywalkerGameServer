@@ -142,6 +142,7 @@ SSF_NAMESPACE_END
 
 /**
  * 定义对象类
+ * SSF_CLASS_NAME  中为什么要解指针？因为在宏定义中，如果不解指针，在Linux下获得的类名会多一个"P"
  */
 #define SSF_OBJECT_CLASS(Class)                            \
 public:                                                    \
