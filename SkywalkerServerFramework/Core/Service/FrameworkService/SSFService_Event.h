@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFService_Event_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFService_Event_H__
 
-#include "Core/Service/SSFFrameworkService.h"
+#include "Core/Service/FrameworkService/SSFFrameworkService.h"
 
 SSF_NAMESPACE_BEGIN
 

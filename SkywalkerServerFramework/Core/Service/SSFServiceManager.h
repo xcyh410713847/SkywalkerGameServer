@@ -11,8 +11,8 @@
 #include "Include/SSFCore.h"
 
 #include "Core/Object/SSFObjectManager.h"
-#include "Core/Service/SSFFrameworkService.h"
-#include "Core/Service/SSFLevelService.h"
+#include "Core/Service/FrameworkService/SSFFrameworkService.h"
+#include "Core/Service/LevelService/SSFLevelService.h"
 
 SSF_NAMESPACE_BEGIN
 
