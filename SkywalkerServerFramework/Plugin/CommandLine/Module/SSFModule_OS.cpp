@@ -14,8 +14,6 @@
 #include "Include/SSFILog.h"
 #include "Include/SSFramework.h"
 
-#include "Core/Plugin/SSFPluginManager.h"
-
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFModule_OS, LogLevel_Debug);

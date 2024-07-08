@@ -24,6 +24,8 @@ SSFPluginManager::~SSFPluginManager()
 
 void SSFPluginManager::Release(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG_MODULE("Release");
+
     PluginMap.clear();
     DynamicLibMap.clear();
     PluginNameMap.clear();
@@ -37,6 +39,8 @@ void SSFPluginManager::Release(SSFObjectErrors &Errors)
 
 void SSFPluginManager::Init(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG_MODULE("Init");
+
     SSFObjectErrors PluginErrors;
     LoadPluginConfig(PluginErrors);
     if (PluginErrors.IsValid())
@@ -72,6 +76,8 @@ void SSFPluginManager::Init(SSFObjectErrors &Errors)
 
 void SSFPluginManager::Awake(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG_MODULE("Awake");
+
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -85,6 +91,8 @@ void SSFPluginManager::Awake(SSFObjectErrors &Errors)
 
 void SSFPluginManager::Start(SSFObjectErrors &Errors)
 {
+    SSF_LOG_DEBUG_MODULE("Start");
+
     SSF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
         auto IterObject = FindObject(IterPlugin->second);
@@ -120,6 +128,8 @@ void SSFPluginManager::Stop(SSFObjectErrors &Errors)
         }
         ((SSFPlugin *)IterObject)->Stop(Errors);
     }
+
+    SSF_LOG_DEBUG_MODULE("Stop");
 }
 
 void SSFPluginManager::Sleep(SSFObjectErrors &Errors)
@@ -133,6 +143,8 @@ void SSFPluginManager::Sleep(SSFObjectErrors &Errors)
         }
         ((SSFPlugin *)IterObject)->Sleep(Errors);
     }
+
+    SSF_LOG_DEBUG_MODULE("Sleep");
 }
 
 void SSFPluginManager::Destroy(SSFObjectErrors &Errors)
@@ -146,6 +158,8 @@ void SSFPluginManager::Destroy(SSFObjectErrors &Errors)
         }
         ((SSFPlugin *)IterObject)->Destroy(Errors);
     }
+
+    SSF_LOG_DEBUG_MODULE("Destroy");
 }
 
 #pragma endregion Process

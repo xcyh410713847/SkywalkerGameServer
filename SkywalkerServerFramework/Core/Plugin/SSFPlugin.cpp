@@ -15,9 +15,7 @@
 SSF_NAMESPACE_USING
 SKYWALKER_EVENT_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug);
-
-#define SSF_LOG_DEBUG_PLUGIN(content) SSF_LOG_DEBUG(GetObjectClassName() << " " << content)
+SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug)
 
 SSFPlugin::SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
@@ -33,7 +31,7 @@ void SSFPlugin::Release(SSFObjectErrors &Errors)
 {
     Uninstall(Errors);
 
-    SSF_LOG_DEBUG_PLUGIN("Release");
+    SSF_LOG_DEBUG_MODULE("Release");
 
     SSFObjectManager::Release(Errors);
 }
@@ -42,7 +40,7 @@ void SSFPlugin::Release(SSFObjectErrors &Errors)
 
 void SSFPlugin::Init(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_PLUGIN("Init");
+    SSF_LOG_DEBUG_MODULE("Init");
 
     // 加载模块
     Install(Errors);
@@ -55,7 +53,7 @@ void SSFPlugin::Init(SSFObjectErrors &Errors)
 
 void SSFPlugin::Awake(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_PLUGIN("Awake");
+    SSF_LOG_DEBUG_MODULE("Awake");
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -70,7 +68,7 @@ void SSFPlugin::Awake(SSFObjectErrors &Errors)
 
 void SSFPlugin::Start(SSFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_PLUGIN("Start");
+    SSF_LOG_DEBUG_MODULE("Start");
 
     SSF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
@@ -108,7 +106,7 @@ void SSFPlugin::Stop(SSFObjectErrors &Errors)
         Module->Stop(Errors);
     }
 
-    SSF_LOG_DEBUG_PLUGIN("Stop");
+    SSF_LOG_DEBUG_MODULE("Stop");
 }
 
 void SSFPlugin::Sleep(SSFObjectErrors &Errors)
@@ -123,7 +121,7 @@ void SSFPlugin::Sleep(SSFObjectErrors &Errors)
         Module->Sleep(Errors);
     }
 
-    SSF_LOG_DEBUG_PLUGIN("Sleep");
+    SSF_LOG_DEBUG_MODULE("Sleep");
 }
 
 void SSFPlugin::Destroy(SSFObjectErrors &Errors)
@@ -138,7 +136,7 @@ void SSFPlugin::Destroy(SSFObjectErrors &Errors)
         Module->Destroy(Errors);
     }
 
-    SSF_LOG_DEBUG_PLUGIN("Destroy");
+    SSF_LOG_DEBUG_MODULE("Destroy");
 }
 
 #pragma endregion Plugin Process

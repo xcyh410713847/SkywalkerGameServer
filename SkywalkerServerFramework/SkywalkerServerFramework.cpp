@@ -22,12 +22,14 @@ SSFFramework = SSF_MAKE_SHARED_PTR(CSkywalkerServerFramework);
 bool CSkywalkerServerFramework::Start()
 {
     // 打印地址
-    SSF_LOG_DEBUG("SkywalkerServerFramework Start Begin, Address: " << this);
+    SSF_LOG_DEBUG_MODULE("Start");
 
     // 进入启动中状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
 
     ServiceManager = NewObject<SSFFrameworkServiceManager>();
+
+    SSF_LOG_DEBUG_OBJECT(ServiceManager, "Create");
 
     SSF_PTR(SSFService_Timer)
     TimerService = GetService<SSFService_Timer>();
