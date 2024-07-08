@@ -147,7 +147,7 @@ public:
     }
 
     /**
-     * 获取当前时间，格式：年-月-日 时:分:秒:毫秒
+     * 获取当前时间，格式：年-月-日 时:分:秒.毫秒
      * 通过 CurrTime 装换
      */
     std::string GetCurrTimeStr() const

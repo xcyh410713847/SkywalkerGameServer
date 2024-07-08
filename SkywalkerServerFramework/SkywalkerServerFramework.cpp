@@ -35,7 +35,7 @@ bool CSkywalkerServerFramework::Start()
     // 时间服务
     auto TimerService = GetService<SSFService_Timer>();
 
-    SSF_LOG_INFO("Start Time: " << TimerService->GetCurrTimeStr() << "s")
+    SSF_LOG_INFO("Start Time: " << TimerService->GetCurrTimeStr())
 
     // 事件服务
     auto EventService = GetService<SSFService_Event>();
@@ -96,7 +96,7 @@ bool CSkywalkerServerFramework::Stop()
     PluginManager->Release(ObjectErrors);
     PluginManager = nullptr;
 
-    SSF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << "s, Elapsed Time: " << TimerService->GetTotalTime() << "s");
+    SSF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << " ; Elapsed Time: " << TimerService->GetTotalTime() << "s");
 
     ServiceManager->Release(ObjectErrors);
     ServiceManager = nullptr;
