@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_AI : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_AI)
-
 public:
     SSFPlugin_AI(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

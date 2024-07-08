@@ -24,8 +24,6 @@ struct SSFModuleContext : public SSFObjectContext
 
 class SSFModule : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFModule);
-
 #pragma region Module
 
 public:

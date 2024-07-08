@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Actor : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Actor)
-
 public:
     SSFPlugin_Actor(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Video : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Video)
-
 public:
     SSFPlugin_Video(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

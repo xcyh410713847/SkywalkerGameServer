@@ -23,8 +23,6 @@ class CSkywalkerServerFramework : public SkywalkerServerFramework, public SSFObj
 {
     typedef ESkywalkerServerFrameworkRunningState ERunningState;
 
-    SSF_OBJECT_CLASS(CSkywalkerServerFramework);
-
 public:
     CSkywalkerServerFramework(){};
     virtual ~CSkywalkerServerFramework(){};

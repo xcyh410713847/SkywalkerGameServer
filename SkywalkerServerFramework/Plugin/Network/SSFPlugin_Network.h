@@ -16,8 +16,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Network : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Network)
-
 public:
     SSFPlugin_Network(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

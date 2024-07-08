@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Level : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Level)
-
 public:
     SSFPlugin_Level(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

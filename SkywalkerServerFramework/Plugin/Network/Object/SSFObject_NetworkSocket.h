@@ -166,8 +166,6 @@ struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 
 class SSFObject_NetworkSocket : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFObject_NetworkSocket)
-
 public:
     SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFObject_NetworkSocket();

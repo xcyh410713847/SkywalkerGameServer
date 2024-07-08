@@ -20,8 +20,6 @@ struct SSFServiceContext : public SSFObjectContext
 
 class SSFService : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFService)
-
 public:
     SSFService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFService();

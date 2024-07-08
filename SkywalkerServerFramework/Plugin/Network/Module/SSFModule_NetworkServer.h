@@ -22,8 +22,6 @@ SSF_NAMESPACE_BEGIN
  */
 class SSFModule_NetworkServer : public SSFModule
 {
-    SSF_OBJECT_CLASS(SSFModule_NetworkServer)
-
 #pragma region Object
 
 public:

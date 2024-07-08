@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFModule_OS : public SSFModule
 {
-    SSF_OBJECT_CLASS(SSFModule_OS)
-
 #pragma region Module
 
     virtual void Init(SSFObjectErrors &Errors) override;

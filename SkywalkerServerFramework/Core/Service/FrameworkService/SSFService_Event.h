@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFService_Event : public SSFFrameworkService
 {
-    SSF_OBJECT_CLASS(SSFService_Event)
-
 public:
     SSFService_Event(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFService_Event();

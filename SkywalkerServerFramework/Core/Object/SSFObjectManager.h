@@ -17,8 +17,6 @@ SSF_NAMESPACE_BEGIN
 SSF_TEMPLATE_CLASS(SSFObject, Object)
 class SSFObjectManager : public SSFObject
 {
-    SSF_OBJECT_CLASS(SSFObjectManager)
-
 public:
     SSFObjectManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
         : SSFObject(InContext, InErrors){};

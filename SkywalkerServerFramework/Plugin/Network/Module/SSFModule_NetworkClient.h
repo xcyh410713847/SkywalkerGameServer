@@ -19,8 +19,6 @@ SSF_NAMESPACE_BEGIN
  */
 class SSFModule_NetworkClient : public SSFModule
 {
-    SSF_OBJECT_CLASS(SSFModule_NetworkClient)
-
 public:
     SSFModule_NetworkClient(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors)

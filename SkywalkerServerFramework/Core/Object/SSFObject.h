@@ -34,9 +34,9 @@ private:
 	SSFObjectGUID ObjectGUID{SSF_OBJECT_INVALID_GUID};
 
 public:
-	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors){};
-	SSFObject(){};
-	virtual ~SSFObject(){};
+	SSFObject(SSFObjectContext &InContext, SSFObjectErrors &InErrors) {};
+	SSFObject() {};
+	virtual ~SSFObject() {};
 
 	/**
 	 * 释放
@@ -50,7 +50,15 @@ public:
 	 * 获取类名
 	 * @return 类名 const SSFString &
 	 */
-	virtual const SSFString &GetObjectClassName() = 0;
+	virtual const SSFString &GetObjectClassName()
+	{
+		if (ObjectClassName.empty())
+		{
+			SSF_CLASS_NAME(*this, ObjectClassName);
+		}
+
+		return ObjectClassName;
+	}
 
 	/**
 	 * 获取框架
@@ -139,20 +147,5 @@ public:
 };
 
 SSF_NAMESPACE_END
-
-/**
- * 定义对象类
- * SSF_CLASS_NAME  中为什么要解指针？因为在宏定义中，如果不解指针，在Linux下获得的类名会多一个"P"
- */
-#define SSF_OBJECT_CLASS(Class)                            \
-public:                                                    \
-	virtual const SSFString &GetObjectClassName() override \
-	{                                                      \
-		if (this->ObjectClassName.empty())                 \
-		{                                                  \
-			SSF_CLASS_NAME(*this, this->ObjectClassName);   \
-		}                                                  \
-		return this->ObjectClassName;                      \
-	};
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_H__

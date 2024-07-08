@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFFrameworkService : public SSFService
 {
-    SSF_OBJECT_CLASS(SSFFrameworkService)
-
 public:
     SSFFrameworkService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFFrameworkService();

@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFLevelService : public SSFService
 {
-    SSF_OBJECT_CLASS(SSFLevelService)
-
 public:
     SSFLevelService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFLevelService();

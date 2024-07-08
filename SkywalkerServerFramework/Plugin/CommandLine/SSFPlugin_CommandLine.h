@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_CommandLine : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_CommandLine)
-
 public:
     SSFPlugin_CommandLine(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

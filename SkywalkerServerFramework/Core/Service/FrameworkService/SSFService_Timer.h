@@ -17,8 +17,6 @@ SSF_NAMESPACE_BEGIN
 typedef SKYWALKER_TIMER_NAMESPACE::SkywalkerTimer SkywalkerSFTimer;
 class SSFService_Timer : public SSFFrameworkService, public SkywalkerSFTimer
 {
-    SSF_OBJECT_CLASS(SSFService_Timer)
-
 public:
     SSFService_Timer(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFService_Timer();

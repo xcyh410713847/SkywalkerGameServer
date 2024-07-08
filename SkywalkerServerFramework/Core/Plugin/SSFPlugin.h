@@ -23,8 +23,6 @@ struct SSFPluginContext : public SSFObjectContext
 
 class SSFPlugin : public SSFObjectManager<SSFModule>
 {
-    SSF_OBJECT_CLASS(SSFPlugin)
-
 public:
     SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFPlugin();

@@ -16,8 +16,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFObject_ClientSocket : public SSFObject_NetworkSocket
 {
-    SSF_OBJECT_CLASS(SSFObject_ClientSocket)
-
 public:
     SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFObject_ClientSocket();

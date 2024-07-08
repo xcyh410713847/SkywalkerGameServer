@@ -22,8 +22,6 @@ SSF_NAMESPACE_BEGIN
  */
 class SSFPluginManager : public SSFObjectManager<SSFPlugin>
 {
-    SSF_OBJECT_CLASS(SSFPluginManager)
-
 public:
     SSFPluginManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors);
     virtual ~SSFPluginManager();

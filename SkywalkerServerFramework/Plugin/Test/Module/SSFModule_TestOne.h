@@ -16,8 +16,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFModule_TestOne : public SSFModule
 {
-    SSF_OBJECT_CLASS(SSFModule_TestOne)
-
 public:
     SSFModule_TestOne(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors)

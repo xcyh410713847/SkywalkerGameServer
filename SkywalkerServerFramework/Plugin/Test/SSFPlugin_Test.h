@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Test : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Test)
-
 public:
     SSFPlugin_Test(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)

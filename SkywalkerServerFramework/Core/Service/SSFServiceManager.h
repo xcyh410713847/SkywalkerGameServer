@@ -21,8 +21,6 @@ class SSFFrameworkService;
 SSF_TEMPLATE_CLASS(SSFService, ServiceObject)
 class SSFServiceManager : public SSFObjectManager<ServiceObject>
 {
-    SSF_OBJECT_CLASS(SSFServiceManager)
-
 public:
     SSFServiceManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
         : SSFObjectManager<ServiceObject>(InContext, InErrors){};

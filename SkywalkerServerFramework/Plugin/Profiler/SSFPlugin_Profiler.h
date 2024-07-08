@@ -14,8 +14,6 @@ SSF_NAMESPACE_BEGIN
 
 class SSFPlugin_Profiler : public SSFPlugin
 {
-    SSF_OBJECT_CLASS(SSFPlugin_Profiler)
-
 public:
     SSFPlugin_Profiler(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
         : SSFPlugin(InContext, InErrors)
