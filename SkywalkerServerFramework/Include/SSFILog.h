@@ -71,15 +71,14 @@ enum ELogLevel
 /**
  * 调试
  */
-#define SSF_LOG_DEBUG_MODULE(Content) SSF_LOG_DEBUG_OBJECT(this, Content)
+#define SSF_LOG_DEBUG_MODULE(Content) \
+    SSF_LOG_DEBUG_OBJECT(this, Content)
 
 /**
  * 调试
  */
-#define SSF_LOG_DEBUG_OBJECT(Object, Content)  \
-    SSF_LOG_DEBUG(Object->GetObjectClassName() \
-                  << " "                       \
-                  << " [ObjectGUID " << Object->GetObjectGUID() << "] " << Content)
+#define SSF_LOG_DEBUG_OBJECT(Object, Content) \
+    SSF_LOG_DEBUG(Object->GetObjectClassName() << " " << " [ObjectGUID " << Object->GetObjectGUID() << "] " << Content)
 
 /**
  * 信息

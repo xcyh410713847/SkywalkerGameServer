@@ -11,6 +11,7 @@
 
 #include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Service/FrameworkService/SSFService_Timer.h"
+#include "Core/Service/FrameworkService/SSFService_Event.h"
 
 SSF_NAMESPACE_USING
 
@@ -31,17 +32,16 @@ bool CSkywalkerServerFramework::Start()
 
     SSF_LOG_DEBUG_OBJECT(ServiceManager, "Create");
 
-    SSF_PTR(SSFService_Timer)
-    TimerService = GetService<SSFService_Timer>();
-    SSF_LOG_INFO("SkywalkerServerFramework Start Time: " << TimerService->GetStartTime() << "s")
+    // 时间服务
+    auto TimerService = GetService<SSFService_Timer>();
 
-    // 创建插件管理器
+    SSF_LOG_INFO("Start Time: " << TimerService->GetCurrTimeStr() << "s")
+
+    // 事件服务
+    auto EventService = GetService<SSFService_Event>();
+
+    // 插件管理器
     PluginManager = NewObject<SSFPluginManager>();
-    if (!PluginManager)
-    {
-        SSF_LOG_ERROR("SkywalkerServerFramework Start Failed, Create SSFPluginManager Failed");
-        return false;
-    }
 
     // Init
     SSFObjectErrors ObjectErrors;
@@ -56,7 +56,7 @@ bool CSkywalkerServerFramework::Start()
     // 进入运行状态
     RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
 
-    SSF_LOG_INFO("SkywalkerServerFramework Start Finish, Elapsed Time: " << TimerService->GetDeltaTime() << "ms");
+    SSF_LOG_INFO("Start Finish, Elapsed Time: " << TimerService->GetDeltaTime() << "ms");
 
     return true;
 }
@@ -79,10 +79,7 @@ bool CSkywalkerServerFramework::Tick()
 
 bool CSkywalkerServerFramework::Stop()
 {
-    SSF_LOG_INFO("SkywalkerServerFramework Stop Begin, Address: " << this);
-
-    SSF_PTR(SSFService_Timer)
-    TimerService = GetService<SSFService_Timer>();
+    auto TimerService = GetService<SSFService_Timer>();
 
     SSFObjectErrors ObjectErrors;
 
@@ -99,8 +96,7 @@ bool CSkywalkerServerFramework::Stop()
     PluginManager->Release(ObjectErrors);
     PluginManager = nullptr;
 
-    SSF_LOG_INFO("SkywalkerServerFramework Stop Time: " << TimerService->GetCurrTime()
-                                                        << "s, Elapsed Time: " << TimerService->GetTotalTime() << "s");
+    SSF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << "s, Elapsed Time: " << TimerService->GetTotalTime() << "s");
 
     ServiceManager->Release(ObjectErrors);
     ServiceManager = nullptr;
