@@ -175,7 +175,7 @@ private:
     static SkywalkerTestCase TestName##_case(#TestName, TestName##_func); \
     static struct TestName##_registrar { \
         TestName##_registrar() { \
-            SkywalkerTestRunner::Instance().RegisterSuite(SuiteName, Get##SuiteName##Suite()); \
+            SkywalkerTestRunner::Instance().RegisterSuite(#SuiteName, Get##SuiteName##Suite()); \
             Get##SuiteName##Suite()->AddTest(#TestName, TestName##_func); \
         } \
     } TestName##_registrar_instance;
