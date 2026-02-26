@@ -13,7 +13,7 @@
 #include "SkywalkerTest/SkywalkerTest.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
-SKYWALKER_TEST_SUITE(SkywalkerPlatform)
+SKYWALKER_TEST_SUITE(SkywalkerPlatformTest)
 
 bool TestPlatform_Name()
 {
@@ -68,10 +68,10 @@ bool TestPlatform_DisableCopy()
 
 #pragma endregion
 
-SKYWALKER_TEST_REGISTER(SkywalkerPlatform, TestPlatform_Name, TestPlatform_Name)
-SKYWALKER_TEST_REGISTER(SkywalkerPlatform, TestPlatform_PathSeparator, TestPlatform_PathSeparator)
-SKYWALKER_TEST_REGISTER(SkywalkerPlatform, TestPlatform_DynamicLibExt, TestPlatform_DynamicLibExt)
-SKYWALKER_TEST_REGISTER(SkywalkerPlatform, TestPlatform_ThreadLocal, TestPlatform_ThreadLocal)
-SKYWALKER_TEST_REGISTER(SkywalkerPlatform, TestPlatform_DisableCopy, TestPlatform_DisableCopy)
+SKYWALKER_TEST_REGISTER(SkywalkerPlatformTest, TestPlatform_Name, TestPlatform_Name)
+SKYWALKER_TEST_REGISTER(SkywalkerPlatformTest, TestPlatform_PathSeparator, TestPlatform_PathSeparator)
+SKYWALKER_TEST_REGISTER(SkywalkerPlatformTest, TestPlatform_DynamicLibExt, TestPlatform_DynamicLibExt)
+SKYWALKER_TEST_REGISTER(SkywalkerPlatformTest, TestPlatform_ThreadLocal, TestPlatform_ThreadLocal)
+SKYWALKER_TEST_REGISTER(SkywalkerPlatformTest, TestPlatform_DisableCopy, TestPlatform_DisableCopy)
 
 #endif // __SKYWALKER_PLATFORM_TEST_H__

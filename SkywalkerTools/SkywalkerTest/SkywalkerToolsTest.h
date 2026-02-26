@@ -13,7 +13,7 @@
 #include "SkywalkerPool/SkywalkerPool.h"
 #include "SkywalkerSingleton/SkywalkerSingleton.h"
 
-SKYWALKER_TEST_SUITE(SkywalkerTools)
+SKYWALKER_TEST_SUITE(SkywalkerToolsErrors)
 
 #pragma region SkywalkerErrors Tests
 
@@ -66,6 +66,8 @@ bool TestErrors_ErrorTrace()
 
 #pragma endregion
 
+SKYWALKER_TEST_SUITE(SkywalkerToolsPool)
+
 #pragma region SkywalkerPool Tests
 
 bool TestPool_Init()
@@ -100,6 +102,8 @@ bool TestPool_MaxSize()
 
 #pragma endregion
 
+SKYWALKER_TEST_SUITE(SkywalkerToolsSingleton)
+
 #pragma region SkywalkerSingleton Tests
 
 class TestSingletonClass
@@ -133,18 +137,20 @@ bool TestSingleton_DestroyInstance()
 
 #pragma endregion
 
-// Register Tests
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestErrors_Empty, TestErrors_Empty)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestErrors_AddError, TestErrors_AddError)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestErrors_GetFirstError, TestErrors_GetFirstError)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestErrors_GetErrors, TestErrors_GetErrors)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestErrors_ErrorTrace, TestErrors_ErrorTrace)
+// Register Tests - SkywalkerErrors
+SKYWALKER_TEST_REGISTER(SkywalkerToolsErrors, TestErrors_Empty, TestErrors_Empty)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsErrors, TestErrors_AddError, TestErrors_AddError)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsErrors, TestErrors_GetFirstError, TestErrors_GetFirstError)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsErrors, TestErrors_GetErrors, TestErrors_GetErrors)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsErrors, TestErrors_ErrorTrace, TestErrors_ErrorTrace)
 
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestPool_Init, TestPool_Init)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestPool_RecycleAndGet, TestPool_RecycleAndGet)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestPool_MaxSize, TestPool_MaxSize)
+// Register Tests - SkywalkerPool
+SKYWALKER_TEST_REGISTER(SkywalkerToolsPool, TestPool_Init, TestPool_Init)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsPool, TestPool_RecycleAndGet, TestPool_RecycleAndGet)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsPool, TestPool_MaxSize, TestPool_MaxSize)
 
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestSingleton_GetInstance, TestSingleton_GetInstance)
-SKYWALKER_TEST_REGISTER(SkywalkerTools, TestSingleton_DestroyInstance, TestSingleton_DestroyInstance)
+// Register Tests - SkywalkerSingleton
+SKYWALKER_TEST_REGISTER(SkywalkerToolsSingleton, TestSingleton_GetInstance, TestSingleton_GetInstance)
+SKYWALKER_TEST_REGISTER(SkywalkerToolsSingleton, TestSingleton_DestroyInstance, TestSingleton_DestroyInstance)
 
 #endif // __SKYWALKER_TOOLS_TEST_H__
