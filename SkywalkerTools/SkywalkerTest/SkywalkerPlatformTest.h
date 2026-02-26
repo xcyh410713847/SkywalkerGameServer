@@ -55,6 +55,7 @@ class TestDisableCopyClass
 {
 public:
     int Value = 0;
+    TestDisableCopyClass() = default;
     SKYWALKER_DISALLOW_COPY(TestDisableCopyClass)
 };
 
