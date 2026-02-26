@@ -1,4 +1,4 @@
-﻿# #########################################################################
+# #########################################################################
 # 文件: Src\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/07/30 12:42:34
@@ -43,6 +43,19 @@ include_directories(
 add_executable(${skywalker_game_server_name}
     SkywalkerGameServer.cpp
 )
+
+# 创建测试执行文件
+add_executable(SkywalkerTestRunner
+    SkywalkerTestMain.cpp
+)
+
+target_link_libraries(SkywalkerTestRunner PRIVATE
+    ${skywalker_server_framework_name}
+)
+
+SkywalkerGameServer_Export(SkywalkerTestRunner)
+
+SkywalkerServer_CopyToTarget(SkywalkerTestRunner ${skywalker_server_server_dir})
 
 target_link_libraries(${skywalker_game_server_name} PRIVATE
     ${skywalker_server_framework_name}
