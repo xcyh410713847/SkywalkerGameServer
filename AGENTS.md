@@ -1,69 +1,47 @@
 # AGENTS.md - SkywalkerGameServer Development Guide
 
 ## Project Overview
-
 C++20 game server framework with plugin-based architecture.
 
 ## Build Commands
-
 ```bash
-# Configure and build
 cd build/SkywalkerGameServer
 cmake ..
 cmake --build . --config Debug
-
-# Build specific target
 cmake --build . --target SkywalkerGameServer --config Debug
-
-# Run server
 ./Bin/Debug/SkywalkerGameServer.exe
 ```
 
 ### Build Modes
-
 - `ProjectDebug` (default) - Debug builds
 - `ProjectRelease` - Release builds
 - `Library` - Library-only builds
 
 ### Output Locations
-
 - Debug: `Bin/Debug/`
 - Release: `Bin/Server/`
 
 ## Testing
-
 Custom unit test framework at `SkywalkerTools/SkywalkerTest/`.
 
 ### Running Tests
-
-```cpp
-#include "SkywalkerTest/SkywalkerTest.h"
-
-int main()
-{
-    return SkywalkerTestRunner::Instance().RunAll();
-}
+```bash
+cd build/SkywalkerGameServer
+cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
+./Bin/Debug/SkywalkerTestRunner.exe
 ```
+All tests run via `SkywalkerTestRunner::Instance().RunAll()`. No single-test filtering.
 
 ### Writing Tests
-
 ```cpp
 #include "SkywalkerTest/SkywalkerTest.h"
-
 SKYWALKER_TEST_SUITE(MySuite)
-
-bool TestMyFeature()
-{
-    SKYWALKER_TEST_ASSERT_TRUE(someCondition);
-    SKYWALKER_TEST_ASSERT_EQ(expected, actual);
-    return true;
-}
-
+bool TestMyFeature() { SKYWALKER_TEST_ASSERT_TRUE(1==1); return true; }
 SKYWALKER_TEST_REGISTER(MySuite, TestMyFeature, TestMyFeature)
+int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 ```
 
 ### Test Macros
-
 | Macro | Description |
 |-------|-------------|
 | `SKYWALKER_TEST_ASSERT(condition)` | Assert condition is true |
@@ -75,19 +53,16 @@ SKYWALKER_TEST_REGISTER(MySuite, TestMyFeature, TestMyFeature)
 ## Code Style Guidelines
 
 ### Core Principles
-
 - **All code must have unit tests** - No code without tests should be committed
 - **Plugin-Module design** - Features as plugins with multiple modules
 - **Cross-platform** - Design for Windows, Linux, iOS from the start
 
 ### File Organization
-
 - Headers: `.h`, Implementation: `.cpp`
 - Include guards: `#ifndef __FILE_PATH_H__`
 - Include order: Framework core headers → local headers
 
 ### Naming Conventions
-
 | Type | Convention | Example |
 |------|------------|---------|
 | Classes | `C` prefix | `CSkywalkerServerFramework` |
@@ -98,30 +73,16 @@ SKYWALKER_TEST_REGISTER(MySuite, TestMyFeature, TestMyFeature)
 | Files | PascalCase | `SkywalkerServerFramework.h` |
 
 ### Type System (from SSFCore.h)
-
 - `SSFString` (std::string), `SSFBool` (bool), `SSFInt` (int)
 - `SSFUInt` (unsigned int), `SSFFloat` (float), `SSFDouble` (double)
 
 ### Pointer Macros
-
-```cpp
-SSF_PTR(T)           // Raw pointer T*
-SSF_CONST_PTR(T)     // Const pointer const T*
-SSF_SHARED_PTR(T)    // shared_ptr<T>
-SSF_WEAK_PTR(T)      // weak_ptr<T>
-SSF_UNIQUE_PTR(T)    // unique_ptr<T>
-```
+`SSF_PTR(T), SSF_CONST_PTR(T), SSF_SHARED_PTR(T), SSF_WEAK_PTR(T), SSF_UNIQUE_PTR(T)`
 
 ### Namespace
-
-```cpp
-SSF_NAMESPACE_BEGIN
-// code here
-SSF_NAMESPACE_END
-```
+`SSF_NAMESPACE_BEGIN // code here SSF_NAMESPACE_END`
 
 ### Error Handling
-
 ```cpp
 SSFObjectErrors Errors;
 SSF_ERROR(Errors, SkywalkerSFError_Plugin_Load_Failed);
@@ -130,41 +91,24 @@ if (Errors.IsValid()) { /* handle error */ }
 ```
 
 ### Logging
-
-```cpp
-SSF_LOG_INFO("Message " << variable);
-SSF_LOG_ERROR("Message " << variable);
-SSF_LOG_DEBUG("Message " << variable);
-```
+`SSF_LOG_INFO/ERROR/DEBUG("Message " << variable)`
 
 ### Assertions
-
-```cpp
-SSF_ASSERT(condition);
-SSF_ASSERT_IS_BASE_OF(SSFPlugin, MyPlugin);
-```
+`SSF_ASSERT(condition); SSF_ASSERT_IS_BASE_OF(SSFPlugin, MyPlugin);`
 
 ### Plugin/Module Development
-
 ```cpp
 SSF_REGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
 SSF_UNREGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
-SSF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);  // DLL export
-
+SSF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
 SSF_REGISTER_MODULE(SSFModule_MyModule);
 SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ```
 
 ### Code Regions
-
-```cpp
-#pragma region SSFPlugin
-// related code
-#pragma endregion SSFPlugin
-```
+`#pragma region Name // code #pragma endregion Name`
 
 ### File Header
-
 ```cpp
 /*************************************************************************
 **文件: SkywalkerServerFramework\Plugin\Test\SSFPlugin_Test.h
@@ -175,19 +119,16 @@ SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ```
 
 ### Comments
-
 - Use Chinese comments (project convention)
 - Format: `/** 注释内容 */` or `// 注释内容`
 - Document all public methods
 
 ## Common Issues
-
 1. **Macro errors**: Check for single-line comments → use multi-line comments
 2. **Enum undeclared**: Check if previous line has Chinese comment → try changing encoding
 3. **_CrtIsValidHeapPointer**: Incorrectly released a smart pointer
 
 ## Project Structure
-
 ```
 SkywalkerGameServer/
 ├── Bin/                    # Executable output
@@ -196,15 +137,11 @@ SkywalkerGameServer/
 ├── SkywalkerGameClient/   # Test client
 ├── SkywalkerServerFramework/
 │   ├── Core/              # Core library (static lib)
-│   ├── Plugin/            # Dynamic plugins
-│   │   ├── AI/ Actor/ CommandLine/
-│   │   ├── DB/ Level/ Network/
-│   │   ├── Profiler/ Test/ Video/
+│   ├── Plugin/            # Dynamic plugins (AI, Actor, CommandLine, DB, Level, Network, Profiler, Test, Video)
 │   └── Include/            # Framework headers
 ├── SkywalkerScript/       # Script encoding tool
 └── SkywalkerTools/        # Utility libraries
 ```
 
 ## Cursor Rules
-
 This project has `.cursorrules` with additional guidelines. All rules from `.cursorrules` apply and take precedence if conflicts arise.
