@@ -30,7 +30,7 @@ endmacro()
 # 包含路径
 set(skywalker_server_path "../")
 set(skywalker_tools_path "../SkywalkerTools")
-set(skywalker_server_framework_path "../SkywalkerServerFramework")
+set(skywalker_server_framework_path "../SkywalkerFramework")
 
 # 头文件目录
 include_directories(

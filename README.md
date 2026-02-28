@@ -24,7 +24,7 @@
 
 服务器编辑器
 
-### SkywalkerServerFramework
+### SkywalkerFramework
 
 服务器框架
 
@@ -38,9 +38,9 @@
 
 分成两部分来设计
 
-#### 单个 `CSkywalkerServerFramework`
+#### 单个 `CSkywalkerFramework`
 
-每个 `CSkywalkerServerFramework`中本身存在多线程，线程只能在 `CSkywalkerServerFramework`中通信
+每个 `CSkywalkerFramework`中本身存在多线程，线程只能在 `CSkywalkerFramework`中通信
 
 线程根据功能暂且分
 
@@ -49,15 +49,15 @@
 * 场景线程，管理场景
 * 主线程，负责游戏的逻辑
 
-#### 多个 `CSkywalkerServerFramework`
+#### 多个 `CSkywalkerFramework`
 
-可以使用多个 `CSkywalkerServerFramework`，将每个 `CSkywalkerServerFramework`当成一个线程，`CSkywalkerServerFramework`之间可以通信
+可以使用多个 `CSkywalkerFramework`，将每个 `CSkywalkerFramework`当成一个线程，`CSkywalkerFramework`之间可以通信
 
-为什么实现多个 `CSkywalkerServerFramework`设计
+为什么实现多个 `CSkywalkerFramework`设计
 
 1. 方便一个编辑器管理全部服务器
 
-### 关于 `CSkywalkerServerFramework`设计
+### 关于 `CSkywalkerFramework`设计
 
 分成三部分组成
 
@@ -65,7 +65,7 @@
 
 这中间的代码会生成一个静态链接库
 
-#### SkywalkerServerFramework
+#### SkywalkerFramework
 
 会链接 `Core`生成的静态链接库，然后自身也会生成一个静态链接库
 

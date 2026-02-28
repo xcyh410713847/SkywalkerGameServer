@@ -39,7 +39,7 @@ cmake --build . --config Debug
 - 引入顺序：框架核心头 → 本地头
 
 ### 命名约定
-- 类：`C` 前缀 (如 `CSkywalkerServerFramework`)
+- 类：`C` 前缀 (如 `CSkywalkerFramework`)
 - 插件：`SSFPlugin_` 前缀
 - 模块：`SSFModule_` 前缀
 - 抽象接口：`I` 前缀
@@ -120,7 +120,7 @@ SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ### 文件头格式
 ```cpp
 /*************************************************************************
-**文件: SkywalkerServerFramework\Plugin\Test\SSFPlugin_Test.h
+**文件: SkywalkerFramework\Plugin\Test\SSFPlugin_Test.h
 **作者: shyfan
 **日期: 2023/08/21 19:54:39
 **功能: 测试插件
@@ -140,7 +140,7 @@ SkywalkerGameServer/
 ├── SkywalkerGameServer/      # 主服务器
 ├── SkywalkerGameClient/      # 测试客户端
 ├── SkywalkerServerEditor/   # 服务器编辑器
-├── SkywalkerServerFramework/
+├── SkywalkerFramework/
 │   ├── Core/                 # 核心库(静态)
 │   ├── Plugin/               # 动态插件
 │   │   ├── AI/ Actor/ CommandLine/

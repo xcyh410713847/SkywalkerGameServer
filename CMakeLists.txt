@@ -123,8 +123,8 @@ macro(SkywalkerServer_Plugin PlugName DirName)
     SkywalkerServer_CopyToTarget(${PlugName} ${skywalker_server_server_dir})
 endmacro()
 
-# SkywalkerServerFramework
-add_subdirectory(SkywalkerServerFramework)
+# SkywalkerFramework
+add_subdirectory(SkywalkerFramework)
 
 # SkywalkerServerEditor
 add_subdirectory(SkywalkerServerEditor)

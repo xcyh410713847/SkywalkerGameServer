@@ -42,13 +42,13 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 ```
 
 ### Test Macros
-| Macro | Description |
-|-------|-------------|
-| `SKYWALKER_TEST_ASSERT(condition)` | Assert condition is true |
-| `SKYWALKER_TEST_ASSERT_EQ(expected, actual)` | Assert two values are equal |
+| Macro                                        | Description                     |
+| -------------------------------------------- | ------------------------------- |
+| `SKYWALKER_TEST_ASSERT(condition)`           | Assert condition is true        |
+| `SKYWALKER_TEST_ASSERT_EQ(expected, actual)` | Assert two values are equal     |
 | `SKYWALKER_TEST_ASSERT_NE(expected, actual)` | Assert two values are not equal |
-| `SKYWALKER_TEST_ASSERT_TRUE(value)` | Assert value is true |
-| `SKYWALKER_TEST_ASSERT_FALSE(value)` | Assert value is false |
+| `SKYWALKER_TEST_ASSERT_TRUE(value)`          | Assert value is true            |
+| `SKYWALKER_TEST_ASSERT_FALSE(value)`         | Assert value is false           |
 
 ## Code Style Guidelines
 
@@ -63,14 +63,14 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 - Include order: Framework core headers → local headers
 
 ### Naming Conventions
-| Type | Convention | Example |
-|------|------------|---------|
-| Classes | `C` prefix | `CSkywalkerServerFramework` |
-| Plugins | `SSFPlugin_` prefix | `SSFPlugin_Test` |
-| Modules | `SSFModule_` prefix | `SSFModule_TestOne` |
-| Interfaces | `I` prefix | `ISSFPlugin` |
-| Enums | `E` prefix | `ESkywalkerServerState` |
-| Files | PascalCase | `SkywalkerServerFramework.h` |
+| Type       | Convention          | Example                 |
+| ---------- | ------------------- | ----------------------- |
+| Classes    | `C` prefix          | `CSkywalkerFramework`   |
+| Plugins    | `SSFPlugin_` prefix | `SSFPlugin_Test`        |
+| Modules    | `SSFModule_` prefix | `SSFModule_TestOne`     |
+| Interfaces | `I` prefix          | `ISSFPlugin`            |
+| Enums      | `E` prefix          | `ESkywalkerServerState` |
+| Files      | PascalCase          | `SkywalkerFramework.h`  |
 
 ### Type System (from SSFCore.h)
 - `SSFString` (std::string), `SSFBool` (bool), `SSFInt` (int)
@@ -111,7 +111,7 @@ SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ### File Header
 ```cpp
 /*************************************************************************
-**文件: SkywalkerServerFramework\Plugin\Test\SSFPlugin_Test.h
+**文件: SkywalkerFramework\Plugin\Test\SSFPlugin_Test.h
 **作者: shyfan
 **日期: 2023/08/21 19:54:39
 **功能: 测试插件
@@ -135,7 +135,7 @@ SkywalkerGameServer/
 ├── build/                  # CMake build files
 ├── SkywalkerGameServer/    # Main server executable
 ├── SkywalkerGameClient/   # Test client
-├── SkywalkerServerFramework/
+├── SkywalkerFramework/
 │   ├── Core/              # Core library (static lib)
 │   ├── Plugin/            # Dynamic plugins (AI, Actor, CommandLine, DB, Level, Network, Profiler, Test, Video)
 │   └── Include/            # Framework headers

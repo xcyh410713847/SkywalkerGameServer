@@ -1,0 +1,16 @@
+#Plugin
+#    Name=SSFPlugin_Test
+#    Module
+#        Name=SSFModule_TestOne
+#    Module
+#        Name=SSFModule_TestTwo
+Plugin
+    Name=SSFPlugin_Network
+    Module
+        Name=SSFModule_NetworkServer
+    Module
+        Name=SSFModule_NetworkClient
+#Plugin
+#    Name=SSFPlugin_LaunchState
+Plugin
+    Name=SSFPlugin_CommandLine

@@ -8,7 +8,7 @@
 #include "SkywalkerTest/SkywalkerTest.h"
 #include "SkywalkerTest/SkywalkerToolsTest.h"
 #include "SkywalkerTest/SkywalkerPlatformTest.h"
-#include "SkywalkerServerFramework/Plugin/Test/SSFTestExample.h"
+#include "SkywalkerFramework/Plugin/Test/SSFTestExample.h"
 
 int main()
 {

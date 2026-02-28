@@ -1,0 +1,70 @@
+﻿@startuml SkywalkerFramework
+
+class SSFObject
+{
+}
+
+'继承自 SSFObject
+SSFObject <|-- CSkywalkerFramework
+SSFObject <|-- SSFObjectManager
+SSFObject <|-- SSFModule
+SSFObject <|-- SSFService
+
+class SkywalkerFramework
+{
+}
+
+SkywalkerFramework <|-- CSkywalkerFramework
+class CSkywalkerFramework
+{
+}
+
+class SSFObjectManager
+{
+
+}
+
+' SSFObject 与 SSFObjectManager
+SSFObject *-- "1" SSFObjectManager : "拥有多个 <"
+
+class SSFModule
+{
+
+}
+
+' SSFModule 与 SSFPlugin
+SSFModule *-- "1" SSFPlugin : "拥有多个 <"
+
+class SSFService
+{
+
+}
+
+'继承自 SSFObjectManager
+SSFObjectManager <|-- SSFPlugin
+SSFObjectManager <|-- SSFPluginManager
+class SSFPlugin
+{
+
+}
+
+class SSFPluginManager
+{
+
+}
+
+' SSFPlugin 与 SSFPluginManager
+SSFPlugin *-- "1" SSFPluginManager : "拥有多个 <"
+
+'继承自 SSFOService
+SSFService <|-- SSFFrameworkService
+SSFService <|-- SSFLevelService
+class SSFFrameworkService
+{
+}
+
+class SSFLevelService
+{
+}
+
+@enduml
