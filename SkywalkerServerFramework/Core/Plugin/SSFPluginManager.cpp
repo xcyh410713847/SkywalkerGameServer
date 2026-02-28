@@ -264,7 +264,27 @@ void SSFPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
             continue;
         }
 
-        PluginNameMap.insert(std::make_pair(NameNode->GetNodeValueString(), true));
+        SSFString PluginName = NameNode->GetNodeValueString();
+        PluginNameMap.insert(std::make_pair(PluginName, true));
+
+        SSFMap<SSFString, bool> ModuleMap;
+        for (int j = 0; j < PluginNode->GetChildNodeNum(); j++)
+        {
+            SKYWALKER_PTR_SCRIPT_NODE ModuleNode = PluginNode->GetChildNodeFromIndex(j);
+            if (ModuleNode == nullptr)
+            {
+                continue;
+            }
+
+            SKYWALKER_PTR_SCRIPT_NODE ModuleNameNode = ModuleNode->GetChildNodeFromName("Name");
+            if (ModuleNameNode == nullptr)
+            {
+                continue;
+            }
+
+            ModuleMap.insert(std::make_pair(ModuleNameNode->GetNodeValueString(), true));
+        }
+        PluginModulesMap.insert(std::make_pair(PluginName, ModuleMap));
     }
 }
 
@@ -281,6 +301,7 @@ void SSFPluginManager::StartPlugin(SSFObjectErrors &Errors)
 {
     SSF_COMMON_ITERATOR(IterLib, DynamicLibMap)
     {
+        const SSFString &LibraryName = IterLib->first;
         DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)IterLib->second->GetSymbol("DllStartPlugin");
         if (DllStartPluginFunc == nullptr)
         {
@@ -289,6 +310,16 @@ void SSFPluginManager::StartPlugin(SSFObjectErrors &Errors)
         }
 
         DllStartPluginFunc((SSF_PTR(SSFPluginManager))(this));
+
+        auto IterModules = PluginModulesMap.find(LibraryName);
+        if (IterModules != PluginModulesMap.end())
+        {
+            SSF_PTR(SSFPlugin) Plugin = GetPlugin(LibraryName);
+            if (Plugin != nullptr)
+            {
+                Plugin->SetConfigModules(IterModules->second);
+            }
+        }
     }
 }
 

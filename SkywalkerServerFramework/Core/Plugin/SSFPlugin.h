@@ -85,6 +85,12 @@ public:
 
 public:
     /**
+     * 设置配置加载的模块列表
+     * @param ModuleNames 模块名列表，为空表示加载所有模块
+     */
+    void SetConfigModules(const SSFMap<SSFString, bool> &ModuleNames);
+
+    /**
      * 注册模块
      * @param Module 模块
      */
@@ -149,6 +155,7 @@ protected:
     PluginManager;
 
     SSFMap<SSFString, SSFObjectGUID> ModuleMap;
+    SSFMap<SSFString, bool> ConfigModules;
 };
 
 SSF_NAMESPACE_END

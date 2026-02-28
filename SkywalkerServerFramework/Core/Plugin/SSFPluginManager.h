@@ -147,10 +147,12 @@ private:
     typedef void (*DLL_STOP_PLUGIN_FUNC)(SSF_PTR(SSFPluginManager));
 
     typedef SSFMap<SSFString, bool> TMap_PluginName;
+    typedef SSFMap<SSFString, SSFMap<SSFString, bool>> TMap_PluginModules;
     typedef SSFMap<SSFString, SSF_PTR_DYNAMIC_LIB> TMap_DynamicLib;
     typedef SSFMap<SSFString, SSFObjectGUID> TMap_Plugin;
 
     TMap_PluginName PluginNameMap;
+    TMap_PluginModules PluginModulesMap;
     TMap_DynamicLib DynamicLibMap;
     TMap_Plugin PluginMap;
 

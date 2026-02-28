@@ -143,6 +143,11 @@ void SSFPlugin::Destroy(SSFObjectErrors &Errors)
 
 #pragma region Module
 
+void SSFPlugin::SetConfigModules(const SSFMap<SSFString, bool> &ModuleNames)
+{
+    ConfigModules = ModuleNames;
+}
+
 void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module)
 {
     if (!SSF_PTR_VALID(Module))
@@ -162,6 +167,16 @@ void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Modul
     {
         SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat, "Plugin Register Module Repeat");
         return;
+    }
+
+    if (!ConfigModules.empty())
+    {
+        auto Iter = ConfigModules.find(ModuleName);
+        if (Iter == ConfigModules.end())
+        {
+            SSF_LOG_DEBUG("Module [" << ModuleName << "] not in config, skip loading");
+            return;
+        }
     }
 
     AddObject(Errors, Module);
