@@ -64,7 +64,7 @@ public:
 
 public:
     SSFModule_NetworkServer(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
-        : SSFModule(InContext, InErrors)
+        : SSFModule(InContext, InErrors), ServerPort(0)
     {
     }
     virtual ~SSFModule_NetworkServer(){};
@@ -91,6 +91,9 @@ private:
     SSF_UNIQUE_PTR(SSFObject_ServerSocket)
     ServerNetworkSocket = nullptr;
     SSFMap<SSFSOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
+
+    SSFString ServerIP;
+    int ServerPort;
 };
 
 SSF_NAMESPACE_END

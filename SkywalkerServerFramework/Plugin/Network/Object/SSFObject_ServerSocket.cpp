@@ -9,6 +9,8 @@
 
 #include "Include/SSFILog.h"
 
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFObject_ServerSocket, LogLevel_Debug);
@@ -37,8 +39,17 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
     // 绑定IP地址和端口号
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(9527); // 设置端口号
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    serverAddr.sin_port = htons(InContext.Port);
+
+    if (!InContext.IP.empty())
+    {
+        SkywalkerInetPton(AF_INET, InContext.IP.c_str(), &serverAddr.sin_addr);
+    }
+    else
+    {
+        serverAddr.sin_addr.s_addr = INADDR_ANY;
+    }
+
     if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SSF_SOCKET_ERROR)
     {
         SSF_ERROR_DESC_TRACE(InErrors,

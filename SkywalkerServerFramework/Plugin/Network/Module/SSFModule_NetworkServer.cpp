@@ -10,6 +10,8 @@
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
 
+#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+
 SSF_NAMESPACE_USING
 
 SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Framework);
@@ -29,6 +31,35 @@ void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
 void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
 {
     SSFModule::Start(Errors);
+
+    const char *ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
+    SSFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
+
+    SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
+    if (ConfigParse->LoadScript(ServerConfigPath.c_str()))
+    {
+        SKYWALKER_PTR_SCRIPT_NODE RootNode = ConfigParse->GetRootNode();
+        if (RootNode != nullptr)
+        {
+            for (int i = 0; i < RootNode->GetChildNodeNum(); i++)
+            {
+                SKYWALKER_PTR_SCRIPT_NODE ConfigNode = RootNode->GetChildNodeFromIndex(i);
+                if (ConfigNode == nullptr) continue;
+
+                SKYWALKER_PTR_SCRIPT_NODE IPNode = ConfigNode->GetChildNodeFromName("IP");
+                if (IPNode != nullptr)
+                {
+                    ServerIP = IPNode->GetNodeValueString();
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE PortNode = ConfigNode->GetChildNodeFromName("Port");
+                if (PortNode != nullptr)
+                {
+                    ServerPort = std::stoi(PortNode->GetNodeValueString());
+                }
+            }
+        }
+    }
 
     StartNetworkServer(Errors);
 }
@@ -75,6 +106,8 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
 
     // 创建服务器套接字
     SSFNetworkSocketCreatorContext Context;
+    Context.IP = ServerIP;
+    Context.Port = ServerPort;
     auto pServerSocket = NewObject<SSFObject_ServerSocket>(Context, InErrors);
     ServerNetworkSocket = SSF_UNIQUE_PTR_CAST(SSFObject_ServerSocket, pServerSocket);
 

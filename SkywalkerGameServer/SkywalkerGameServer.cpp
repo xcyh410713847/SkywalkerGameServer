@@ -13,12 +13,19 @@ SSF_NAMESPACE_USING
 int main(int argc, char *argv[])
 {
     SSFString PluginConfigPath = "ServerPlugin.skywalkerC";
+    SSFString ServerConfigPath = "ServerConfig.skywalkerC";
+
     if (argc > 1)
     {
         PluginConfigPath = argv[1];
     }
+    if (argc > 2)
+    {
+        ServerConfigPath = argv[2];
+    }
 
     SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
+    SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", ServerConfigPath.c_str());
 
     SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)
 

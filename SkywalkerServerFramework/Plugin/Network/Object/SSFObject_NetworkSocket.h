@@ -12,6 +12,12 @@
 
 #include "Core/Object/SSFObject.h"
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+#include <winsock2.h>
+#else
+#include <sys/socket.h>
+#endif
+
 SSF_NAMESPACE_BEGIN
 
 #pragma region 跨平台套接字
@@ -156,10 +162,13 @@ typedef int SSFSOCKET;
 struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 {
     SSFSOCKET Socket;
+    SSFString IP;
+    int Port;
 
     SSFNetworkSocketCreatorContext()
         : SSFObjectContext(),
-          Socket(SSF_INVALID_SOCKET)
+          Socket(SSF_INVALID_SOCKET),
+          Port(0)
     {
     }
 };

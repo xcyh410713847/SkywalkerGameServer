@@ -60,10 +60,14 @@
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
     #include <windows.h>
     #include <string>
+    #include <ws2tcpip.h>
     inline void SkywalkerSetEnv(const char *name, const char *value) { std::string envVar = std::string(name) + "=" + value; _putenv(envVar.c_str()); }
+    inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
 #else
     #include <cstdlib>
+    #include <arpa/inet.h>
     inline void SkywalkerSetEnv(const char *name, const char *value) { setenv(name, value, 1); }
+    inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
 #endif
 
 #endif
