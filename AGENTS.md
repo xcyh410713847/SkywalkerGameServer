@@ -21,6 +21,17 @@ cmake --build . --target SkywalkerGameServer --config Debug
 - Debug: `Bin/Debug/`
 - Release: `Bin/Server/`
 
+### Running Single Test
+All tests run via `SkywalkerTestRunner::Instance().RunAll()`. No single-test filtering available - run all tests via:
+```bash
+cd build/SkywalkerGameServer
+cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
+./Bin/Debug/SkywalkerTestRunner.exe
+```
+
+### Linting
+No linting tool configured. Code must compile and pass all tests before commit.
+
 ## Testing
 Custom unit test framework at `SkywalkerTools/SkywalkerTest/`.
 
@@ -61,6 +72,7 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 - Headers: `.h`, Implementation: `.cpp`
 - Include guards: `#ifndef __FILE_PATH_H__`
 - Include order: Framework core headers → local headers
+- Use `#pragma region` for code organization
 
 ### Naming Conventions
 | Type       | Convention          | Example                 |
@@ -105,10 +117,7 @@ SSF_REGISTER_MODULE(SSFModule_MyModule);
 SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ```
 
-### Code Regions
-`#pragma region Name // code #pragma endregion Name`
-
-### File Header
+### File Header Format
 ```cpp
 /*************************************************************************
 **文件: SkywalkerFramework\Plugin\Test\SSFPlugin_Test.h
