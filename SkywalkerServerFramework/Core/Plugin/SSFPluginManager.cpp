@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
 **文件: SkywalkerServerFramework\Core\Plugin\SSFPluginManager.cpp
 **作者: shyfan
 **日期: 2023/08/07 23:53:15
@@ -8,6 +8,8 @@
 #include "SSFPluginManager.h"
 
 #include "Include/SSFILog.h"
+
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SSF_NAMESPACE_USING
 
@@ -229,8 +231,11 @@ void SSFPluginManager::UnregisterPlugin(SSFObjectErrors &Errors, SSF_PTR(SSFPlug
 
 void SSFPluginManager::LoadPluginConfig(SSFObjectErrors &Errors)
 {
+    const char *ConfigPath = getenv("SKYWALKER_PLUGIN_CONFIG");
+    SSFString PluginConfigPath = ConfigPath ? ConfigPath : "ServerPlugin.skywalkerC";
+
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
-    if (!PluginScriptParse->LoadScript("ServerPlugin.skywalkerC"))
+    if (!PluginScriptParse->LoadScript(PluginConfigPath.c_str()))
     {
         SSF_ERROR_TRACE(Errors, SkywalkerSFError_Plugin_Load_ConfigNullptr);
         return;

@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
 **文件: SkywalkerGameServer\Executable\SkywalkerGameServer.cpp
 **作者: shyfan
 **日期: 2023/08/03 11:19:47
@@ -6,11 +6,20 @@
 *************************************************************************/
 
 #include "Include/SSFramework.h"
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SSF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
+    SSFString PluginConfigPath = "ServerPlugin.skywalkerC";
+    if (argc > 1)
+    {
+        PluginConfigPath = argv[1];
+    }
+
+    SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
+
     SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)
 
     return 0;

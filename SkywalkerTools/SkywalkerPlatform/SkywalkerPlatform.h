@@ -57,4 +57,13 @@
     ClassName(const ClassName&) = delete; \
     ClassName& operator=(const ClassName&) = delete;
 
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+    #include <windows.h>
+    #include <string>
+    inline void SkywalkerSetEnv(const char *name, const char *value) { std::string envVar = std::string(name) + "=" + value; _putenv(envVar.c_str()); }
+#else
+    #include <cstdlib>
+    inline void SkywalkerSetEnv(const char *name, const char *value) { setenv(name, value, 1); }
+#endif
+
 #endif
