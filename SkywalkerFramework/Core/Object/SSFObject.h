@@ -10,7 +10,7 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFErrors.h"
-#include "Include/SSFramework.h"
+#include "Include/SFramework.h"
 
 SSF_NAMESPACE_BEGIN
 

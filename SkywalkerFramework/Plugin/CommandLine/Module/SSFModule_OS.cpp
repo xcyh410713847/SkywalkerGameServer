@@ -12,7 +12,7 @@
 
 #include "Include/SSFCore.h"
 #include "Include/SSFILog.h"
-#include "Include/SSFramework.h"
+#include "Include/SFramework.h"
 
 SSF_NAMESPACE_USING
 

@@ -1,12 +1,12 @@
 ﻿/*************************************************************************
-**文件: SkywalkerFramework\Include\SSFramework.h
+**文件: SkywalkerFramework\Include\SFramework.h
 **作者: shyfan
 **日期: 2024/01/03 16:49:50
 **功能: SkywalkerFramework
 *************************************************************************/
 
-#ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFramework_H__
-#define __SKYWALKER_SERVER_FRAMEWORK_SSFramework_H__
+#ifndef __SKYWALKER_SERVER_FRAMEWORK_SFramework_H__
+#define __SKYWALKER_SERVER_FRAMEWORK_SFramework_H__
 
 #include "Include/SSFCore.h"
 
@@ -61,14 +61,14 @@ extern SSF_SHARED_PTR(SSF_NAMESPACE::SkywalkerFramework) SSFFramework;
 /**
  * Skywalker Framework 启动宏
  */
-#define SKYWALKER_SERVER_FRAMEWORK_START(argc, argv) \
-    if (!SSFFramework->Start())                      \
-    {                                                \
-        return 1;                                    \
-    }                                                \
-    while (SSFFramework->Tick())                     \
-    {                                                \
-    }                                                \
+#define SKYWALKER_FRAMEWORK_START(argc, argv) \
+    if (!SSFFramework->Start())               \
+    {                                         \
+        return 1;                             \
+    }                                         \
+    while (SSFFramework->Tick())              \
+    {                                         \
+    }                                         \
     SSFFramework->Stop();
 
-#endif //__SKYWALKER_SERVER_FRAMEWORK_SSFramework_H__
+#endif //__SKYWALKER_SERVER_FRAMEWORK_SFramework_H__

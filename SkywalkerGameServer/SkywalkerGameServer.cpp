@@ -5,7 +5,7 @@
 **功能: 入口
 *************************************************************************/
 
-#include "Include/SSFramework.h"
+#include "Include/SFramework.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SSF_NAMESPACE_USING
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
     SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", ServerConfigPath.c_str());
 
-    SKYWALKER_SERVER_FRAMEWORK_START(argc, argv)
+    SKYWALKER_FRAMEWORK_START(argc, argv)
 
     return 0;
 }

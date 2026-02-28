@@ -23,7 +23,7 @@
 /**
  * 定义命名空间
  */
-#define SSF_NAMESPACE Skywalker::ServerFramework
+#define SSF_NAMESPACE Skywalker::Framework
 
 /**
  * 命名空间开始
@@ -36,7 +36,7 @@
  * 命名空间结束
  */
 #define SSF_NAMESPACE_END \
-    } // Skywalker::ServerFramework
+    } // Skywalker::Framework
 
 /**
  * 使用命名空间
