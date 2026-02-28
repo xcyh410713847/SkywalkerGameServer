@@ -1,4 +1,4 @@
-﻿# #########################################################################
+# #########################################################################
 # 文件: SkywalkerGameClient\CMakeLists.txt
 # 作者: shyfan
 # 日期: 2023/08/07 11:29:57
@@ -27,18 +27,25 @@ macro(SkywalkerGameClient_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_game_client_name})
 endmacro()
 
-# SkywalkerTools 路径
+# 包含路径
+set(skywalker_server_path "../")
 set(skywalker_tools_path "../SkywalkerTools")
+set(skywalker_server_framework_path "../SkywalkerServerFramework")
 
 # 头文件目录
 include_directories(
+    ${skywalker_server_path}
     ${skywalker_tools_path}
-    ../
+    ${skywalker_server_framework_path}
 )
 
 # 生成可执行文件
 add_executable(${skywalker_game_client_name}
     SkywalkerGameClient.cpp
+)
+
+target_link_libraries(${skywalker_game_client_name} PRIVATE
+    ${skywalker_server_framework_name}
 )
 
 SkywalkerGameClient_Export(${skywalker_game_client_name})
