@@ -52,7 +52,7 @@ SF_NAMESPACE_BEGIN
 #pragma region Function Macro
 
 /**
- * 获取类名
+ * 获取类名字符串
  */
 
 #define SF_CLASS_NAME(Class, ClassName)                  \
@@ -115,7 +115,7 @@ SF_NAMESPACE_BEGIN
 #define SF_MAKE_CONST_WEAK_PTR(T) std::make_weak_ptr<const T>();
 
 /**
- * Cast
+ * 指针类型转换宏
  */
 #define SF_PTR_DYNAMIC_CAST(T) dynamic_cast<SF_PTR(T)>
 #define SF_PTR_STATIC_CAST(T) static_cast<SF_PTR(T)>
@@ -311,7 +311,7 @@ typedef std::string SFString;
 #pragma region Advanced typedef
 
 /**
- * ObjectGUID
+ * 对象唯一标识类型
  */
 typedef SFULongLong SFObjectGUID;
 
@@ -335,7 +335,7 @@ typedef SFULongLong SFObjectGUID;
 #pragma region Container
 
 /**
- * Map 容器别名
+ * 映射容器别名
  */
 template <typename Key, typename Value>
 using SFMap = std::map<Key, Value>;

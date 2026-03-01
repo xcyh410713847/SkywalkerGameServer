@@ -14,6 +14,9 @@
 
 SF_NAMESPACE_BEGIN
 
+/**
+ * 框架错误码定义
+ */
 enum ESFError
 {
     Success = 0, // 成功
@@ -81,25 +84,48 @@ enum ESFError
 
 };
 
+/**
+ * 错误对象
+ */
 struct SSFError
 {
+    /**
+     * 错误码
+     */
     ESFError Error;
+
+    /**
+     * 错误描述
+     */
     SFString ErrorDesc;
+
+    /**
+     * 默认构造
+     */
     SSFError()
         : Error(Unknow),
           ErrorDesc("")
     {
     }
 
+    /**
+     * 使用错误码构造
+     */
     SSFError(ESFError InError)
         : Error(InError),
           ErrorDesc("")
     {
     }
 
+    /**
+     * 使用错误码与描述构造
+     */
     SSFError(ESFError InError, SFString InErrorDesc)
         : Error(InError), ErrorDesc(InErrorDesc) {}
 
+    /**
+     * 获取错误内容字符串
+     */
     SFString GetContent()
     {
         SFString content = "Error: " + std::to_string(Error);
@@ -111,37 +137,41 @@ struct SSFError
     }
 };
 
-// 错误
+/**
+ * 框架错误容器类型
+ */
 typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<SSFError> SkywalkerSFErrors;
 
-// 对象错误
+/**
+ * 对象错误容器类型
+ */
 typedef SkywalkerSFErrors SFObjectErrors;
 
 #pragma region 错误宏
 
 /**
- * 不带堆栈的错误
+ * 记录错误（不带描述，不带堆栈）
  */
 #define SF_ERROR(CppErrors, Error) \
     SSFError error(Error);         \
     SKYWALKER_ERRORS_WRAP(CppErrors, error)
 
 /**
- * 不带堆栈的错误
+ * 记录错误（带描述，不带堆栈）
  */
 #define SF_ERROR_DESC(CppErrors, Error, ErrorDesc) \
     SSFError error(Error, ErrorDesc);              \
     SKYWALKER_ERRORS_WRAP(CppErrors, error)
 
 /**
- * 带堆栈的错误
+ * 记录错误（不带描述，带堆栈）
  */
 #define SF_ERROR_TRACE(CppErrors, Error) \
     SSFError error(Error);               \
     SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)
 
 /**
- * 带堆栈的错误
+ * 记录错误（带描述，带堆栈）
  */
 #define SF_ERROR_DESC_TRACE(CppErrors, Error, ErrorDesc) \
     SSFError error(Error, ErrorDesc);                    \

@@ -12,6 +12,9 @@
 
 SF_NAMESPACE_BEGIN
 
+/**
+ * 日志等级
+ */
 enum ESFLogLevel
 {
     Framework = 0, // 框架，用于框架内部调试
@@ -34,7 +37,7 @@ enum ESFLogLevel
 #endif
 
 /**
- * 日志模块定义
+ * 定义日志模块名称与显示等级
  */
 #define SF_LOG_DEFINE(Module, ShowLevel)          \
     static const char *SFLogModuleName = #Module; \
@@ -43,14 +46,14 @@ enum ESFLogLevel
 #define SF_LOG_MODULE "[" << SFLogModuleName << "] "
 
 /**
- * 日志打印
+ * 按全局等级过滤并输出日志
  */
 #define SF_LOG_PRINT_EX(Level, Content) \
     if (Level >= SF_LOG_LEVEL)          \
         std::cout << Content << std::endl;
 
 /**
- * 日志打印
+ * 按模块等级过滤并输出日志
  */
 #define SF_LOG_PRINT(Level, Content)   \
     if (Level >= SFLogModuleShowLevel) \
@@ -69,13 +72,13 @@ enum ESFLogLevel
     SF_LOG_PRINT(ESFLogLevel::Debug, "[Debug     ]" << SF_LOG_MODULE << SF_LOG_FILE_LINE << Content)
 
 /**
- * 调试
+ * 调试（当前对象）
  */
 #define SF_LOG_DEBUG_MODULE(Content) \
     SF_LOG_DEBUG_OBJECT(this, Content)
 
 /**
- * 调试
+ * 调试（指定对象）
  */
 #define SF_LOG_DEBUG_OBJECT(Object, Content) \
     SF_LOG_DEBUG(Object->GetObjectClassName() << " " << " [ObjectGUID " << Object->GetObjectGUID() << "] " << Content)

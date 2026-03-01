@@ -11,7 +11,7 @@
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 /**
- * 导出
+ * 动态库导出与API可见性宏
  */
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
 #define SF_DLL_EXPORT extern "C" __declspec(dllexport)
