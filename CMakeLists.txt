@@ -26,6 +26,13 @@ set(skywalker_server_name "SkywalkerServer")
 # 项目名称
 project(${skywalker_server_name})
 
+# MSVC 统一使用 UTF-8 编译源文件，避免 C4819 编码告警
+if(MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /utf-8")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+    add_compile_options(/utf-8)
+endif()
+
 SkywalkerServer_MessageDebug("Start Build ${skywalker_server_name}")
 
 # 项目模式
@@ -115,7 +122,7 @@ macro(SkywalkerServer_Plugin PlugName DirName)
     )
 
     target_link_libraries(${PlugName} PRIVATE
-        SSFCore
+        SFCore
     )
 
     SkywalkerServer_Export(${PlugName} ${DirName})

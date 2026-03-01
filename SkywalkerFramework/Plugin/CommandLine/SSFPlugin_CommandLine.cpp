@@ -7,28 +7,28 @@
 
 #include "SSFPlugin_CommandLine.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
 #include "Module/SSFModule_OS.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_CommandLine, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_CommandLine, ESFLogLevel::Debug);
 
-SSF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
+SF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_CommandLine::Install(SSFObjectErrors &Errors)
+void SSFPlugin_CommandLine::Install(SFObjectErrors &Errors)
 {
-    SSF_REGISTER_MODULE(SSFModule_OS);
+    SF_REGISTER_MODULE(SSFModule_OS);
 }
 
-void SSFPlugin_CommandLine::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_CommandLine::Uninstall(SFObjectErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(SSFModule_OS);
+    SF_UNREGISTER_MODULE(SSFModule_OS);
 }
 
 #pragma endregion SSFPlugin

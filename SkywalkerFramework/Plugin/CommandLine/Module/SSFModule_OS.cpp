@@ -10,19 +10,19 @@
 #include <csignal>
 #include <signal.h>
 
-#include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
-#include "Include/SFramework.h"
+#include "Include/SFCore.h"
+#include "Include/SFILog.h"
+#include "Include/SFFramework.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFModule_OS, LogLevel_Debug);
+SF_LOG_DEFINE(SSFModule_OS, ESFLogLevel::Debug);
 
-static SSF_PTR(SSFModule_OS) SelfModule{};
+static SF_PTR(SSFModule_OS) SelfModule{};
 
 #pragma region Module
 
-void SSFModule_OS::Init(SSFObjectErrors &Errors)
+void SSFModule_OS::Init(SFObjectErrors &Errors)
 {
     SelfModule = this;
 
@@ -30,7 +30,7 @@ void SSFModule_OS::Init(SSFObjectErrors &Errors)
     signal(SIGINT, &SSFModule_OS::SignalHandler); // Ctrl+C
 }
 
-void SSFModule_OS::Destroy(SSFObjectErrors &Errors)
+void SSFModule_OS::Destroy(SFObjectErrors &Errors)
 {
     SelfModule = nullptr;
 
@@ -40,13 +40,13 @@ void SSFModule_OS::Destroy(SSFObjectErrors &Errors)
 
 #pragma endregion Module
 
-SSFModule_OS::SSFModule_OS(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+SSFModule_OS::SSFModule_OS(SFModuleContext &InContext, SFObjectErrors &InErrors)
     : SSFModule(InContext, InErrors)
 {
 }
 
 void SSFModule_OS::SignalHandler(int Signal)
 {
-    SSF_LOG_DEBUG("SignalHandler Signal: " << Signal);
+    SF_LOG_DEBUG("SignalHandler Signal: " << Signal);
     SelfModule->GetFramework()->Close();
 }

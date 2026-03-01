@@ -7,24 +7,24 @@
 
 #include "SSFPlugin_Profiler.h"
 
-#include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
+#include "Include/SFCore.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_Profiler, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_Profiler, ESFLogLevel::Debug);
 
-SSF_PLUGIN_EXPORT(SSFPlugin_Profiler)
+SF_PLUGIN_EXPORT(SSFPlugin_Profiler)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_Profiler::Install(SSFObjectErrors &Errors)
+void SSFPlugin_Profiler::Install(SFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Profiler::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_Profiler::Uninstall(SFObjectErrors &Errors)
 {
 }
 

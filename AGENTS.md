@@ -84,7 +84,7 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 | Enums      | `E` prefix          | `ESkywalkerServerState` |
 | Files      | PascalCase          | `SkywalkerFramework.h`  |
 
-### Type System (from SSFCore.h)
+### Type System (from SFCore.h)
 - `SSFString` (std::string), `SSFBool` (bool), `SSFInt` (int)
 - `SSFUInt` (unsigned int), `SSFFloat` (float), `SSFDouble` (double)
 
@@ -92,18 +92,18 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 `SSF_PTR(T), SSF_CONST_PTR(T), SSF_SHARED_PTR(T), SSF_WEAK_PTR(T), SSF_UNIQUE_PTR(T)`
 
 ### Namespace
-`SSF_NAMESPACE_BEGIN // code here SSF_NAMESPACE_END`
+`SF_NAMESPACE_BEGIN // code here SSF_NAMESPACE_END`
 
 ### Error Handling
 ```cpp
 SSFObjectErrors Errors;
-SSF_ERROR(Errors, SkywalkerSFError_Plugin_Load_Failed);
-SSF_ERROR_DESC(Errors, SkywalkerSFError_Plugin_Load_Failed, "Description");
+SSF_ERROR(Errors, ESFError::Plugin_Load_Failed);
+SSF_ERROR_DESC(Errors, ESFError::Plugin_Load_Failed, "Description");
 if (Errors.IsValid()) { /* handle error */ }
 ```
 
 ### Logging
-`SSF_LOG_INFO/ERROR/DEBUG("Message " << variable)`
+`SF_LOG_INFO/ERROR/DEBUG("Message " << variable)`
 
 ### Assertions
 `SSF_ASSERT(condition); SSF_ASSERT_IS_BASE_OF(SSFPlugin, MyPlugin);`
@@ -112,7 +112,7 @@ if (Errors.IsValid()) { /* handle error */ }
 ```cpp
 SSF_REGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
 SSF_UNREGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
-SSF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
+SF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
 SSF_REGISTER_MODULE(SSFModule_MyModule);
 SSF_UNREGISTER_MODULE(SSFModule_MyModule);
 ```

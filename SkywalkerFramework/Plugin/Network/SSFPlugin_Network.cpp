@@ -7,32 +7,32 @@
 
 #include "SSFPlugin_Network.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
 #include "SSFModule_NetworkServer.h"
 #include "SSFModule_NetworkClient.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_Network, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_Network, ESFLogLevel::Debug);
 
 // 插件导出
-SSF_PLUGIN_EXPORT(SSFPlugin_Network)
+SF_PLUGIN_EXPORT(SSFPlugin_Network)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_Network::Install(SSFObjectErrors &Errors)
+void SSFPlugin_Network::Install(SFObjectErrors &Errors)
 {
-    SSF_REGISTER_MODULE(SSFModule_NetworkServer)
-    SSF_REGISTER_MODULE(SSFModule_NetworkClient)
+    SF_REGISTER_MODULE(SSFModule_NetworkServer)
+    SF_REGISTER_MODULE(SSFModule_NetworkClient)
 }
 
-void SSFPlugin_Network::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_Network::Uninstall(SFObjectErrors &Errors)
 {
-    SSF_UNREGISTER_MODULE(SSFModule_NetworkServer)
-    SSF_UNREGISTER_MODULE(SSFModule_NetworkClient)
+    SF_UNREGISTER_MODULE(SSFModule_NetworkServer)
+    SF_UNREGISTER_MODULE(SSFModule_NetworkClient)
 }
 
 #pragma endregion SSFPlugin

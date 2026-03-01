@@ -7,23 +7,23 @@
 
 #include "SSFPlugin_Actor.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_Actor, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_Actor, ESFLogLevel::Debug);
 
-SSF_PLUGIN_EXPORT(SSFPlugin_Actor)
+SF_PLUGIN_EXPORT(SSFPlugin_Actor)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_Actor::Install(SSFObjectErrors &Errors)
+void SSFPlugin_Actor::Install(SFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Actor::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_Actor::Uninstall(SFObjectErrors &Errors)
 {
 }
 

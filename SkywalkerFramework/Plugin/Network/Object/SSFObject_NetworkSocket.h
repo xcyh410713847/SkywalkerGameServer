@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_OBJECT_NETWORK_SOCKET_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_OBJECT_NETWORK_SOCKET_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Object/SSFObject.h"
 
@@ -18,7 +18,7 @@
 #include <sys/socket.h>
 #endif
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 #pragma region 跨平台套接字
 
@@ -52,11 +52,11 @@ typedef SOCKET SSFSOCKET;
 /**
  * 启动网络
  */
-#define SSF_NETWORK_STARTUP()                                                                                \
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)                                                           \
-    {                                                                                                        \
-        SSF_ERROR_DESC_TRACE(InErrors, SkywalkerSFError_Network_Init_Failed, "Failed to initialize winsock") \
-        return;                                                                                              \
+#define SSF_NETWORK_STARTUP()                                                                        \
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)                                                   \
+    {                                                                                                \
+        SF_ERROR_DESC_TRACE(InErrors, ESFError::Network_Init_Failed, "Failed to initialize winsock") \
+        return;                                                                                      \
     }
 
 /**
@@ -83,15 +83,15 @@ typedef SOCKET SSFSOCKET;
 /**
  * 设置套接字为非阻塞模式
  */
-#define SSF_SOCKET_SET_NONBLOCKING(Socket)                                                                                         \
-    {                                                                                                                              \
-        u_long mode = 1;                                                                                                           \
-        if (ioctlsocket(Socket, FIONBIO, &mode) == SSF_SOCKET_ERROR)                                                               \
-        {                                                                                                                          \
-            SSF_ERROR_DESC_TRACE(InErrors, SkywalkerSFError_Network_Socket_SetFailed, "Failed to set socket to non-blocking mode") \
-            SSF_CLOSE_SOCKET(Socket);                                                                                              \
-            return;                                                                                                                \
-        }                                                                                                                          \
+#define SSF_SOCKET_SET_NONBLOCKING(Socket)                                                                                 \
+    {                                                                                                                      \
+        u_long mode = 1;                                                                                                   \
+        if (ioctlsocket(Socket, FIONBIO, &mode) == SSF_SOCKET_ERROR)                                                       \
+        {                                                                                                                  \
+            SF_ERROR_DESC_TRACE(InErrors, ESFError::Network_Socket_SetFailed, "Failed to set socket to non-blocking mode") \
+            SSF_CLOSE_SOCKET(Socket);                                                                                      \
+            return;                                                                                                        \
+        }                                                                                                                  \
     }
 
 #else
@@ -162,7 +162,7 @@ typedef int SSFSOCKET;
 struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 {
     SSFSOCKET Socket;
-    SSFString IP;
+    SFString IP;
     int Port;
 
     SSFNetworkSocketCreatorContext()
@@ -176,7 +176,7 @@ struct SSFNetworkSocketCreatorContext : public SSFObjectContext
 class SSFObject_NetworkSocket : public SSFObject
 {
 public:
-    SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
+    SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFObject_NetworkSocket();
 
     /**
@@ -203,11 +203,11 @@ public:
         return !IsSocketInvalid();
     }
 
-    virtual void Init(SSFObjectErrors &Errors) {};
-    virtual void Awake(SSFObjectErrors &Errors) {};
-    virtual void Start(SSFObjectErrors &Errors) {};
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) {};
-    virtual void Stop(SSFObjectErrors &Errors) {};
+    virtual void Init(SFObjectErrors &Errors) {};
+    virtual void Awake(SFObjectErrors &Errors) {};
+    virtual void Start(SFObjectErrors &Errors) {};
+    virtual void Tick(SFObjectErrors &Errors, int DelayMS) {};
+    virtual void Stop(SFObjectErrors &Errors) {};
 
 protected:
     /**
@@ -216,8 +216,8 @@ protected:
     SSFSOCKET Socket = SSF_INVALID_SOCKET;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
-#define SSF_PRT_NETWORK_SOCKET SSF_PTR(SSFObject_NetworkSocket)
+#define SSF_PRT_NETWORK_SOCKET SF_PTR(SSFObject_NetworkSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_NETWORK_SOCKET_H__

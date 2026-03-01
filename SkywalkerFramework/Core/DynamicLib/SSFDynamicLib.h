@@ -8,27 +8,27 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #define SKYWALKER__DYNAMIC_LIB_PATH "./"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-class SSFDynamicLib
+class SFDynamicLib
 {
 public:
-    SSFDynamicLib(const SSFString &InName);
-    virtual ~SSFDynamicLib();
+    SFDynamicLib(const SFString &InName);
+    virtual ~SFDynamicLib();
 
     bool Load();
     bool Unload();
 
-    const SSFString &GetName() const;
+    const SFString &GetName() const;
 
     void *GetSymbol(const char *ProcName);
 
 private:
-    SSFString Name;
+    SFString Name;
 
     SKYWALKER_DYNAMIC_LIB_HANDLE Instance;
 };
@@ -36,8 +36,8 @@ private:
 /**
  * SSFCDynamicLib 指针
  */
-#define SSF_PTR_DYNAMIC_LIB SSF_SHARED_PTR(SSFDynamicLib)
+#define SSF_PTR_DYNAMIC_LIB SF_SHARED_PTR(SFDynamicLib)
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_DYNAMIC_LIB_H__

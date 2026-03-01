@@ -8,23 +8,23 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_OBJECT_SERVER_SOCKET_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_OBJECT_SERVER_SOCKET_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "SSFObject_NetworkSocket.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 class SSFObject_ServerSocket : public SSFObject_NetworkSocket
 {
 public:
-    SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors);
+    SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFObject_ServerSocket();
 
-    virtual void Stop(SSFObjectErrors &Errors) override;
+    virtual void Stop(SFObjectErrors &Errors) override;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
-#define SSF_PRT_SERVER_SOCKET SSF_PTR(SSFObject_ServerSocket)
+#define SSF_PRT_SERVER_SOCKET SF_PTR(SSFObject_ServerSocket)
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_OBJECT_SERVER_SOCKET_H__

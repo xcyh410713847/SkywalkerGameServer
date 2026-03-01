@@ -67,7 +67,7 @@ SSF_UNIQUE_PTR(T)    // unique_ptr<T>
 
 ### 命名空间
 ```cpp
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 // 代码
 SSF_NAMESPACE_END
 ```
@@ -75,14 +75,14 @@ SSF_NAMESPACE_END
 ### 错误处理
 ```cpp
 SSFObjectErrors Errors;
-SSF_ERROR(Errors, SkywalkerSFError_Plugin_Load_Failed);
-SSF_ERROR_DESC(Errors, SkywalkerSFError_Plugin_Load_Failed, "描述");
+SSF_ERROR(Errors, ESFError::Plugin_Load_Failed);
+SSF_ERROR_DESC(Errors, ESFError::Plugin_Load_Failed, "描述");
 if (Errors.IsValid()) { /* 处理错误 */ }
 ```
 
 ### 日志
 ```cpp
-SSF_LOG_INFO("消息 " << 变量);
+SF_LOG_INFO("消息 " << 变量);
 SSF_LOG_ERROR("消息 " << 变量);
 SSF_LOG_DEBUG("消息 " << 变量);
 ```
@@ -100,7 +100,7 @@ SSF_REGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
 // 注销插件
 SSF_UNREGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
 // DLL导出
-SSF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
+SF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
 ```
 
 ### 模块开发

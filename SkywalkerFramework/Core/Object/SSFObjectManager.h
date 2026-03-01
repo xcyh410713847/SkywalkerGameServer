@@ -8,25 +8,25 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_SSFObjectManager_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_SSFObjectManager_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Object/SSFObject.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-SSF_TEMPLATE_CLASS(SSFObject, Object)
+SF_TEMPLATE_CLASS(SSFObject, Object)
 class SSFObjectManager : public SSFObject
 {
 public:
-    SSFObjectManager(SSFObjectContext &InContext, SSFObjectErrors &InErrors)
+    SSFObjectManager(SSFObjectContext &InContext, SFObjectErrors &InErrors)
         : SSFObject(InContext, InErrors) {};
     virtual ~SSFObjectManager() {};
 
-    virtual void Release(SSFObjectErrors &Errors) override
+    virtual void Release(SFObjectErrors &Errors) override
     {
-        SSF_COMMON_ITERATOR(IterObject, ObjectMap)
+        SF_COMMON_ITERATOR(IterObject, ObjectMap)
         {
-            if (SSF_PTR_INVALID(IterObject->second))
+            if (SF_PTR_INVALID(IterObject->second))
             {
                 continue;
             }
@@ -40,24 +40,24 @@ public:
     /**
      * 加入对象
      */
-    virtual void AddObject(SSFObjectErrors &Errors, SSF_PTR(Object) AddObject)
+    virtual void AddObject(SFObjectErrors &Errors, SF_PTR(Object) AddObject)
     {
-        if (!SSF_PTR_VALID(AddObject))
+        if (!SF_PTR_VALID(AddObject))
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Nullptr, "ObjectManager AddObject nullptr");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_Nullptr, "ObjectManager AddObject nullptr");
             return;
         }
 
-        SSFObjectGUID objectGUID = AddObject->GetObjectGUID();
-        if (SSF_OBJECT_GUID_INVALID(objectGUID))
+        SFObjectGUID objectGUID = AddObject->GetObjectGUID();
+        if (SF_OBJECT_GUID_INVALID(objectGUID))
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_GUID_Invalid, "ObjectManager AddObject GUID Invalid");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_GUID_Invalid, "ObjectManager AddObject GUID Invalid");
             return;
         }
 
         if (ObjectMap.find(objectGUID) != ObjectMap.end())
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Add_Repeat, "ObjectManager AddObject Repeat");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_Add_Repeat, "ObjectManager AddObject Repeat");
             return;
         }
 
@@ -67,25 +67,25 @@ public:
     /**
      * 移除对象
      */
-    virtual void RemoveObject(SSFObjectErrors &Errors, SSF_PTR(Object) RemoveObject)
+    virtual void RemoveObject(SFObjectErrors &Errors, SF_PTR(Object) RemoveObject)
     {
-        if (!SSF_PTR_VALID(RemoveObject))
+        if (!SF_PTR_VALID(RemoveObject))
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Nullptr, "ObjectManager RemoveObject nullptr");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_Nullptr, "ObjectManager RemoveObject nullptr");
             return;
         }
 
-        SSFObjectGUID objectGUID = RemoveObject->GetObjectGUID();
-        if (SSF_OBJECT_GUID_INVALID(objectGUID))
+        SFObjectGUID objectGUID = RemoveObject->GetObjectGUID();
+        if (SF_OBJECT_GUID_INVALID(objectGUID))
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_GUID_Invalid, "ObjectManager RemoveObject GUID Invalid");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_GUID_Invalid, "ObjectManager RemoveObject GUID Invalid");
             return;
         }
 
         auto iter = ObjectMap.find(objectGUID);
         if (iter == ObjectMap.end())
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Add_Repeat, "ObjectManager RemoveObject NotFound");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_Add_Repeat, "ObjectManager RemoveObject NotFound");
             return;
         }
 
@@ -95,18 +95,18 @@ public:
     /**
      * 获取对象
      */
-    virtual SSF_PTR(Object) FindObject(SSFObjectErrors &Errors, const SSFObjectGUID &InObjectGUID)
+    virtual SF_PTR(Object) FindObject(SFObjectErrors &Errors, const SFObjectGUID &InObjectGUID)
     {
-        if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
+        if (SF_OBJECT_GUID_INVALID(InObjectGUID))
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_GUID_Invalid, "ObjectManager GetObject GUID Invalid");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_GUID_Invalid, "ObjectManager GetObject GUID Invalid");
             return nullptr;
         }
 
         auto iter = ObjectMap.find(InObjectGUID);
         if (iter == ObjectMap.end())
         {
-            SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Object_Add_Repeat, "ObjectManager GetObject NotFound");
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Object_Not_Found, "ObjectManager GetObject NotFound");
             return nullptr;
         }
 
@@ -116,9 +116,9 @@ public:
     /**
      * 获取对象
      */
-    virtual SSF_PTR(Object) FindObject(const SSFObjectGUID &InObjectGUID)
+    virtual SF_PTR(Object) FindObject(const SFObjectGUID &InObjectGUID)
     {
-        if (SSF_OBJECT_GUID_INVALID(InObjectGUID))
+        if (SF_OBJECT_GUID_INVALID(InObjectGUID))
         {
             return nullptr;
         }
@@ -133,9 +133,9 @@ public:
     }
 
 private:
-    SSFMap<SSFObjectGUID, SSF_PTR(Object)> ObjectMap;
+    SFMap<SFObjectGUID, SF_PTR(Object)> ObjectMap;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFObjectManager_H__

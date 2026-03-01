@@ -7,24 +7,24 @@
 
 #include "SSFObject_ServerSocket.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFObject_ServerSocket, LogLevel_Debug);
+SF_LOG_DEFINE(SSFObject_ServerSocket, ESFLogLevel::Debug);
 
-SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors)
     : SSFObject_NetworkSocket(InContext, InErrors)
 {
     // 创建套接字
     Socket = SSF_SOCKET_CREATE(AF_INET, SOCK_STREAM);
     if (Socket == SSF_INVALID_SOCKET)
     {
-        SSF_ERROR_DESC_TRACE(InErrors,
-                             SkywalkerSFError_Network_Socket_CreateFailed,
-                             "Failed to create socket")
+        SF_ERROR_DESC_TRACE(InErrors,
+                            ESFError::Network_Socket_CreateFailed,
+                            "Failed to create socket")
         return;
     }
 
@@ -52,9 +52,9 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
 
     if (bind(ServerSocket, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SSF_SOCKET_ERROR)
     {
-        SSF_ERROR_DESC_TRACE(InErrors,
-                             SkywalkerSFError_Network_Socket_BindFailed,
-                             "Failed to bind address to the socket");
+        SF_ERROR_DESC_TRACE(InErrors,
+                            ESFError::Network_Socket_BindFailed,
+                            "Failed to bind address to the socket");
         // 关闭套接字
         SSF_CLOSE_SOCKET(ServerSocket);
 
@@ -64,9 +64,9 @@ SSFObject_ServerSocket::SSFObject_ServerSocket(SSFNetworkSocketCreatorContext &I
     // 监听和接受连接请求
     if (listen(ServerSocket, SOMAXCONN) == SSF_SOCKET_ERROR)
     {
-        SSF_ERROR_DESC_TRACE(InErrors,
-                             SkywalkerSFError_Network_Socket_ListenFailed,
-                             "Failed to listen")
+        SF_ERROR_DESC_TRACE(InErrors,
+                            ESFError::Network_Socket_ListenFailed,
+                            "Failed to listen")
         // 关闭套接字
         SSF_CLOSE_SOCKET(ServerSocket);
 
@@ -78,7 +78,7 @@ SSFObject_ServerSocket::~SSFObject_ServerSocket()
 {
 }
 
-void SSFObject_ServerSocket::Stop(SSFObjectErrors &Errors)
+void SSFObject_ServerSocket::Stop(SFObjectErrors &Errors)
 {
     SSFObject_NetworkSocket::Stop(Errors);
 

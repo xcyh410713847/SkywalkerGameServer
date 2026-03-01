@@ -7,33 +7,33 @@
 
 #include "SSFModule_NetworkServer.h"
 
-#include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
+#include "Include/SFCore.h"
+#include "Include/SFILog.h"
 
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFModule_NetworkServer, LogLevel_Framework);
+SF_LOG_DEFINE(SSFModule_NetworkServer, Framework);
 
 #pragma region Object
 
-void SSFModule_NetworkServer::Init(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
 }
 
-void SSFModule_NetworkServer::Awake(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Awake(SFObjectErrors &Errors)
 {
     SSFModule::Awake(Errors);
 }
 
-void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Start(SFObjectErrors &Errors)
 {
     SSFModule::Start(Errors);
 
     const char *ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
-    SSFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
+    SFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
 
     SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (ConfigParse->LoadScript(ServerConfigPath.c_str()))
@@ -65,38 +65,38 @@ void SSFModule_NetworkServer::Start(SSFObjectErrors &Errors)
     StartNetworkServer(Errors);
 }
 
-void SSFModule_NetworkServer::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFModule_NetworkServer::Tick(SFObjectErrors &Errors, int DelayMS)
 {
     SSFModule::Tick(Errors, DelayMS);
 
     CreateNetworkClient(Errors);
 
-    SSF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
+    SF_COMMON_ITERATOR(Iter, ClientNetworkSocketMap)
     {
         Iter->second->Tick(Errors, DelayMS);
     }
 }
 
-void SSFModule_NetworkServer::Stop(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Stop(SFObjectErrors &Errors)
 {
     StopNetworkServer(Errors);
 
     SSFModule::Stop(Errors);
 }
 
-void SSFModule_NetworkServer::Sleep(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Sleep(SFObjectErrors &Errors)
 {
     SSFModule::Sleep(Errors);
 }
 
-void SSFModule_NetworkServer::Destroy(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::Destroy(SFObjectErrors &Errors)
 {
     SSFModule::Destroy(Errors);
 }
 
 #pragma endregion Object
 
-void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
+void SSFModule_NetworkServer::StartNetworkServer(SFObjectErrors &InErrors)
 {
     if (InErrors.IsValid())
     {
@@ -110,35 +110,35 @@ void SSFModule_NetworkServer::StartNetworkServer(SSFObjectErrors &InErrors)
     Context.IP = ServerIP;
     Context.Port = ServerPort;
     auto pServerSocket = NewObject<SSFObject_ServerSocket>(Context, InErrors);
-    ServerNetworkSocket = SSF_UNIQUE_PTR_CAST(SSFObject_ServerSocket, pServerSocket);
+    ServerNetworkSocket = SF_UNIQUE_PTR_CAST(SSFObject_ServerSocket, pServerSocket);
 
     if (InErrors.IsValid())
     {
-        SSF_ERROR_DESC_TRACE(InErrors,
-                             SkywalkerSFError_Network_Start_Failed,
-                             "Failed to start network server");
+        SF_ERROR_DESC_TRACE(InErrors,
+                            ESFError::Network_Start_Failed,
+                            "Failed to start network server");
         SSF_NETWORK_CLEANUP();
 
         return;
     }
 
-    SSF_LOG_FRAMEWORK("Create ServerSocket ObjectGUID " << ServerNetworkSocket->GetObjectGUID() << " Socket " << ServerNetworkSocket->GetSocket());
+    SF_LOG_FRAMEWORK("Create ServerSocket ObjectGUID " << ServerNetworkSocket->GetObjectGUID() << " Socket " << ServerNetworkSocket->GetSocket());
 }
 
-void SSFModule_NetworkServer::StopNetworkServer(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::StopNetworkServer(SFObjectErrors &Errors)
 {
     ServerNetworkSocket->Stop(Errors);
 
     SSF_NETWORK_CLEANUP();
 }
 
-void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
+void SSFModule_NetworkServer::CreateNetworkClient(SFObjectErrors &Errors)
 {
     if (ServerNetworkSocket->IsSocketInvalid())
     {
-        SSF_ERROR_DESC_TRACE(
+        SF_ERROR_DESC_TRACE(
             Errors,
-            SkywalkerSFError_Network_Socket_CreateFailed,
+            ESFError::Network_Socket_CreateFailed,
             "Create ClientSocket Failed, Because ServerSocket is Invalid")
 
         return;
@@ -156,5 +156,5 @@ void SSFModule_NetworkServer::CreateNetworkClient(SSFObjectErrors &Errors)
     SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = NewObject<SSFObject_ClientSocket>(Context, Errors);
     ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
 
-    SSF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
+    SF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
 }

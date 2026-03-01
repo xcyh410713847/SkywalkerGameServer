@@ -7,23 +7,23 @@
 
 #include "SSFPlugin_AI.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_AI, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_AI, ESFLogLevel::Debug);
 
-SSF_PLUGIN_EXPORT(SSFPlugin_AI)
+SF_PLUGIN_EXPORT(SSFPlugin_AI)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_AI::Install(SSFObjectErrors &Errors)
+void SSFPlugin_AI::Install(SFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_AI::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_AI::Uninstall(SFObjectErrors &Errors)
 {
 }
 

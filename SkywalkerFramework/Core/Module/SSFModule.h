@@ -8,17 +8,17 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Object/SSFObject.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-class SSFPlugin;
+class SFPlugin;
 
-struct SSFModuleContext : public SSFObjectContext
+struct SFModuleContext : public SSFObjectContext
 {
-    SSF_PTR(SSFPlugin)
+    SF_PTR(SFPlugin)
     Plugin{};
 };
 
@@ -30,58 +30,58 @@ public:
     /**
      * 初始化
      */
-    virtual void Init(SSFObjectErrors &Errors);
+    virtual void Init(SFObjectErrors &Errors);
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFObjectErrors &Errors);
+    virtual void Awake(SFObjectErrors &Errors);
 
     /**
      * 开始
      */
-    virtual void Start(SSFObjectErrors &Errors);
+    virtual void Start(SFObjectErrors &Errors);
 
     /**
      * Tick
      */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
+    virtual void Tick(SFObjectErrors &Errors, int DelayMS);
 
     /**
      * 结束
      */
-    virtual void Stop(SSFObjectErrors &Errors);
+    virtual void Stop(SFObjectErrors &Errors);
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFObjectErrors &Errors);
+    virtual void Sleep(SFObjectErrors &Errors);
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &Errors);
+    virtual void Destroy(SFObjectErrors &Errors);
 
 #pragma endregion Module
 
 public:
-    SSFModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
+    SSFModule(SFModuleContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFModule();
 
     /**
      * 获取插件
      */
-    SSF_PTR(SSFPlugin)
+    SF_PTR(SFPlugin)
     GetPlugin()
     {
         return Plugin;
     };
 
 private:
-    SSF_PTR(SSFPlugin)
+    SF_PTR(SFPlugin)
     Plugin;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_H__

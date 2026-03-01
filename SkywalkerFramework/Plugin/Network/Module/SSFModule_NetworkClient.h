@@ -8,13 +8,13 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_CLIENT_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_CLIENT_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Module/SSFModule.h"
 
 #include "SSFObject_NetworkSocket.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 /**
  * 作为客户端，连接其他服务器
@@ -27,42 +27,42 @@ public:
     /**
      * 初始化
      */
-    virtual void Init(SSFObjectErrors &Errors) override;
+    virtual void Init(SFObjectErrors &Errors) override;
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFObjectErrors &Errors) override;
+    virtual void Awake(SFObjectErrors &Errors) override;
 
     /**
      * 开始
      */
-    virtual void Start(SSFObjectErrors &Errors) override;
+    virtual void Start(SFObjectErrors &Errors) override;
 
     /**
      * Tick
      */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS) override;
+    virtual void Tick(SFObjectErrors &Errors, int DelayMS) override;
 
     /**
      * 结束
      */
-    virtual void Stop(SSFObjectErrors &Errors) override;
+    virtual void Stop(SFObjectErrors &Errors) override;
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFObjectErrors &Errors) override;
+    virtual void Sleep(SFObjectErrors &Errors) override;
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &Errors) override;
+    virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Object
 
 public:
-    SSFModule_NetworkClient(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+    SSFModule_NetworkClient(SFModuleContext &InContext, SFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors)
     {
     }
@@ -98,17 +98,17 @@ private:
     /**
      * 开启网络客户端
      */
-    void StartNetworkClient(SSFObjectErrors &Errors);
+    void StartNetworkClient(SFObjectErrors &Errors);
 
     /**
      * 停止网络客户端
      */
-    void StopNetworkClient(SSFObjectErrors &Errors);
+    void StopNetworkClient(SFObjectErrors &Errors);
 
     /**
      * 处理接收数据
      */
-    void HandleReceive(SSFObjectErrors &Errors);
+    void HandleReceive(SFObjectErrors &Errors);
 
 private:
     SSF_NETWORK_DATA;
@@ -119,6 +119,6 @@ private:
     int ServerPort = 0;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_CLIENT_H__

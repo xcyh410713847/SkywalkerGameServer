@@ -7,13 +7,13 @@
 
 #include "SSFService.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFService, LogLevel_Debug);
+SF_LOG_DEFINE(SSFService, ESFLogLevel::Debug);
 
-SSFService::SSFService(SSFServiceContext &InContext, SSFObjectErrors &InErrors)
+SSFService::SSFService(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
 }

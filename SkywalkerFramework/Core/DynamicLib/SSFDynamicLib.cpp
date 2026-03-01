@@ -7,9 +7,9 @@
 
 #include "SSFDynamicLib.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSFDynamicLib::SSFDynamicLib(const SSFString &InName)
+SFDynamicLib::SFDynamicLib(const SFString &InName)
 {
     Name = InName;
     Instance = NULL;
@@ -17,13 +17,13 @@ SSFDynamicLib::SSFDynamicLib(const SSFString &InName)
     Name.append(SKYWALKER_DYNAMIC_LIB_EXT);
 }
 
-SSFDynamicLib::~SSFDynamicLib()
+SFDynamicLib::~SFDynamicLib()
 {
 }
 
-bool SSFDynamicLib::Load()
+bool SFDynamicLib::Load()
 {
-    SSFString Path = SKYWALKER__DYNAMIC_LIB_PATH;
+    SFString Path = SKYWALKER__DYNAMIC_LIB_PATH;
     Path.append(Name);
 
     Instance = SKYWALKER_DYNAMIC_LIB_LOAD(Path.c_str());
@@ -31,13 +31,13 @@ bool SSFDynamicLib::Load()
     return Instance != nullptr;
 }
 
-bool SSFDynamicLib::Unload()
+bool SFDynamicLib::Unload()
 {
     SKYWALKER_DYNAMIC_LIB_UNLOAD(Instance);
     return true;
 }
 
-void *SSFDynamicLib::GetSymbol(const char *ProcName)
+void *SFDynamicLib::GetSymbol(const char *ProcName)
 {
     return (SKYWALKER_DYNAMIC_LIB_HANDLE)SKYWALKER_DYNAMIC_LIB_GET_SYMBOL(Instance, ProcName);
 }

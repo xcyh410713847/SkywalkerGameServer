@@ -7,44 +7,44 @@
 
 #include "SkywalkerFramework.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 #include "Core/Service/FrameworkService/SSFService_Timer.h"
 #include "Core/Service/FrameworkService/SSFService_Event.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SkywalkerFramework, LogLevel_Debug);
+SF_LOG_DEFINE(SkywalkerFramework, ESFLogLevel::Debug);
 
-SSF_SHARED_PTR(SkywalkerFramework)
-SSFFramework = SSF_MAKE_SHARED_PTR(CSkywalkerFramework);
+SF_SHARED_PTR(SkywalkerFramework)
+SFFramework = SF_MAKE_SHARED_PTR(CSkywalkerFramework);
 
 bool CSkywalkerFramework::Start()
 {
     // 打印地址
-    SSF_LOG_DEBUG_MODULE("Start");
+    SF_LOG_DEBUG_MODULE("Start");
 
     // 进入启动中状态
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Starting;
+    RunningState = ERunningState::SkywalkerFrameworkRunningState_Starting;
 
     ServiceManager = NewObject<SSFFrameworkServiceManager>();
 
-    SSF_LOG_DEBUG_OBJECT(ServiceManager, "Create");
+    SF_LOG_DEBUG_OBJECT(ServiceManager, "Create");
 
     // 时间服务
     auto TimerService = GetService<SSFService_Timer>();
 
-    SSF_LOG_INFO("Start Time: " << TimerService->GetCurrTimeStr())
+    SF_LOG_INFO("Start Time: " << TimerService->GetCurrTimeStr())
 
     // 事件服务
     auto EventService = GetService<SSFService_Event>();
 
     // 插件管理器
-    PluginManager = NewObject<SSFPluginManager>();
+    PluginManager = NewObject<SFPluginManager>();
 
     // Init
-    SSFObjectErrors ObjectErrors;
+    SFObjectErrors ObjectErrors;
     PluginManager->Init(ObjectErrors);
 
     // Awake
@@ -54,9 +54,9 @@ bool CSkywalkerFramework::Start()
     PluginManager->Start(ObjectErrors);
 
     // 进入运行状态
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Running;
+    RunningState = ERunningState::SkywalkerFrameworkRunningState_Running;
 
-    SSF_LOG_INFO("Start Finish, Elapsed Time: " << TimerService->GetDeltaTime() << "ms");
+    SF_LOG_INFO("Start Finish, Elapsed Time: " << TimerService->GetDeltaTime() << "ms");
 
     return true;
 }
@@ -68,7 +68,7 @@ bool CSkywalkerFramework::Tick()
         return false;
     }
 
-    SSFObjectErrors ObjectErrors;
+    SFObjectErrors ObjectErrors;
 
     ServiceManager->Tick(ObjectErrors);
 
@@ -81,7 +81,7 @@ bool CSkywalkerFramework::Stop()
 {
     auto TimerService = GetService<SSFService_Timer>();
 
-    SSFObjectErrors ObjectErrors;
+    SFObjectErrors ObjectErrors;
 
     // Stop
     PluginManager->Stop(ObjectErrors);
@@ -96,7 +96,7 @@ bool CSkywalkerFramework::Stop()
     PluginManager->Release(ObjectErrors);
     PluginManager = nullptr;
 
-    SSF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << " ; Elapsed Time: " << TimerService->GetTotalTime() << "s");
+    SF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << " ; Elapsed Time: " << TimerService->GetTotalTime() << "s");
 
     ServiceManager->Release(ObjectErrors);
     ServiceManager = nullptr;
@@ -106,15 +106,15 @@ bool CSkywalkerFramework::Stop()
 
 void CSkywalkerFramework::Close()
 {
-    RunningState = ERunningState::SkywalkerServerFrameworkRunningState_Stopping;
+    RunningState = ERunningState::SkywalkerFrameworkRunningState_Stopping;
 }
 
 bool CSkywalkerFramework::IsRunning() const
 {
-    return RunningState == ERunningState::SkywalkerServerFrameworkRunningState_Running;
+    return RunningState == ERunningState::SkywalkerFrameworkRunningState_Running;
 }
 
-SSFObjectGUID CSkywalkerFramework::NewObjectGUID()
+SFObjectGUID CSkywalkerFramework::NewObjectGUID()
 {
     AddObjectGUID++;
     return AddObjectGUID;

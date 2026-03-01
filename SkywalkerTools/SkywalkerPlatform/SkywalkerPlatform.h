@@ -1,8 +1,8 @@
 /*************************************************************************
-**文件: SkywalkerTools\SkywalkerPlatform\SkywalkerPlatform.h
-**作者: shyfan
-**日期: 2023/08/04 16:57:26
-**功能: 平台
+**File: SkywalkerTools\SkywalkerPlatform\SkywalkerPlatform.h
+**Author: shyfan
+**Date: 2023/08/04 16:57:26
+**Desc: Platform
 *************************************************************************/
 
 #ifndef __SKYWALKER_PLATFORM_H__
@@ -27,47 +27,51 @@
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
-    #define SKYWALKER_PLATFORM_NAME "Windows"
+#define SKYWALKER_PLATFORM_NAME "Windows"
 #elif defined(__APPLE__)
-    #include <TargetConditionals.h>
-    #if defined(TARGET_OS_IPHONE)
-        #define SKYWALKER_PLATFORM_NAME "iOS"
-    #else
-        #define SKYWALKER_PLATFORM_NAME "Mac"
-    #endif
+#include <TargetConditionals.h>
+#if defined(TARGET_OS_IPHONE)
+#define SKYWALKER_PLATFORM_NAME "iOS"
+#else
+#define SKYWALKER_PLATFORM_NAME "Mac"
+#endif
 #elif defined(__linux__)
-    #define SKYWALKER_PLATFORM_NAME "Linux"
+#define SKYWALKER_PLATFORM_NAME "Linux"
 #else
-    #define SKYWALKER_PLATFORM_NAME "Unknown"
+#define SKYWALKER_PLATFORM_NAME "Unknown"
 #endif
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-    #define SKYWALKER_THREAD_LOCAL __declspec(thread)
+#define SKYWALKER_THREAD_LOCAL __declspec(thread)
 #else
-    #define SKYWALKER_THREAD_LOCAL __thread
+#define SKYWALKER_THREAD_LOCAL __thread
 #endif
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-    #define SKYWALKER_PATH_SEPARATOR '\\'
+#define SKYWALKER_PATH_SEPARATOR '\\'
 #else
-    #define SKYWALKER_PATH_SEPARATOR '/'
+#define SKYWALKER_PATH_SEPARATOR '/'
 #endif
 
 #define SKYWALKER_DISALLOW_COPY(ClassName) \
-    ClassName(const ClassName&) = delete; \
-    ClassName& operator=(const ClassName&) = delete;
+    ClassName(const ClassName &) = delete; \
+    ClassName &operator=(const ClassName &) = delete;
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-    #include <windows.h>
-    #include <string>
-    #include <ws2tcpip.h>
-    inline void SkywalkerSetEnv(const char *name, const char *value) { std::string envVar = std::string(name) + "=" + value; _putenv(envVar.c_str()); }
-    inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
+#include <windows.h>
+#include <string>
+#include <ws2tcpip.h>
+inline void SkywalkerSetEnv(const char *name, const char *value)
+{
+    std::string envVar = std::string(name) + "=" + value;
+    _putenv(envVar.c_str());
+}
+inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
 #else
-    #include <cstdlib>
-    #include <arpa/inet.h>
-    inline void SkywalkerSetEnv(const char *name, const char *value) { setenv(name, value, 1); }
-    inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
+#include <cstdlib>
+#include <arpa/inet.h>
+inline void SkywalkerSetEnv(const char *name, const char *value) { setenv(name, value, 1); }
+inline int SkywalkerInetPton(int af, const char *src, void *dst) { return inet_pton(af, src, dst); }
 #endif
 
 #endif

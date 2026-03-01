@@ -8,29 +8,29 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Module/SSFModule.h"
 #include "Core/Object/SSFObjectManager.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-struct SSFPluginContext : public SSFObjectContext
+struct SFPluginContext : public SSFObjectContext
 {
-    SSF_PTR(SSFPluginManager)
+    SF_PTR(SFPluginManager)
     PluginManager{};
 };
 
-class SSFPlugin : public SSFObjectManager<SSFModule>
+class SFPlugin : public SSFObjectManager<SSFModule>
 {
 public:
-    SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors);
-    virtual ~SSFPlugin();
+    SFPlugin(SFPluginContext &InContext, SFObjectErrors &InErrors);
+    virtual ~SFPlugin();
 
     /**
      * 获取插件管理器
      */
-    SSF_PTR(SSFPluginManager)
+    SF_PTR(SFPluginManager)
     GetPluginManager()
     {
         return PluginManager;
@@ -39,7 +39,7 @@ public:
     /**
      * 释放
      */
-    virtual void Release(SSFObjectErrors &Errors) override;
+    virtual void Release(SFObjectErrors &Errors) override;
 
 #pragma region Plugin Process
 
@@ -47,37 +47,37 @@ public:
     /**
      * 初始化
      */
-    virtual void Init(SSFObjectErrors &Errors);
+    virtual void Init(SFObjectErrors &Errors);
 
     /**
      * 唤醒
      */
-    virtual void Awake(SSFObjectErrors &Errors);
+    virtual void Awake(SFObjectErrors &Errors);
 
     /**
      * 开始
      */
-    virtual void Start(SSFObjectErrors &Errors);
+    virtual void Start(SFObjectErrors &Errors);
 
     /**
      * Tick
      */
-    virtual void Tick(SSFObjectErrors &Errors, int DelayMS);
+    virtual void Tick(SFObjectErrors &Errors, int DelayMS);
 
     /**
      * 结束
      */
-    virtual void Stop(SSFObjectErrors &Errors);
+    virtual void Stop(SFObjectErrors &Errors);
 
     /**
      * 休眠
      */
-    virtual void Sleep(SSFObjectErrors &Errors);
+    virtual void Sleep(SFObjectErrors &Errors);
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &Errors);
+    virtual void Destroy(SFObjectErrors &Errors);
 
 #pragma endregion Plugin Process
 
@@ -88,24 +88,24 @@ public:
      * 设置配置加载的模块列表
      * @param ModuleNames 模块名列表，为空表示加载所有模块
      */
-    void SetConfigModules(const SSFMap<SSFString, bool> &ModuleNames);
+    void SetConfigModules(const SFMap<SFString, bool> &ModuleNames);
 
     /**
      * 注册模块
      * @param Module 模块
      */
-    virtual void RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module);
+    virtual void RegisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module);
 
     /**
      * 注销模块
      * @param Module 模块
      */
-    virtual void UnregisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module);
+    virtual void UnregisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module);
 
     /**
      * 获取模块
      */
-    inline SSF_PTR(SSFModule) GetModule(const SSFString &ModuleName)
+    inline SF_PTR(SSFModule) GetModule(const SFString &ModuleName)
     {
         auto Iter = ModuleMap.find(ModuleName);
         if (Iter == ModuleMap.end())
@@ -114,12 +114,12 @@ public:
         }
 
         auto IterObject = FindObject(Iter->second);
-        if (SSF_PTR_INVALID(IterObject))
+        if (SF_PTR_INVALID(IterObject))
         {
             return nullptr;
         }
 
-        return SSF_PTR_DYNAMIC_CAST(SSFModule)(IterObject);
+        return SF_PTR_DYNAMIC_CAST(SSFModule)(IterObject);
     }
 
     /**
@@ -127,14 +127,14 @@ public:
      * @return 模块
      */
     template <typename ModuleT>
-    SSF_PTR(ModuleT)
+    SF_PTR(ModuleT)
     GetModule()
     {
-        SSF_ASSERT_IS_BASE_OF(SSFModule, ModuleT);
+        SF_ASSERT_IS_BASE_OF(SSFModule, ModuleT);
 
-        SSFString ModuleName{};
-        SSF_CLASS_NAME(ModuleT, ModuleName);
-        return SSF_PTR_DYNAMIC_CAST(ModuleT)(GetModule(ModuleName));
+        SFString ModuleName{};
+        SF_CLASS_NAME(ModuleT, ModuleName);
+        return SF_PTR_DYNAMIC_CAST(ModuleT)(GetModule(ModuleName));
     }
 
 #pragma endregion Module
@@ -143,21 +143,21 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFObjectErrors &Errors) {};
+    virtual void Install(SFObjectErrors &Errors) {};
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFObjectErrors &Errors) {};
+    virtual void Uninstall(SFObjectErrors &Errors) {};
 
 protected:
-    SSF_PTR(SSFPluginManager)
+    SF_PTR(SFPluginManager)
     PluginManager;
 
-    SSFMap<SSFString, SSFObjectGUID> ModuleMap;
-    SSFMap<SSFString, bool> ConfigModules;
+    SFMap<SFString, SFObjectGUID> ModuleMap;
+    SFMap<SFString, bool> ConfigModules;
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_H__

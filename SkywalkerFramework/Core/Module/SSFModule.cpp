@@ -7,54 +7,54 @@
 
 #include "SSFModule.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFModule, LogLevel_Debug);
+SF_LOG_DEFINE(SSFModule, ESFLogLevel::Debug);
 
 #pragma region Object
 
-void SSFModule::Init(SSFObjectErrors &Errors)
+void SSFModule::Init(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Init");
+    SF_LOG_DEBUG_MODULE("Init");
 }
 
-void SSFModule::Awake(SSFObjectErrors &Errors)
+void SSFModule::Awake(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Awake");
+    SF_LOG_DEBUG_MODULE("Awake");
 }
 
-void SSFModule::Start(SSFObjectErrors &Errors)
+void SSFModule::Start(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Start");
+    SF_LOG_DEBUG_MODULE("Start");
 }
 
-void SSFModule::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFModule::Tick(SFObjectErrors &Errors, int DelayMS)
 {
 }
 
-void SSFModule::Stop(SSFObjectErrors &Errors)
+void SSFModule::Stop(SFObjectErrors &Errors)
 {
 
-    SSF_LOG_DEBUG_MODULE("Stop");
+    SF_LOG_DEBUG_MODULE("Stop");
 }
 
-void SSFModule::Sleep(SSFObjectErrors &Errors)
+void SSFModule::Sleep(SFObjectErrors &Errors)
 {
 
-    SSF_LOG_DEBUG_MODULE("Sleep");
+    SF_LOG_DEBUG_MODULE("Sleep");
 }
 
-void SSFModule::Destroy(SSFObjectErrors &Errors)
+void SSFModule::Destroy(SFObjectErrors &Errors)
 {
 
-    SSF_LOG_DEBUG_MODULE("Destroy");
+    SF_LOG_DEBUG_MODULE("Destroy");
 }
 
 #pragma endregion Object
 
-SSFModule::SSFModule(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+SSFModule::SSFModule(SFModuleContext &InContext, SFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
     Plugin = InContext.Plugin;

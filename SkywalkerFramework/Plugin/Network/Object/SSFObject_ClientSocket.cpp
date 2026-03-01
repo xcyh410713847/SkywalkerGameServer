@@ -7,13 +7,13 @@
 
 #include "SSFObject_ClientSocket.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFObject_ClientSocket, LogLevel_Debug);
+SF_LOG_DEFINE(SSFObject_ClientSocket, ESFLogLevel::Debug);
 
-SSFObject_ClientSocket::SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+SSFObject_ClientSocket::SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors)
     : SSFObject_NetworkSocket(InContext, InErrors)
 {
 }
@@ -22,7 +22,7 @@ SSFObject_ClientSocket::~SSFObject_ClientSocket()
 {
 }
 
-void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFObject_ClientSocket::Tick(SFObjectErrors &Errors, int DelayMS)
 {
     SSFObject_NetworkSocket::Tick(Errors, DelayMS);
 
@@ -46,7 +46,7 @@ void SSFObject_ClientSocket::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 
     // 处理接收到的数据
-    SSF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
+    SF_LOG_DEBUG("ClientSocket " << ClientSocket << " Received: " << buffer)
 
     // 回复客户端
     SSF_SOCKET_WRITE(ClientSocket, buffer, bytesReceived, 0);

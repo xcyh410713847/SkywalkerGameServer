@@ -5,7 +5,7 @@
 # 功能:
 # #########################################################################
 
-set(skywalker_server_framework_core_name "SSFCore" CACHE STRING "Skywalker Framework Core Library")
+set(skywalker_server_framework_core_name "SFCore")
 
 SkywalkerServer_Source()
 

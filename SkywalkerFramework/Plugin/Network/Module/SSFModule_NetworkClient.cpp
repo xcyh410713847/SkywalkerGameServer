@@ -7,8 +7,8 @@
 
 #include "SSFModule_NetworkClient.h"
 
-#include "Include/SSFCore.h"
-#include "Include/SSFILog.h"
+#include "Include/SFCore.h"
+#include "Include/SFILog.h"
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
 #include <ws2tcpip.h>
@@ -20,30 +20,30 @@
 #include <fcntl.h>
 #endif
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFModule_NetworkClient, LogLevel_Framework);
+SF_LOG_DEFINE(SSFModule_NetworkClient, Framework);
 
 #pragma region Object
 
-void SSFModule_NetworkClient::Init(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
 }
 
-void SSFModule_NetworkClient::Awake(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Awake(SFObjectErrors &Errors)
 {
     SSFModule::Awake(Errors);
 }
 
-void SSFModule_NetworkClient::Start(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
 {
     SSFModule::Start(Errors);
 
     StartNetworkClient(Errors);
 }
 
-void SSFModule_NetworkClient::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, int DelayMS)
 {
     SSFModule::Tick(Errors, DelayMS);
 
@@ -53,19 +53,19 @@ void SSFModule_NetworkClient::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 }
 
-void SSFModule_NetworkClient::Stop(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Stop(SFObjectErrors &Errors)
 {
     StopNetworkClient(Errors);
 
     SSFModule::Stop(Errors);
 }
 
-void SSFModule_NetworkClient::Sleep(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Sleep(SFObjectErrors &Errors)
 {
     SSFModule::Sleep(Errors);
 }
 
-void SSFModule_NetworkClient::Destroy(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::Destroy(SFObjectErrors &Errors)
 {
     SSFModule::Destroy(Errors);
 }
@@ -74,11 +74,11 @@ void SSFModule_NetworkClient::Destroy(SSFObjectErrors &Errors)
 
 bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
 {
-    SSFObjectErrors InErrors;
+    SFObjectErrors InErrors;
 
     if (bIsConnected && ClientNetworkSocket != nullptr)
     {
-        SSF_LOG_ERROR("Already connected to server");
+        SF_LOG_ERROR("Already connected to server");
         return false;
     }
 
@@ -90,7 +90,7 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
 
     if (Context.Socket == SSF_INVALID_SOCKET)
     {
-        SSF_LOG_ERROR("Failed to create socket");
+        SF_LOG_ERROR("Failed to create socket");
         return false;
     }
 
@@ -106,7 +106,7 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     if (connect(Context.Socket, (struct sockaddr *)&ServerAddr, sizeof(ServerAddr)) < 0)
     {
         SSF_CLOSE_SOCKET(Context.Socket);
-        SSF_LOG_ERROR("Failed to connect to server " << IP << ":" << Port);
+        SF_LOG_ERROR("Failed to connect to server " << IP << ":" << Port);
         return false;
     }
 
@@ -116,7 +116,7 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     if (ioctlsocket(Context.Socket, FIONBIO, &mode) == SSF_SOCKET_ERROR)
     {
         SSF_CLOSE_SOCKET(Context.Socket);
-        SSF_LOG_ERROR("Failed to set socket to non-blocking mode");
+        SF_LOG_ERROR("Failed to set socket to non-blocking mode");
         return false;
     }
 #else
@@ -128,7 +128,7 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     ClientNetworkSocket = static_cast<SSF_PRT_NETWORK_SOCKET>(pClientSocket);
 
     bIsConnected = true;
-    SSF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
+    SF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
 
     return true;
 }
@@ -145,7 +145,7 @@ void SSFModule_NetworkClient::Disconnect()
     ServerIP.clear();
     ServerPort = 0;
 
-    SSF_LOG_FRAMEWORK("Disconnected from server");
+    SF_LOG_FRAMEWORK("Disconnected from server");
 }
 
 bool SSFModule_NetworkClient::IsConnected() const
@@ -157,21 +157,21 @@ int SSFModule_NetworkClient::Send(const char *Data, int Length)
 {
     if (!IsConnected())
     {
-        SSF_LOG_ERROR("Not connected to server");
+        SF_LOG_ERROR("Not connected to server");
         return -1;
     }
 
     int SentBytes = SSF_SOCKET_WRITE(ClientNetworkSocket->GetSocket(), Data, Length, 0);
     if (SentBytes < 0)
     {
-        SSF_LOG_ERROR("Failed to send data");
+        SF_LOG_ERROR("Failed to send data");
         return -1;
     }
 
     return SentBytes;
 }
 
-void SSFModule_NetworkClient::StartNetworkClient(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::StartNetworkClient(SFObjectErrors &Errors)
 {
     if (Errors.IsValid())
     {
@@ -182,24 +182,24 @@ void SSFModule_NetworkClient::StartNetworkClient(SSFObjectErrors &Errors)
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        SSF_LOG_ERROR("Failed to initialize winsock");
+        SF_LOG_ERROR("Failed to initialize winsock");
         return;
     }
 #endif
 
-    SSF_LOG_FRAMEWORK("Network client started");
+    SF_LOG_FRAMEWORK("Network client started");
 }
 
-void SSFModule_NetworkClient::StopNetworkClient(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::StopNetworkClient(SFObjectErrors &Errors)
 {
     Disconnect();
 
     SSF_NETWORK_CLEANUP();
 
-    SSF_LOG_FRAMEWORK("Network client stopped");
+    SF_LOG_FRAMEWORK("Network client stopped");
 }
 
-void SSFModule_NetworkClient::HandleReceive(SSFObjectErrors &Errors)
+void SSFModule_NetworkClient::HandleReceive(SFObjectErrors &Errors)
 {
     if (ClientNetworkSocket == nullptr || ClientNetworkSocket->IsSocketInvalid())
     {
@@ -211,11 +211,11 @@ void SSFModule_NetworkClient::HandleReceive(SSFObjectErrors &Errors)
 
     if (ReceivedBytes > 0)
     {
-        SSF_LOG_DEBUG("Received " << ReceivedBytes << " bytes from server");
+        SF_LOG_DEBUG("Received " << ReceivedBytes << " bytes from server");
     }
     else if (ReceivedBytes == 0)
     {
-        SSF_LOG_DEBUG("Server closed connection");
+        SF_LOG_DEBUG("Server closed connection");
         Disconnect();
     }
     else
@@ -224,13 +224,13 @@ void SSFModule_NetworkClient::HandleReceive(SSFObjectErrors &Errors)
         int Error = WSAGetLastError();
         if (Error != WSAEWOULDBLOCK)
         {
-            SSF_LOG_ERROR("Socket error: " << Error);
+            SF_LOG_ERROR("Socket error: " << Error);
             Disconnect();
         }
 #else
         if (errno != EAGAIN && errno != EWOULDBLOCK)
         {
-            SSF_LOG_ERROR("Socket error: " << errno);
+            SF_LOG_ERROR("Socket error: " << errno);
             Disconnect();
         }
 #endif

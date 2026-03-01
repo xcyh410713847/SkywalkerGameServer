@@ -10,13 +10,13 @@
 
 #include "Core/Plugin/SSFPlugin.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-class SSFPlugin_AI : public SSFPlugin
+class SSFPlugin_AI : public SFPlugin
 {
 public:
-    SSFPlugin_AI(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
-        : SSFPlugin(InContext, InErrors)
+    SSFPlugin_AI(SFPluginContext &InContext, SFObjectErrors &InErrors)
+        : SFPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_AI() {};
@@ -27,16 +27,16 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFObjectErrors &Errors) override;
+    virtual void Install(SFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFObjectErrors &Errors) override;
+    virtual void Uninstall(SFObjectErrors &Errors) override;
 
 #pragma endregion SSFPlugin
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFPlugin_AI_H__

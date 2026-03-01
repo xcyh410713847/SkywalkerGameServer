@@ -10,12 +10,12 @@
 
 #include "Core/Service/SSFService.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 class SSFFrameworkService : public SSFService
 {
 public:
-    SSFFrameworkService(SSFServiceContext &InContext, SSFObjectErrors &InErrors);
+    SSFFrameworkService(SSFServiceContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFFrameworkService();
 
 #pragma region Process
@@ -24,31 +24,31 @@ public:
     /**
      * 初始化
      */
-    virtual bool Init(SSFObjectErrors &InErrors) override;
+    virtual bool Init(SFObjectErrors &InErrors) override;
 
     /**
      * 启动
      */
-    virtual bool Start(SSFObjectErrors &InErrors) override;
+    virtual bool Start(SFObjectErrors &InErrors) override;
 
     /**
      * Tick
      */
-    virtual bool Tick(SSFObjectErrors &InErrors) override;
+    virtual bool Tick(SFObjectErrors &InErrors) override;
 
     /**
      * 停止
      */
-    virtual bool Stop(SSFObjectErrors &InErrors) override;
+    virtual bool Stop(SFObjectErrors &InErrors) override;
 
     /**
      * 销毁
      */
-    virtual void Destroy(SSFObjectErrors &InErrors) override;
+    virtual void Destroy(SFObjectErrors &InErrors) override;
 
 #pragma endregion Process
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFFrameworkService_H__

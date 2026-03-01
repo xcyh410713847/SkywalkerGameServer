@@ -7,13 +7,13 @@
 
 #include "SSFLevelService.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFLevelService, LogLevel_Debug);
+SF_LOG_DEFINE(SSFLevelService, ESFLogLevel::Debug);
 
-SSFLevelService::SSFLevelService(SSFServiceContext &InContext, SSFObjectErrors &InErrors)
+SSFLevelService::SSFLevelService(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFService(InContext, InErrors)
 {
 }
@@ -24,35 +24,35 @@ SSFLevelService::~SSFLevelService()
 
 #pragma region Process
 
-bool SSFLevelService::Init(SSFObjectErrors &InErrors)
+bool SSFLevelService::Init(SFObjectErrors &InErrors)
 {
-    SSF_LOG_DEBUG_MODULE("Init");
+    SF_LOG_DEBUG_MODULE("Init");
 
     return true;
 }
 
-bool SSFLevelService::Start(SSFObjectErrors &InErrors)
+bool SSFLevelService::Start(SFObjectErrors &InErrors)
 {
-    SSF_LOG_DEBUG_MODULE("Start");
+    SF_LOG_DEBUG_MODULE("Start");
 
     return true;
 }
 
-bool SSFLevelService::Tick(SSFObjectErrors &InErrors)
+bool SSFLevelService::Tick(SFObjectErrors &InErrors)
 {
     return true;
 }
 
-bool SSFLevelService::Stop(SSFObjectErrors &InErrors)
+bool SSFLevelService::Stop(SFObjectErrors &InErrors)
 {
-    SSF_LOG_DEBUG_MODULE("Stop");
+    SF_LOG_DEBUG_MODULE("Stop");
 
     return true;
 }
 
-void SSFLevelService::Destroy(SSFObjectErrors &InErrors)
+void SSFLevelService::Destroy(SFObjectErrors &InErrors)
 {
-    SSF_LOG_DEBUG_MODULE("Destroy");
+    SF_LOG_DEBUG_MODULE("Destroy");
 }
 
 #pragma endregion Process

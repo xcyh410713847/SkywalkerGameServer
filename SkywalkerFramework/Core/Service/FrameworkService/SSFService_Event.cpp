@@ -7,13 +7,13 @@
 
 #include "SSFService_Event.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFService_Event, LogLevel_Debug);
+SF_LOG_DEFINE(SSFService_Event, ESFLogLevel::Debug);
 
-SSFService_Event::SSFService_Event(SSFServiceContext &InContext, SSFObjectErrors &InErrors)
+SSFService_Event::SSFService_Event(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFFrameworkService(InContext, InErrors)
 {
 }
@@ -24,35 +24,35 @@ SSFService_Event::~SSFService_Event()
 
 #pragma region Process
 
-bool SSFService_Event::Init(SSFObjectErrors &InErrors)
+bool SSFService_Event::Init(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Init(InErrors);
 
     return true;
 }
 
-bool SSFService_Event::Start(SSFObjectErrors &InErrors)
+bool SSFService_Event::Start(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Start(InErrors);
 
     return true;
 }
 
-bool SSFService_Event::Tick(SSFObjectErrors &InErrors)
+bool SSFService_Event::Tick(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Tick(InErrors);
 
     return true;
 }
 
-bool SSFService_Event::Stop(SSFObjectErrors &InErrors)
+bool SSFService_Event::Stop(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Stop(InErrors);
 
     return true;
 }
 
-void SSFService_Event::Destroy(SSFObjectErrors &InErrors)
+void SSFService_Event::Destroy(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Destroy(InErrors);
 }

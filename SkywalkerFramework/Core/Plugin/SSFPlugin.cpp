@@ -7,40 +7,40 @@
 
 #include "SSFPlugin.h"
 
-#include "Include/SSFCore.h"
-#include "Include/SSFErrors.h"
-#include "Include/SSFILog.h"
-#include "Include/SSFEvent.h"
+#include "Include/SFCore.h"
+#include "Include/SFErrors.h"
+#include "Include/SFILog.h"
+#include "Include/SFEvent.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 SKYWALKER_EVENT_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin, LogLevel_Debug)
+SF_LOG_DEFINE(SFPlugin, ESFLogLevel::Debug)
 
-SSFPlugin::SSFPlugin(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
+SFPlugin::SFPlugin(SFPluginContext &InContext, SFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
 {
     PluginManager = InContext.PluginManager;
 }
 
-SSFPlugin::~SSFPlugin()
+SFPlugin::~SFPlugin()
 {
 }
 
-void SSFPlugin::Release(SSFObjectErrors &Errors)
+void SFPlugin::Release(SFObjectErrors &Errors)
 {
     Uninstall(Errors);
 
-    SSF_LOG_DEBUG_MODULE("Release");
+    SF_LOG_DEBUG_MODULE("Release");
 
     SSFObjectManager::Release(Errors);
 }
 
 #pragma region Plugin Process
 
-void SSFPlugin::Init(SSFObjectErrors &Errors)
+void SFPlugin::Init(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Init");
+    SF_LOG_DEBUG_MODULE("Init");
 
     // 加载模块
     Install(Errors);
@@ -48,17 +48,17 @@ void SSFPlugin::Init(SSFObjectErrors &Errors)
     // 发送插件初始化事件
     SSFEventPluginAll EventPluginAll;
     EventPluginAll.Plugin = this;
-    SKYWALKER_TRIGGER_EVENT(SSFEventMainType_Plugin, SSFEventSubType_Plugin_Init, EventPluginAll);
+    SKYWALKER_TRIGGER_EVENT(ESFEventMainType::Plugin, SFEventSubType_Plugin_Init, EventPluginAll);
 }
 
-void SSFPlugin::Awake(SSFObjectErrors &Errors)
+void SFPlugin::Awake(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Awake");
+    SF_LOG_DEBUG_MODULE("Awake");
 
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto IterObject = FindObject(IterModule->second);
-        if (SSF_PTR_INVALID(IterObject))
+        if (SF_PTR_INVALID(IterObject))
         {
             continue;
         }
@@ -66,14 +66,14 @@ void SSFPlugin::Awake(SSFObjectErrors &Errors)
     }
 }
 
-void SSFPlugin::Start(SSFObjectErrors &Errors)
+void SFPlugin::Start(SFObjectErrors &Errors)
 {
-    SSF_LOG_DEBUG_MODULE("Start");
+    SF_LOG_DEBUG_MODULE("Start");
 
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto Module = GetModule(IterModule->first);
-        if (SSF_PTR_INVALID(Module))
+        if (SF_PTR_INVALID(Module))
         {
             continue;
         }
@@ -81,12 +81,12 @@ void SSFPlugin::Start(SSFObjectErrors &Errors)
     }
 }
 
-void SSFPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
+void SFPlugin::Tick(SFObjectErrors &Errors, int DelayMS)
 {
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto Module = GetModule(IterModule->first);
-        if (SSF_PTR_INVALID(Module))
+        if (SF_PTR_INVALID(Module))
         {
             continue;
         }
@@ -94,78 +94,78 @@ void SSFPlugin::Tick(SSFObjectErrors &Errors, int DelayMS)
     }
 }
 
-void SSFPlugin::Stop(SSFObjectErrors &Errors)
+void SFPlugin::Stop(SFObjectErrors &Errors)
 {
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto Module = GetModule(IterModule->first);
-        if (SSF_PTR_INVALID(Module))
+        if (SF_PTR_INVALID(Module))
         {
             continue;
         }
         Module->Stop(Errors);
     }
 
-    SSF_LOG_DEBUG_MODULE("Stop");
+    SF_LOG_DEBUG_MODULE("Stop");
 }
 
-void SSFPlugin::Sleep(SSFObjectErrors &Errors)
+void SFPlugin::Sleep(SFObjectErrors &Errors)
 {
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto Module = GetModule(IterModule->first);
-        if (SSF_PTR_INVALID(Module))
+        if (SF_PTR_INVALID(Module))
         {
             continue;
         }
         Module->Sleep(Errors);
     }
 
-    SSF_LOG_DEBUG_MODULE("Sleep");
+    SF_LOG_DEBUG_MODULE("Sleep");
 }
 
-void SSFPlugin::Destroy(SSFObjectErrors &Errors)
+void SFPlugin::Destroy(SFObjectErrors &Errors)
 {
-    SSF_COMMON_ITERATOR(IterModule, ModuleMap)
+    SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {
         auto Module = GetModule(IterModule->first);
-        if (SSF_PTR_INVALID(Module))
+        if (SF_PTR_INVALID(Module))
         {
             continue;
         }
         Module->Destroy(Errors);
     }
 
-    SSF_LOG_DEBUG_MODULE("Destroy");
+    SF_LOG_DEBUG_MODULE("Destroy");
 }
 
 #pragma endregion Plugin Process
 
 #pragma region Module
 
-void SSFPlugin::SetConfigModules(const SSFMap<SSFString, bool> &ModuleNames)
+void SFPlugin::SetConfigModules(const SFMap<SFString, bool> &ModuleNames)
 {
     ConfigModules = ModuleNames;
 }
 
-void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module)
+void SFPlugin::RegisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
 {
-    if (!SSF_PTR_VALID(Module))
+    if (!SF_PTR_VALID(Module))
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_nullptr, "Plugin Register Module nullptr");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Register_nullptr, "Plugin Register Module nullptr");
         return;
     }
 
-    const SSFString &ModuleName = Module->GetObjectClassName();
+    const SFString &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Register_NameEmpty, "Plugin Register Module NameEmpty");
         return;
     }
 
     if (ModuleMap.find(ModuleName) != ModuleMap.end())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_Repeat, "Plugin Register Module Repeat");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Register_Repeat, "Plugin Register Module Repeat");
         return;
     }
 
@@ -174,7 +174,7 @@ void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Modul
         auto Iter = ConfigModules.find(ModuleName);
         if (Iter == ConfigModules.end())
         {
-            SSF_LOG_DEBUG("Module [" << ModuleName << "] not in config, skip loading");
+            SF_LOG_DEBUG("Module [" << ModuleName << "] not in config, skip loading");
             return;
         }
     }
@@ -182,38 +182,38 @@ void SSFPlugin::RegisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Modul
     AddObject(Errors, Module);
     if (Errors.IsValid())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Register_AddObjectFailed, "Plugin Register Module AddObjectFailed");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Register_AddObjectFailed, "Plugin Register Module AddObjectFailed");
         return;
     }
     ModuleMap.insert(std::make_pair(ModuleName, Module->GetObjectGUID()));
 }
 
-void SSFPlugin::UnregisterModule(SSFObjectErrors &Errors, SSF_PTR(SSFModule) Module)
+void SFPlugin::UnregisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
 {
-    if (!SSF_PTR_VALID(Module))
+    if (!SF_PTR_VALID(Module))
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Unregister_nullptr, "Plugin Unregister Module nullptr");
         return;
     }
 
-    const SSFString &ModuleName = Module->GetObjectClassName();
+    const SFString &ModuleName = Module->GetObjectClassName();
     if (ModuleName.empty())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Unregister_NameEmpty, "Plugin Unregister Module NameEmpty");
         return;
     }
 
     auto Iter = ModuleMap.find(ModuleName);
     if (Iter == ModuleMap.end())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_NotFound, "Plugin Unregister Module NotFound");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Unregister_NotFound, "Plugin Unregister Module NotFound");
         return;
     }
 
     RemoveObject(Errors, Module);
     if (Errors.IsValid())
     {
-        SSF_ERROR_DESC_TRACE(Errors, SkywalkerSFError_Module_Unregister_RemoveObjectFailed, "Plugin Unregister Module RemoveObjectFailed");
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Module_Unregister_RemoveObjectFailed, "Plugin Unregister Module RemoveObjectFailed");
         return;
     }
     ModuleMap.erase(Iter);

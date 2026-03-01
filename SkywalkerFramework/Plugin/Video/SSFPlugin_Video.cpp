@@ -7,23 +7,23 @@
 
 #include "SSFPlugin_Video.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
 #include "Core/Plugin/SSFPluginManager.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFPlugin_Video, LogLevel_Debug);
+SF_LOG_DEFINE(SSFPlugin_Video, ESFLogLevel::Debug);
 
-SSF_PLUGIN_EXPORT(SSFPlugin_Video)
+SF_PLUGIN_EXPORT(SSFPlugin_Video)
 
 #pragma region SSFPlugin
 
-void SSFPlugin_Video::Install(SSFObjectErrors &Errors)
+void SSFPlugin_Video::Install(SFObjectErrors &Errors)
 {
 }
 
-void SSFPlugin_Video::Uninstall(SSFObjectErrors &Errors)
+void SSFPlugin_Video::Uninstall(SFObjectErrors &Errors)
 {
 }
 

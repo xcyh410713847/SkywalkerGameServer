@@ -22,6 +22,10 @@ project(${skywalker_server_framework_name})
 
 SkywalkerServerFramework_MessageDebug(" Start Build ${skywalker_server_framework_name} ")
 
+# 核心库名称（清理历史缓存，避免仍引用旧名 SSFCore）
+unset(skywalker_server_framework_core_name CACHE)
+set(skywalker_server_framework_core_name "SFCore")
+
 # 导出宏
 macro(SkywalkerServerFramework_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_server_framework_name})

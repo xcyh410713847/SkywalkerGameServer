@@ -8,22 +8,22 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_TWO_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_TWO_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Module/SSFModule.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 class SSFModule_TestTwo : public SSFModule
 {
 public:
-    SSFModule_TestTwo(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+    SSFModule_TestTwo(SFModuleContext &InContext, SFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_TestTwo() {};
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_TWO_H__

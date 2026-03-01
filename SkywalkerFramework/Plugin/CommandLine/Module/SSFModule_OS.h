@@ -10,20 +10,20 @@
 
 #include "Core/Module/SSFModule.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 class SSFModule_OS : public SSFModule
 {
 #pragma region Module
 
-    virtual void Init(SSFObjectErrors &Errors) override;
+    virtual void Init(SFObjectErrors &Errors) override;
 
-    virtual void Destroy(SSFObjectErrors &Errors) override;
+    virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Module
 
 public:
-    SSFModule_OS(SSFModuleContext &InContext, SSFObjectErrors &InErrors);
+    SSFModule_OS(SFModuleContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFModule_OS() {};
 
     /**
@@ -33,6 +33,6 @@ public:
     static void SignalHandler(int Signal);
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif //__SKYWALKER_SERVER_FRAMEWORK_SSFModule_OS_H__

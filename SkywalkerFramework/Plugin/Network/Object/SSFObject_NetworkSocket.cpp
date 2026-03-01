@@ -7,9 +7,9 @@
 
 #include "SSFObject_NetworkSocket.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSFObject_NetworkSocket::SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SSFObjectErrors &InErrors)
+SSFObject_NetworkSocket::SSFObject_NetworkSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
     Socket = InContext.Socket;

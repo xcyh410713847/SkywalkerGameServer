@@ -7,13 +7,13 @@
 
 #include "SSFService_Timer.h"
 
-#include "Include/SSFILog.h"
+#include "Include/SFILog.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
-SSF_LOG_DEFINE(SSFService_Timer, LogLevel_Debug);
+SF_LOG_DEFINE(SSFService_Timer, ESFLogLevel::Debug);
 
-SSFService_Timer::SSFService_Timer(SSFServiceContext &InContext, SSFObjectErrors &InErrors)
+SSFService_Timer::SSFService_Timer(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFFrameworkService(InContext, InErrors)
 {
 }
@@ -24,7 +24,7 @@ SSFService_Timer::~SSFService_Timer()
 
 #pragma region Process
 
-bool SSFService_Timer::Init(SSFObjectErrors &InErrors)
+bool SSFService_Timer::Init(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Init(InErrors);
 
@@ -33,7 +33,7 @@ bool SSFService_Timer::Init(SSFObjectErrors &InErrors)
     return true;
 }
 
-bool SSFService_Timer::Start(SSFObjectErrors &InErrors)
+bool SSFService_Timer::Start(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Start(InErrors);
 
@@ -42,7 +42,7 @@ bool SSFService_Timer::Start(SSFObjectErrors &InErrors)
     return true;
 }
 
-bool SSFService_Timer::Tick(SSFObjectErrors &InErrors)
+bool SSFService_Timer::Tick(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Tick(InErrors);
 
@@ -51,14 +51,14 @@ bool SSFService_Timer::Tick(SSFObjectErrors &InErrors)
     return true;
 }
 
-bool SSFService_Timer::Stop(SSFObjectErrors &InErrors)
+bool SSFService_Timer::Stop(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Stop(InErrors);
 
     return true;
 }
 
-void SSFService_Timer::Destroy(SSFObjectErrors &InErrors)
+void SSFService_Timer::Destroy(SFObjectErrors &InErrors)
 {
     SSFFrameworkService::Destroy(InErrors);
 }

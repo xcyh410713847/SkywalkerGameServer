@@ -8,20 +8,20 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_H__
 
-#include "Include/SSFCore.h"
-#include "Include/SFramework.h"
+#include "Include/SFCore.h"
+#include "Include/SFFramework.h"
 
 #include "Core/Object/SSFObject.h"
 #include "Core/Service/SSFServiceManager.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 /**
  * Skywalker Framework
  */
 class CSkywalkerFramework : public SkywalkerFramework, public SSFObject
 {
-    typedef ESkywalkerServerFrameworkRunningState ERunningState;
+    typedef ESkywalkerFrameworkRunningState ERunningState;
 
 public:
     CSkywalkerFramework() {};
@@ -31,7 +31,7 @@ public:
      * 获取 Service
      */
     template <typename ServiceT>
-    SSF_PTR(ServiceT)
+    SF_PTR(ServiceT)
     GetService() const
     {
         return ServiceManager->GetService<ServiceT>();
@@ -57,12 +57,12 @@ public:
     /**
      * new一个ObjectGUID
      */
-    virtual SSFObjectGUID NewObjectGUID() override;
+    virtual SFObjectGUID NewObjectGUID() override;
 
     /**
      * 获取插件管理器
      */
-    virtual SSF_PTR(SSFPluginManager) GetPluginManager() const override
+    virtual SF_PTR(SFPluginManager) GetPluginManager() const override
     {
         return PluginManager;
     }
@@ -70,17 +70,17 @@ public:
 #pragma endregion SkywalkerFramework
 
 private:
-    SSF_PTR(SSFPluginManager)
+    SF_PTR(SFPluginManager)
     PluginManager{};
 
-    SSF_PTR(SSFFrameworkServiceManager)
+    SF_PTR(SSFFrameworkServiceManager)
     ServiceManager{};
 
-    ERunningState RunningState{ERunningState::SkywalkerServerFrameworkRunningState_Create};
+    ERunningState RunningState{ERunningState::SkywalkerFrameworkRunningState_Create};
 
-    SSFObjectGUID AddObjectGUID{SSF_OBJECT_INVALID_GUID};
+    SFObjectGUID AddObjectGUID{SF_OBJECT_INVALID_GUID};
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_H__

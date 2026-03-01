@@ -12,13 +12,13 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
-class SSFPlugin_Network : public SSFPlugin
+class SSFPlugin_Network : public SFPlugin
 {
 public:
-    SSFPlugin_Network(SSFPluginContext &InContext, SSFObjectErrors &InErrors)
-        : SSFPlugin(InContext, InErrors)
+    SSFPlugin_Network(SFPluginContext &InContext, SFObjectErrors &InErrors)
+        : SFPlugin(InContext, InErrors)
     {
     }
     virtual ~SSFPlugin_Network() {};
@@ -29,16 +29,16 @@ private:
     /**
      * 安装
      */
-    virtual void Install(SSFObjectErrors &Errors) override;
+    virtual void Install(SFObjectErrors &Errors) override;
 
     /**
      * 卸载
      */
-    virtual void Uninstall(SSFObjectErrors &Errors) override;
+    virtual void Uninstall(SFObjectErrors &Errors) override;
 
 #pragma endregion SSFPlugin
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_NETWORK_H__

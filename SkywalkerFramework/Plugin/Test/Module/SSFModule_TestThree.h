@@ -8,22 +8,22 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_THREE_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_THREE_H__
 
-#include "Include/SSFCore.h"
+#include "Include/SFCore.h"
 
 #include "Core/Module/SSFModule.h"
 
-SSF_NAMESPACE_BEGIN
+SF_NAMESPACE_BEGIN
 
 class SSFModule_TestThree : public SSFModule
 {
 public:
-    SSFModule_TestThree(SSFModuleContext &InContext, SSFObjectErrors &InErrors)
+    SSFModule_TestThree(SFModuleContext &InContext, SFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors)
     {
     }
     virtual ~SSFModule_TestThree() {};
 };
 
-SSF_NAMESPACE_END
+SF_NAMESPACE_END
 
 #endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_TEST_THREE_H__

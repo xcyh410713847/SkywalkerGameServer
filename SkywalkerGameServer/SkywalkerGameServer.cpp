@@ -5,15 +5,15 @@
 **功能: 入口
 *************************************************************************/
 
-#include "Include/SFramework.h"
+#include "Include/SFFramework.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
-SSF_NAMESPACE_USING
+SF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
-    SSFString PluginConfigPath = "ServerPlugin.skywalkerC";
-    SSFString ServerConfigPath = "ServerConfig.skywalkerC";
+    SFString PluginConfigPath = "ServerPlugin.skywalkerC";
+    SFString ServerConfigPath = "ServerConfig.skywalkerC";
 
     if (argc > 1)
     {
