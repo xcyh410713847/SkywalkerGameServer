@@ -1,5 +1,0 @@
-#Plugin
-Plugin
-    Name=SSFPlugin_Network
-    Module
-        Name=SSFModule_NetworkClient

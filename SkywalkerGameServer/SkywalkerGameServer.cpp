@@ -14,11 +14,13 @@ SF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
-    SFString ConfigDir = "../Server";
+    std::filesystem::path ExePath = std::filesystem::absolute(std::filesystem::path(argv[0]));
+    std::filesystem::path ExeDir = ExePath.parent_path();
+    SFString ConfigDir = (ExeDir / ".." / "Server").lexically_normal().string();
     SFString PluginConfigPath = "ServerPlugin.skywalkerC";
     SFString ServerConfigPath = "ServerConfig.skywalkerC";
 
-    auto ResolveConfigPath = [&ConfigDir](const SFString &InPath) -> SFString
+    auto ResolveConfigPath = [&ConfigDir, &ExeDir](const SFString &InPath) -> SFString
     {
         std::filesystem::path PathObj(InPath);
         if (PathObj.is_absolute())
@@ -28,7 +30,7 @@ int main(int argc, char *argv[])
 
         if (PathObj.has_parent_path())
         {
-            return PathObj.lexically_normal().string();
+            return (ExeDir / PathObj).lexically_normal().string();
         }
 
         return (std::filesystem::path(ConfigDir) / PathObj).lexically_normal().string();

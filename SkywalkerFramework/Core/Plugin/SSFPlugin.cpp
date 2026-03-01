@@ -171,8 +171,26 @@ void SFPlugin::RegisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
 
     if (!ConfigModules.empty())
     {
-        auto Iter = ConfigModules.find(ModuleName);
-        if (Iter == ConfigModules.end())
+        bool bMatched = (ConfigModules.find(ModuleName) != ConfigModules.end());
+        if (!bMatched)
+        {
+            SF_COMMON_ITERATOR(IterConfig, ConfigModules)
+            {
+                const SFString &ConfigModuleName = IterConfig->first;
+                const SFString ScopedConfigModuleName = "::" + ConfigModuleName;
+
+                if (ModuleName.size() > ScopedConfigModuleName.size() &&
+                    ModuleName.compare(ModuleName.size() - ScopedConfigModuleName.size(),
+                                       ScopedConfigModuleName.size(),
+                                       ScopedConfigModuleName) == 0)
+                {
+                    bMatched = true;
+                    break;
+                }
+            }
+        }
+
+        if (!bMatched)
         {
             SF_LOG_DEBUG("Module [" << ModuleName << "] not in config, skip loading");
             return;

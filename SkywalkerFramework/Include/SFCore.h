@@ -218,29 +218,49 @@ SF_NAMESPACE_BEGIN
                       ESFError::Module_Register_Failed,                                      \
                       "Plugin RegisterModule Failed");                                       \
     }                                                                                        \
-    SF_LOG_INFO("Register Module [" << #ModuleClass << "] Success");                         \
-    ModuleClass##Module->Init(ModuleClass##Errors);
+    else                                                                                     \
+    {                                                                                        \
+        SF_PTR(SSFModule)                                                                    \
+        LoadedModule = GetModule<ModuleClass>();                                             \
+        if (LoadedModule != nullptr)                                                         \
+        {                                                                                    \
+            SF_LOG_INFO("Register Module [" << #ModuleClass << "] Success");                 \
+            LoadedModule->Init(ModuleClass##Errors);                                         \
+        }                                                                                    \
+        else                                                                                 \
+        {                                                                                    \
+            SF_LOG_DEBUG("Register Module [" << #ModuleClass << "] Skip By Config");         \
+            ModuleClass##Module->Release(ModuleClass##Errors);                               \
+        }                                                                                    \
+    }
 
 /**
  * 注销模块
  */
-#define SF_UNREGISTER_MODULE(ModuleClass)                                  \
-    SF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                          \
-    SF_PTR(SSFModule)                                                      \
-    ModuleClass##Module = GetModule<ModuleClass>();                        \
-    SFObjectErrors ModuleClass##Errors;                                    \
-    UnregisterModule(ModuleClass##Errors, ModuleClass##Module);            \
-    if (ModuleClass##Errors.IsValid())                                     \
-    {                                                                      \
-        SF_ERROR_DESC(ModuleClass##Errors,                                 \
-                      ESFError::Module_Unregister_Failed,                  \
-                      "Plugin UnregisterModule Failed");                   \
-    }                                                                      \
-    else                                                                   \
-    {                                                                      \
-        SF_LOG_INFO("Unregister Module [" << #ModuleClass << "] Success"); \
-    }                                                                      \
-    ModuleClass##Module->Release(ModuleClass##Errors);
+#define SF_UNREGISTER_MODULE(ModuleClass)                                           \
+    SF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                                   \
+    SF_PTR(SSFModule)                                                               \
+    ModuleClass##Module = GetModule<ModuleClass>();                                 \
+    SFObjectErrors ModuleClass##Errors;                                             \
+    if (ModuleClass##Module == nullptr)                                             \
+    {                                                                               \
+        SF_LOG_DEBUG("Unregister Module [" << #ModuleClass << "] Skip Not Loaded"); \
+    }                                                                               \
+    else                                                                            \
+    {                                                                               \
+        UnregisterModule(ModuleClass##Errors, ModuleClass##Module);                 \
+        if (ModuleClass##Errors.IsValid())                                          \
+        {                                                                           \
+            SF_ERROR_DESC(ModuleClass##Errors,                                      \
+                          ESFError::Module_Unregister_Failed,                       \
+                          "Plugin UnregisterModule Failed");                        \
+        }                                                                           \
+        else                                                                        \
+        {                                                                           \
+            SF_LOG_INFO("Unregister Module [" << #ModuleClass << "] Success");      \
+        }                                                                           \
+        ModuleClass##Module->Release(ModuleClass##Errors);                          \
+    }
 
 /**
  * 插件导出

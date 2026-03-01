@@ -171,5 +171,5 @@ void SSFModule_NetworkServer::CreateNetworkClient(SFObjectErrors &Errors)
     SSF_PRT_CLIENT_SOCKET ClientNetworkSocket = NewObject<SSFObject_ClientSocket>(Context, Errors);
     ClientNetworkSocketMap.insert(std::make_pair(ClientSocket, ClientNetworkSocket));
 
-    SF_LOG_DEBUG("New ClientSocket: " << ClientSocket);
+    SF_LOG_FRAMEWORK("New ClientSocket: " << ClientSocket);
 }

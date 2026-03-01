@@ -8,8 +8,6 @@ Plugin
     Name=SSFPlugin_Network
     Module
         Name=SSFModule_NetworkServer
-    Module
-        Name=SSFModule_NetworkClient
 #Plugin
 #    Name=SSFPlugin_LaunchState
 Plugin

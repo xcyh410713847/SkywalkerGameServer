@@ -196,6 +196,39 @@ void SFPluginManager::RegisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) Pl
         return;
     }
     PluginMap.insert(std::make_pair(PluginName, Plugin->GetObjectGUID()));
+
+    SFMap<SFString, bool> MatchedModules;
+    SFString MatchedPluginName;
+
+    auto IterExact = PluginModulesMap.find(PluginName);
+    if (IterExact != PluginModulesMap.end())
+    {
+        MatchedPluginName = IterExact->first;
+        MatchedModules = IterExact->second;
+    }
+    else
+    {
+        SF_COMMON_ITERATOR(IterConfig, PluginModulesMap)
+        {
+            const SFString &ConfigPluginName = IterConfig->first;
+            const SFString ScopedPluginName = "::" + ConfigPluginName;
+            if (PluginName.size() > ScopedPluginName.size() &&
+                PluginName.compare(PluginName.size() - ScopedPluginName.size(),
+                                   ScopedPluginName.size(),
+                                   ScopedPluginName) == 0)
+            {
+                MatchedPluginName = ConfigPluginName;
+                MatchedModules = IterConfig->second;
+                break;
+            }
+        }
+    }
+
+    if (!MatchedModules.empty())
+    {
+        Plugin->SetConfigModules(MatchedModules);
+        SF_LOG_DEBUG("Apply plugin config modules for [" << PluginName << "] from [" << MatchedPluginName << "]");
+    }
 }
 
 void SFPluginManager::UnregisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) Plugin)
@@ -331,6 +364,37 @@ void SFPluginManager::StartPlugin(SFObjectErrors &Errors)
         {
             SF_PTR(SFPlugin)
             Plugin = GetPlugin(LibraryName);
+            if (Plugin == nullptr)
+            {
+                const SFString ScopedPluginName = "::" + LibraryName;
+                SF_COMMON_ITERATOR(IterPlugin, PluginMap)
+                {
+                    const SFString &RegisteredPluginName = IterPlugin->first;
+                    if (RegisteredPluginName == LibraryName)
+                    {
+                        auto IterObject = FindObject(IterPlugin->second);
+                        if (SF_PTR_VALID(IterObject))
+                        {
+                            Plugin = SF_PTR_DYNAMIC_CAST(SFPlugin)(IterObject);
+                            break;
+                        }
+                    }
+
+                    if (RegisteredPluginName.size() > ScopedPluginName.size() &&
+                        RegisteredPluginName.compare(RegisteredPluginName.size() - ScopedPluginName.size(),
+                                                     ScopedPluginName.size(),
+                                                     ScopedPluginName) == 0)
+                    {
+                        auto IterObject = FindObject(IterPlugin->second);
+                        if (SF_PTR_VALID(IterObject))
+                        {
+                            Plugin = SF_PTR_DYNAMIC_CAST(SFPlugin)(IterObject);
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (Plugin != nullptr)
             {
                 Plugin->SetConfigModules(IterModules->second);

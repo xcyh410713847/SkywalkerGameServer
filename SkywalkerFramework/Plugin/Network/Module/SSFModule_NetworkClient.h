@@ -14,6 +14,8 @@
 
 #include "SSFObject_NetworkSocket.h"
 
+#include <chrono>
+
 SF_NAMESPACE_BEGIN
 
 /**
@@ -117,6 +119,8 @@ private:
     bool bIsConnected = false;
     std::string ServerIP;
     int ServerPort = 0;
+    SFUInt64 ReconnectIntervalMS = 3000;
+    SFUInt64 LastReconnectAttemptMS = 0;
 };
 
 SF_NAMESPACE_END

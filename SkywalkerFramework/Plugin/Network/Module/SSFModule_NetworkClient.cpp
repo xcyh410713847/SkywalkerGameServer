@@ -10,6 +10,8 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
+#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
 #include <ws2tcpip.h>
 #else
@@ -23,6 +25,16 @@
 SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFModule_NetworkClient, Framework);
+
+namespace
+{
+    SFUInt64 GetSteadyNowMS()
+    {
+        return static_cast<SFUInt64>(std::chrono::duration_cast<std::chrono::milliseconds>(
+                                         std::chrono::steady_clock::now().time_since_epoch())
+                                         .count());
+    }
+}
 
 #pragma region Object
 
@@ -41,6 +53,70 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
     SSFModule::Start(Errors);
 
     StartNetworkClient(Errors);
+    if (Errors.IsValid())
+    {
+        return;
+    }
+
+    const char *ConfigPath = nullptr;
+#if defined(_WIN32) || defined(_WIN64)
+    char *ConfigPathBuffer = nullptr;
+    size_t ConfigPathLen = 0;
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_CLIENT_CONFIG");
+    ConfigPath = ConfigPathBuffer;
+#else
+    ConfigPath = getenv("SKYWALKER_CLIENT_CONFIG");
+#endif
+    SFString ClientConfigPath = ConfigPath ? ConfigPath : "ClientConfig.skywalkerC";
+#if defined(_WIN32) || defined(_WIN64)
+    if (ConfigPathBuffer != nullptr)
+    {
+        free(ConfigPathBuffer);
+        ConfigPathBuffer = nullptr;
+    }
+#endif
+
+    SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
+    if (ConfigParse->LoadScript(ClientConfigPath.c_str()))
+    {
+        SKYWALKER_PTR_SCRIPT_NODE RootNode = ConfigParse->GetRootNode();
+        if (RootNode != nullptr)
+        {
+            for (size_t i = 0; i < RootNode->GetChildNodeNum(); i++)
+            {
+                SKYWALKER_PTR_SCRIPT_NODE ConfigNode = RootNode->GetChildNodeFromIndex(i);
+                if (ConfigNode == nullptr)
+                {
+                    continue;
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE IPNode = ConfigNode->GetChildNodeFromName("IP");
+                if (IPNode != nullptr)
+                {
+                    ServerIP = IPNode->GetNodeValueString();
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE PortNode = ConfigNode->GetChildNodeFromName("Port");
+                if (PortNode != nullptr)
+                {
+                    ServerPort = std::stoi(PortNode->GetNodeValueString());
+                }
+            }
+        }
+    }
+
+    if (ServerIP.empty() || ServerPort <= 0)
+    {
+        SF_ERROR_DESC_TRACE(Errors,
+                            ESFError::Network_Start_Failed,
+                            "Network client config invalid");
+        return;
+    }
+
+    if (!Connect(ServerIP.c_str(), ServerPort))
+    {
+        SF_LOG_FRAMEWORK("Connect server failed at startup, will retry " << ServerIP << ":" << ServerPort);
+    }
 }
 
 void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
@@ -50,6 +126,26 @@ void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     if (bIsConnected && ClientNetworkSocket != nullptr)
     {
         HandleReceive(Errors);
+        return;
+    }
+
+    if (ServerIP.empty() || ServerPort <= 0)
+    {
+        return;
+    }
+
+    SFUInt64 NowMS = GetSteadyNowMS();
+    if (LastReconnectAttemptMS != 0 && (NowMS - LastReconnectAttemptMS) < ReconnectIntervalMS)
+    {
+        return;
+    }
+    LastReconnectAttemptMS = NowMS;
+
+    SF_LOG_FRAMEWORK("Try connect server " << ServerIP << ":" << ServerPort);
+
+    if (Connect(ServerIP.c_str(), ServerPort))
+    {
+        SF_LOG_FRAMEWORK("Reconnect server success " << ServerIP << ":" << ServerPort);
     }
 }
 
@@ -74,7 +170,7 @@ void SSFModule_NetworkClient::Destroy(SFObjectErrors &Errors)
 
 bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
 {
-    SFObjectErrors InErrors;
+    SFObjectErrors SocketErrors;
 
     if (bIsConnected && ClientNetworkSocket != nullptr)
     {
@@ -94,19 +190,34 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
         return false;
     }
 
-    struct sockaddr_in ServerAddr;
+    struct sockaddr_in ServerAddr = {};
     ServerAddr.sin_family = AF_INET;
     ServerAddr.sin_port = htons(static_cast<u_short>(Port));
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-    inet_pton(AF_INET, IP, &ServerAddr.sin_addr);
+    if (inet_pton(AF_INET, IP, &ServerAddr.sin_addr) != 1)
+    {
+        SF_LOG_ERROR("Invalid server ip " << IP);
+        SSF_CLOSE_SOCKET(Context.Socket);
+        return false;
+    }
 #else
-    ServerAddr.sin_addr.s_addr = inet_addr(IP);
+    if (inet_pton(AF_INET, IP, &ServerAddr.sin_addr) != 1)
+    {
+        SF_LOG_ERROR("Invalid server ip " << IP);
+        SSF_CLOSE_SOCKET(Context.Socket);
+        return false;
+    }
 #endif
 
     if (connect(Context.Socket, (struct sockaddr *)&ServerAddr, sizeof(ServerAddr)) < 0)
     {
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        int Error = WSAGetLastError();
+        SF_LOG_ERROR("Failed to connect to server " << IP << ":" << Port << " Error " << Error);
+#else
+        SF_LOG_ERROR("Failed to connect to server " << IP << ":" << Port << " Error " << errno);
+#endif
         SSF_CLOSE_SOCKET(Context.Socket);
-        SF_LOG_ERROR("Failed to connect to server " << IP << ":" << Port);
         return false;
     }
 
@@ -124,10 +235,19 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     fcntl(Context.Socket, F_SETFL, flags | O_NONBLOCK);
 #endif
 
-    auto pClientSocket = NewObject<SSFObject_NetworkSocket>(Context, InErrors);
+    auto pClientSocket = NewObject<SSFObject_NetworkSocket>(Context, SocketErrors);
     ClientNetworkSocket = static_cast<SSF_PRT_NETWORK_SOCKET>(pClientSocket);
 
+    if (SocketErrors.IsValid() || ClientNetworkSocket == nullptr)
+    {
+        SSF_CLOSE_SOCKET(Context.Socket);
+        ClientNetworkSocket = nullptr;
+        SF_LOG_ERROR("Failed to create client socket object");
+        return false;
+    }
+
     bIsConnected = true;
+    LastReconnectAttemptMS = 0;
     SF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
 
     return true;
@@ -142,8 +262,6 @@ void SSFModule_NetworkClient::Disconnect()
     }
 
     bIsConnected = false;
-    ServerIP.clear();
-    ServerPort = 0;
 
     SF_LOG_FRAMEWORK("Disconnected from server");
 }
@@ -178,14 +296,8 @@ void SSFModule_NetworkClient::StartNetworkClient(SFObjectErrors &Errors)
         return;
     }
 
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-    WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-    {
-        SF_LOG_ERROR("Failed to initialize winsock");
-        return;
-    }
-#endif
+    SFObjectErrors &InErrors = Errors;
+    SSF_NETWORK_STARTUP();
 
     SF_LOG_FRAMEWORK("Network client started");
 }
