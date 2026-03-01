@@ -5,4 +5,5 @@
 # 功能: 插件 DB 的 CMakeLists.txt
 # #########################################################################
 
+# 构建 DB 插件动态库
 SkywalkerServer_Plugin("SSFPlugin_DB" ${skywalker_server_framework_name})

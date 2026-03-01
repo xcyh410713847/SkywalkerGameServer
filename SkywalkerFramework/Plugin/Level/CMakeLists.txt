@@ -5,4 +5,5 @@
 # 功能: 插件 Level 的 CMakeLists.txt
 # #########################################################################
 
+# 构建 Level 插件动态库
 SkywalkerServer_Plugin("SSFPlugin_Level" ${skywalker_server_framework_name})

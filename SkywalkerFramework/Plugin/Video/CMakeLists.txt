@@ -5,4 +5,5 @@
 # 功能: 插件 Video 的 CMakeLists.txt
 # #########################################################################
 
+# 构建 Video 插件动态库
 SkywalkerServer_Plugin("SSFPlugin_Video" ${skywalker_server_framework_name})

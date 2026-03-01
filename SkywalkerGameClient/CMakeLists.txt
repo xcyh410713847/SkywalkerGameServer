@@ -8,6 +8,7 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
+# 输出日志级别
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 function(SkywalkerGameClient_MessageDebug info)
@@ -27,6 +28,9 @@ macro(SkywalkerGameClient_Export TargetName)
     SkywalkerServer_Export(${TargetName} ${skywalker_game_client_name})
 endmacro()
 
+# ==============================
+# 头文件目录配置
+# ==============================
 # 包含路径
 set(skywalker_server_path "../")
 set(skywalker_tools_path "../SkywalkerTools")
@@ -44,6 +48,7 @@ add_executable(${skywalker_game_client_name}
     SkywalkerGameClient.cpp
 )
 
+# 链接 Framework 库
 target_link_libraries(${skywalker_game_client_name} PRIVATE
     ${skywalker_server_framework_name}
 )

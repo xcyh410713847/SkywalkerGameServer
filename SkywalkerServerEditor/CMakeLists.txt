@@ -8,6 +8,7 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
+# 输出日志级别
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 function(SkywalkerServerEditor_MessageDebug info)
@@ -30,11 +31,13 @@ endmacro()
 # SkywalkerTools 路径
 set(skywalker_tools_path "../SkywalkerTools")
 
+# 头文件目录
 include_directories(
     ${skywalker_tools_path}
     ./
 )
 
+# 构建编辑器可执行文件
 add_executable(${skywalker_server_editor_name}
     SkywalkerServerEditor.cpp
 )

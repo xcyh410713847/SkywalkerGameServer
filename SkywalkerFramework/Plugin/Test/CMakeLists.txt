@@ -5,4 +5,5 @@
 # 功能: 测试插件 CMakeLists.txt
 # #########################################################################
 
+# 构建 Test 插件动态库
 SkywalkerServer_Plugin("SSFPlugin_Test" ${skywalker_server_framework_name})

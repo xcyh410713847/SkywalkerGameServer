@@ -7,8 +7,10 @@
 
 set(skywalker_server_framework_core_name "SFCore")
 
+# 收集核心源码
 SkywalkerServer_Source()
 
+# 构建核心静态库
 add_library(${skywalker_server_framework_core_name} STATIC
     ${skywalker_server_source}
 )

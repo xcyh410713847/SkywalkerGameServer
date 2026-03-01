@@ -8,6 +8,7 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
+# 输出日志级别
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 function(SkywalkerServerFramework_MessageDebug info)
@@ -25,6 +26,10 @@ SkywalkerServerFramework_MessageDebug(" Start Build ${skywalker_server_framework
 # 核心库名称（清理历史缓存，避免仍引用旧名 SSFCore）
 unset(skywalker_server_framework_core_name CACHE)
 set(skywalker_server_framework_core_name "SFCore")
+
+# ==============================
+# 目录与依赖配置
+# ==============================
 
 # 导出宏
 macro(SkywalkerServerFramework_Export TargetName)
@@ -48,6 +53,10 @@ add_subdirectory(Core)
 
 # 插件
 add_subdirectory(Plugin)
+
+# ==============================
+# Framework 聚合静态库
+# ==============================
 
 add_library(${skywalker_server_framework_name} STATIC
     SkywalkerFramework.cpp

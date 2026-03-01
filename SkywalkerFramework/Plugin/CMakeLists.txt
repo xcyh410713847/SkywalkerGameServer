@@ -5,14 +5,14 @@
 # 功能:
 # #########################################################################
 
-# 获取当前目录下所有的文件夹名称
+# 获取当前目录下所有子项名称
 file(GLOB subdirectories RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*)
 
 SkywalkerServerFramework_MessageDebug(" Start Load ${skywalker_server_framework_name} Plugin")
 
-# 遍历所有的文件夹
+# 遍历并加载插件子目录
 foreach(subdirectory ${subdirectories})
-    # 如果是文件夹则添加子目录
+    # 仅对子目录执行 add_subdirectory
     if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${subdirectory})
         add_subdirectory(${subdirectory})
     endif()

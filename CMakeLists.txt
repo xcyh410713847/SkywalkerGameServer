@@ -7,6 +7,7 @@
 # CMake 最低版本号要求
 cmake_minimum_required(VERSION 3.12)
 
+# 输出日志级别
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
 # 支持C++20
@@ -35,8 +36,12 @@ endif()
 
 SkywalkerServer_MessageDebug("Start Build ${skywalker_server_name}")
 
+# ==============================
+# 构建模式与输出目录配置
+# ==============================
+
 # 项目模式
-set(skywalker_server_mode_Project_Release "ProjectReleas" CACHE STRING "skywalker_server_mode_Project_Release")
+set(skywalker_server_mode_Project_Release "ProjectRelease" CACHE STRING "skywalker_server_mode_Project_Release")
 set(skywalker_server_mode_Project_Debug "ProjectDebug" CACHE STRING "skywalker_server_mode_Project_Debug")
 set(skywalker_server_mode_Library "Library" CACHE STRING "skywalker_server_mode_Library")
 
@@ -64,6 +69,8 @@ macro(SkywalkerServer_CopyToTarget TargetName DirName)
 endmacro()
 
 # 导出宏
+# TargetName: 目标名称
+# ProjectName: 输出子目录名
 macro(SkywalkerServer_Export TargetName ProjectName)
     if(UNIX)
         set_target_properties(${TargetName} PROPERTIES PREFIX "")
@@ -89,6 +96,7 @@ macro(SkywalkerServer_Export TargetName ProjectName)
 endmacro()
 
 # 源码宏
+# 扫描当前目录及两级子目录下的源文件
 macro(SkywalkerServer_Source)
     file(GLOB skywalker_server_source
 
@@ -105,6 +113,8 @@ macro(SkywalkerServer_Source)
 endmacro()
 
 # 插件宏
+# PlugName: 插件目标名
+# DirName: 输出目录名
 macro(SkywalkerServer_Plugin PlugName DirName)
     add_definitions(
         -DSKYWALKER_SF_DYNAMIC_PLUGIN
