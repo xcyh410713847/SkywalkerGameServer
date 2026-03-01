@@ -8,12 +8,31 @@
 #include "Include/SFFramework.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
+#include <filesystem>
+
 SF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
+    SFString ConfigDir = "../Server";
     SFString PluginConfigPath = "ServerPlugin.skywalkerC";
     SFString ServerConfigPath = "ServerConfig.skywalkerC";
+
+    auto ResolveConfigPath = [&ConfigDir](const SFString &InPath) -> SFString
+    {
+        std::filesystem::path PathObj(InPath);
+        if (PathObj.is_absolute())
+        {
+            return PathObj.lexically_normal().string();
+        }
+
+        if (PathObj.has_parent_path())
+        {
+            return PathObj.lexically_normal().string();
+        }
+
+        return (std::filesystem::path(ConfigDir) / PathObj).lexically_normal().string();
+    };
 
     if (argc > 1)
     {
@@ -23,6 +42,9 @@ int main(int argc, char *argv[])
     {
         ServerConfigPath = argv[2];
     }
+
+    PluginConfigPath = ResolveConfigPath(PluginConfigPath);
+    ServerConfigPath = ResolveConfigPath(ServerConfigPath);
 
     SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
     SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", ServerConfigPath.c_str());

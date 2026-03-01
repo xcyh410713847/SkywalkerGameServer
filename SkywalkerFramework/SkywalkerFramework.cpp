@@ -46,12 +46,33 @@ bool CSkywalkerFramework::Start()
     // Init
     SFObjectErrors ObjectErrors;
     PluginManager->Init(ObjectErrors);
+    if (ObjectErrors.IsValid())
+    {
+        auto FirstError = ObjectErrors.GetFirstError();
+        SF_LOG_ERROR("PluginManager Init Failed: " << FirstError.GetContent())
+        RunningState = ERunningState::SkywalkerFrameworkRunningState_Create;
+        return false;
+    }
 
     // Awake
     PluginManager->Awake(ObjectErrors);
+    if (ObjectErrors.IsValid())
+    {
+        auto FirstError = ObjectErrors.GetFirstError();
+        SF_LOG_ERROR("PluginManager Awake Failed: " << FirstError.GetContent())
+        RunningState = ERunningState::SkywalkerFrameworkRunningState_Create;
+        return false;
+    }
 
     // Start
     PluginManager->Start(ObjectErrors);
+    if (ObjectErrors.IsValid())
+    {
+        auto FirstError = ObjectErrors.GetFirstError();
+        SF_LOG_ERROR("PluginManager Start Failed: " << FirstError.GetContent())
+        RunningState = ERunningState::SkywalkerFrameworkRunningState_Create;
+        return false;
+    }
 
     // 进入运行状态
     RunningState = ERunningState::SkywalkerFrameworkRunningState_Running;
