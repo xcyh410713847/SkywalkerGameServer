@@ -246,14 +246,14 @@ SF_NAMESPACE_BEGIN
  * 插件导出
  */
 #ifdef SF_DYNAMIC_PLUGIN
-#define SF_PLUGIN_EXPORT(PluginClass)                                         \
-    SF_DLL_EXPORT void DllStartPlugin(SSF_PTR(SFPluginManager) PluginManager) \
-    {                                                                         \
-        SSF_REGISTER_PLUGIN(PluginManager, PluginClass);                      \
-    }                                                                         \
-    SF_DLL_EXPORT void DllStopPlugin(SSF_PTR(SFPluginManager) PluginManager)  \
-    {                                                                         \
-        SSF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                    \
+#define SF_PLUGIN_EXPORT(PluginClass)                                        \
+    SF_DLL_EXPORT void DllStartPlugin(SF_PTR(SFPluginManager) PluginManager) \
+    {                                                                        \
+        SF_REGISTER_PLUGIN(PluginManager, PluginClass);                      \
+    }                                                                        \
+    SF_DLL_EXPORT void DllStopPlugin(SF_PTR(SFPluginManager) PluginManager)  \
+    {                                                                        \
+        SF_UNREGISTER_PLUGIN(PluginManager, PluginClass);                    \
     }
 #else
 #define SF_PLUGIN_EXPORT(PluginClass)

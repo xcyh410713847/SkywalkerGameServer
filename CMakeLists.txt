@@ -117,7 +117,7 @@ endmacro()
 # DirName: 输出目录名
 macro(SkywalkerServer_Plugin PlugName DirName)
     add_definitions(
-        -DSKYWALKER_SF_DYNAMIC_PLUGIN
+        -DSF_DYNAMIC_PLUGIN
     )
 
     include_directories(
