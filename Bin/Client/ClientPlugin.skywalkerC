@@ -3,3 +3,8 @@ Plugin
     Name=SSFPlugin_Network
     Module
         Name=SSFModule_NetworkClient
+
+Plugin
+    Name=SSFPlugin_CommandLine
+    Module
+        Name=SSFModule_OS
