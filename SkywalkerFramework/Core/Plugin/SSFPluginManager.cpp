@@ -106,7 +106,7 @@ void SFPluginManager::Start(SFObjectErrors &Errors)
     }
 }
 
-void SFPluginManager::Tick(SFObjectErrors &Errors, int DelayMS)
+void SFPluginManager::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SF_COMMON_ITERATOR(IterPlugin, PluginMap)
     {
@@ -231,8 +231,23 @@ void SFPluginManager::UnregisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) 
 
 void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
 {
-    const char *ConfigPath = getenv("SKYWALKER_PLUGIN_CONFIG");
+    const char *ConfigPath = nullptr;
+#if defined(_WIN32) || defined(_WIN64)
+    char *ConfigPathBuffer = nullptr;
+    size_t ConfigPathLen = 0;
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_PLUGIN_CONFIG");
+    ConfigPath = ConfigPathBuffer;
+#else
+    ConfigPath = getenv("SKYWALKER_PLUGIN_CONFIG");
+#endif
     SFString PluginConfigPath = ConfigPath ? ConfigPath : "ServerPlugin.skywalkerC";
+#if defined(_WIN32) || defined(_WIN64)
+    if (ConfigPathBuffer != nullptr)
+    {
+        free(ConfigPathBuffer);
+        ConfigPathBuffer = nullptr;
+    }
+#endif
 
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (!PluginScriptParse->LoadScript(PluginConfigPath.c_str()))
@@ -248,7 +263,7 @@ void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
         return;
     }
 
-    for (int i = 0; i < RootNode->GetChildNodeNum(); i++)
+    for (size_t i = 0; i < RootNode->GetChildNodeNum(); i++)
     {
         SKYWALKER_PTR_SCRIPT_NODE PluginNode = RootNode->GetChildNodeFromIndex(i);
         if (PluginNode == nullptr)
@@ -268,7 +283,7 @@ void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
         PluginNameMap.insert(std::make_pair(PluginName, true));
 
         SFMap<SFString, bool> ModuleMap;
-        for (int j = 0; j < PluginNode->GetChildNodeNum(); j++)
+        for (size_t j = 0; j < PluginNode->GetChildNodeNum(); j++)
         {
             SKYWALKER_PTR_SCRIPT_NODE ModuleNode = PluginNode->GetChildNodeFromIndex(j);
             if (ModuleNode == nullptr)

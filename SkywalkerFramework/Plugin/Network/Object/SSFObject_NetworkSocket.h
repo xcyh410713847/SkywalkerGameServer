@@ -206,7 +206,7 @@ public:
     virtual void Init(SFObjectErrors &Errors) {};
     virtual void Awake(SFObjectErrors &Errors) {};
     virtual void Start(SFObjectErrors &Errors) {};
-    virtual void Tick(SFObjectErrors &Errors, int DelayMS) {};
+    virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) {};
     virtual void Stop(SFObjectErrors &Errors) {};
 
 protected:

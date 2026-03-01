@@ -62,7 +62,7 @@ public:
     /**
      * Tick
      */
-    virtual void Tick(SFObjectErrors &Errors, int DelayMS);
+    virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS);
 
     /**
      * 结束

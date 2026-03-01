@@ -43,7 +43,7 @@ public:
     /**
      * Tick
      */
-    virtual void Tick(SFObjectErrors &Errors, int DelayMS) override;
+    virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
 
     /**
      * 结束

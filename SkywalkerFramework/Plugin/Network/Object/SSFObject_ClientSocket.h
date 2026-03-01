@@ -20,7 +20,7 @@ public:
     SSFObject_ClientSocket(SSFNetworkSocketCreatorContext &InContext, SFObjectErrors &InErrors);
     virtual ~SSFObject_ClientSocket();
 
-    virtual void Tick(SFObjectErrors &Errors, int DelayMS) override;
+    virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
 };
 
 SF_NAMESPACE_END

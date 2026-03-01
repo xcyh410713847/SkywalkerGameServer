@@ -43,7 +43,7 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
     StartNetworkClient(Errors);
 }
 
-void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, int DelayMS)
+void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SSFModule::Tick(Errors, DelayMS);
 

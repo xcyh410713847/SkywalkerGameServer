@@ -81,7 +81,7 @@ void SFPlugin::Start(SFObjectErrors &Errors)
     }
 }
 
-void SFPlugin::Tick(SFObjectErrors &Errors, int DelayMS)
+void SFPlugin::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SF_COMMON_ITERATOR(IterModule, ModuleMap)
     {

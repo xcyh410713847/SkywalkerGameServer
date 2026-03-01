@@ -27,7 +27,7 @@ class CSkywalkerErrors
     std::vector<std::string> errorTrace; // 错误堆栈
 
 public:
-    CSkywalkerErrors(){};
+    CSkywalkerErrors() {};
     ~CSkywalkerErrors()
     {
         errors.clear();
@@ -71,7 +71,7 @@ public:
         }
         else
         {
-            T t;
+            T t{};
             return t;
         }
     }

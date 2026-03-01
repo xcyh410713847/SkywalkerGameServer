@@ -32,8 +32,23 @@ void SSFModule_NetworkServer::Start(SFObjectErrors &Errors)
 {
     SSFModule::Start(Errors);
 
-    const char *ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
+    const char *ConfigPath = nullptr;
+#if defined(_WIN32) || defined(_WIN64)
+    char *ConfigPathBuffer = nullptr;
+    size_t ConfigPathLen = 0;
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_SERVER_CONFIG");
+    ConfigPath = ConfigPathBuffer;
+#else
+    ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
+#endif
     SFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
+#if defined(_WIN32) || defined(_WIN64)
+    if (ConfigPathBuffer != nullptr)
+    {
+        free(ConfigPathBuffer);
+        ConfigPathBuffer = nullptr;
+    }
+#endif
 
     SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (ConfigParse->LoadScript(ServerConfigPath.c_str()))
@@ -41,7 +56,7 @@ void SSFModule_NetworkServer::Start(SFObjectErrors &Errors)
         SKYWALKER_PTR_SCRIPT_NODE RootNode = ConfigParse->GetRootNode();
         if (RootNode != nullptr)
         {
-            for (int i = 0; i < RootNode->GetChildNodeNum(); i++)
+            for (size_t i = 0; i < RootNode->GetChildNodeNum(); i++)
             {
                 SKYWALKER_PTR_SCRIPT_NODE ConfigNode = RootNode->GetChildNodeFromIndex(i);
                 if (ConfigNode == nullptr)
@@ -65,7 +80,7 @@ void SSFModule_NetworkServer::Start(SFObjectErrors &Errors)
     StartNetworkServer(Errors);
 }
 
-void SSFModule_NetworkServer::Tick(SFObjectErrors &Errors, int DelayMS)
+void SSFModule_NetworkServer::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SSFModule::Tick(Errors, DelayMS);
 

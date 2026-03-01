@@ -30,7 +30,7 @@ void SSFModule::Start(SFObjectErrors &Errors)
     SF_LOG_DEBUG_MODULE("Start");
 }
 
-void SSFModule::Tick(SFObjectErrors &Errors, int DelayMS)
+void SSFModule::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
 }
 

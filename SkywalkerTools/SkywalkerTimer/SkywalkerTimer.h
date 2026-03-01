@@ -31,12 +31,12 @@ class SkywalkerTimer
 public:
     SkywalkerTimer()
         : SecondsPerCount(0.0),
+          CountsPerSec(0),
           DeltaTime(0),
           PrevTime(0),
           CurrTime(0)
     {
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-        UINT64 CountsPerSec;
         QueryPerformanceFrequency((LARGE_INTEGER *)&CountsPerSec);
         SecondsPerCount = 1.0 / (double)CountsPerSec;
 #else
@@ -82,7 +82,7 @@ public:
     {
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
         QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
-        DeltaTime = (CurrTime - PrevTime) * SecondsPerCount;
+        DeltaTime = (CurrTime - PrevTime) * 1000 / CountsPerSec;
 #else
         timespec currentTime;
         clock_gettime(CLOCK_MONOTONIC, &currentTime);
@@ -133,7 +133,7 @@ public:
     /**
      * 获得启动时的格林威治时间(s)
      */
-    UINT64 GetStartGMTTime() const
+    std::time_t GetStartGMTTime() const
     {
         return BaseGMTTime;
     }
@@ -141,7 +141,7 @@ public:
     /**
      * 获得当前的格林威治时间(s)
      */
-    UINT64 GetCurrGMTTime() const
+    std::time_t GetCurrGMTTime() const
     {
         return std::time(nullptr);
     }
@@ -173,9 +173,10 @@ public:
 
 private:
     double SecondsPerCount{};
+    UINT64 CountsPerSec{};
 
     UINT64 BaseTime{};
-    UINT64 BaseGMTTime{};
+    std::time_t BaseGMTTime{};
     UINT64 PrevTime{};
     UINT64 CurrTime{};
     UINT64 DeltaTime{0}; // (ms)Time between current frame and last frame

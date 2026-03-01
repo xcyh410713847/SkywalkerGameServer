@@ -12,6 +12,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <cstdlib>
 
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
 
@@ -124,7 +125,7 @@ public:
         strncpy(this->NodeValue, InNodeValue, strlen(InNodeValue) + 1);
 #endif
 
-            return true;
+        return true;
     }
 
     /**
@@ -186,9 +187,9 @@ public:
     /**
      * 通过索引获取子节点
      */
-    CSkywalkerScriptNode *GetChildNodeFromIndex(int InIndex) const
+    CSkywalkerScriptNode *GetChildNodeFromIndex(size_t InIndex) const
     {
-        if (InIndex < 0 || InIndex >= ChildNodeVector.size())
+        if (InIndex >= ChildNodeVector.size())
         {
             return nullptr;
         }
@@ -199,7 +200,7 @@ public:
     /**
      * 获取子节点数量
      */
-    int GetChildNodeNum() const
+    size_t GetChildNodeNum() const
     {
         return ChildNodeVector.size();
     }
@@ -222,7 +223,7 @@ public:
      */
     float GetNodeValueFloat() const
     {
-        return atof(this->NodeValue);
+        return strtof(this->NodeValue, nullptr);
     }
 
     /**
@@ -321,7 +322,7 @@ private:
     /**
      * 行解析
      */
-    int LineParse(const char *InLine, const int LineSize, int &LayerLevel, CSkywalkerScriptNode *OutNode)
+    int LineParse(const char *InLine, size_t LineSize, int &LayerLevel, CSkywalkerScriptNode *OutNode)
     {
         if (nullptr == InLine)
         {
@@ -336,7 +337,7 @@ private:
         int ContentIndex = -1;
 
         // 逐个字符解析
-        for (int Index = 0; Index < LineSize; ++Index)
+        for (size_t Index = 0; Index < LineSize; ++Index)
         {
             char Char = InLine[Index];
             if (' ' == Char)

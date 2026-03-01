@@ -22,7 +22,7 @@ SSFObject_ClientSocket::~SSFObject_ClientSocket()
 {
 }
 
-void SSFObject_ClientSocket::Tick(SFObjectErrors &Errors, int DelayMS)
+void SSFObject_ClientSocket::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SSFObject_NetworkSocket::Tick(Errors, DelayMS);
 
