@@ -11,4 +11,5 @@ ServerConfig
     BlacklistHotReload=1
     BlacklistReloadIntervalMS=5000
     AITickBudgetMS=2
+    AIStrategy=strict
     ReplayDirectory=Replay

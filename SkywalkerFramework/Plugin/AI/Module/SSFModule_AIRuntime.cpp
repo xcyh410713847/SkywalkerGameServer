@@ -9,6 +9,8 @@
 
 #include "Include/SFILog.h"
 
+#include "Core/Service/SSFGameplayServiceGateway.h"
+
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 SF_NAMESPACE_USING
@@ -62,11 +64,29 @@ void SSFModule_AIRuntime::Start(SFObjectErrors &Errors)
                 {
                     SetTickBudgetMS(std::stoull(AITickBudgetNode->GetNodeValueString()));
                 }
+
+                SKYWALKER_PTR_SCRIPT_NODE AIStrategyNode = ConfigNode->GetChildNodeFromName("AIStrategy");
+                if (AIStrategyNode != nullptr)
+                {
+                    SetStrategy(AIStrategyNode->GetNodeValueString());
+                }
             }
         }
     }
 
-    SF_LOG_FRAMEWORK("AIRuntime module start, TickBudgetMS " << TickBudgetMS);
+    SSFGameplayServiceGateway::Instance().RegisterAISetStrategy(
+        [this](const SFString &InStrategyName)
+        {
+            return SetStrategy(InStrategyName);
+        });
+
+    SSFGameplayServiceGateway::Instance().RegisterAIGetStats(
+        [this]()
+        {
+            return BuildStats();
+        });
+
+    SF_LOG_FRAMEWORK("AIRuntime module start, TickBudgetMS " << TickBudgetMS << " Strategy " << StrategyName);
 }
 
 void SSFModule_AIRuntime::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
@@ -74,13 +94,15 @@ void SSFModule_AIRuntime::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     SSFModule::Tick(Errors, DelayMS);
     ++TickCounter;
 
-    if (DelayMS > TickBudgetMS)
+    SFUInt64 EffectiveBudget = GetEffectiveBudgetMS();
+    if (DelayMS > EffectiveBudget)
     {
         ++BudgetExceededCount;
         if (BudgetExceededCount % 100 == 0)
         {
             SF_LOG_FRAMEWORK("AIRuntime tick budget exceeded, DelayMS " << DelayMS
-                                                                << " TickBudgetMS " << TickBudgetMS
+                                                                << " EffectiveBudgetMS " << EffectiveBudget
+                                                                << " Strategy " << StrategyName
                                                                 << " ExceededCount " << BudgetExceededCount);
         }
     }
@@ -88,6 +110,9 @@ void SSFModule_AIRuntime::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 
 void SSFModule_AIRuntime::Stop(SFObjectErrors &Errors)
 {
+    SSFGameplayServiceGateway::Instance().RegisterAISetStrategy(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterAIGetStats(nullptr);
+
     SF_LOG_FRAMEWORK("AIRuntime module stop, ExceededCount " << BudgetExceededCount);
     SSFModule::Stop(Errors);
 }
@@ -111,4 +136,39 @@ SFUInt64 SSFModule_AIRuntime::GetTickBudgetMS() const
 SFUInt64 SSFModule_AIRuntime::GetBudgetExceededCount() const
 {
     return BudgetExceededCount;
+}
+
+bool SSFModule_AIRuntime::SetStrategy(const SFString &InStrategyName)
+{
+    if (SupportedStrategies.find(InStrategyName) == SupportedStrategies.end())
+    {
+        return false;
+    }
+
+    StrategyName = InStrategyName;
+    return true;
+}
+
+const SFString &SSFModule_AIRuntime::GetStrategy() const
+{
+    return StrategyName;
+}
+
+SFString SSFModule_AIRuntime::BuildStats() const
+{
+    return "AIStrategy=" + StrategyName +
+           ";TickBudgetMS=" + std::to_string(TickBudgetMS) +
+           ";EffectiveBudgetMS=" + std::to_string(GetEffectiveBudgetMS()) +
+           ";TickCounter=" + std::to_string(TickCounter) +
+           ";BudgetExceededCount=" + std::to_string(BudgetExceededCount);
+}
+
+SFUInt64 SSFModule_AIRuntime::GetEffectiveBudgetMS() const
+{
+    if (StrategyName == "relaxed")
+    {
+        return TickBudgetMS * 2;
+    }
+
+    return TickBudgetMS;
 }

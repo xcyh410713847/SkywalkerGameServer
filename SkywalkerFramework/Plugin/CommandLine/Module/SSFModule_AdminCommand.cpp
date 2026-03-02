@@ -27,6 +27,9 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "ban_ip",
         "unban_ip",
         "show_stats",
+        "show_ai_stats",
+        "set_ai_strategy",
+        "show_replay_stats",
         "start_replay_record",
         "stop_replay_record",
         "start_replay",
@@ -77,6 +80,14 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         return bResult;
     }
 
+    if (Command == "show_replay_stats")
+    {
+        SFString RecordStats = SSFGameplayServiceGateway::Instance().GetReplayRecordStats();
+        SFString PlayStats = SSFGameplayServiceGateway::Instance().GetReplayPlayStats();
+        SF_LOG_FRAMEWORK("show_replay_stats Record[" << RecordStats << "] Play[" << PlayStats << "]");
+        return true;
+    }
+
     if (Command == "stop_replay_record")
     {
         bool bResult = SSFGameplayServiceGateway::Instance().StopReplayRecord();
@@ -104,6 +115,28 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         bool bResult = SSFGameplayServiceGateway::Instance().StopReplayPlay();
         SF_LOG_FRAMEWORK("stop_replay Result " << bResult);
         return bResult;
+    }
+
+    if (Command == "set_ai_strategy")
+    {
+        SFString StrategyName;
+        Stream >> StrategyName;
+        if (StrategyName.empty())
+        {
+            SF_LOG_ERROR("set_ai_strategy failed: invalid strategy name");
+            return false;
+        }
+
+        bool bResult = SSFGameplayServiceGateway::Instance().SetAIStrategy(StrategyName);
+        SF_LOG_FRAMEWORK("set_ai_strategy " << StrategyName << " Result " << bResult);
+        return bResult;
+    }
+
+    if (Command == "show_ai_stats")
+    {
+        SFString AIStats = SSFGameplayServiceGateway::Instance().GetAIStats();
+        SF_LOG_FRAMEWORK("show_ai_stats " << AIStats);
+        return true;
     }
 
     for (const auto &Supported : SupportedCommands)

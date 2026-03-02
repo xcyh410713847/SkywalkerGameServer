@@ -19,6 +19,9 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFModule_ReplayPlayer, ESFLogLevel::Debug);
 
+static const SFString GReplayMagic = "SKYWALKER_REPLAY";
+static const SFUInt64 GReplayFormatVersion = 2;
+
 void SSFModule_ReplayPlayer::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
@@ -82,12 +85,19 @@ void SSFModule_ReplayPlayer::Start(SFObjectErrors &Errors)
         {
             return StopReplay();
         });
+
+    SSFGameplayServiceGateway::Instance().RegisterReplayPlayStats(
+        [this]()
+        {
+            return BuildStats();
+        });
 }
 
 void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
 {
     SSFGameplayServiceGateway::Instance().RegisterReplayStartPlay(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayStopPlay(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterReplayPlayStats(nullptr);
 
     StopReplay();
 
@@ -116,6 +126,49 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
     }
 
     LoadedEvents.clear();
+    ReplayFormatVersion = 0;
+
+    SFString MagicLine;
+    SFString VersionLine;
+    SFString SessionLine;
+    SFString EventCountLine;
+    SFString EventsBeginLine;
+    if (!std::getline(InFile, MagicLine) ||
+        !std::getline(InFile, VersionLine) ||
+        !std::getline(InFile, SessionLine) ||
+        !std::getline(InFile, EventCountLine) ||
+        !std::getline(InFile, EventsBeginLine))
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, invalid replay header " << ReplayFilePath);
+        return false;
+    }
+
+    if (MagicLine != ("Magic=" + GReplayMagic))
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, invalid replay magic " << ReplayFilePath);
+        return false;
+    }
+
+    const SFString VersionPrefix = "Version=";
+    if (VersionLine.rfind(VersionPrefix, 0) != 0)
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, invalid replay version header " << ReplayFilePath);
+        return false;
+    }
+
+    ReplayFormatVersion = std::stoull(VersionLine.substr(VersionPrefix.size()));
+    if (ReplayFormatVersion != GReplayFormatVersion)
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, unsupported replay version " << ReplayFormatVersion);
+        return false;
+    }
+
+    if (EventsBeginLine != "EventsBegin")
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, missing EventsBegin " << ReplayFilePath);
+        return false;
+    }
+
     SFString Line;
     while (std::getline(InFile, Line))
     {
@@ -133,8 +186,11 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
 
     bReplaying = TRUE;
     ReplaySessionId = SessionId;
+    LastReplaySessionId = SessionId;
+    LastLoadedEventCount = static_cast<SFUInt64>(LoadedEvents.size());
     SF_LOG_FRAMEWORK("ReplayPlayer start replay, SessionId " << SessionId
-                                                              << " EventCount " << LoadedEvents.size());
+                                                              << " EventCount " << LoadedEvents.size()
+                                                              << " FormatVersion " << ReplayFormatVersion);
     return true;
 }
 
@@ -167,6 +223,17 @@ void SSFModule_ReplayPlayer::SetReplayDirectory(const SFString &InReplayDirector
 SFUInt64 SSFModule_ReplayPlayer::GetLoadedEventCount() const
 {
     return static_cast<SFUInt64>(LoadedEvents.size());
+}
+
+SFString SSFModule_ReplayPlayer::BuildStats() const
+{
+    return "Replaying=" + std::to_string(static_cast<SFUInt64>(bReplaying)) +
+           ";ReplaySessionId=" + std::to_string(ReplaySessionId) +
+           ";LastReplaySessionId=" + std::to_string(LastReplaySessionId) +
+           ";LoadedEventCount=" + std::to_string(static_cast<SFUInt64>(LoadedEvents.size())) +
+           ";LastLoadedEventCount=" + std::to_string(LastLoadedEventCount) +
+           ";ReplayFormatVersion=" + std::to_string(ReplayFormatVersion) +
+           ";ReplayDirectory=" + ReplayDirectory;
 }
 
 SFString SSFModule_ReplayPlayer::BuildReplayFilePath(SFUInt64 SessionId) const

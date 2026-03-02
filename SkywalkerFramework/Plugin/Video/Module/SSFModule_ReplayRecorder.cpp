@@ -20,6 +20,9 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFModule_ReplayRecorder, ESFLogLevel::Debug);
 
+static const SFString GReplayMagic = "SKYWALKER_REPLAY";
+static const SFUInt64 GReplayFormatVersion = 2;
+
 void SSFModule_ReplayRecorder::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
@@ -83,12 +86,19 @@ void SSFModule_ReplayRecorder::Start(SFObjectErrors &Errors)
         {
             return StopRecord();
         });
+
+    SSFGameplayServiceGateway::Instance().RegisterReplayRecordStats(
+        [this]()
+        {
+            return BuildStats();
+        });
 }
 
 void SSFModule_ReplayRecorder::Stop(SFObjectErrors &Errors)
 {
     SSFGameplayServiceGateway::Instance().RegisterReplayStartRecord(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayStopRecord(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterReplayRecordStats(nullptr);
 
     StopRecord();
 
@@ -112,7 +122,6 @@ bool SSFModule_ReplayRecorder::StartRecord(SFUInt64 SessionId)
     RecordingSessionId = SessionId;
     RecordingFilePath = BuildReplayFilePath(SessionId);
     RecordingEvents.clear();
-    RecordingEvents.push_back("SessionId=" + std::to_string(SessionId));
 
     SF_LOG_FRAMEWORK("ReplayRecorder start record, SessionId " << SessionId << " File " << RecordingFilePath);
     return true;
@@ -149,10 +158,20 @@ bool SSFModule_ReplayRecorder::StopRecord()
         return false;
     }
 
+    OutFile << "Magic=" << GReplayMagic << "\n";
+    OutFile << "Version=" << GReplayFormatVersion << "\n";
+    OutFile << "SessionId=" << RecordingSessionId << "\n";
+    OutFile << "EventCount=" << RecordingEvents.size() << "\n";
+    OutFile << "EventsBegin" << "\n";
+
     for (const auto &Line : RecordingEvents)
     {
         OutFile << Line << "\n";
     }
+
+    LastRecordedSessionId = RecordingSessionId;
+    LastRecordedEventCount = static_cast<SFUInt64>(RecordingEvents.size());
+    LastRecordedFilePath = RecordingFilePath;
 
     SF_LOG_FRAMEWORK("ReplayRecorder stop record, SessionId " << RecordingSessionId
                                                                << " EventCount " << RecordingEvents.size()
@@ -176,6 +195,16 @@ void SSFModule_ReplayRecorder::SetReplayDirectory(const SFString &InReplayDirect
     {
         ReplayDirectory = InReplayDirectory;
     }
+}
+
+SFString SSFModule_ReplayRecorder::BuildStats() const
+{
+    return "Recording=" + std::to_string(static_cast<SFUInt64>(bRecording)) +
+           ";RecordingSessionId=" + std::to_string(RecordingSessionId) +
+           ";LastRecordedSessionId=" + std::to_string(LastRecordedSessionId) +
+           ";LastRecordedEventCount=" + std::to_string(LastRecordedEventCount) +
+           ";ReplayDirectory=" + ReplayDirectory +
+           ";LastRecordedFilePath=" + LastRecordedFilePath;
 }
 
 SFString SSFModule_ReplayRecorder::BuildReplayFilePath(SFUInt64 SessionId) const

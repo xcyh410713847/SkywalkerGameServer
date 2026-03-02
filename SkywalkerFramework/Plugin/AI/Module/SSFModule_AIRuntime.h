@@ -10,6 +10,8 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include <unordered_set>
+
 SF_NAMESPACE_BEGIN
 
 class SSFModule_AIRuntime : public SSFModule
@@ -35,11 +37,19 @@ public:
     void SetTickBudgetMS(SFUInt64 InTickBudgetMS);
     SFUInt64 GetTickBudgetMS() const;
     SFUInt64 GetBudgetExceededCount() const;
+    bool SetStrategy(const SFString &InStrategyName);
+    const SFString &GetStrategy() const;
+    SFString BuildStats() const;
+
+private:
+    SFUInt64 GetEffectiveBudgetMS() const;
 
 private:
     SFUInt64 TickBudgetMS = 2;
     SFUInt64 TickCounter = 0;
     SFUInt64 BudgetExceededCount = 0;
+    SFString StrategyName = "strict";
+    std::unordered_set<SFString> SupportedStrategies = {"strict", "relaxed"};
 };
 
 SF_NAMESPACE_END

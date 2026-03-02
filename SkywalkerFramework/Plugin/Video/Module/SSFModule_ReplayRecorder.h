@@ -38,6 +38,7 @@ public:
     bool StopRecord();
     bool IsRecording() const;
     void SetReplayDirectory(const SFString &InReplayDirectory);
+    SFString BuildStats() const;
 
 private:
     SFString BuildReplayFilePath(SFUInt64 SessionId) const;
@@ -48,6 +49,9 @@ private:
     SFString ReplayDirectory = "Replay";
     SFString RecordingFilePath;
     std::vector<SFString> RecordingEvents;
+    SFUInt64 LastRecordedSessionId = 0;
+    SFUInt64 LastRecordedEventCount = 0;
+    SFString LastRecordedFilePath;
 };
 
 SF_NAMESPACE_END

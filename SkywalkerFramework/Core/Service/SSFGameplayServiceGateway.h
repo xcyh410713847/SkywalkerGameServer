@@ -25,6 +25,10 @@ public:
     using ReplayStopRecord = std::function<bool()>;
     using ReplayStartPlay = std::function<bool(SFUInt64 SessionId)>;
     using ReplayStopPlay = std::function<bool()>;
+    using ReplayRecordStats = std::function<SFString()>;
+    using ReplayPlayStats = std::function<SFString()>;
+    using AISetStrategy = std::function<bool(const SFString &StrategyName)>;
+    using AIGetStats = std::function<SFString()>;
 
 public:
     static SSFGameplayServiceGateway &Instance();
@@ -37,6 +41,10 @@ public:
     void RegisterReplayStopRecord(const ReplayStopRecord &InStopRecord);
     void RegisterReplayStartPlay(const ReplayStartPlay &InStartPlay);
     void RegisterReplayStopPlay(const ReplayStopPlay &InStopPlay);
+    void RegisterReplayRecordStats(const ReplayRecordStats &InRecordStats);
+    void RegisterReplayPlayStats(const ReplayPlayStats &InPlayStats);
+    void RegisterAISetStrategy(const AISetStrategy &InSetStrategy);
+    void RegisterAIGetStats(const AIGetStats &InGetStats);
 
     bool ValidateToken(const SFString &Token) const;
     bool LoadPlayer(SFUInt64 PlayerId) const;
@@ -46,6 +54,10 @@ public:
     bool StopReplayRecord() const;
     bool StartReplayPlay(SFUInt64 SessionId) const;
     bool StopReplayPlay() const;
+    SFString GetReplayRecordStats() const;
+    SFString GetReplayPlayStats() const;
+    bool SetAIStrategy(const SFString &StrategyName) const;
+    SFString GetAIStats() const;
 
 private:
     AuthValidator Validator;
@@ -56,6 +68,10 @@ private:
     ReplayStopRecord StopRecord;
     ReplayStartPlay StartPlay;
     ReplayStopPlay StopPlay;
+    ReplayRecordStats RecordStats;
+    ReplayPlayStats PlayStats;
+    AISetStrategy SetStrategy;
+    AIGetStats GetStrategyStats;
 };
 
 SF_NAMESPACE_END

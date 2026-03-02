@@ -38,6 +38,7 @@ public:
     bool IsReplaying() const;
     void SetReplayDirectory(const SFString &InReplayDirectory);
     SFUInt64 GetLoadedEventCount() const;
+    SFString BuildStats() const;
 
 private:
     SFString BuildReplayFilePath(SFUInt64 SessionId) const;
@@ -47,6 +48,9 @@ private:
     SFUInt64 ReplaySessionId = 0;
     SFString ReplayDirectory = "Replay";
     std::vector<SFString> LoadedEvents;
+    SFUInt64 ReplayFormatVersion = 0;
+    SFUInt64 LastReplaySessionId = 0;
+    SFUInt64 LastLoadedEventCount = 0;
 };
 
 SF_NAMESPACE_END
