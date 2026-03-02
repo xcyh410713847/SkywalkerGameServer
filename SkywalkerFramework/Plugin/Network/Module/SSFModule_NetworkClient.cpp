@@ -41,6 +41,8 @@ namespace
 void SSFModule_NetworkClient::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
+
+    RegisterRouteHandlers();
 }
 
 void SSFModule_NetworkClient::Awake(SFObjectErrors &Errors)
@@ -126,6 +128,7 @@ void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     if (bIsConnected && ClientNetworkSocket != nullptr)
     {
         HandleReceive(Errors);
+        TickHeartbeat();
         return;
     }
 
@@ -250,6 +253,8 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     LastReconnectAttemptMS = 0;
     SF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
 
+    SendLoginPacket();
+
     return true;
 }
 
@@ -289,6 +294,25 @@ int SSFModule_NetworkClient::Send(const char *Data, int Length)
     return SentBytes;
 }
 
+bool SSFModule_NetworkClient::SendPacket(const SSFNetworkPacket &Packet)
+{
+    std::vector<SFByte> Buffer;
+    if (!SSFNetworkCodec::Encode(Packet, Buffer))
+    {
+        SF_LOG_ERROR("Encode network packet failed, MsgId " << Packet.MsgId);
+        return false;
+    }
+
+    int SentBytes = Send(reinterpret_cast<const char *>(Buffer.data()), static_cast<int>(Buffer.size()));
+    if (SentBytes != static_cast<int>(Buffer.size()))
+    {
+        SF_LOG_ERROR("Send network packet failed, MsgId " << Packet.MsgId << " SentBytes " << SentBytes << " PacketBytes " << Buffer.size());
+        return false;
+    }
+
+    return true;
+}
+
 void SSFModule_NetworkClient::StartNetworkClient(SFObjectErrors &Errors)
 {
     if (Errors.IsValid())
@@ -324,6 +348,17 @@ void SSFModule_NetworkClient::HandleReceive(SFObjectErrors &Errors)
     if (ReceivedBytes > 0)
     {
         SF_LOG_DEBUG("Received " << ReceivedBytes << " bytes from server");
+
+        NetworkCodec.Append(reinterpret_cast<const SFByte *>(Buffer), static_cast<SFUInt32>(ReceivedBytes));
+
+        SSFNetworkPacket Packet;
+        while (NetworkCodec.TryDecode(Packet))
+        {
+            if (!NetworkRouter.Route(Packet))
+            {
+                SF_LOG_FRAMEWORK("Unhandled packet MsgId " << Packet.MsgId << " Seq " << Packet.Seq << " BodyLen " << Packet.BodyLen);
+            }
+        }
     }
     else if (ReceivedBytes == 0)
     {
@@ -346,5 +381,62 @@ void SSFModule_NetworkClient::HandleReceive(SFObjectErrors &Errors)
             Disconnect();
         }
 #endif
+    }
+}
+
+void SSFModule_NetworkClient::RegisterRouteHandlers()
+{
+    NetworkRouter.RegisterHandler(static_cast<SFUInt16>(ESFNetworkMsg::S2C_HeartbeatAck),
+                                  [this](const SSFNetworkPacket &Packet)
+                                  {
+                                      SF_LOG_FRAMEWORK("Recv HeartbeatAck Seq " << Packet.Seq);
+                                  });
+
+    NetworkRouter.RegisterHandler(static_cast<SFUInt16>(ESFNetworkMsg::S2C_LoginAck),
+                                  [this](const SSFNetworkPacket &Packet)
+                                  {
+                                      SF_LOG_FRAMEWORK("Recv LoginAck Seq " << Packet.Seq);
+                                  });
+}
+
+void SSFModule_NetworkClient::TickHeartbeat()
+{
+    if (!IsConnected())
+    {
+        return;
+    }
+
+    const SFUInt64 NowMS = GetSteadyNowMS();
+    if (LastHeartbeatSendMS != 0 && (NowMS - LastHeartbeatSendMS) < HeartbeatIntervalMS)
+    {
+        return;
+    }
+
+    LastHeartbeatSendMS = NowMS;
+
+    SSFNetworkPacket Packet;
+    Packet.MsgId = static_cast<SFUInt16>(ESFNetworkMsg::C2S_Heartbeat);
+    Packet.Seq = ++SendSeq;
+
+    if (SendPacket(Packet))
+    {
+        SF_LOG_FRAMEWORK("Send Heartbeat Seq " << Packet.Seq);
+    }
+}
+
+void SSFModule_NetworkClient::SendLoginPacket()
+{
+    if (!IsConnected())
+    {
+        return;
+    }
+
+    SSFNetworkPacket Packet;
+    Packet.MsgId = static_cast<SFUInt16>(ESFNetworkMsg::C2S_Login);
+    Packet.Seq = ++SendSeq;
+
+    if (SendPacket(Packet))
+    {
+        SF_LOG_FRAMEWORK("Send Login Seq " << Packet.Seq);
     }
 }

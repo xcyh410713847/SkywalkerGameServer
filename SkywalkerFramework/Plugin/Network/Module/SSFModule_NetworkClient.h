@@ -14,6 +14,9 @@
 
 #include "SSFObject_NetworkSocket.h"
 
+#include "../Protocol/SSFNetworkCodec.h"
+#include "../Router/SSFNetworkRouter.h"
+
 #include <chrono>
 
 SF_NAMESPACE_BEGIN
@@ -96,6 +99,11 @@ public:
      */
     int Send(const char *Data, int Length);
 
+    /**
+     * 发送协议包
+     */
+    bool SendPacket(const SSFNetworkPacket &Packet);
+
 private:
     /**
      * 开启网络客户端
@@ -112,6 +120,21 @@ private:
      */
     void HandleReceive(SFObjectErrors &Errors);
 
+    /**
+     * 注册消息处理器
+     */
+    void RegisterRouteHandlers();
+
+    /**
+     * 心跳 Tick
+     */
+    void TickHeartbeat();
+
+    /**
+     * 发送登录包
+     */
+    void SendLoginPacket();
+
 private:
     SSF_NETWORK_DATA;
 
@@ -121,6 +144,12 @@ private:
     int ServerPort = 0;
     SFUInt64 ReconnectIntervalMS = 3000;
     SFUInt64 LastReconnectAttemptMS = 0;
+    SFUInt64 HeartbeatIntervalMS = 5000;
+    SFUInt64 LastHeartbeatSendMS = 0;
+    SFUInt32 SendSeq = 0;
+
+    SSFNetworkCodec NetworkCodec;
+    SSFNetworkRouter NetworkRouter;
 };
 
 SF_NAMESPACE_END

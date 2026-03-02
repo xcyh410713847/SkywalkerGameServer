@@ -6,4 +6,5 @@
 # #########################################################################
 
 # 构建 Network 插件动态库
+# 包含 Module/Object/Protocol/Router/Session 目录下源码（由 SkywalkerServer_Source 扫描）
 SkywalkerServer_Plugin("SSFPlugin_Network" ${skywalker_server_framework_name})

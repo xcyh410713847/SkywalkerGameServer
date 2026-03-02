@@ -1,3 +1,12 @@
 ServerConfig
     IP=127.0.0.1
     Port=9527
+    SessionTimeoutMS=15000
+    MaxMsgPerSecond=120
+    StatsLogIntervalMS=5000
+    ViolationThreshold=10
+    BlacklistDurationMS=60000
+    BlacklistPersistence=1
+    BlacklistFilePath=ServerBlacklist.data
+    BlacklistHotReload=1
+    BlacklistReloadIntervalMS=5000
