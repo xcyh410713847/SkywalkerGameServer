@@ -41,6 +41,7 @@ public:
     SFString BuildStats() const;
 
 private:
+    SFUInt64 BuildChecksum() const;
     SFString BuildReplayFilePath(SFUInt64 SessionId) const;
 
 private:
@@ -51,6 +52,7 @@ private:
     std::vector<SFString> RecordingEvents;
     SFUInt64 LastRecordedSessionId = 0;
     SFUInt64 LastRecordedEventCount = 0;
+    SFUInt64 LastRecordedChecksum = 0;
     SFString LastRecordedFilePath;
 };
 

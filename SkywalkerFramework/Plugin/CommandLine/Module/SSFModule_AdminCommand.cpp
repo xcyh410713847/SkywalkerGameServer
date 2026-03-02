@@ -28,6 +28,7 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "unban_ip",
         "show_stats",
         "show_ai_stats",
+        "show_ai_strategies",
         "set_ai_strategy",
         "show_replay_stats",
         "start_replay_record",
@@ -136,6 +137,13 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         SFString AIStats = SSFGameplayServiceGateway::Instance().GetAIStats();
         SF_LOG_FRAMEWORK("show_ai_stats " << AIStats);
+        return true;
+    }
+
+    if (Command == "show_ai_strategies")
+    {
+        SFString AIStrategies = SSFGameplayServiceGateway::Instance().GetAIStrategies();
+        SF_LOG_FRAMEWORK("show_ai_strategies " << AIStrategies);
         return true;
     }
 

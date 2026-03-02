@@ -21,6 +21,8 @@ SF_LOG_DEFINE(SSFModule_ReplayPlayer, ESFLogLevel::Debug);
 
 static const SFString GReplayMagic = "SKYWALKER_REPLAY";
 static const SFUInt64 GReplayFormatVersion = 2;
+static const SFUInt64 GReplayChecksumOffset = 1469598103934665603ULL;
+static const SFUInt64 GReplayChecksumPrime = 1099511628211ULL;
 
 void SSFModule_ReplayPlayer::Init(SFObjectErrors &Errors)
 {
@@ -127,16 +129,20 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
 
     LoadedEvents.clear();
     ReplayFormatVersion = 0;
+    ReplayHeaderChecksum = 0;
+    ReplayVerifiedChecksum = 0;
 
     SFString MagicLine;
     SFString VersionLine;
     SFString SessionLine;
     SFString EventCountLine;
+    SFString ChecksumLine;
     SFString EventsBeginLine;
     if (!std::getline(InFile, MagicLine) ||
         !std::getline(InFile, VersionLine) ||
         !std::getline(InFile, SessionLine) ||
         !std::getline(InFile, EventCountLine) ||
+        !std::getline(InFile, ChecksumLine) ||
         !std::getline(InFile, EventsBeginLine))
     {
         SF_LOG_ERROR("ReplayPlayer start replay failed, invalid replay header " << ReplayFilePath);
@@ -163,6 +169,15 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
         return false;
     }
 
+    const SFString ChecksumPrefix = "Checksum=";
+    if (ChecksumLine.rfind(ChecksumPrefix, 0) != 0)
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, invalid replay checksum header " << ReplayFilePath);
+        return false;
+    }
+
+    ReplayHeaderChecksum = std::stoull(ChecksumLine.substr(ChecksumPrefix.size()));
+
     if (EventsBeginLine != "EventsBegin")
     {
         SF_LOG_ERROR("ReplayPlayer start replay failed, missing EventsBegin " << ReplayFilePath);
@@ -184,13 +199,22 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
         return false;
     }
 
+    ReplayVerifiedChecksum = BuildChecksum();
+    if (ReplayHeaderChecksum != ReplayVerifiedChecksum)
+    {
+        SF_LOG_ERROR("ReplayPlayer start replay failed, checksum mismatch HeaderChecksum " << ReplayHeaderChecksum
+                                                                                             << " VerifiedChecksum " << ReplayVerifiedChecksum);
+        return false;
+    }
+
     bReplaying = TRUE;
     ReplaySessionId = SessionId;
     LastReplaySessionId = SessionId;
     LastLoadedEventCount = static_cast<SFUInt64>(LoadedEvents.size());
     SF_LOG_FRAMEWORK("ReplayPlayer start replay, SessionId " << SessionId
-                                                              << " EventCount " << LoadedEvents.size()
-                                                              << " FormatVersion " << ReplayFormatVersion);
+                                                             << " EventCount " << LoadedEvents.size()
+                                                             << " FormatVersion " << ReplayFormatVersion
+                                                             << " Checksum " << ReplayVerifiedChecksum);
     return true;
 }
 
@@ -233,7 +257,27 @@ SFString SSFModule_ReplayPlayer::BuildStats() const
            ";LoadedEventCount=" + std::to_string(static_cast<SFUInt64>(LoadedEvents.size())) +
            ";LastLoadedEventCount=" + std::to_string(LastLoadedEventCount) +
            ";ReplayFormatVersion=" + std::to_string(ReplayFormatVersion) +
+           ";ReplayHeaderChecksum=" + std::to_string(ReplayHeaderChecksum) +
+           ";ReplayVerifiedChecksum=" + std::to_string(ReplayVerifiedChecksum) +
            ";ReplayDirectory=" + ReplayDirectory;
+}
+
+SFUInt64 SSFModule_ReplayPlayer::BuildChecksum() const
+{
+    SFUInt64 Checksum = GReplayChecksumOffset;
+    for (const auto &Line : LoadedEvents)
+    {
+        for (const auto &Ch : Line)
+        {
+            Checksum ^= static_cast<SFUInt64>(static_cast<unsigned char>(Ch));
+            Checksum *= GReplayChecksumPrime;
+        }
+
+        Checksum ^= static_cast<SFUInt64>('\n');
+        Checksum *= GReplayChecksumPrime;
+    }
+
+    return Checksum;
 }
 
 SFString SSFModule_ReplayPlayer::BuildReplayFilePath(SFUInt64 SessionId) const

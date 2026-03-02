@@ -23,12 +23,12 @@ SF_PLUGIN_EXPORT(SSFPlugin_AI)
 
 void SSFPlugin_AI::Install(SFObjectErrors &Errors)
 {
-	SF_REGISTER_MODULE(SSFModule_AIRuntime)
+    SF_REGISTER_MODULE(SSFModule_AIRuntime)
 }
 
 void SSFPlugin_AI::Uninstall(SFObjectErrors &Errors)
 {
-	SF_UNREGISTER_MODULE(SSFModule_AIRuntime)
+    SF_UNREGISTER_MODULE(SSFModule_AIRuntime)
 }
 
 #pragma endregion SSFPlugin

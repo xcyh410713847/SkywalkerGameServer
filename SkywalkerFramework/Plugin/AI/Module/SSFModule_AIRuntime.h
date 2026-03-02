@@ -10,6 +10,7 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include <vector>
 #include <unordered_set>
 
 SF_NAMESPACE_BEGIN
@@ -40,6 +41,7 @@ public:
     bool SetStrategy(const SFString &InStrategyName);
     const SFString &GetStrategy() const;
     SFString BuildStats() const;
+    SFString BuildStrategies() const;
 
 private:
     SFUInt64 GetEffectiveBudgetMS() const;
@@ -49,7 +51,8 @@ private:
     SFUInt64 TickCounter = 0;
     SFUInt64 BudgetExceededCount = 0;
     SFString StrategyName = "strict";
-    std::unordered_set<SFString> SupportedStrategies = {"strict", "relaxed"};
+    std::unordered_set<SFString> SupportedStrategies = {"strict", "balanced", "relaxed"};
+    std::vector<SFString> StrategyOrder = {"strict", "balanced", "relaxed"};
 };
 
 SF_NAMESPACE_END

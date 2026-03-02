@@ -41,6 +41,7 @@ public:
     SFString BuildStats() const;
 
 private:
+    SFUInt64 BuildChecksum() const;
     SFString BuildReplayFilePath(SFUInt64 SessionId) const;
 
 private:
@@ -51,6 +52,8 @@ private:
     SFUInt64 ReplayFormatVersion = 0;
     SFUInt64 LastReplaySessionId = 0;
     SFUInt64 LastLoadedEventCount = 0;
+    SFUInt64 ReplayHeaderChecksum = 0;
+    SFUInt64 ReplayVerifiedChecksum = 0;
 };
 
 SF_NAMESPACE_END

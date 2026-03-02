@@ -29,6 +29,7 @@ public:
     using ReplayPlayStats = std::function<SFString()>;
     using AISetStrategy = std::function<bool(const SFString &StrategyName)>;
     using AIGetStats = std::function<SFString()>;
+    using AIGetStrategies = std::function<SFString()>;
 
 public:
     static SSFGameplayServiceGateway &Instance();
@@ -45,6 +46,7 @@ public:
     void RegisterReplayPlayStats(const ReplayPlayStats &InPlayStats);
     void RegisterAISetStrategy(const AISetStrategy &InSetStrategy);
     void RegisterAIGetStats(const AIGetStats &InGetStats);
+    void RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies);
 
     bool ValidateToken(const SFString &Token) const;
     bool LoadPlayer(SFUInt64 PlayerId) const;
@@ -58,6 +60,7 @@ public:
     SFString GetReplayPlayStats() const;
     bool SetAIStrategy(const SFString &StrategyName) const;
     SFString GetAIStats() const;
+    SFString GetAIStrategies() const;
 
 private:
     AuthValidator Validator;
@@ -72,6 +75,7 @@ private:
     ReplayPlayStats PlayStats;
     AISetStrategy SetStrategy;
     AIGetStats GetStrategyStats;
+    AIGetStrategies GetStrategies;
 };
 
 SF_NAMESPACE_END

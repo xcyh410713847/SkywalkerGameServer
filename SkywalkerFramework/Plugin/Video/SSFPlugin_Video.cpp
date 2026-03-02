@@ -24,14 +24,14 @@ SF_PLUGIN_EXPORT(SSFPlugin_Video)
 
 void SSFPlugin_Video::Install(SFObjectErrors &Errors)
 {
-	SF_REGISTER_MODULE(SSFModule_ReplayRecorder)
-	SF_REGISTER_MODULE(SSFModule_ReplayPlayer)
+    SF_REGISTER_MODULE(SSFModule_ReplayRecorder)
+    SF_REGISTER_MODULE(SSFModule_ReplayPlayer)
 }
 
 void SSFPlugin_Video::Uninstall(SFObjectErrors &Errors)
 {
-	SF_UNREGISTER_MODULE(SSFModule_ReplayRecorder)
-	SF_UNREGISTER_MODULE(SSFModule_ReplayPlayer)
+    SF_UNREGISTER_MODULE(SSFModule_ReplayRecorder)
+    SF_UNREGISTER_MODULE(SSFModule_ReplayPlayer)
 }
 
 #pragma endregion SSFPlugin

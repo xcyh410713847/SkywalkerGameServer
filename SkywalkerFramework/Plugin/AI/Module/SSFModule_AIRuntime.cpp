@@ -13,6 +13,8 @@
 
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
+#include <sstream>
+
 SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFModule_AIRuntime, ESFLogLevel::Debug);
@@ -86,6 +88,12 @@ void SSFModule_AIRuntime::Start(SFObjectErrors &Errors)
             return BuildStats();
         });
 
+    SSFGameplayServiceGateway::Instance().RegisterAIGetStrategies(
+        [this]()
+        {
+            return BuildStrategies();
+        });
+
     SF_LOG_FRAMEWORK("AIRuntime module start, TickBudgetMS " << TickBudgetMS << " Strategy " << StrategyName);
 }
 
@@ -101,9 +109,9 @@ void SSFModule_AIRuntime::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
         if (BudgetExceededCount % 100 == 0)
         {
             SF_LOG_FRAMEWORK("AIRuntime tick budget exceeded, DelayMS " << DelayMS
-                                                                << " EffectiveBudgetMS " << EffectiveBudget
-                                                                << " Strategy " << StrategyName
-                                                                << " ExceededCount " << BudgetExceededCount);
+                                                                        << " EffectiveBudgetMS " << EffectiveBudget
+                                                                        << " Strategy " << StrategyName
+                                                                        << " ExceededCount " << BudgetExceededCount);
         }
     }
 }
@@ -112,6 +120,7 @@ void SSFModule_AIRuntime::Stop(SFObjectErrors &Errors)
 {
     SSFGameplayServiceGateway::Instance().RegisterAISetStrategy(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterAIGetStats(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterAIGetStrategies(nullptr);
 
     SF_LOG_FRAMEWORK("AIRuntime module stop, ExceededCount " << BudgetExceededCount);
     SSFModule::Stop(Errors);
@@ -163,8 +172,30 @@ SFString SSFModule_AIRuntime::BuildStats() const
            ";BudgetExceededCount=" + std::to_string(BudgetExceededCount);
 }
 
+SFString SSFModule_AIRuntime::BuildStrategies() const
+{
+    std::ostringstream Stream;
+    Stream << "AIStrategies=";
+    for (size_t i = 0; i < StrategyOrder.size(); ++i)
+    {
+        if (i > 0)
+        {
+            Stream << "|";
+        }
+
+        Stream << StrategyOrder[i];
+    }
+
+    return Stream.str();
+}
+
 SFUInt64 SSFModule_AIRuntime::GetEffectiveBudgetMS() const
 {
+    if (StrategyName == "balanced")
+    {
+        return (TickBudgetMS * 3) / 2;
+    }
+
     if (StrategyName == "relaxed")
     {
         return TickBudgetMS * 2;

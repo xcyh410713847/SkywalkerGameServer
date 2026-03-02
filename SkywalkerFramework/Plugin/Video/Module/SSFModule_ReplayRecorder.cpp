@@ -22,6 +22,8 @@ SF_LOG_DEFINE(SSFModule_ReplayRecorder, ESFLogLevel::Debug);
 
 static const SFString GReplayMagic = "SKYWALKER_REPLAY";
 static const SFUInt64 GReplayFormatVersion = 2;
+static const SFUInt64 GReplayChecksumOffset = 1469598103934665603ULL;
+static const SFUInt64 GReplayChecksumPrime = 1099511628211ULL;
 
 void SSFModule_ReplayRecorder::Init(SFObjectErrors &Errors)
 {
@@ -162,6 +164,7 @@ bool SSFModule_ReplayRecorder::StopRecord()
     OutFile << "Version=" << GReplayFormatVersion << "\n";
     OutFile << "SessionId=" << RecordingSessionId << "\n";
     OutFile << "EventCount=" << RecordingEvents.size() << "\n";
+    OutFile << "Checksum=" << BuildChecksum() << "\n";
     OutFile << "EventsBegin" << "\n";
 
     for (const auto &Line : RecordingEvents)
@@ -171,11 +174,12 @@ bool SSFModule_ReplayRecorder::StopRecord()
 
     LastRecordedSessionId = RecordingSessionId;
     LastRecordedEventCount = static_cast<SFUInt64>(RecordingEvents.size());
+    LastRecordedChecksum = BuildChecksum();
     LastRecordedFilePath = RecordingFilePath;
 
     SF_LOG_FRAMEWORK("ReplayRecorder stop record, SessionId " << RecordingSessionId
-                                                               << " EventCount " << RecordingEvents.size()
-                                                               << " File " << RecordingFilePath);
+                                                              << " EventCount " << RecordingEvents.size()
+                                                              << " File " << RecordingFilePath);
 
     bRecording = FALSE;
     RecordingSessionId = 0;
@@ -203,8 +207,27 @@ SFString SSFModule_ReplayRecorder::BuildStats() const
            ";RecordingSessionId=" + std::to_string(RecordingSessionId) +
            ";LastRecordedSessionId=" + std::to_string(LastRecordedSessionId) +
            ";LastRecordedEventCount=" + std::to_string(LastRecordedEventCount) +
+           ";LastRecordedChecksum=" + std::to_string(LastRecordedChecksum) +
            ";ReplayDirectory=" + ReplayDirectory +
            ";LastRecordedFilePath=" + LastRecordedFilePath;
+}
+
+SFUInt64 SSFModule_ReplayRecorder::BuildChecksum() const
+{
+    SFUInt64 Checksum = GReplayChecksumOffset;
+    for (const auto &Line : RecordingEvents)
+    {
+        for (const auto &Ch : Line)
+        {
+            Checksum ^= static_cast<SFUInt64>(static_cast<unsigned char>(Ch));
+            Checksum *= GReplayChecksumPrime;
+        }
+
+        Checksum ^= static_cast<SFUInt64>('\n');
+        Checksum *= GReplayChecksumPrime;
+    }
+
+    return Checksum;
 }
 
 SFString SSFModule_ReplayRecorder::BuildReplayFilePath(SFUInt64 SessionId) const

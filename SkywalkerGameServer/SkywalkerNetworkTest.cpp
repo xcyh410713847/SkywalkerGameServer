@@ -19,6 +19,7 @@
 #include "SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h"
 
 #include <filesystem>
+#include <fstream>
 
 SF_NAMESPACE_USING
 
@@ -248,6 +249,8 @@ bool TestGameplayServiceGatewayCallbacks()
                                   { return StrategyName == "strict" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
                                { return SFString("AIStrategy=strict"); });
+    Gateway.RegisterAIGetStrategies([]()
+                                    { return SFString("AIStrategies=strict|balanced|relaxed"); });
 
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-Other"));
@@ -264,6 +267,7 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("unsupported"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStrategy=strict"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStrategies(), SFString("AIStrategies=strict|balanced|relaxed"));
 
     Gateway.RegisterAuthValidator(nullptr);
     Gateway.RegisterPlayerLoader(nullptr);
@@ -277,6 +281,7 @@ bool TestGameplayServiceGatewayCallbacks()
     Gateway.RegisterReplayPlayStats(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
+    Gateway.RegisterAIGetStrategies(nullptr);
 
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(10001));
@@ -290,6 +295,7 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayPlayStats(), SFString("ReplayPlayStatsUnavailable"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStatsUnavailable"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStrategies(), SFString("AIStrategiesUnavailable"));
 
     return true;
 }
@@ -303,12 +309,14 @@ bool TestAIRuntimeTickBudget()
     AIRuntime.SetTickBudgetMS(5);
     SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetTickBudgetMS(), static_cast<SFUInt64>(5));
     SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetStrategy(), SFString("strict"));
+    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.BuildStrategies(), SFString("AIStrategies=strict|balanced|relaxed"));
     SKYWALKER_TEST_ASSERT_TRUE(AIRuntime.SetStrategy("relaxed"));
+    SKYWALKER_TEST_ASSERT_TRUE(AIRuntime.SetStrategy("balanced"));
     SKYWALKER_TEST_ASSERT_FALSE(AIRuntime.SetStrategy("invalid"));
 
     AIRuntime.Tick(Errors, 10);
     AIRuntime.Tick(Errors, 1);
-    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetBudgetExceededCount(), static_cast<SFUInt64>(0));
+    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetBudgetExceededCount(), static_cast<SFUInt64>(1));
 
     AIRuntime.SetStrategy("strict");
     AIRuntime.Tick(Errors, 10);
@@ -374,6 +382,51 @@ bool TestReplayPlayerState()
     return true;
 }
 
+bool TestReplayPlayerChecksumMismatch()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_checksum_test";
+
+    SSFModule_ReplayRecorder Recorder(Context, Errors);
+    Recorder.SetReplayDirectory(ReplayDir.string());
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(301));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=1"));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StopRecord());
+
+    const std::filesystem::path ReplayFilePath = ReplayDir / "Session_301.replay";
+    std::ifstream InFile(ReplayFilePath, std::ios::in);
+    SKYWALKER_TEST_ASSERT_TRUE(InFile.is_open());
+
+    std::vector<SFString> Lines;
+    SFString Line;
+    while (std::getline(InFile, Line))
+    {
+        Lines.push_back(Line);
+    }
+    InFile.close();
+
+    SKYWALKER_TEST_ASSERT_TRUE(Lines.size() >= 5);
+    Lines[4] = "Checksum=1";
+
+    std::ofstream OutFile(ReplayFilePath, std::ios::trunc);
+    SKYWALKER_TEST_ASSERT_TRUE(OutFile.is_open());
+    for (const auto &CurrentLine : Lines)
+    {
+        OutFile << CurrentLine << "\n";
+    }
+    OutFile.close();
+
+    SSFModule_ReplayPlayer Player(Context, Errors);
+    Player.SetReplayDirectory(ReplayDir.string());
+    SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(301));
+
+    std::error_code EC;
+    std::filesystem::remove_all(ReplayDir, EC);
+
+    return true;
+}
+
 bool TestAdminCommandReplayGateway()
 {
     auto &Gateway = SSFGameplayServiceGateway::Instance();
@@ -390,9 +443,11 @@ bool TestAdminCommandReplayGateway()
     Gateway.RegisterReplayPlayStats([]()
                                     { return SFString("ReplayPlayStats=Test"); });
     Gateway.RegisterAISetStrategy([](const SFString &StrategyName)
-                                  { return StrategyName == "strict" || StrategyName == "relaxed"; });
+                                  { return StrategyName == "strict" || StrategyName == "balanced" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
                                { return SFString("AIStrategy=strict"); });
+    Gateway.RegisterAIGetStrategies([]()
+                                    { return SFString("AIStrategies=strict|balanced|relaxed"); });
 
     SFModuleContext Context;
     SFObjectErrors Errors;
@@ -407,6 +462,7 @@ bool TestAdminCommandReplayGateway()
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("set_ai_strategy strict"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("set_ai_strategy unknown"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_stats"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_strategies"));
 
     AdminCommand.Destroy(Errors);
     Gateway.RegisterReplayStartRecord(nullptr);
@@ -417,6 +473,7 @@ bool TestAdminCommandReplayGateway()
     Gateway.RegisterReplayPlayStats(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
+    Gateway.RegisterAIGetStrategies(nullptr);
 
     return true;
 }
@@ -436,4 +493,5 @@ SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestGameplayServiceGatewayCallbacks, T
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAIRuntimeTickBudget, TestAIRuntimeTickBudget)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayRecorderState, TestReplayRecorderState)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayPlayerState, TestReplayPlayerState)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayPlayerChecksumMismatch, TestReplayPlayerChecksumMismatch)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAdminCommandReplayGateway, TestAdminCommandReplayGateway)

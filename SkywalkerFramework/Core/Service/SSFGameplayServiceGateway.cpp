@@ -75,6 +75,11 @@ void SSFGameplayServiceGateway::RegisterAIGetStats(const AIGetStats &InGetStats)
     GetStrategyStats = InGetStats;
 }
 
+void SSFGameplayServiceGateway::RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies)
+{
+    GetStrategies = InGetStrategies;
+}
+
 bool SSFGameplayServiceGateway::ValidateToken(const SFString &Token) const
 {
     if (!Validator)
@@ -193,4 +198,14 @@ SFString SSFGameplayServiceGateway::GetAIStats() const
     }
 
     return GetStrategyStats();
+}
+
+SFString SSFGameplayServiceGateway::GetAIStrategies() const
+{
+    if (!GetStrategies)
+    {
+        return "AIStrategiesUnavailable";
+    }
+
+    return GetStrategies();
 }
