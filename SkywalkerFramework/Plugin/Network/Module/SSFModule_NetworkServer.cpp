@@ -10,12 +10,12 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
+#include "../Session/SSFNetworkBlacklistStore.h"
+
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 #include <chrono>
 #include <vector>
-#include <fstream>
-#include <sstream>
 #include <filesystem>
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
@@ -591,59 +591,20 @@ void SSFModule_NetworkServer::LoadBlacklistFromFile(SFUInt64 NowMS)
         return;
     }
 
-    BlacklistUntilMap.clear();
+    SSFNetworkBlacklistSnapshot Snapshot;
+    Snapshot.FormatVersion = BlacklistFormatVersion;
 
-    std::ifstream InFile(BlacklistFilePath);
-    if (!InFile.is_open())
+    if (!SSFNetworkBlacklistStore::LoadFromFile(BlacklistFilePath, NowMS, Snapshot, &BlacklistFileLastWriteTime))
     {
         return;
     }
 
-    SFString Line;
-    SFUInt64 LoadedCount = 0;
-    while (std::getline(InFile, Line))
+    BlacklistFormatVersion = Snapshot.FormatVersion;
+    BlacklistUntilMap = Snapshot.Entries;
+
+    if (!BlacklistUntilMap.empty())
     {
-        if (Line.empty())
-        {
-            continue;
-        }
-
-        if (Line[0] == '#')
-        {
-            if (Line.rfind("#Version", 0) == 0)
-            {
-                std::istringstream VersionStream(Line.substr(8));
-                SFUInt32 Version = 1;
-                VersionStream >> Version;
-                BlacklistFormatVersion = Version;
-            }
-            continue;
-        }
-
-        std::istringstream Stream(Line);
-        SFString IP;
-        SFUInt64 UntilMS = 0;
-        Stream >> IP >> UntilMS;
-        if (IP.empty() || UntilMS == 0)
-        {
-            continue;
-        }
-
-        if (UntilMS > NowMS)
-        {
-            BlacklistUntilMap[IP] = UntilMS;
-            ++LoadedCount;
-        }
-    }
-
-    if (LoadedCount > 0)
-    {
-        SF_LOG_FRAMEWORK("Load blacklist success, Count " << LoadedCount << " File " << BlacklistFilePath);
-    }
-
-    if (std::filesystem::exists(BlacklistFilePath))
-    {
-        BlacklistFileLastWriteTime = std::filesystem::last_write_time(BlacklistFilePath);
+        SF_LOG_FRAMEWORK("Load blacklist success, Count " << BlacklistUntilMap.size() << " File " << BlacklistFilePath);
     }
 }
 
@@ -654,32 +615,17 @@ void SSFModule_NetworkServer::SaveBlacklistToFile()
         return;
     }
 
-    std::filesystem::path PathObj(BlacklistFilePath);
-    if (PathObj.has_parent_path())
-    {
-        std::filesystem::create_directories(PathObj.parent_path());
-    }
+    SSFNetworkBlacklistSnapshot Snapshot;
+    Snapshot.FormatVersion = BlacklistFormatVersion;
+    Snapshot.Entries = BlacklistUntilMap;
 
-    std::ofstream OutFile(BlacklistFilePath, std::ios::trunc);
-    if (!OutFile.is_open())
+    if (!SSFNetworkBlacklistStore::SaveToFile(BlacklistFilePath, Snapshot, &BlacklistFileLastWriteTime))
     {
         SF_LOG_ERROR("Save blacklist failed, File " << BlacklistFilePath);
         return;
     }
 
-    OutFile << "#Version " << BlacklistFormatVersion << "\n";
-
-    SF_COMMON_ITERATOR(IterBlacklist, BlacklistUntilMap)
-    {
-        OutFile << IterBlacklist->first << " " << IterBlacklist->second << "\n";
-    }
-
     BlacklistDirty = FALSE;
-
-    if (std::filesystem::exists(BlacklistFilePath))
-    {
-        BlacklistFileLastWriteTime = std::filesystem::last_write_time(BlacklistFilePath);
-    }
 }
 
 void SSFModule_NetworkServer::ReloadBlacklistIfNeeded(SFUInt64 NowMS)

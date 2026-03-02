@@ -1,3 +1,6 @@
 ClientConfig
     IP=127.0.0.1
     Port=9527
+    ReconnectIntervalMS=3000
+    MaxReconnectCount=0
+    HeartbeatIntervalMS=5000

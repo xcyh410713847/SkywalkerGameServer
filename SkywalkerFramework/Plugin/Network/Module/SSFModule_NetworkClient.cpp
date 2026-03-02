@@ -103,9 +103,33 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
                 {
                     ServerPort = std::stoi(PortNode->GetNodeValueString());
                 }
+
+                SKYWALKER_PTR_SCRIPT_NODE ReconnectIntervalNode = ConfigNode->GetChildNodeFromName("ReconnectIntervalMS");
+                if (ReconnectIntervalNode != nullptr)
+                {
+                    ReconnectIntervalMS = std::stoull(ReconnectIntervalNode->GetNodeValueString());
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE HeartbeatIntervalNode = ConfigNode->GetChildNodeFromName("HeartbeatIntervalMS");
+                if (HeartbeatIntervalNode != nullptr)
+                {
+                    HeartbeatIntervalMS = std::stoull(HeartbeatIntervalNode->GetNodeValueString());
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE MaxReconnectCountNode = ConfigNode->GetChildNodeFromName("MaxReconnectCount");
+                if (MaxReconnectCountNode != nullptr)
+                {
+                    MaxReconnectCount = static_cast<SFUInt32>(std::stoul(MaxReconnectCountNode->GetNodeValueString()));
+                }
             }
         }
     }
+
+    SF_LOG_FRAMEWORK("Network Client Config IP " << ServerIP
+                                                 << " Port " << ServerPort
+                                                 << " ReconnectIntervalMS " << ReconnectIntervalMS
+                                                 << " HeartbeatIntervalMS " << HeartbeatIntervalMS
+                                                 << " MaxReconnectCount " << MaxReconnectCount);
 
     if (ServerIP.empty() || ServerPort <= 0)
     {
@@ -117,6 +141,7 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
 
     if (!Connect(ServerIP.c_str(), ServerPort))
     {
+        ++ReconnectAttemptCount;
         SF_LOG_FRAMEWORK("Connect server failed at startup, will retry " << ServerIP << ":" << ServerPort);
     }
 }
@@ -137,6 +162,11 @@ void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
         return;
     }
 
+    if (MaxReconnectCount > 0 && ReconnectAttemptCount >= MaxReconnectCount)
+    {
+        return;
+    }
+
     SFUInt64 NowMS = GetSteadyNowMS();
     if (LastReconnectAttemptMS != 0 && (NowMS - LastReconnectAttemptMS) < ReconnectIntervalMS)
     {
@@ -149,6 +179,10 @@ void SSFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     if (Connect(ServerIP.c_str(), ServerPort))
     {
         SF_LOG_FRAMEWORK("Reconnect server success " << ServerIP << ":" << ServerPort);
+    }
+    else
+    {
+        ++ReconnectAttemptCount;
     }
 }
 
@@ -250,6 +284,7 @@ bool SSFModule_NetworkClient::Connect(const char *IP, int Port)
     }
 
     bIsConnected = true;
+    ReconnectAttemptCount = 0;
     LastReconnectAttemptMS = 0;
     SF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
 

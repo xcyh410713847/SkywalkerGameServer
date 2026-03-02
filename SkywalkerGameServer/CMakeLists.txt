@@ -53,6 +53,11 @@ add_executable(${skywalker_game_server_name}
 # 创建测试执行文件
 add_executable(SkywalkerTestRunner
     SkywalkerTestMain.cpp
+    SkywalkerNetworkTest.cpp
+    ../SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkCodec.cpp
+    ../SkywalkerFramework/Plugin/Network/Router/SSFNetworkRouter.cpp
+    ../SkywalkerFramework/Plugin/Network/Session/SSFNetworkSessionManager.cpp
+    ../SkywalkerFramework/Plugin/Network/Session/SSFNetworkBlacklistStore.cpp
 )
 
 target_link_libraries(SkywalkerTestRunner PRIVATE

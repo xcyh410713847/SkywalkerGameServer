@@ -143,6 +143,8 @@ private:
     std::string ServerIP;
     int ServerPort = 0;
     SFUInt64 ReconnectIntervalMS = 3000;
+    SFUInt32 MaxReconnectCount = 0;
+    SFUInt32 ReconnectAttemptCount = 0;
     SFUInt64 LastReconnectAttemptMS = 0;
     SFUInt64 HeartbeatIntervalMS = 5000;
     SFUInt64 LastHeartbeatSendMS = 0;
