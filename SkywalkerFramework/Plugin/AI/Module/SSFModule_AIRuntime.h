@@ -18,7 +18,9 @@ class SSFModule_AIRuntime : public SSFModule
 
 public:
     virtual void Init(SFObjectErrors &Errors) override;
+    virtual void Start(SFObjectErrors &Errors) override;
     virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
+    virtual void Stop(SFObjectErrors &Errors) override;
     virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Object
@@ -32,10 +34,12 @@ public:
 
     void SetTickBudgetMS(SFUInt64 InTickBudgetMS);
     SFUInt64 GetTickBudgetMS() const;
+    SFUInt64 GetBudgetExceededCount() const;
 
 private:
     SFUInt64 TickBudgetMS = 2;
     SFUInt64 TickCounter = 0;
+    SFUInt64 BudgetExceededCount = 0;
 };
 
 SF_NAMESPACE_END

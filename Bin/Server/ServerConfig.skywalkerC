@@ -10,3 +10,5 @@ ServerConfig
     BlacklistFilePath=ServerBlacklist.data
     BlacklistHotReload=1
     BlacklistReloadIntervalMS=5000
+    AITickBudgetMS=2
+    ReplayDirectory=Replay

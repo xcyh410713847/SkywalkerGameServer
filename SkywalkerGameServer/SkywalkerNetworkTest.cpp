@@ -232,6 +232,14 @@ bool TestGameplayServiceGatewayCallbacks()
                                { return PlayerId == 10001 && WorldId == 1; });
     Gateway.RegisterWorldLeave([](SFUInt64 PlayerId, SFUInt64 WorldId)
                                { return PlayerId == 10001 && WorldId == 1; });
+    Gateway.RegisterReplayStartRecord([](SFUInt64 SessionId)
+                                      { return SessionId == 10001; });
+    Gateway.RegisterReplayStopRecord([]()
+                                     { return true; });
+    Gateway.RegisterReplayStartPlay([](SFUInt64 SessionId)
+                                    { return SessionId == 10001; });
+    Gateway.RegisterReplayStopPlay([]()
+                                   { return true; });
 
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-Other"));
@@ -239,16 +247,28 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(20002));
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.EnterWorld(10001, 1));
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.LeaveWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.StartReplayRecord(10001));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.StopReplayRecord());
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.StartReplayPlay(10001));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.StopReplayPlay());
 
     Gateway.RegisterAuthValidator(nullptr);
     Gateway.RegisterPlayerLoader(nullptr);
     Gateway.RegisterWorldEnter(nullptr);
     Gateway.RegisterWorldLeave(nullptr);
+    Gateway.RegisterReplayStartRecord(nullptr);
+    Gateway.RegisterReplayStopRecord(nullptr);
+    Gateway.RegisterReplayStartPlay(nullptr);
+    Gateway.RegisterReplayStopPlay(nullptr);
 
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(10001));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.EnterWorld(10001, 1));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.LeaveWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.StartReplayRecord(10001));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.StopReplayRecord());
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.StartReplayPlay(10001));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.StopReplayPlay());
 
     return true;
 }
@@ -262,6 +282,10 @@ bool TestAIRuntimeTickBudget()
     AIRuntime.SetTickBudgetMS(5);
     SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetTickBudgetMS(), static_cast<SFUInt64>(5));
 
+    AIRuntime.Tick(Errors, 10);
+    AIRuntime.Tick(Errors, 1);
+    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetBudgetExceededCount(), static_cast<SFUInt64>(1));
+
     return true;
 }
 
@@ -271,12 +295,20 @@ bool TestReplayRecorderState()
     SFObjectErrors Errors;
     SSFModule_ReplayRecorder Recorder(Context, Errors);
 
+    const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_test";
+    Recorder.SetReplayDirectory(ReplayDir.string());
+
     SKYWALKER_TEST_ASSERT_FALSE(Recorder.IsRecording());
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(101));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=1"));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=2"));
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.IsRecording());
     SKYWALKER_TEST_ASSERT_FALSE(Recorder.StartRecord(102));
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.StopRecord());
     SKYWALKER_TEST_ASSERT_FALSE(Recorder.IsRecording());
+
+    std::error_code EC;
+    std::filesystem::remove_all(ReplayDir, EC);
 
     return true;
 }
@@ -285,14 +317,58 @@ bool TestReplayPlayerState()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
+    const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_test";
+
+    SSFModule_ReplayRecorder Recorder(Context, Errors);
+    Recorder.SetReplayDirectory(ReplayDir.string());
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(201));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=1"));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StopRecord());
+
     SSFModule_ReplayPlayer Player(Context, Errors);
+    Player.SetReplayDirectory(ReplayDir.string());
 
     SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
     SKYWALKER_TEST_ASSERT_TRUE(Player.StartReplay(201));
+    SKYWALKER_TEST_ASSERT_EQ(Player.GetLoadedEventCount(), static_cast<SFUInt64>(2));
     SKYWALKER_TEST_ASSERT_TRUE(Player.IsReplaying());
     SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(202));
     SKYWALKER_TEST_ASSERT_TRUE(Player.StopReplay());
     SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
+
+    std::error_code EC;
+    std::filesystem::remove_all(ReplayDir, EC);
+
+    return true;
+}
+
+bool TestAdminCommandReplayGateway()
+{
+    auto &Gateway = SSFGameplayServiceGateway::Instance();
+    Gateway.RegisterReplayStartRecord([](SFUInt64 SessionId)
+                                      { return SessionId == 888; });
+    Gateway.RegisterReplayStopRecord([]()
+                                     { return true; });
+    Gateway.RegisterReplayStartPlay([](SFUInt64 SessionId)
+                                    { return SessionId == 888; });
+    Gateway.RegisterReplayStopPlay([]()
+                                   { return true; });
+
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_AdminCommand AdminCommand(Context, Errors);
+    AdminCommand.Init(Errors);
+
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("start_replay_record 888"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("stop_replay_record"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("start_replay 888"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("stop_replay"));
+
+    AdminCommand.Destroy(Errors);
+    Gateway.RegisterReplayStartRecord(nullptr);
+    Gateway.RegisterReplayStopRecord(nullptr);
+    Gateway.RegisterReplayStartPlay(nullptr);
+    Gateway.RegisterReplayStopPlay(nullptr);
 
     return true;
 }
@@ -312,3 +388,4 @@ SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestGameplayServiceGatewayCallbacks, T
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAIRuntimeTickBudget, TestAIRuntimeTickBudget)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayRecorderState, TestReplayRecorderState)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayPlayerState, TestReplayPlayerState)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAdminCommandReplayGateway, TestAdminCommandReplayGateway)

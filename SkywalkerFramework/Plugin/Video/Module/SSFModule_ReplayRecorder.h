@@ -10,6 +10,8 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include <vector>
+
 SF_NAMESPACE_BEGIN
 
 class SSFModule_ReplayRecorder : public SSFModule
@@ -18,6 +20,8 @@ class SSFModule_ReplayRecorder : public SSFModule
 
 public:
     virtual void Init(SFObjectErrors &Errors) override;
+    virtual void Start(SFObjectErrors &Errors) override;
+    virtual void Stop(SFObjectErrors &Errors) override;
     virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Object
@@ -30,12 +34,20 @@ public:
     virtual ~SSFModule_ReplayRecorder() {};
 
     bool StartRecord(SFUInt64 SessionId);
+    bool RecordEvent(const SFString &EventLine);
     bool StopRecord();
     bool IsRecording() const;
+    void SetReplayDirectory(const SFString &InReplayDirectory);
+
+private:
+    SFString BuildReplayFilePath(SFUInt64 SessionId) const;
 
 private:
     SFBool bRecording = FALSE;
     SFUInt64 RecordingSessionId = 0;
+    SFString ReplayDirectory = "Replay";
+    SFString RecordingFilePath;
+    std::vector<SFString> RecordingEvents;
 };
 
 SF_NAMESPACE_END

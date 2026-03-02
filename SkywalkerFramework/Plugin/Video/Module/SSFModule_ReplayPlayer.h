@@ -10,6 +10,8 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include <vector>
+
 SF_NAMESPACE_BEGIN
 
 class SSFModule_ReplayPlayer : public SSFModule
@@ -18,6 +20,8 @@ class SSFModule_ReplayPlayer : public SSFModule
 
 public:
     virtual void Init(SFObjectErrors &Errors) override;
+    virtual void Start(SFObjectErrors &Errors) override;
+    virtual void Stop(SFObjectErrors &Errors) override;
     virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Object
@@ -32,10 +36,17 @@ public:
     bool StartReplay(SFUInt64 SessionId);
     bool StopReplay();
     bool IsReplaying() const;
+    void SetReplayDirectory(const SFString &InReplayDirectory);
+    SFUInt64 GetLoadedEventCount() const;
+
+private:
+    SFString BuildReplayFilePath(SFUInt64 SessionId) const;
 
 private:
     SFBool bReplaying = FALSE;
     SFUInt64 ReplaySessionId = 0;
+    SFString ReplayDirectory = "Replay";
+    std::vector<SFString> LoadedEvents;
 };
 
 SF_NAMESPACE_END

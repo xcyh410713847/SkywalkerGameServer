@@ -35,6 +35,26 @@ void SSFGameplayServiceGateway::RegisterWorldLeave(const WorldLeave &InLeave)
     Leave = InLeave;
 }
 
+void SSFGameplayServiceGateway::RegisterReplayStartRecord(const ReplayStartRecord &InStartRecord)
+{
+    StartRecord = InStartRecord;
+}
+
+void SSFGameplayServiceGateway::RegisterReplayStopRecord(const ReplayStopRecord &InStopRecord)
+{
+    StopRecord = InStopRecord;
+}
+
+void SSFGameplayServiceGateway::RegisterReplayStartPlay(const ReplayStartPlay &InStartPlay)
+{
+    StartPlay = InStartPlay;
+}
+
+void SSFGameplayServiceGateway::RegisterReplayStopPlay(const ReplayStopPlay &InStopPlay)
+{
+    StopPlay = InStopPlay;
+}
+
 bool SSFGameplayServiceGateway::ValidateToken(const SFString &Token) const
 {
     if (!Validator)
@@ -73,4 +93,44 @@ bool SSFGameplayServiceGateway::LeaveWorld(SFUInt64 PlayerId, SFUInt64 WorldId) 
     }
 
     return Leave(PlayerId, WorldId);
+}
+
+bool SSFGameplayServiceGateway::StartReplayRecord(SFUInt64 SessionId) const
+{
+    if (!StartRecord)
+    {
+        return false;
+    }
+
+    return StartRecord(SessionId);
+}
+
+bool SSFGameplayServiceGateway::StopReplayRecord() const
+{
+    if (!StopRecord)
+    {
+        return false;
+    }
+
+    return StopRecord();
+}
+
+bool SSFGameplayServiceGateway::StartReplayPlay(SFUInt64 SessionId) const
+{
+    if (!StartPlay)
+    {
+        return false;
+    }
+
+    return StartPlay(SessionId);
+}
+
+bool SSFGameplayServiceGateway::StopReplayPlay() const
+{
+    if (!StopPlay)
+    {
+        return false;
+    }
+
+    return StopPlay();
 }
