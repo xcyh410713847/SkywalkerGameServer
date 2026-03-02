@@ -27,9 +27,11 @@ public:
     using ReplayStopPlay = std::function<bool()>;
     using ReplayRecordStats = std::function<SFString()>;
     using ReplayPlayStats = std::function<SFString()>;
+    using ReplayGetEventByIndex = std::function<SFString(SFUInt64 EventIndex)>;
     using AISetStrategy = std::function<bool(const SFString &StrategyName)>;
     using AIGetStats = std::function<SFString()>;
     using AIGetStrategies = std::function<SFString()>;
+    using AIGetAudit = std::function<SFString()>;
 
 public:
     static SSFGameplayServiceGateway &Instance();
@@ -44,9 +46,11 @@ public:
     void RegisterReplayStopPlay(const ReplayStopPlay &InStopPlay);
     void RegisterReplayRecordStats(const ReplayRecordStats &InRecordStats);
     void RegisterReplayPlayStats(const ReplayPlayStats &InPlayStats);
+    void RegisterReplayGetEventByIndex(const ReplayGetEventByIndex &InGetEventByIndex);
     void RegisterAISetStrategy(const AISetStrategy &InSetStrategy);
     void RegisterAIGetStats(const AIGetStats &InGetStats);
     void RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies);
+    void RegisterAIGetAudit(const AIGetAudit &InGetAudit);
 
     bool ValidateToken(const SFString &Token) const;
     bool LoadPlayer(SFUInt64 PlayerId) const;
@@ -58,9 +62,11 @@ public:
     bool StopReplayPlay() const;
     SFString GetReplayRecordStats() const;
     SFString GetReplayPlayStats() const;
+    SFString GetReplayEventByIndex(SFUInt64 EventIndex) const;
     bool SetAIStrategy(const SFString &StrategyName) const;
     SFString GetAIStats() const;
     SFString GetAIStrategies() const;
+    SFString GetAIAudit() const;
 
 private:
     AuthValidator Validator;
@@ -73,9 +79,11 @@ private:
     ReplayStopPlay StopPlay;
     ReplayRecordStats RecordStats;
     ReplayPlayStats PlayStats;
+    ReplayGetEventByIndex GetEventByIndex;
     AISetStrategy SetStrategy;
     AIGetStats GetStrategyStats;
     AIGetStrategies GetStrategies;
+    AIGetAudit GetAudit;
 };
 
 SF_NAMESPACE_END

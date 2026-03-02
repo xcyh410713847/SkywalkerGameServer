@@ -65,6 +65,11 @@ void SSFGameplayServiceGateway::RegisterReplayPlayStats(const ReplayPlayStats &I
     PlayStats = InPlayStats;
 }
 
+void SSFGameplayServiceGateway::RegisterReplayGetEventByIndex(const ReplayGetEventByIndex &InGetEventByIndex)
+{
+    GetEventByIndex = InGetEventByIndex;
+}
+
 void SSFGameplayServiceGateway::RegisterAISetStrategy(const AISetStrategy &InSetStrategy)
 {
     SetStrategy = InSetStrategy;
@@ -78,6 +83,11 @@ void SSFGameplayServiceGateway::RegisterAIGetStats(const AIGetStats &InGetStats)
 void SSFGameplayServiceGateway::RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies)
 {
     GetStrategies = InGetStrategies;
+}
+
+void SSFGameplayServiceGateway::RegisterAIGetAudit(const AIGetAudit &InGetAudit)
+{
+    GetAudit = InGetAudit;
 }
 
 bool SSFGameplayServiceGateway::ValidateToken(const SFString &Token) const
@@ -180,6 +190,16 @@ SFString SSFGameplayServiceGateway::GetReplayPlayStats() const
     return PlayStats();
 }
 
+SFString SSFGameplayServiceGateway::GetReplayEventByIndex(SFUInt64 EventIndex) const
+{
+    if (!GetEventByIndex)
+    {
+        return "ReplayEventUnavailable";
+    }
+
+    return GetEventByIndex(EventIndex);
+}
+
 bool SSFGameplayServiceGateway::SetAIStrategy(const SFString &StrategyName) const
 {
     if (!SetStrategy)
@@ -208,4 +228,14 @@ SFString SSFGameplayServiceGateway::GetAIStrategies() const
     }
 
     return GetStrategies();
+}
+
+SFString SSFGameplayServiceGateway::GetAIAudit() const
+{
+    if (!GetAudit)
+    {
+        return "AIAuditUnavailable";
+    }
+
+    return GetAudit();
 }

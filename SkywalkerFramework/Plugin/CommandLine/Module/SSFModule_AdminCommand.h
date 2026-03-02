@@ -10,6 +10,7 @@
 
 #include "Core/Module/SSFModule.h"
 
+#include <unordered_set>
 #include <vector>
 
 SF_NAMESPACE_BEGIN
@@ -34,7 +35,14 @@ public:
     bool ExecuteCommand(const SFString &CommandLine);
 
 private:
+    bool ParseRoleAndCommand(const SFString &CommandLine, SFString &OutRole, SFString &OutResolvedCommandLine) const;
+    bool HasPermission(const SFString &Role, const SFString &Command) const;
+
+private:
     std::vector<SFString> SupportedCommands;
+    std::unordered_set<SFString> AdminOnlyCommands;
+    std::unordered_set<SFString> OperatorCommands;
+    std::unordered_set<SFString> ObserverCommands;
 };
 
 SF_NAMESPACE_END

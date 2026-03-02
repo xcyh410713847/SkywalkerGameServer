@@ -39,6 +39,7 @@ public:
     void SetReplayDirectory(const SFString &InReplayDirectory);
     SFUInt64 GetLoadedEventCount() const;
     SFString BuildStats() const;
+    SFString GetEventByIndex(SFUInt64 EventIndex);
 
 private:
     SFUInt64 BuildChecksum() const;
@@ -54,6 +55,7 @@ private:
     SFUInt64 LastLoadedEventCount = 0;
     SFUInt64 ReplayHeaderChecksum = 0;
     SFUInt64 ReplayVerifiedChecksum = 0;
+    SFUInt64 LastQueryEventIndex = static_cast<SFUInt64>(-1);
 };
 
 SF_NAMESPACE_END

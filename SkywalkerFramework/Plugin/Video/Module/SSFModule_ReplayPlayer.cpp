@@ -93,6 +93,12 @@ void SSFModule_ReplayPlayer::Start(SFObjectErrors &Errors)
         {
             return BuildStats();
         });
+
+    SSFGameplayServiceGateway::Instance().RegisterReplayGetEventByIndex(
+        [this](SFUInt64 EventIndex)
+        {
+            return GetEventByIndex(EventIndex);
+        });
 }
 
 void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
@@ -100,6 +106,7 @@ void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
     SSFGameplayServiceGateway::Instance().RegisterReplayStartPlay(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayStopPlay(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayPlayStats(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterReplayGetEventByIndex(nullptr);
 
     StopReplay();
 
@@ -203,7 +210,7 @@ bool SSFModule_ReplayPlayer::StartReplay(SFUInt64 SessionId)
     if (ReplayHeaderChecksum != ReplayVerifiedChecksum)
     {
         SF_LOG_ERROR("ReplayPlayer start replay failed, checksum mismatch HeaderChecksum " << ReplayHeaderChecksum
-                                                                                             << " VerifiedChecksum " << ReplayVerifiedChecksum);
+                                                                                           << " VerifiedChecksum " << ReplayVerifiedChecksum);
         return false;
     }
 
@@ -256,10 +263,22 @@ SFString SSFModule_ReplayPlayer::BuildStats() const
            ";LastReplaySessionId=" + std::to_string(LastReplaySessionId) +
            ";LoadedEventCount=" + std::to_string(static_cast<SFUInt64>(LoadedEvents.size())) +
            ";LastLoadedEventCount=" + std::to_string(LastLoadedEventCount) +
+           ";LastQueryEventIndex=" + std::to_string(LastQueryEventIndex) +
            ";ReplayFormatVersion=" + std::to_string(ReplayFormatVersion) +
            ";ReplayHeaderChecksum=" + std::to_string(ReplayHeaderChecksum) +
            ";ReplayVerifiedChecksum=" + std::to_string(ReplayVerifiedChecksum) +
            ";ReplayDirectory=" + ReplayDirectory;
+}
+
+SFString SSFModule_ReplayPlayer::GetEventByIndex(SFUInt64 EventIndex)
+{
+    LastQueryEventIndex = EventIndex;
+    if (EventIndex >= LoadedEvents.size())
+    {
+        return "";
+    }
+
+    return "EventIndex=" + std::to_string(EventIndex) + ";Event=" + LoadedEvents[static_cast<size_t>(EventIndex)];
 }
 
 SFUInt64 SSFModule_ReplayPlayer::BuildChecksum() const

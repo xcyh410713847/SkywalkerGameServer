@@ -42,17 +42,21 @@ public:
     const SFString &GetStrategy() const;
     SFString BuildStats() const;
     SFString BuildStrategies() const;
+    SFString BuildAudit() const;
 
 private:
     SFUInt64 GetEffectiveBudgetMS() const;
+    void AppendStrategyAudit(const SFString &FromStrategy, const SFString &ToStrategy);
 
 private:
     SFUInt64 TickBudgetMS = 2;
     SFUInt64 TickCounter = 0;
     SFUInt64 BudgetExceededCount = 0;
+    SFUInt64 StrategySwitchSeq = 0;
     SFString StrategyName = "strict";
     std::unordered_set<SFString> SupportedStrategies = {"strict", "balanced", "relaxed"};
     std::vector<SFString> StrategyOrder = {"strict", "balanced", "relaxed"};
+    std::vector<SFString> StrategyAudit;
 };
 
 SF_NAMESPACE_END

@@ -214,6 +214,10 @@ bool TestAdminCommandExecute()
 
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_stats"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("kick_player 10001"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=observer show_stats"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("role=observer kick_player 10001"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=operator show_ai_stats"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("role=operator start_replay 10001"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("unknown_cmd"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand(""));
 
@@ -245,12 +249,16 @@ bool TestGameplayServiceGatewayCallbacks()
                                       { return SFString("ReplayRecordStats=Ready"); });
     Gateway.RegisterReplayPlayStats([]()
                                     { return SFString("ReplayPlayStats=Ready"); });
+    Gateway.RegisterReplayGetEventByIndex([](SFUInt64 EventIndex)
+                                          { return EventIndex == 0 ? SFString("EventIndex=0;Event=Frame=1") : SFString(); });
     Gateway.RegisterAISetStrategy([](const SFString &StrategyName)
-                                  { return StrategyName == "strict" || StrategyName == "relaxed"; });
+                                  { return StrategyName == "strict" || StrategyName == "balanced" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
                                { return SFString("AIStrategy=strict"); });
     Gateway.RegisterAIGetStrategies([]()
                                     { return SFString("AIStrategies=strict|balanced|relaxed"); });
+    Gateway.RegisterAIGetAudit([]()
+                               { return SFString("AIStrategyAudit=Empty"); });
 
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-Other"));
@@ -264,10 +272,13 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.StopReplayPlay());
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayRecordStats(), SFString("ReplayRecordStats=Ready"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayPlayStats(), SFString("ReplayPlayStats=Ready"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventByIndex(0), SFString("EventIndex=0;Event=Frame=1"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventByIndex(1), SFString(""));
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("unsupported"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStrategy=strict"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStrategies(), SFString("AIStrategies=strict|balanced|relaxed"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIAudit(), SFString("AIStrategyAudit=Empty"));
 
     Gateway.RegisterAuthValidator(nullptr);
     Gateway.RegisterPlayerLoader(nullptr);
@@ -279,9 +290,11 @@ bool TestGameplayServiceGatewayCallbacks()
     Gateway.RegisterReplayStopPlay(nullptr);
     Gateway.RegisterReplayRecordStats(nullptr);
     Gateway.RegisterReplayPlayStats(nullptr);
+    Gateway.RegisterReplayGetEventByIndex(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
     Gateway.RegisterAIGetStrategies(nullptr);
+    Gateway.RegisterAIGetAudit(nullptr);
 
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-10001"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(10001));
@@ -293,9 +306,11 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.StopReplayPlay());
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayRecordStats(), SFString("ReplayRecordStatsUnavailable"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayPlayStats(), SFString("ReplayPlayStatsUnavailable"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventByIndex(0), SFString("ReplayEventUnavailable"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStatsUnavailable"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStrategies(), SFString("AIStrategiesUnavailable"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIAudit(), SFString("AIAuditUnavailable"));
 
     return true;
 }
@@ -320,10 +335,13 @@ bool TestAIRuntimeTickBudget()
 
     AIRuntime.SetStrategy("strict");
     AIRuntime.Tick(Errors, 10);
-    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetBudgetExceededCount(), static_cast<SFUInt64>(1));
+    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetBudgetExceededCount(), static_cast<SFUInt64>(2));
 
     SFString AIStats = AIRuntime.BuildStats();
     SKYWALKER_TEST_ASSERT_TRUE(AIStats.find("AIStrategy=strict") != SFString::npos);
+    SFString AIAudit = AIRuntime.BuildAudit();
+    SKYWALKER_TEST_ASSERT_TRUE(AIAudit.find("To=relaxed") != SFString::npos);
+    SKYWALKER_TEST_ASSERT_TRUE(AIAudit.find("To=balanced") != SFString::npos);
 
     return true;
 }
@@ -370,6 +388,8 @@ bool TestReplayPlayerState()
     SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
     SKYWALKER_TEST_ASSERT_TRUE(Player.StartReplay(201));
     SKYWALKER_TEST_ASSERT_EQ(Player.GetLoadedEventCount(), static_cast<SFUInt64>(1));
+    SKYWALKER_TEST_ASSERT_EQ(Player.GetEventByIndex(0), SFString("EventIndex=0;Event=Frame=1"));
+    SKYWALKER_TEST_ASSERT_EQ(Player.GetEventByIndex(2), SFString(""));
     SKYWALKER_TEST_ASSERT_TRUE(Player.BuildStats().find("ReplayFormatVersion=2") != SFString::npos);
     SKYWALKER_TEST_ASSERT_TRUE(Player.IsReplaying());
     SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(202));
@@ -442,12 +462,16 @@ bool TestAdminCommandReplayGateway()
                                       { return SFString("ReplayRecordStats=Test"); });
     Gateway.RegisterReplayPlayStats([]()
                                     { return SFString("ReplayPlayStats=Test"); });
+    Gateway.RegisterReplayGetEventByIndex([](SFUInt64 EventIndex)
+                                          { return EventIndex == 1 ? SFString("EventIndex=1;Event=Frame=2") : SFString(); });
     Gateway.RegisterAISetStrategy([](const SFString &StrategyName)
                                   { return StrategyName == "strict" || StrategyName == "balanced" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
                                { return SFString("AIStrategy=strict"); });
     Gateway.RegisterAIGetStrategies([]()
                                     { return SFString("AIStrategies=strict|balanced|relaxed"); });
+    Gateway.RegisterAIGetAudit([]()
+                               { return SFString("AIStrategyAudit=Seq=1;From=strict;To=balanced;TickCounter=10"); });
 
     SFModuleContext Context;
     SFObjectErrors Errors;
@@ -459,10 +483,15 @@ bool TestAdminCommandReplayGateway()
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("start_replay 888"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("stop_replay"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_replay_stats"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_replay_event 1"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("show_replay_event 9"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("set_ai_strategy strict"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("set_ai_strategy unknown"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_stats"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_strategies"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_audit"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("role=observer set_ai_strategy strict"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=observer show_ai_audit"));
 
     AdminCommand.Destroy(Errors);
     Gateway.RegisterReplayStartRecord(nullptr);
@@ -471,9 +500,11 @@ bool TestAdminCommandReplayGateway()
     Gateway.RegisterReplayStopPlay(nullptr);
     Gateway.RegisterReplayRecordStats(nullptr);
     Gateway.RegisterReplayPlayStats(nullptr);
+    Gateway.RegisterReplayGetEventByIndex(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
     Gateway.RegisterAIGetStrategies(nullptr);
+    Gateway.RegisterAIGetAudit(nullptr);
 
     return true;
 }

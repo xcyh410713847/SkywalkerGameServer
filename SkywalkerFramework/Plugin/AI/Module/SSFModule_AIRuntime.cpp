@@ -94,6 +94,12 @@ void SSFModule_AIRuntime::Start(SFObjectErrors &Errors)
             return BuildStrategies();
         });
 
+    SSFGameplayServiceGateway::Instance().RegisterAIGetAudit(
+        [this]()
+        {
+            return BuildAudit();
+        });
+
     SF_LOG_FRAMEWORK("AIRuntime module start, TickBudgetMS " << TickBudgetMS << " Strategy " << StrategyName);
 }
 
@@ -121,6 +127,7 @@ void SSFModule_AIRuntime::Stop(SFObjectErrors &Errors)
     SSFGameplayServiceGateway::Instance().RegisterAISetStrategy(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterAIGetStats(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterAIGetStrategies(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterAIGetAudit(nullptr);
 
     SF_LOG_FRAMEWORK("AIRuntime module stop, ExceededCount " << BudgetExceededCount);
     SSFModule::Stop(Errors);
@@ -154,7 +161,14 @@ bool SSFModule_AIRuntime::SetStrategy(const SFString &InStrategyName)
         return false;
     }
 
+    if (StrategyName == InStrategyName)
+    {
+        return true;
+    }
+
+    SFString OldStrategy = StrategyName;
     StrategyName = InStrategyName;
+    AppendStrategyAudit(OldStrategy, StrategyName);
     return true;
 }
 
@@ -189,6 +203,28 @@ SFString SSFModule_AIRuntime::BuildStrategies() const
     return Stream.str();
 }
 
+SFString SSFModule_AIRuntime::BuildAudit() const
+{
+    if (StrategyAudit.empty())
+    {
+        return "AIStrategyAudit=Empty";
+    }
+
+    std::ostringstream Stream;
+    Stream << "AIStrategyAudit=";
+    for (size_t i = 0; i < StrategyAudit.size(); ++i)
+    {
+        if (i > 0)
+        {
+            Stream << "|";
+        }
+
+        Stream << StrategyAudit[i];
+    }
+
+    return Stream.str();
+}
+
 SFUInt64 SSFModule_AIRuntime::GetEffectiveBudgetMS() const
 {
     if (StrategyName == "balanced")
@@ -202,4 +238,19 @@ SFUInt64 SSFModule_AIRuntime::GetEffectiveBudgetMS() const
     }
 
     return TickBudgetMS;
+}
+
+void SSFModule_AIRuntime::AppendStrategyAudit(const SFString &FromStrategy, const SFString &ToStrategy)
+{
+    ++StrategySwitchSeq;
+    SFString Record = "Seq=" + std::to_string(StrategySwitchSeq) +
+                      ";From=" + FromStrategy +
+                      ";To=" + ToStrategy +
+                      ";TickCounter=" + std::to_string(TickCounter);
+
+    StrategyAudit.push_back(Record);
+    if (StrategyAudit.size() > 16)
+    {
+        StrategyAudit.erase(StrategyAudit.begin());
+    }
 }

@@ -28,14 +28,39 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "unban_ip",
         "show_stats",
         "show_ai_stats",
+        "show_ai_audit",
         "show_ai_strategies",
         "set_ai_strategy",
         "show_replay_stats",
+        "show_replay_event",
         "start_replay_record",
         "stop_replay_record",
         "start_replay",
         "stop_replay",
     };
+
+    AdminOnlyCommands = {
+        "reload_config",
+        "kick_player",
+        "ban_ip",
+        "unban_ip",
+        "set_ai_strategy",
+        "start_replay_record",
+        "stop_replay_record",
+        "start_replay",
+        "stop_replay",
+    };
+
+    OperatorCommands = {
+        "show_stats",
+        "show_ai_stats",
+        "show_ai_audit",
+        "show_ai_strategies",
+        "show_replay_stats",
+        "show_replay_event",
+    };
+
+    ObserverCommands = OperatorCommands;
 
     SF_LOG_FRAMEWORK("AdminCommand module init");
 }
@@ -43,6 +68,9 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
 void SSFModule_AdminCommand::Destroy(SFObjectErrors &Errors)
 {
     SupportedCommands.clear();
+    AdminOnlyCommands.clear();
+    OperatorCommands.clear();
+    ObserverCommands.clear();
 
     SF_LOG_FRAMEWORK("AdminCommand module destroy");
 
@@ -57,12 +85,26 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         return false;
     }
 
-    std::istringstream Stream(CommandLine);
+    SFString Role;
+    SFString ResolvedCommandLine;
+    if (!ParseRoleAndCommand(CommandLine, Role, ResolvedCommandLine))
+    {
+        SF_LOG_ERROR("Execute admin command failed: invalid role command line " << CommandLine);
+        return false;
+    }
+
+    std::istringstream Stream(ResolvedCommandLine);
     SFString Command;
     Stream >> Command;
     if (Command.empty())
     {
         SF_LOG_ERROR("Execute admin command failed: invalid command line " << CommandLine);
+        return false;
+    }
+
+    if (!HasPermission(Role, Command))
+    {
+        SF_LOG_ERROR("Execute admin command denied, Role " << Role << " Command " << Command);
         return false;
     }
 
@@ -86,6 +128,27 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         SFString RecordStats = SSFGameplayServiceGateway::Instance().GetReplayRecordStats();
         SFString PlayStats = SSFGameplayServiceGateway::Instance().GetReplayPlayStats();
         SF_LOG_FRAMEWORK("show_replay_stats Record[" << RecordStats << "] Play[" << PlayStats << "]");
+        return true;
+    }
+
+    if (Command == "show_replay_event")
+    {
+        SFUInt64 EventIndex = static_cast<SFUInt64>(-1);
+        Stream >> EventIndex;
+        if (EventIndex == static_cast<SFUInt64>(-1))
+        {
+            SF_LOG_ERROR("show_replay_event failed: invalid EventIndex");
+            return false;
+        }
+
+        SFString ReplayEvent = SSFGameplayServiceGateway::Instance().GetReplayEventByIndex(EventIndex);
+        if (ReplayEvent.empty() || ReplayEvent == "ReplayEventUnavailable")
+        {
+            SF_LOG_ERROR("show_replay_event failed, EventIndex " << EventIndex << " Value " << ReplayEvent);
+            return false;
+        }
+
+        SF_LOG_FRAMEWORK("show_replay_event " << ReplayEvent);
         return true;
     }
 
@@ -140,6 +203,13 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         return true;
     }
 
+    if (Command == "show_ai_audit")
+    {
+        SFString AIAudit = SSFGameplayServiceGateway::Instance().GetAIAudit();
+        SF_LOG_FRAMEWORK("show_ai_audit " << AIAudit);
+        return true;
+    }
+
     if (Command == "show_ai_strategies")
     {
         SFString AIStrategies = SSFGameplayServiceGateway::Instance().GetAIStrategies();
@@ -149,13 +219,60 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
 
     for (const auto &Supported : SupportedCommands)
     {
-        if (CommandLine.rfind(Supported, 0) == 0)
+        if (ResolvedCommandLine.rfind(Supported, 0) == 0)
         {
-            SF_LOG_FRAMEWORK("Execute admin command: " << CommandLine);
+            SF_LOG_FRAMEWORK("Execute admin command: " << ResolvedCommandLine << " Role " << Role);
             return true;
         }
     }
 
     SF_LOG_ERROR("Unknown admin command: " << CommandLine << " SupportedCount " << SupportedCommands.size());
+    return false;
+}
+
+bool SSFModule_AdminCommand::ParseRoleAndCommand(const SFString &CommandLine, SFString &OutRole, SFString &OutResolvedCommandLine) const
+{
+    OutRole = "admin";
+    OutResolvedCommandLine = CommandLine;
+
+    const SFString RolePrefix = "role=";
+    if (CommandLine.rfind(RolePrefix, 0) != 0)
+    {
+        return true;
+    }
+
+    const size_t SpacePos = CommandLine.find(' ');
+    if (SpacePos == SFString::npos)
+    {
+        return false;
+    }
+
+    OutRole = CommandLine.substr(RolePrefix.size(), SpacePos - RolePrefix.size());
+    if (OutRole.empty())
+    {
+        return false;
+    }
+
+    OutResolvedCommandLine = CommandLine.substr(SpacePos + 1);
+    return !OutResolvedCommandLine.empty();
+}
+
+bool SSFModule_AdminCommand::HasPermission(const SFString &Role, const SFString &Command) const
+{
+    if (Role == "admin")
+    {
+        return true;
+    }
+
+    if (Role == "operator")
+    {
+        return OperatorCommands.find(Command) != OperatorCommands.end();
+    }
+
+    if (Role == "observer")
+    {
+        return ObserverCommands.find(Command) != ObserverCommands.end();
+    }
+
     return false;
 }
