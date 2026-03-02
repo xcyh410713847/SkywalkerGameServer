@@ -11,6 +11,9 @@
 
 #include "Core/Plugin/SSFPluginManager.h"
 
+#include "Module/SSFModule_DBAccess.h"
+#include "Module/SSFModule_PlayerRepository.h"
+
 SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFPlugin_DB, ESFLogLevel::Debug);
@@ -21,10 +24,14 @@ SF_PLUGIN_EXPORT(SSFPlugin_DB)
 
 void SSFPlugin_DB::Install(SFObjectErrors &Errors)
 {
+    SF_REGISTER_MODULE(SSFModule_DBAccess)
+    SF_REGISTER_MODULE(SSFModule_PlayerRepository)
 }
 
 void SSFPlugin_DB::Uninstall(SFObjectErrors &Errors)
 {
+    SF_UNREGISTER_MODULE(SSFModule_DBAccess)
+    SF_UNREGISTER_MODULE(SSFModule_PlayerRepository)
 }
 
 #pragma endregion SSFPlugin

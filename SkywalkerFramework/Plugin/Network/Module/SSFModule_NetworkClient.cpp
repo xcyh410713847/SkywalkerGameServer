@@ -121,6 +121,24 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
                 {
                     MaxReconnectCount = static_cast<SFUInt32>(std::stoul(MaxReconnectCountNode->GetNodeValueString()));
                 }
+
+                SKYWALKER_PTR_SCRIPT_NODE PlayerIdNode = ConfigNode->GetChildNodeFromName("PlayerId");
+                if (PlayerIdNode != nullptr)
+                {
+                    LoginPayload.PlayerId = std::stoull(PlayerIdNode->GetNodeValueString());
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE WorldIdNode = ConfigNode->GetChildNodeFromName("WorldId");
+                if (WorldIdNode != nullptr)
+                {
+                    LoginPayload.WorldId = std::stoull(WorldIdNode->GetNodeValueString());
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE LoginTokenNode = ConfigNode->GetChildNodeFromName("LoginToken");
+                if (LoginTokenNode != nullptr)
+                {
+                    LoginPayload.Token = LoginTokenNode->GetNodeValueString();
+                }
             }
         }
     }
@@ -129,7 +147,9 @@ void SSFModule_NetworkClient::Start(SFObjectErrors &Errors)
                                                  << " Port " << ServerPort
                                                  << " ReconnectIntervalMS " << ReconnectIntervalMS
                                                  << " HeartbeatIntervalMS " << HeartbeatIntervalMS
-                                                 << " MaxReconnectCount " << MaxReconnectCount);
+                                                 << " MaxReconnectCount " << MaxReconnectCount
+                                                 << " PlayerId " << LoginPayload.PlayerId
+                                                 << " WorldId " << LoginPayload.WorldId);
 
     if (ServerIP.empty() || ServerPort <= 0)
     {
@@ -469,6 +489,12 @@ void SSFModule_NetworkClient::SendLoginPacket()
     SSFNetworkPacket Packet;
     Packet.MsgId = static_cast<SFUInt16>(ESFNetworkMsg::C2S_Login);
     Packet.Seq = ++SendSeq;
+
+    if (!SSFNetworkLoginPayloadCodec::Encode(LoginPayload, Packet.Body))
+    {
+        SF_LOG_ERROR("Encode login payload failed");
+        return;
+    }
 
     if (SendPacket(Packet))
     {

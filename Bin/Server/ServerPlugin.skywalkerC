@@ -8,7 +8,52 @@ Plugin
     Name=SSFPlugin_Network
     Module
         Name=SSFModule_NetworkServer
+
+Plugin
+    Name=SSFPlugin_Auth
+    Module
+        Name=SSFModule_Auth
+
+Plugin
+    Name=SSFPlugin_DB
+    Module
+        Name=SSFModule_DBAccess
+    Module
+        Name=SSFModule_PlayerRepository
+
+Plugin
+    Name=SSFPlugin_Level
+    Module
+        Name=SSFModule_WorldManager
+
+Plugin
+    Name=SSFPlugin_Actor
+    Module
+        Name=SSFModule_ActorRuntime
+
+Plugin
+    Name=SSFPlugin_Profiler
+    Module
+        Name=SSFModule_Metrics
+    Module
+        Name=SSFModule_HealthCheck
+
+Plugin
+    Name=SSFPlugin_AI
+    Module
+        Name=SSFModule_AIRuntime
+
+Plugin
+    Name=SSFPlugin_Video
+    Module
+        Name=SSFModule_ReplayRecorder
+    Module
+        Name=SSFModule_ReplayPlayer
 #Plugin
 #    Name=SSFPlugin_LaunchState
 Plugin
     Name=SSFPlugin_CommandLine
+    Module
+        Name=SSFModule_OS
+    Module
+        Name=SSFModule_AdminCommand

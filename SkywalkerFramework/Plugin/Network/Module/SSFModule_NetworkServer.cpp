@@ -10,7 +10,10 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
+#include "Core/Service/SSFGameplayServiceGateway.h"
+
 #include "../Session/SSFNetworkBlacklistStore.h"
+#include "../Protocol/SSFNetworkLoginPayload.h"
 
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
@@ -410,6 +413,17 @@ void SSFModule_NetworkServer::TickSessions(SFObjectErrors &Errors)
 
 void SSFModule_NetworkServer::CleanupClientSocket(SSFSOCKET Socket, SFObjectErrors &Errors)
 {
+    SSFNetworkSession *Session = SessionManager.GetSession(Socket);
+    if (Session != nullptr && Session->IsAuthed == TRUE && Session->PlayerId != 0 && Session->WorldId != 0)
+    {
+        if (!SSFGameplayServiceGateway::Instance().LeaveWorld(Session->PlayerId, Session->WorldId))
+        {
+            SF_LOG_FRAMEWORK("Client leave world failed, Socket " << Socket
+                                                                   << " PlayerId " << Session->PlayerId
+                                                                   << " WorldId " << Session->WorldId);
+        }
+    }
+
     auto IterClient = ClientNetworkSocketMap.find(Socket);
     if (IterClient != ClientNetworkSocketMap.end())
     {
@@ -480,6 +494,10 @@ void SSFModule_NetworkServer::DispatchClientPackets(SFObjectErrors &Errors)
             if (Session->RateWindowMsgCount > MaxMsgPerSecond)
             {
                 ++Session->DroppedMsgCount;
+                SF_LOG_FRAMEWORK("Drop client msg by rate limit, Socket " << Socket
+                                                                           << " MsgId " << Packet.MsgId
+                                                                           << " WindowCount " << Session->RateWindowMsgCount
+                                                                           << " MaxMsgPerSecond " << MaxMsgPerSecond);
                 continue;
             }
 
@@ -512,23 +530,83 @@ void SSFModule_NetworkServer::HandleHeartbeat(SSFSOCKET Socket, const SSFNetwork
 void SSFModule_NetworkServer::HandleLogin(SSFSOCKET Socket, const SSFNetworkPacket &Packet)
 {
     SSFNetworkSession *Session = SessionManager.GetSession(Socket);
-    if (Session != nullptr)
+    if (Session == nullptr)
     {
-        Session->IsAuthed = TRUE;
+        SF_LOG_FRAMEWORK("Client login failed, session not found, Socket " << Socket);
+        return;
     }
+
+    if (Session->IsAuthed == TRUE)
+    {
+        SF_LOG_FRAMEWORK("Client login ignored, already authed, Socket " << Socket
+                                                                           << " PlayerId " << Session->PlayerId
+                                                                           << " WorldId " << Session->WorldId);
+        return;
+    }
+
+    SSFNetworkLoginPayload LoginPayload;
+    if (!SSFNetworkLoginPayloadCodec::Decode(Packet.Body, LoginPayload))
+    {
+        SF_LOG_FRAMEWORK("Client login payload decode failed, Socket " << Socket << " BodyLen " << Packet.Body.size());
+        return;
+    }
+
+    if (LoginPayload.PlayerId == 0 || LoginPayload.WorldId == 0 || LoginPayload.Token.empty())
+    {
+        SF_LOG_FRAMEWORK("Client login payload invalid, Socket " << Socket
+                                                                   << " PlayerId " << LoginPayload.PlayerId
+                                                                   << " WorldId " << LoginPayload.WorldId
+                                                                   << " TokenEmpty " << LoginPayload.Token.empty());
+        return;
+    }
+
+    if (!SSFGameplayServiceGateway::Instance().ValidateToken(LoginPayload.Token))
+    {
+        SF_LOG_FRAMEWORK("Client login token validate failed, Socket " << Socket
+                                                                        << " PlayerId " << LoginPayload.PlayerId);
+        return;
+    }
+
+    if (!SSFGameplayServiceGateway::Instance().LoadPlayer(LoginPayload.PlayerId))
+    {
+        SF_LOG_FRAMEWORK("Client login load player failed, Socket " << Socket
+                                                                     << " PlayerId " << LoginPayload.PlayerId);
+        return;
+    }
+
+    if (!SSFGameplayServiceGateway::Instance().EnterWorld(LoginPayload.PlayerId, LoginPayload.WorldId))
+    {
+        SF_LOG_FRAMEWORK("Client login enter world failed, Socket " << Socket
+                                                                     << " PlayerId " << LoginPayload.PlayerId
+                                                                     << " WorldId " << LoginPayload.WorldId);
+        return;
+    }
+
+    Session->IsAuthed = TRUE;
+    Session->PlayerId = LoginPayload.PlayerId;
+    Session->WorldId = LoginPayload.WorldId;
+    Session->AuthToken = LoginPayload.Token;
 
     SSFNetworkPacket AckPacket;
     AckPacket.MsgId = static_cast<SFUInt16>(ESFNetworkMsg::S2C_LoginAck);
     AckPacket.Seq = Packet.Seq;
 
-    SF_LOG_FRAMEWORK("Client login success, Socket " << Socket);
+    SF_LOG_FRAMEWORK("Client login success, Socket " << Socket
+                                                     << " PlayerId " << Session->PlayerId
+                                                     << " WorldId " << Session->WorldId);
     SendToClient(Socket, AckPacket);
 }
 
 void SSFModule_NetworkServer::HandlePlayerInput(SSFSOCKET Socket, const SSFNetworkPacket &Packet)
 {
     SSFNetworkSession *Session = SessionManager.GetSession(Socket);
-    if (Session != nullptr && Session->IsAuthed == FALSE)
+    if (Session == nullptr)
+    {
+        SF_LOG_FRAMEWORK("Reject player input, session not found, Socket " << Socket);
+        return;
+    }
+
+    if (Session->IsAuthed == FALSE)
     {
         SF_LOG_FRAMEWORK("Reject player input before login, Socket " << Socket);
         return;
@@ -546,10 +624,17 @@ bool SSFModule_NetworkServer::SendToClient(SSFSOCKET Socket, const SSFNetworkPac
     auto IterClient = ClientNetworkSocketMap.find(Socket);
     if (IterClient == ClientNetworkSocketMap.end() || IterClient->second == nullptr)
     {
+        SF_LOG_FRAMEWORK("SendToClient failed, client not found, Socket " << Socket << " MsgId " << Packet.MsgId);
         return false;
     }
 
-    return IterClient->second->SendPacket(Packet);
+    if (!IterClient->second->SendPacket(Packet))
+    {
+        SF_LOG_FRAMEWORK("SendToClient failed, send packet error, Socket " << Socket << " MsgId " << Packet.MsgId);
+        return false;
+    }
+
+    return true;
 }
 
 bool SSFModule_NetworkServer::IsBlacklisted(const SFString &ClientIP, SFUInt64 NowMS)

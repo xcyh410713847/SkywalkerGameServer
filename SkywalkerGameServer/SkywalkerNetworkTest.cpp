@@ -8,8 +8,15 @@
 #include "SkywalkerTest/SkywalkerTest.h"
 
 #include "SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkCodec.h"
+#include "SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkLoginPayload.h"
 #include "SkywalkerFramework/Plugin/Network/Router/SSFNetworkRouter.h"
 #include "SkywalkerFramework/Plugin/Network/Session/SSFNetworkBlacklistStore.h"
+#include "SkywalkerFramework/Plugin/Level/Module/SSFModule_WorldManager.h"
+#include "SkywalkerFramework/Plugin/CommandLine/Module/SSFModule_AdminCommand.h"
+#include "SkywalkerFramework/Plugin/AI/Module/SSFModule_AIRuntime.h"
+#include "SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayRecorder.h"
+#include "SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayPlayer.h"
+#include "SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h"
 
 #include <filesystem>
 
@@ -124,8 +131,184 @@ bool TestBlacklistStoreSaveLoad()
     return true;
 }
 
+bool TestLoginPayloadCodecRoundTrip()
+{
+    SSFNetworkLoginPayload Payload;
+    Payload.PlayerId = 10001;
+    Payload.WorldId = 1;
+    Payload.Token = "Token-10001";
+
+    std::vector<SFByte> Body;
+    SKYWALKER_TEST_ASSERT_TRUE(SSFNetworkLoginPayloadCodec::Encode(Payload, Body));
+
+    SSFNetworkLoginPayload Decoded;
+    SKYWALKER_TEST_ASSERT_TRUE(SSFNetworkLoginPayloadCodec::Decode(Body, Decoded));
+    SKYWALKER_TEST_ASSERT_EQ(Decoded.PlayerId, Payload.PlayerId);
+    SKYWALKER_TEST_ASSERT_EQ(Decoded.WorldId, Payload.WorldId);
+    SKYWALKER_TEST_ASSERT_EQ(Decoded.Token, Payload.Token);
+
+    return true;
+}
+
+bool TestLoginPayloadCodecInvalid()
+{
+    std::vector<SFByte> Body = {'1', '2', '3'};
+
+    SSFNetworkLoginPayload Decoded;
+    SKYWALKER_TEST_ASSERT_FALSE(SSFNetworkLoginPayloadCodec::Decode(Body, Decoded));
+    return true;
+}
+
+bool TestWorldManagerEnterLeave()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_WorldManager WorldManager(Context, Errors);
+
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.CreateWorld(1));
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10002, 1));
+    SKYWALKER_TEST_ASSERT_EQ(WorldManager.GetWorldPlayerCount(1), static_cast<SFUInt64>(2));
+
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.LeaveWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_EQ(WorldManager.GetWorldPlayerCount(1), static_cast<SFUInt64>(1));
+
+    return true;
+}
+
+bool TestWorldManagerSwitchWorld()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_WorldManager WorldManager(Context, Errors);
+
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 2));
+    SKYWALKER_TEST_ASSERT_EQ(WorldManager.GetWorldPlayerCount(1), static_cast<SFUInt64>(0));
+    SKYWALKER_TEST_ASSERT_EQ(WorldManager.GetWorldPlayerCount(2), static_cast<SFUInt64>(1));
+
+    return true;
+}
+
+bool TestWorldManagerInvalidInput()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_WorldManager WorldManager(Context, Errors);
+
+    SKYWALKER_TEST_ASSERT_FALSE(WorldManager.CreateWorld(0));
+    SKYWALKER_TEST_ASSERT_FALSE(WorldManager.EnterWorld(0, 1));
+    SKYWALKER_TEST_ASSERT_FALSE(WorldManager.EnterWorld(10001, 0));
+    SKYWALKER_TEST_ASSERT_FALSE(WorldManager.LeaveWorld(10001, 1));
+
+    return true;
+}
+
+bool TestAdminCommandExecute()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_AdminCommand AdminCommand(Context, Errors);
+    AdminCommand.Init(Errors);
+
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_stats"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("kick_player 10001"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("unknown_cmd"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand(""));
+
+    AdminCommand.Destroy(Errors);
+    return true;
+}
+
+bool TestGameplayServiceGatewayCallbacks()
+{
+    auto &Gateway = SSFGameplayServiceGateway::Instance();
+
+    Gateway.RegisterAuthValidator([](const SFString &Token)
+                                  { return Token == "Token-10001"; });
+    Gateway.RegisterPlayerLoader([](SFUInt64 PlayerId)
+                                 { return PlayerId == 10001; });
+    Gateway.RegisterWorldEnter([](SFUInt64 PlayerId, SFUInt64 WorldId)
+                               { return PlayerId == 10001 && WorldId == 1; });
+    Gateway.RegisterWorldLeave([](SFUInt64 PlayerId, SFUInt64 WorldId)
+                               { return PlayerId == 10001 && WorldId == 1; });
+
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.ValidateToken("Token-10001"));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-Other"));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.LoadPlayer(10001));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(20002));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.EnterWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_TRUE(Gateway.LeaveWorld(10001, 1));
+
+    Gateway.RegisterAuthValidator(nullptr);
+    Gateway.RegisterPlayerLoader(nullptr);
+    Gateway.RegisterWorldEnter(nullptr);
+    Gateway.RegisterWorldLeave(nullptr);
+
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.ValidateToken("Token-10001"));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.LoadPlayer(10001));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.EnterWorld(10001, 1));
+    SKYWALKER_TEST_ASSERT_FALSE(Gateway.LeaveWorld(10001, 1));
+
+    return true;
+}
+
+bool TestAIRuntimeTickBudget()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_AIRuntime AIRuntime(Context, Errors);
+
+    AIRuntime.SetTickBudgetMS(5);
+    SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetTickBudgetMS(), static_cast<SFUInt64>(5));
+
+    return true;
+}
+
+bool TestReplayRecorderState()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_ReplayRecorder Recorder(Context, Errors);
+
+    SKYWALKER_TEST_ASSERT_FALSE(Recorder.IsRecording());
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(101));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.IsRecording());
+    SKYWALKER_TEST_ASSERT_FALSE(Recorder.StartRecord(102));
+    SKYWALKER_TEST_ASSERT_TRUE(Recorder.StopRecord());
+    SKYWALKER_TEST_ASSERT_FALSE(Recorder.IsRecording());
+
+    return true;
+}
+
+bool TestReplayPlayerState()
+{
+    SFModuleContext Context;
+    SFObjectErrors Errors;
+    SSFModule_ReplayPlayer Player(Context, Errors);
+
+    SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
+    SKYWALKER_TEST_ASSERT_TRUE(Player.StartReplay(201));
+    SKYWALKER_TEST_ASSERT_TRUE(Player.IsReplaying());
+    SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(202));
+    SKYWALKER_TEST_ASSERT_TRUE(Player.StopReplay());
+    SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
+
+    return true;
+}
+
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestNetworkCodecRoundTrip, TestNetworkCodecRoundTrip)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestNetworkCodecInvalidMagic, TestNetworkCodecInvalidMagic)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestNetworkRouterDispatch, TestNetworkRouterDispatch)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestNetworkRouterUnhandled, TestNetworkRouterUnhandled)
 SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestBlacklistStoreSaveLoad, TestBlacklistStoreSaveLoad)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestLoginPayloadCodecRoundTrip, TestLoginPayloadCodecRoundTrip)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestLoginPayloadCodecInvalid, TestLoginPayloadCodecInvalid)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestWorldManagerEnterLeave, TestWorldManagerEnterLeave)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestWorldManagerSwitchWorld, TestWorldManagerSwitchWorld)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestWorldManagerInvalidInput, TestWorldManagerInvalidInput)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAdminCommandExecute, TestAdminCommandExecute)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestGameplayServiceGatewayCallbacks, TestGameplayServiceGatewayCallbacks)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestAIRuntimeTickBudget, TestAIRuntimeTickBudget)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayRecorderState, TestReplayRecorderState)
+SKYWALKER_TEST_REGISTER(SkywalkerNetwork, TestReplayPlayerState, TestReplayPlayerState)

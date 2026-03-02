@@ -24,6 +24,10 @@ struct SSFNetworkSession
     SFUInt64 LastSendMS = 0;
     SFUInt64 LastHeartbeatMS = 0;
 
+    SFUInt64 PlayerId = 0;
+    SFUInt64 WorldId = 0;
+    SFString AuthToken;
+
     SFUInt64 RateWindowStartMS = 0;
     SFUInt32 RateWindowMsgCount = 0;
 

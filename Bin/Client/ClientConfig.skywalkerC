@@ -4,3 +4,6 @@ ClientConfig
     ReconnectIntervalMS=3000
     MaxReconnectCount=0
     HeartbeatIntervalMS=5000
+    PlayerId=10001
+    WorldId=1
+    LoginToken=Token-10001

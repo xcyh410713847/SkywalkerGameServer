@@ -12,6 +12,7 @@
 #include "Core/Plugin/SSFPluginManager.h"
 
 #include "Module/SSFModule_OS.h"
+#include "Module/SSFModule_AdminCommand.h"
 
 SF_NAMESPACE_USING
 
@@ -24,10 +25,12 @@ SF_PLUGIN_EXPORT(SSFPlugin_CommandLine)
 void SSFPlugin_CommandLine::Install(SFObjectErrors &Errors)
 {
     SF_REGISTER_MODULE(SSFModule_OS);
+    SF_REGISTER_MODULE(SSFModule_AdminCommand);
 }
 
 void SSFPlugin_CommandLine::Uninstall(SFObjectErrors &Errors)
 {
+    SF_UNREGISTER_MODULE(SSFModule_AdminCommand);
     SF_UNREGISTER_MODULE(SSFModule_OS);
 }
 

@@ -15,6 +15,7 @@
 #include "SSFObject_NetworkSocket.h"
 
 #include "../Protocol/SSFNetworkCodec.h"
+#include "../Protocol/SSFNetworkLoginPayload.h"
 #include "../Router/SSFNetworkRouter.h"
 
 #include <chrono>
@@ -149,6 +150,7 @@ private:
     SFUInt64 HeartbeatIntervalMS = 5000;
     SFUInt64 LastHeartbeatSendMS = 0;
     SFUInt32 SendSeq = 0;
+    SSFNetworkLoginPayload LoginPayload;
 
     SSFNetworkCodec NetworkCodec;
     SSFNetworkRouter NetworkRouter;
