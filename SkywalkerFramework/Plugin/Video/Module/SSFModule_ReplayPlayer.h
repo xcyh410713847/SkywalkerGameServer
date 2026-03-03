@@ -40,6 +40,7 @@ public:
     SFUInt64 GetLoadedEventCount() const;
     SFString BuildStats() const;
     SFString GetEventByIndex(SFUInt64 EventIndex);
+    SFString GetEventsRange(SFUInt64 StartIndex, SFUInt64 Count);
 
 private:
     SFUInt64 BuildChecksum() const;

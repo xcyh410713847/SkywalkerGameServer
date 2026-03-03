@@ -14,6 +14,7 @@
 #include "SkywalkerScript/Include/SkywalkerScriptParse.h"
 
 #include <fstream>
+#include <sstream>
 
 SF_NAMESPACE_USING
 
@@ -99,6 +100,12 @@ void SSFModule_ReplayPlayer::Start(SFObjectErrors &Errors)
         {
             return GetEventByIndex(EventIndex);
         });
+
+    SSFGameplayServiceGateway::Instance().RegisterReplayGetEventsRange(
+        [this](SFUInt64 StartIndex, SFUInt64 Count)
+        {
+            return GetEventsRange(StartIndex, Count);
+        });
 }
 
 void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
@@ -107,6 +114,7 @@ void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
     SSFGameplayServiceGateway::Instance().RegisterReplayStopPlay(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayPlayStats(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayGetEventByIndex(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterReplayGetEventsRange(nullptr);
 
     StopReplay();
 
@@ -279,6 +287,30 @@ SFString SSFModule_ReplayPlayer::GetEventByIndex(SFUInt64 EventIndex)
     }
 
     return "EventIndex=" + std::to_string(EventIndex) + ";Event=" + LoadedEvents[static_cast<size_t>(EventIndex)];
+}
+
+SFString SSFModule_ReplayPlayer::GetEventsRange(SFUInt64 StartIndex, SFUInt64 Count)
+{
+    if (Count == 0 || StartIndex >= LoadedEvents.size())
+    {
+        return "";
+    }
+
+    const SFUInt64 EndIndexExclusive = std::min<SFUInt64>(static_cast<SFUInt64>(LoadedEvents.size()), StartIndex + Count);
+
+    std::ostringstream Stream;
+    Stream << "EventRange=";
+    for (SFUInt64 Index = StartIndex; Index < EndIndexExclusive; ++Index)
+    {
+        if (Index > StartIndex)
+        {
+            Stream << "|";
+        }
+
+        Stream << "EventIndex=" << Index << ";Event=" << LoadedEvents[static_cast<size_t>(Index)];
+    }
+
+    return Stream.str();
 }
 
 SFUInt64 SSFModule_ReplayPlayer::BuildChecksum() const

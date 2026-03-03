@@ -28,10 +28,12 @@ public:
     using ReplayRecordStats = std::function<SFString()>;
     using ReplayPlayStats = std::function<SFString()>;
     using ReplayGetEventByIndex = std::function<SFString(SFUInt64 EventIndex)>;
+    using ReplayGetEventsRange = std::function<SFString(SFUInt64 StartIndex, SFUInt64 Count)>;
     using AISetStrategy = std::function<bool(const SFString &StrategyName)>;
     using AIGetStats = std::function<SFString()>;
     using AIGetStrategies = std::function<SFString()>;
     using AIGetAudit = std::function<SFString()>;
+    using AIClearAudit = std::function<bool()>;
 
 public:
     static SSFGameplayServiceGateway &Instance();
@@ -47,10 +49,12 @@ public:
     void RegisterReplayRecordStats(const ReplayRecordStats &InRecordStats);
     void RegisterReplayPlayStats(const ReplayPlayStats &InPlayStats);
     void RegisterReplayGetEventByIndex(const ReplayGetEventByIndex &InGetEventByIndex);
+    void RegisterReplayGetEventsRange(const ReplayGetEventsRange &InGetEventsRange);
     void RegisterAISetStrategy(const AISetStrategy &InSetStrategy);
     void RegisterAIGetStats(const AIGetStats &InGetStats);
     void RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies);
     void RegisterAIGetAudit(const AIGetAudit &InGetAudit);
+    void RegisterAIClearAudit(const AIClearAudit &InClearAudit);
 
     bool ValidateToken(const SFString &Token) const;
     bool LoadPlayer(SFUInt64 PlayerId) const;
@@ -63,10 +67,12 @@ public:
     SFString GetReplayRecordStats() const;
     SFString GetReplayPlayStats() const;
     SFString GetReplayEventByIndex(SFUInt64 EventIndex) const;
+    SFString GetReplayEventsRange(SFUInt64 StartIndex, SFUInt64 Count) const;
     bool SetAIStrategy(const SFString &StrategyName) const;
     SFString GetAIStats() const;
     SFString GetAIStrategies() const;
     SFString GetAIAudit() const;
+    bool ClearAIAudit() const;
 
 private:
     AuthValidator Validator;
@@ -80,10 +86,12 @@ private:
     ReplayRecordStats RecordStats;
     ReplayPlayStats PlayStats;
     ReplayGetEventByIndex GetEventByIndex;
+    ReplayGetEventsRange GetEventsRange;
     AISetStrategy SetStrategy;
     AIGetStats GetStrategyStats;
     AIGetStrategies GetStrategies;
     AIGetAudit GetAudit;
+    AIClearAudit ClearAudit;
 };
 
 SF_NAMESPACE_END

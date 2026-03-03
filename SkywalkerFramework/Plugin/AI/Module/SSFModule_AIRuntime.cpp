@@ -100,6 +100,12 @@ void SSFModule_AIRuntime::Start(SFObjectErrors &Errors)
             return BuildAudit();
         });
 
+    SSFGameplayServiceGateway::Instance().RegisterAIClearAudit(
+        [this]()
+        {
+            return ClearAudit();
+        });
+
     SF_LOG_FRAMEWORK("AIRuntime module start, TickBudgetMS " << TickBudgetMS << " Strategy " << StrategyName);
 }
 
@@ -128,6 +134,7 @@ void SSFModule_AIRuntime::Stop(SFObjectErrors &Errors)
     SSFGameplayServiceGateway::Instance().RegisterAIGetStats(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterAIGetStrategies(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterAIGetAudit(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterAIClearAudit(nullptr);
 
     SF_LOG_FRAMEWORK("AIRuntime module stop, ExceededCount " << BudgetExceededCount);
     SSFModule::Stop(Errors);
@@ -223,6 +230,12 @@ SFString SSFModule_AIRuntime::BuildAudit() const
     }
 
     return Stream.str();
+}
+
+bool SSFModule_AIRuntime::ClearAudit()
+{
+    StrategyAudit.clear();
+    return true;
 }
 
 SFUInt64 SSFModule_AIRuntime::GetEffectiveBudgetMS() const

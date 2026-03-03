@@ -43,6 +43,7 @@ public:
     SFString BuildStats() const;
     SFString BuildStrategies() const;
     SFString BuildAudit() const;
+    bool ClearAudit();
 
 private:
     SFUInt64 GetEffectiveBudgetMS() const;

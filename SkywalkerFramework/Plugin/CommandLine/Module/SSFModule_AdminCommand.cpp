@@ -29,10 +29,12 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "show_stats",
         "show_ai_stats",
         "show_ai_audit",
+        "clear_ai_audit",
         "show_ai_strategies",
         "set_ai_strategy",
         "show_replay_stats",
         "show_replay_event",
+        "show_replay_events",
         "start_replay_record",
         "stop_replay_record",
         "start_replay",
@@ -45,6 +47,7 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "ban_ip",
         "unban_ip",
         "set_ai_strategy",
+        "clear_ai_audit",
         "start_replay_record",
         "stop_replay_record",
         "start_replay",
@@ -58,6 +61,7 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "show_ai_strategies",
         "show_replay_stats",
         "show_replay_event",
+        "show_replay_events",
     };
 
     ObserverCommands = OperatorCommands;
@@ -152,6 +156,29 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         return true;
     }
 
+    if (Command == "show_replay_events")
+    {
+        SFUInt64 StartIndex = static_cast<SFUInt64>(-1);
+        SFUInt64 Count = 0;
+        Stream >> StartIndex;
+        Stream >> Count;
+        if (StartIndex == static_cast<SFUInt64>(-1) || Count == 0)
+        {
+            SF_LOG_ERROR("show_replay_events failed: invalid StartIndex or Count");
+            return false;
+        }
+
+        SFString ReplayEvents = SSFGameplayServiceGateway::Instance().GetReplayEventsRange(StartIndex, Count);
+        if (ReplayEvents.empty() || ReplayEvents == "ReplayEventsRangeUnavailable")
+        {
+            SF_LOG_ERROR("show_replay_events failed, StartIndex " << StartIndex << " Count " << Count << " Value " << ReplayEvents);
+            return false;
+        }
+
+        SF_LOG_FRAMEWORK("show_replay_events " << ReplayEvents);
+        return true;
+    }
+
     if (Command == "stop_replay_record")
     {
         bool bResult = SSFGameplayServiceGateway::Instance().StopReplayRecord();
@@ -208,6 +235,13 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         SFString AIAudit = SSFGameplayServiceGateway::Instance().GetAIAudit();
         SF_LOG_FRAMEWORK("show_ai_audit " << AIAudit);
         return true;
+    }
+
+    if (Command == "clear_ai_audit")
+    {
+        bool bResult = SSFGameplayServiceGateway::Instance().ClearAIAudit();
+        SF_LOG_FRAMEWORK("clear_ai_audit Result " << bResult);
+        return bResult;
     }
 
     if (Command == "show_ai_strategies")
