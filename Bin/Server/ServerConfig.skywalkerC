@@ -13,3 +13,6 @@ ServerConfig
     AITickBudgetMS=2
     AIStrategy=strict
     ReplayDirectory=Replay
+    AdminACL_Admin=reload_config|reload_acl|kick_player|ban_ip|unban_ip|set_ai_strategy|clear_ai_audit|start_replay_record|stop_replay_record|start_replay|stop_replay
+    AdminACL_Operator=show_stats|show_ai_stats|show_ai_audit|show_ai_audit_stats|show_ai_strategies|show_admin_acl_stats|show_replay_stats|show_replay_query_stats|show_replay_event|show_replay_events|find_replay_events
+    AdminACL_Observer=show_stats|show_ai_stats|show_ai_audit|show_ai_audit_stats|show_ai_strategies|show_admin_acl_stats|show_replay_stats|show_replay_query_stats|show_replay_event|show_replay_events|find_replay_events

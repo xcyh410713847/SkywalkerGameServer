@@ -37,6 +37,10 @@ public:
 private:
     bool ParseRoleAndCommand(const SFString &CommandLine, SFString &OutRole, SFString &OutResolvedCommandLine) const;
     bool HasPermission(const SFString &Role, const SFString &Command) const;
+    void ResetDefaultACL();
+    bool ReloadACLFromConfig();
+    void ApplyCommandsFromConfig(const SFString &RawValue, std::unordered_set<SFString> &CommandSet);
+    SFUInt64 GetAuditItemCount(const SFString &AuditText) const;
 
 private:
     std::vector<SFString> SupportedCommands;

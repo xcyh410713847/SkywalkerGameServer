@@ -11,7 +11,10 @@
 
 #include "Core/Service/SSFGameplayServiceGateway.h"
 
+#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+
 #include <sstream>
+#include <algorithm>
 
 SF_NAMESPACE_USING
 
@@ -23,17 +26,20 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
 
     SupportedCommands = {
         "reload_config",
+        "reload_acl",
         "kick_player",
         "ban_ip",
         "unban_ip",
         "show_stats",
         "show_ai_stats",
         "show_ai_audit",
+        "show_ai_audit_stats",
         "clear_ai_audit",
         "show_ai_strategies",
         "show_admin_acl_stats",
         "set_ai_strategy",
         "show_replay_stats",
+        "show_replay_query_stats",
         "show_replay_event",
         "show_replay_events",
         "find_replay_events",
@@ -43,36 +49,12 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "stop_replay",
     };
 
-    AdminOnlyCommands = {
-        "reload_config",
-        "kick_player",
-        "ban_ip",
-        "unban_ip",
-        "set_ai_strategy",
-        "clear_ai_audit",
-        "start_replay_record",
-        "stop_replay_record",
-        "start_replay",
-        "stop_replay",
-    };
-
-    OperatorCommands = {
-        "show_stats",
-        "show_ai_stats",
-        "show_ai_audit",
-        "show_ai_strategies",
-        "show_admin_acl_stats",
-        "show_replay_stats",
-        "show_replay_event",
-        "show_replay_events",
-        "find_replay_events",
-    };
+    ResetDefaultACL();
+    ReloadACLFromConfig();
 
     ExecuteSuccessCount = 0;
     ExecuteDeniedCount = 0;
     ExecuteFailureCount = 0;
-
-    ObserverCommands = OperatorCommands;
 
     SF_LOG_FRAMEWORK("AdminCommand module init");
 }
@@ -152,6 +134,21 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         SFString RecordStats = SSFGameplayServiceGateway::Instance().GetReplayRecordStats();
         SFString PlayStats = SSFGameplayServiceGateway::Instance().GetReplayPlayStats();
         SF_LOG_FRAMEWORK("show_replay_stats Record[" << RecordStats << "] Play[" << PlayStats << "]");
+        ++ExecuteSuccessCount;
+        return true;
+    }
+
+    if (Command == "show_replay_query_stats")
+    {
+        SFString PlayStats = SSFGameplayServiceGateway::Instance().GetReplayPlayStats();
+        if (PlayStats == "ReplayPlayStatsUnavailable")
+        {
+            SF_LOG_ERROR("show_replay_query_stats failed, Value " << PlayStats);
+            ++ExecuteFailureCount;
+            return false;
+        }
+
+        SF_LOG_FRAMEWORK("show_replay_query_stats " << PlayStats);
         ++ExecuteSuccessCount;
         return true;
     }
@@ -326,6 +323,22 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         return true;
     }
 
+    if (Command == "show_ai_audit_stats")
+    {
+        SFString AIAudit = SSFGameplayServiceGateway::Instance().GetAIAudit();
+        if (AIAudit == "AIAuditUnavailable")
+        {
+            SF_LOG_ERROR("show_ai_audit_stats failed, Value " << AIAudit);
+            ++ExecuteFailureCount;
+            return false;
+        }
+
+        SFUInt64 AuditItemCount = GetAuditItemCount(AIAudit);
+        SF_LOG_FRAMEWORK("show_ai_audit_stats AuditItemCount " << AuditItemCount << " Raw " << AIAudit);
+        ++ExecuteSuccessCount;
+        return true;
+    }
+
     if (Command == "clear_ai_audit")
     {
         bool bResult = SSFGameplayServiceGateway::Instance().ClearAIAudit();
@@ -352,10 +365,32 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     if (Command == "show_admin_acl_stats")
     {
         SF_LOG_FRAMEWORK("show_admin_acl_stats SuccessCount " << ExecuteSuccessCount
-                                                               << " DeniedCount " << ExecuteDeniedCount
-                                                               << " FailureCount " << ExecuteFailureCount);
+                                                              << " DeniedCount " << ExecuteDeniedCount
+                                                               << " FailureCount " << ExecuteFailureCount
+                                                               << " AdminOnlyCount " << AdminOnlyCommands.size()
+                                                               << " OperatorCount " << OperatorCommands.size()
+                                                               << " ObserverCount " << ObserverCommands.size());
         ++ExecuteSuccessCount;
         return true;
+    }
+
+    if (Command == "reload_acl")
+    {
+        bool bResult = ReloadACLFromConfig();
+        SF_LOG_FRAMEWORK("reload_acl Result " << bResult
+                                               << " AdminOnlyCount " << AdminOnlyCommands.size()
+                                               << " OperatorCount " << OperatorCommands.size()
+                                               << " ObserverCount " << ObserverCommands.size());
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
+
+        return bResult;
     }
 
     for (const auto &Supported : SupportedCommands)
@@ -418,4 +453,169 @@ bool SSFModule_AdminCommand::HasPermission(const SFString &Role, const SFString 
     }
 
     return false;
+}
+
+void SSFModule_AdminCommand::ResetDefaultACL()
+{
+    AdminOnlyCommands = {
+        "reload_config",
+        "reload_acl",
+        "kick_player",
+        "ban_ip",
+        "unban_ip",
+        "set_ai_strategy",
+        "clear_ai_audit",
+        "start_replay_record",
+        "stop_replay_record",
+        "start_replay",
+        "stop_replay",
+    };
+
+    OperatorCommands = {
+        "show_stats",
+        "show_ai_stats",
+        "show_ai_audit",
+        "show_ai_audit_stats",
+        "show_ai_strategies",
+        "show_admin_acl_stats",
+        "show_replay_stats",
+        "show_replay_query_stats",
+        "show_replay_event",
+        "show_replay_events",
+        "find_replay_events",
+    };
+
+    ObserverCommands = OperatorCommands;
+}
+
+bool SSFModule_AdminCommand::ReloadACLFromConfig()
+{
+    const char *ConfigPath = nullptr;
+#if defined(_WIN32) || defined(_WIN64)
+    char *ConfigPathBuffer = nullptr;
+    size_t ConfigPathLen = 0;
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_SERVER_CONFIG");
+    ConfigPath = ConfigPathBuffer;
+#else
+    ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
+#endif
+    SFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
+#if defined(_WIN32) || defined(_WIN64)
+    if (ConfigPathBuffer != nullptr)
+    {
+        free(ConfigPathBuffer);
+        ConfigPathBuffer = nullptr;
+    }
+#endif
+
+    ResetDefaultACL();
+
+    SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
+    if (!ConfigParse->LoadScript(ServerConfigPath.c_str()))
+    {
+        return true;
+    }
+
+    SKYWALKER_PTR_SCRIPT_NODE RootNode = ConfigParse->GetRootNode();
+    if (RootNode == nullptr)
+    {
+        return true;
+    }
+
+    for (size_t i = 0; i < RootNode->GetChildNodeNum(); i++)
+    {
+        SKYWALKER_PTR_SCRIPT_NODE ConfigNode = RootNode->GetChildNodeFromIndex(i);
+        if (ConfigNode == nullptr)
+        {
+            continue;
+        }
+
+        SKYWALKER_PTR_SCRIPT_NODE AdminNode = ConfigNode->GetChildNodeFromName("AdminACL_Admin");
+        if (AdminNode != nullptr)
+        {
+            ApplyCommandsFromConfig(AdminNode->GetNodeValueString(), AdminOnlyCommands);
+        }
+
+        SKYWALKER_PTR_SCRIPT_NODE OperatorNode = ConfigNode->GetChildNodeFromName("AdminACL_Operator");
+        if (OperatorNode != nullptr)
+        {
+            ApplyCommandsFromConfig(OperatorNode->GetNodeValueString(), OperatorCommands);
+        }
+
+        SKYWALKER_PTR_SCRIPT_NODE ObserverNode = ConfigNode->GetChildNodeFromName("AdminACL_Observer");
+        if (ObserverNode != nullptr)
+        {
+            ApplyCommandsFromConfig(ObserverNode->GetNodeValueString(), ObserverCommands);
+        }
+    }
+
+    return true;
+}
+
+void SSFModule_AdminCommand::ApplyCommandsFromConfig(const SFString &RawValue, std::unordered_set<SFString> &CommandSet)
+{
+    if (RawValue.empty())
+    {
+        return;
+    }
+
+    std::unordered_set<SFString> ParsedSet;
+    SFString Normalized = RawValue;
+    std::replace(Normalized.begin(), Normalized.end(), ',', '|');
+
+    std::stringstream Stream(Normalized);
+    SFString Item;
+    while (std::getline(Stream, Item, '|'))
+    {
+        const size_t LeftPos = Item.find_first_not_of(" \t\r\n");
+        if (LeftPos == SFString::npos)
+        {
+            continue;
+        }
+
+        const size_t RightPos = Item.find_last_not_of(" \t\r\n");
+        SFString Trimmed = Item.substr(LeftPos, RightPos - LeftPos + 1);
+        if (!Trimmed.empty())
+        {
+            ParsedSet.insert(Trimmed);
+        }
+    }
+
+    if (!ParsedSet.empty())
+    {
+        CommandSet = std::move(ParsedSet);
+    }
+}
+
+SFUInt64 SSFModule_AdminCommand::GetAuditItemCount(const SFString &AuditText) const
+{
+    if (AuditText.empty() ||
+        AuditText == "AIAuditUnavailable" ||
+        AuditText == "AIStrategyAudit=Empty")
+    {
+        return 0;
+    }
+
+    const SFString Prefix = "AIStrategyAudit=";
+    if (AuditText.rfind(Prefix, 0) != 0)
+    {
+        return 0;
+    }
+
+    SFString Body = AuditText.substr(Prefix.size());
+    if (Body.empty())
+    {
+        return 0;
+    }
+
+    SFUInt64 Count = 1;
+    for (const char Ch : Body)
+    {
+        if (Ch == '|')
+        {
+            ++Count;
+        }
+    }
+
+    return Count;
 }
