@@ -94,6 +94,8 @@ struct SSFEventPluginAll
 
 #pragma endregion 插件事件子类型
 
+#pragma region 事件类型定义
+
 /**
  * 事件主类型ID
  */
@@ -118,6 +120,8 @@ typedef SKYWALKER_EVENT_NAMESPACE::SkywalkerEventParam SFEventParam;
  * 事件参数大小
  */
 typedef SKYWALKER_EVENT_NAMESPACE::SkywalkerEventParamSize SFEventParamSize;
+
+#pragma endregion 事件类型定义
 
 SF_NAMESPACE_END
 
