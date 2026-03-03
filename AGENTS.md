@@ -3,6 +3,19 @@
 ## Project Overview
 C++20 game server framework with plugin-based architecture.
 
+## Current Session Baseline (2026-03-03)
+- Delivery phase has advanced to **P2 Batch 8 (doc section 7.13)**.
+- Effective workflow in this repository is **compile-only**: do not run server/client in automation.
+- Build verification baseline: full CMake build must succeed and produce `SkywalkerTestRunner` target.
+- Current cross-plugin coordination relies on `SSFGameplayServiceGateway` in `SkywalkerFramework/Core/Service/`.
+- Primary operational surface is `SSFModule_AdminCommand` with role-based ACL (`admin/operator/observer`) and config reload.
+
+### Fast Handoff Files (Read First)
+1. `JobRecord.md` - up-to-date handoff summary and continuation checklist
+2. `框架插件与模块缺口清单及落地步骤.md` - phased implementation history (`7.x`)
+3. `Bin/Server/ServerConfig.skywalkerC` - runtime knobs, ACL command lists, AI/Replay config
+4. `SkywalkerGameServer/SkywalkerNetworkTest.cpp` - canonical regression coverage for network/AI/replay/admin command paths
+
 ## Build Commands
 ```bash
 cd build/SkywalkerGameServer
@@ -11,6 +24,8 @@ cmake --build . --config Debug
 cmake --build . --target SkywalkerGameServer --config Debug
 ./Bin/Debug/SkywalkerGameServer.exe
 ```
+
+> Current project practice: for automated coding sessions, stop at successful build; do **not** execute binaries.
 
 ### Build Modes
 - `ProjectDebug` (default) - Debug builds
@@ -42,6 +57,8 @@ cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
 ./Bin/Debug/SkywalkerTestRunner.exe
 ```
 All tests run via `SkywalkerTestRunner::Instance().RunAll()`. No single-test filtering.
+
+> Current project practice: in automation, compile `SkywalkerTestRunner` as verification; avoid runtime execution unless explicitly requested.
 
 ### Writing Tests
 ```cpp
