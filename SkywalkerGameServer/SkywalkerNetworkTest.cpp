@@ -1,4 +1,4 @@
-/*************************************************************************
+﻿/*************************************************************************
 **文件: SkywalkerGameServer\SkywalkerNetworkTest.cpp
 **作者: shyfan
 **日期: 2026/03/02
@@ -7,16 +7,16 @@
 
 #include "SkywalkerTest/SkywalkerTest.h"
 
-#include "SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkCodec.h"
-#include "SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkLoginPayload.h"
-#include "SkywalkerFramework/Plugin/Network/Router/SSFNetworkRouter.h"
-#include "SkywalkerFramework/Plugin/Network/Session/SSFNetworkBlacklistStore.h"
-#include "SkywalkerFramework/Plugin/Level/Module/SSFModule_WorldManager.h"
-#include "SkywalkerFramework/Plugin/CommandLine/Module/SSFModule_AdminCommand.h"
-#include "SkywalkerFramework/Plugin/AI/Module/SSFModule_AIRuntime.h"
-#include "SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayRecorder.h"
-#include "SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayPlayer.h"
-#include "SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h"
+#include "SkywalkerFramework/Plugin/Network/Protocol/SFNetworkCodec.h"
+#include "SkywalkerFramework/Plugin/Network/Protocol/SFNetworkLoginPayload.h"
+#include "SkywalkerFramework/Plugin/Network/Router/SFNetworkRouter.h"
+#include "SkywalkerFramework/Plugin/Network/Session/SFNetworkBlacklistStore.h"
+#include "SkywalkerFramework/Plugin/Level/Module/SFModule_WorldManager.h"
+#include "SkywalkerFramework/Plugin/CommandLine/Module/SFModule_AdminCommand.h"
+#include "SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.h"
+#include "SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayRecorder.h"
+#include "SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayPlayer.h"
+#include "SkywalkerFramework/Core/Service/SFGameplayServiceGateway.h"
 
 #include <filesystem>
 #include <fstream>
@@ -164,7 +164,7 @@ bool TestWorldManagerEnterLeave()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_WorldManager WorldManager(Context, Errors);
+    SFModule_WorldManager WorldManager(Context, Errors);
 
     SKYWALKER_TEST_ASSERT_TRUE(WorldManager.CreateWorld(1));
     SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 1));
@@ -181,7 +181,7 @@ bool TestWorldManagerSwitchWorld()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_WorldManager WorldManager(Context, Errors);
+    SFModule_WorldManager WorldManager(Context, Errors);
 
     SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 1));
     SKYWALKER_TEST_ASSERT_TRUE(WorldManager.EnterWorld(10001, 2));
@@ -195,7 +195,7 @@ bool TestWorldManagerInvalidInput()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_WorldManager WorldManager(Context, Errors);
+    SFModule_WorldManager WorldManager(Context, Errors);
 
     SKYWALKER_TEST_ASSERT_FALSE(WorldManager.CreateWorld(0));
     SKYWALKER_TEST_ASSERT_FALSE(WorldManager.EnterWorld(0, 1));
@@ -209,7 +209,7 @@ bool TestAdminCommandExecute()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_AdminCommand AdminCommand(Context, Errors);
+    SFModule_AdminCommand AdminCommand(Context, Errors);
     AdminCommand.Init(Errors);
 
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_stats"));
@@ -350,7 +350,7 @@ bool TestAIRuntimeTickBudget()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_AIRuntime AIRuntime(Context, Errors);
+    SFModule_AIRuntime AIRuntime(Context, Errors);
 
     AIRuntime.SetTickBudgetMS(5);
     SKYWALKER_TEST_ASSERT_EQ(AIRuntime.GetTickBudgetMS(), static_cast<SFUInt64>(5));
@@ -383,7 +383,7 @@ bool TestReplayRecorderState()
 {
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_ReplayRecorder Recorder(Context, Errors);
+    SFModule_ReplayRecorder Recorder(Context, Errors);
 
     const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_test";
     Recorder.SetReplayDirectory(ReplayDir.string());
@@ -409,13 +409,13 @@ bool TestReplayPlayerState()
     SFObjectErrors Errors;
     const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_test";
 
-    SSFModule_ReplayRecorder Recorder(Context, Errors);
+    SFModule_ReplayRecorder Recorder(Context, Errors);
     Recorder.SetReplayDirectory(ReplayDir.string());
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(201));
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=1"));
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.StopRecord());
 
-    SSFModule_ReplayPlayer Player(Context, Errors);
+    SFModule_ReplayPlayer Player(Context, Errors);
     Player.SetReplayDirectory(ReplayDir.string());
 
     SKYWALKER_TEST_ASSERT_FALSE(Player.IsReplaying());
@@ -445,7 +445,7 @@ bool TestReplayPlayerChecksumMismatch()
     SFObjectErrors Errors;
     const std::filesystem::path ReplayDir = std::filesystem::temp_directory_path() / "skywalker_replay_checksum_test";
 
-    SSFModule_ReplayRecorder Recorder(Context, Errors);
+    SFModule_ReplayRecorder Recorder(Context, Errors);
     Recorder.SetReplayDirectory(ReplayDir.string());
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.StartRecord(301));
     SKYWALKER_TEST_ASSERT_TRUE(Recorder.RecordEvent("Frame=1"));
@@ -474,7 +474,7 @@ bool TestReplayPlayerChecksumMismatch()
     }
     OutFile.close();
 
-    SSFModule_ReplayPlayer Player(Context, Errors);
+    SFModule_ReplayPlayer Player(Context, Errors);
     Player.SetReplayDirectory(ReplayDir.string());
     SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(301));
 
@@ -530,7 +530,7 @@ bool TestAdminCommandReplayGateway()
 
     SFModuleContext Context;
     SFObjectErrors Errors;
-    SSFModule_AdminCommand AdminCommand(Context, Errors);
+    SFModule_AdminCommand AdminCommand(Context, Errors);
     AdminCommand.Init(Errors);
 
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("start_replay_record 888"));

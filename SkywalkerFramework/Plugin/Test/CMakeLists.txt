@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 Test 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_Test" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_Test" ${skywalker_server_framework_name})

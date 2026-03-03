@@ -5,4 +5,4 @@
 # 功能: 插件 Auth 的 CMakeLists.txt
 # #########################################################################
 
-SkywalkerServer_Plugin("SSFPlugin_Auth" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_Auth" ${skywalker_server_framework_name})

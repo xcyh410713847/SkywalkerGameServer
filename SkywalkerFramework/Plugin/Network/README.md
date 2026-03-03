@@ -1,11 +1,11 @@
-# SSFPlugin_Network
+﻿# SFPlugin_Network
 
 ## 插件定位
 网络通信插件，负责连接接入、协议编解码、会话管理和消息路由。
 
 ## 当前模块
-- `SSFModule_NetworkServer`
-- `SSFModule_NetworkClient`
+- `SFModule_NetworkServer`
+- `SFModule_NetworkClient`
 
 ## 子目录说明
 - `Protocol/`：协议头与登录载荷编解码
@@ -30,12 +30,12 @@
 - 核心网关调用（由 Network 发起跨插件协作）：`ValidateToken`、`LoadPlayer`、`EnterWorld`、`LeaveWorld`。
 - Replay 网关调用：`StartReplayRecord`、`StopReplayRecord`、`StartReplayPlay`、`StopReplayPlay`、`GetReplayRecordStats`、`GetReplayPlayStats`、`GetReplayEventByIndex`、`GetReplayEventsRange`、`FindReplayEventsByKeyword`。
 - AI 网关调用：`SetAIStrategy`、`GetAIStats`、`GetAIStrategies`、`GetAIAudit`、`ClearAIAudit`。
-- 网络客户端公开接口（`SSFModule_NetworkClient`）：`Connect`、`Disconnect`、`IsConnected`、`Send`、`SendPacket`。
-- 网络服务端模块（`SSFModule_NetworkServer`）当前以插件生命周期与内部路由处理为主，未额外开放独立业务 API。
+- 网络客户端公开接口（`SFModule_NetworkClient`）：`Connect`、`Disconnect`、`IsConnected`、`Send`、`SendPacket`。
+- 网络服务端模块（`SFModule_NetworkServer`）当前以插件生命周期与内部路由处理为主，未额外开放独立业务 API。
 
 ## 关键代码入口
-- `SSFPlugin_Network.cpp`
-- `Module/SSFModule_NetworkServer.h`
-- `Module/SSFModule_NetworkServer.cpp`
-- `Protocol/SSFNetworkCodec.h`
-- `Session/SSFNetworkSessionManager.h`
+- `SFPlugin_Network.cpp`
+- `Module/SFModule_NetworkServer.h`
+- `Module/SFModule_NetworkServer.cpp`
+- `Protocol/SFNetworkCodec.h`
+- `Session/SFNetworkSessionManager.h`

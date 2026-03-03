@@ -1,12 +1,12 @@
-# SSFPlugin_Test
+﻿# SFPlugin_Test
 
 ## 插件定位
 框架测试与示例插件，用于承载功能验证与插件开发示例。
 
 ## 当前模块
-- `SSFModule_TestOne`
-- `SSFModule_TestTwo`
-- `SSFModule_TestThree`
+- `SFModule_TestOne`
+- `SFModule_TestTwo`
+- `SFModule_TestThree`
 
 ## 当前用途
 - 作为插件机制示例，演示模块注册/反注册与基础生命周期。
@@ -18,8 +18,8 @@
 - 若后续需要将测试能力产品化，建议在此插件新增明确的查询或调试接口并同步到核心网关。
 
 ## 关键代码入口
-- `SSFPlugin_Test.cpp`
-- `Module/SSFModule_TestOne.h`
-- `Module/SSFModule_TestTwo.h`
-- `Module/SSFModule_TestThree.h`
-- `SSFTestExample.h`
+- `SFPlugin_Test.cpp`
+- `Module/SFModule_TestOne.h`
+- `Module/SFModule_TestTwo.h`
+- `Module/SFModule_TestThree.h`
+- `SFTestExample.h`

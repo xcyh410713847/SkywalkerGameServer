@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 AI 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_AI" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_AI" ${skywalker_server_framework_name})

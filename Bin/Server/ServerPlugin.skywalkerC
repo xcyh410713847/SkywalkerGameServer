@@ -1,59 +1,59 @@
-#Plugin
-#    Name=SSFPlugin_Test
+﻿#Plugin
+#    Name=SFPlugin_Test
 #    Module
-#        Name=SSFModule_TestOne
+#        Name=SFModule_TestOne
 #    Module
-#        Name=SSFModule_TestTwo
+#        Name=SFModule_TestTwo
 Plugin
-    Name=SSFPlugin_Network
+    Name=SFPlugin_Network
     Module
-        Name=SSFModule_NetworkServer
+        Name=SFModule_NetworkServer
 
 Plugin
-    Name=SSFPlugin_Auth
+    Name=SFPlugin_Auth
     Module
-        Name=SSFModule_Auth
+        Name=SFModule_Auth
 
 Plugin
-    Name=SSFPlugin_DB
+    Name=SFPlugin_DB
     Module
-        Name=SSFModule_DBAccess
+        Name=SFModule_DBAccess
     Module
-        Name=SSFModule_PlayerRepository
+        Name=SFModule_PlayerRepository
 
 Plugin
-    Name=SSFPlugin_Level
+    Name=SFPlugin_Level
     Module
-        Name=SSFModule_WorldManager
+        Name=SFModule_WorldManager
 
 Plugin
-    Name=SSFPlugin_Actor
+    Name=SFPlugin_Actor
     Module
-        Name=SSFModule_ActorRuntime
+        Name=SFModule_ActorRuntime
 
 Plugin
-    Name=SSFPlugin_Profiler
+    Name=SFPlugin_Profiler
     Module
-        Name=SSFModule_Metrics
+        Name=SFModule_Metrics
     Module
-        Name=SSFModule_HealthCheck
+        Name=SFModule_HealthCheck
 
 Plugin
-    Name=SSFPlugin_AI
+    Name=SFPlugin_AI
     Module
-        Name=SSFModule_AIRuntime
+        Name=SFModule_AIRuntime
 
 Plugin
-    Name=SSFPlugin_Video
+    Name=SFPlugin_Video
     Module
-        Name=SSFModule_ReplayRecorder
+        Name=SFModule_ReplayRecorder
     Module
-        Name=SSFModule_ReplayPlayer
+        Name=SFModule_ReplayPlayer
 #Plugin
-#    Name=SSFPlugin_LaunchState
+#    Name=SFPlugin_LaunchState
 Plugin
-    Name=SSFPlugin_CommandLine
+    Name=SFPlugin_CommandLine
     Module
-        Name=SSFModule_OS
+        Name=SFModule_OS
     Module
-        Name=SSFModule_AdminCommand
+        Name=SFModule_AdminCommand

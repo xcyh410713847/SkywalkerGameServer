@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 DB 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_DB" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_DB" ${skywalker_server_framework_name})

@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 Actor 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_Actor" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_Actor" ${skywalker_server_framework_name})

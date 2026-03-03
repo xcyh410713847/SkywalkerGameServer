@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 Profiler 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_Profiler" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_Profiler" ${skywalker_server_framework_name})

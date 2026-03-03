@@ -32,11 +32,11 @@
 
 ## 3) 关键代码入口（下次优先看）
 
-- 核心网关：`SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h`
-- 管理命令：`SkywalkerFramework/Plugin/CommandLine/Module/SSFModule_AdminCommand.cpp`
-- AI 运行时：`SkywalkerFramework/Plugin/AI/Module/SSFModule_AIRuntime.cpp`
-- Replay 播放：`SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayPlayer.cpp`
-- 网络服务：`SkywalkerFramework/Plugin/Network/Module/SSFModule_NetworkServer.cpp`
+- 核心网关：`SkywalkerFramework/Core/Service/SFGameplayServiceGateway.h`
+- 管理命令：`SkywalkerFramework/Plugin/CommandLine/Module/SFModule_AdminCommand.cpp`
+- AI 运行时：`SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp`
+- Replay 播放：`SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayPlayer.cpp`
+- 网络服务：`SkywalkerFramework/Plugin/Network/Module/SFModule_NetworkServer.cpp`
 - 回归测试：`SkywalkerGameServer/SkywalkerNetworkTest.cpp`
 
 ## 4) 配置关键项（ServerConfig）
@@ -72,7 +72,7 @@
 ## 8) 最近关键问题与修复（2026-03-03）
 
 ### 关服流程卡住（日志停在 PluginManager/Plugin Release）
-- 现象：服务端关闭时日志停在 `SFPluginManager Release` 或 `SSFPlugin_Video Release`，`SkywalkerFramework::Stop` 末尾日志不打印。
+- 现象：服务端关闭时日志停在 `SFPluginManager Release` 或 `SFPlugin_Video Release`，`SkywalkerFramework::Stop` 末尾日志不打印。
 - 根因：`SFPluginManager::Release` 生命周期顺序不当，导致对象释放与动态库卸载时序冲突；同时需要避免在 `Release` 中过早触发 `delete this` 后继续访问成员。
 - 修复：
 	- 在插件管理器中增加 `StopPlugin()`，通过每个动态库导出函数 `DllStopPlugin` 先完成插件反注册。

@@ -164,7 +164,7 @@ SF_NAMESPACE_BEGIN
 #define SF_REGISTER_PLUGIN(PluginManager, PluginClass)                                                              \
     SF_ASSERT_IS_BASE_OF(SFPlugin, PluginClass);                                                                    \
     SFObjectErrors PluginClass##Errors;                                                                             \
-    SFPluginContext PluginClass##Context;                                                                           \
+    SSFPluginContext PluginClass##Context;                                                                          \
     PluginClass##Context.PluginManager = PluginManager;                                                             \
     SF_PTR(SFPlugin)                                                                                                \
     Plugin = PluginManager->NewObject<PluginClass>(PluginClass##Context, PluginClass##Errors);                      \
@@ -207,7 +207,7 @@ SF_NAMESPACE_BEGIN
 #define SF_REGISTER_MODULE(ModuleClass)                                                      \
     SF_ASSERT_IS_BASE_OF(SSFModule, ModuleClass);                                            \
     SFObjectErrors ModuleClass##Errors;                                                      \
-    SFModuleContext ModuleClass##Context;                                                    \
+    SSFModuleContext ModuleClass##Context;                                                   \
     ModuleClass##Context.Plugin = this;                                                      \
     SF_PTR(SSFModule)                                                                        \
     ModuleClass##Module = NewObject<ModuleClass>(ModuleClass##Context, ModuleClass##Errors); \

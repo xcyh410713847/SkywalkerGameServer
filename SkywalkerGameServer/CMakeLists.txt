@@ -54,16 +54,16 @@ add_executable(${skywalker_game_server_name}
 add_executable(SkywalkerTestRunner
     SkywalkerTestMain.cpp
     SkywalkerNetworkTest.cpp
-    ../SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkCodec.cpp
-    ../SkywalkerFramework/Plugin/Network/Protocol/SSFNetworkLoginPayload.cpp
-    ../SkywalkerFramework/Plugin/Network/Router/SSFNetworkRouter.cpp
-    ../SkywalkerFramework/Plugin/Network/Session/SSFNetworkSessionManager.cpp
-    ../SkywalkerFramework/Plugin/Network/Session/SSFNetworkBlacklistStore.cpp
-    ../SkywalkerFramework/Plugin/Level/Module/SSFModule_WorldManager.cpp
-    ../SkywalkerFramework/Plugin/CommandLine/Module/SSFModule_AdminCommand.cpp
-    ../SkywalkerFramework/Plugin/AI/Module/SSFModule_AIRuntime.cpp
-    ../SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayRecorder.cpp
-    ../SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayPlayer.cpp
+    ../SkywalkerFramework/Plugin/Network/Protocol/SFNetworkCodec.cpp
+    ../SkywalkerFramework/Plugin/Network/Protocol/SFNetworkLoginPayload.cpp
+    ../SkywalkerFramework/Plugin/Network/Router/SFNetworkRouter.cpp
+    ../SkywalkerFramework/Plugin/Network/Session/SFNetworkSessionManager.cpp
+    ../SkywalkerFramework/Plugin/Network/Session/SFNetworkBlacklistStore.cpp
+    ../SkywalkerFramework/Plugin/Level/Module/SFModule_WorldManager.cpp
+    ../SkywalkerFramework/Plugin/CommandLine/Module/SFModule_AdminCommand.cpp
+    ../SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp
+    ../SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayRecorder.cpp
+    ../SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayPlayer.cpp
 )
 
 target_link_libraries(SkywalkerTestRunner PRIVATE

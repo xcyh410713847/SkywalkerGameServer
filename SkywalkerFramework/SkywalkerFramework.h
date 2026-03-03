@@ -11,8 +11,8 @@
 #include "Include/SFCore.h"
 #include "Include/SFFramework.h"
 
-#include "Core/Object/SSFObject.h"
-#include "Core/Service/SSFServiceManager.h"
+#include "Core/Object/SFObject.h"
+#include "Core/Service/SFServiceManager.h"
 
 SF_NAMESPACE_BEGIN
 

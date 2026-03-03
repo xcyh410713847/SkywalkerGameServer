@@ -33,11 +33,11 @@
 
 ## 当前关键能力入口
 
-- 核心网关：`SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h`
-- 网络服务模块：`SkywalkerFramework/Plugin/Network/Module/SSFModule_NetworkServer.cpp`
-- AI 运行时模块：`SkywalkerFramework/Plugin/AI/Module/SSFModule_AIRuntime.cpp`
-- Replay 播放模块：`SkywalkerFramework/Plugin/Video/Module/SSFModule_ReplayPlayer.cpp`
-- 管理命令模块：`SkywalkerFramework/Plugin/CommandLine/Module/SSFModule_AdminCommand.cpp`
+- 核心网关：`SkywalkerFramework/Core/Service/SFGameplayServiceGateway.h`
+- 网络服务模块：`SkywalkerFramework/Plugin/Network/Module/SFModule_NetworkServer.cpp`
+- AI 运行时模块：`SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp`
+- Replay 播放模块：`SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayPlayer.cpp`
+- 管理命令模块：`SkywalkerFramework/Plugin/CommandLine/Module/SFModule_AdminCommand.cpp`
 
 ## 当前推荐继续顺序（下次会话）
 

@@ -1,10 +1,10 @@
-#Plugin
+﻿#Plugin
 Plugin
-    Name=SSFPlugin_Network
+    Name=SFPlugin_Network
     Module
-        Name=SSFModule_NetworkClient
+        Name=SFModule_NetworkClient
 
 Plugin
-    Name=SSFPlugin_CommandLine
+    Name=SFPlugin_CommandLine
     Module
-        Name=SSFModule_OS
+        Name=SFModule_OS

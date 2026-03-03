@@ -1,4 +1,4 @@
-# AGENTS.md - SkywalkerGameServer Development Guide
+﻿# AGENTS.md - SkywalkerGameServer Development Guide
 
 ## Project Overview
 C++20 game server framework with plugin-based architecture for learning purposes.
@@ -71,8 +71,8 @@ No linting tool configured. Code must compile and pass all tests before commit.
 | Type       | Convention          | Example                 |
 | ---------- | ------------------- | ----------------------- |
 | Classes    | `C` prefix          | `CSkywalkerFramework`   |
-| Plugins    | `SSFPlugin_` prefix | `SSFPlugin_Test`        |
-| Modules    | `SSFModule_` prefix | `SSFModule_TestOne`     |
+| Plugins    | `SFPlugin_` prefix  | `SFPlugin_Test`         |
+| Modules    | `SFModule_` prefix | `SFModule_TestOne`     |
 | Interfaces | `I` prefix          | `ISSFPlugin`            |
 | Enums      | `E` prefix          | `ESkywalkerServerState` |
 | Files      | PascalCase          | `SkywalkerFramework.h`  |
@@ -103,17 +103,17 @@ if (Errors.IsValid()) { /* handle error */ }
 
 ### Plugin/Module Development
 ```cpp
-SSF_REGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
-SSF_UNREGISTER_PLUGIN(PluginManager, SSFPlugin_MyPlugin);
-SF_PLUGIN_EXPORT(SSFPlugin_MyPlugin);
-SSF_REGISTER_MODULE(SSFModule_MyModule);
-SSF_UNREGISTER_MODULE(SSFModule_MyModule);
+SSF_REGISTER_PLUGIN(PluginManager, SFPlugin_MyPlugin);
+SSF_UNREGISTER_PLUGIN(PluginManager, SFPlugin_MyPlugin);
+SF_PLUGIN_EXPORT(SFPlugin_MyPlugin);
+SSF_REGISTER_MODULE(SFModule_MyModule);
+SSF_UNREGISTER_MODULE(SFModule_MyModule);
 ```
 
 ### File Header Format
 ```cpp
 /*************************************************************************
-**文件: SkywalkerFramework\Plugin\Test\SSFPlugin_Test.h
+**文件: SkywalkerFramework\Plugin\Test\SFPlugin_Test.h
 **作者: shyfan
 **日期: 2023/08/21 19:54:39
 **功能: 测试插件

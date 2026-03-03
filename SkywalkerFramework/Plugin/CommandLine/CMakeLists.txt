@@ -6,4 +6,4 @@
 # #########################################################################
 
 # 构建 CommandLine 插件动态库
-SkywalkerServer_Plugin("SSFPlugin_CommandLine" ${skywalker_server_framework_name})
+SkywalkerServer_Plugin("SFPlugin_CommandLine" ${skywalker_server_framework_name})
