@@ -68,3 +68,19 @@
 - AI：审计持久化（文件落盘 + 重载）
 - ACL：更细粒度命令组与错误码统一
 - 测试：扩展更多边界与异常路径（空配置、无回调、极值参数）
+
+## 8) 最近关键问题与修复（2026-03-03）
+
+### 关服流程卡住（日志停在 PluginManager/Plugin Release）
+- 现象：服务端关闭时日志停在 `SFPluginManager Release` 或 `SSFPlugin_Video Release`，`SkywalkerFramework::Stop` 末尾日志不打印。
+- 根因：`SFPluginManager::Release` 生命周期顺序不当，导致对象释放与动态库卸载时序冲突；同时需要避免在 `Release` 中过早触发 `delete this` 后继续访问成员。
+- 修复：
+	- 在插件管理器中增加 `StopPlugin()`，通过每个动态库导出函数 `DllStopPlugin` 先完成插件反注册。
+	- `Release` 调整为：先 `StopPlugin`，再清理插件映射，再清理 `DynamicLibMap` 卸载动态库，最后调用 `SSFObjectManager::Release`。
+	- 关键原则：`SSFObjectManager::Release` 可能触发 `delete this`，必须放在最后。
+- 关联提交：`9989ebe`（`fix: 修复插件管理器释放顺序导致的关服卡住问题`）。
+
+### 动态库封装跨平台收敛
+- 现象：动态库卸载返回值在 Windows/Linux 语义不同，业务层写平台分支会扩散。
+- 修复：将卸载成功判定下沉到平台头文件宏 `SKYWALKER_DYNAMIC_LIB_UNLOAD_SUCCESS(Result)`，业务层统一调用。
+- 关联提交：`b10e2c7`（`refactor: 优化SFDynamicLib并下沉跨平台卸载语义到平台层`）。
