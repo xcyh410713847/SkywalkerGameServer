@@ -48,33 +48,6 @@ add_executable(${skywalker_game_server_name}
     SkywalkerGameServer.cpp
 )
 
-# 测试程序链接 Framework 库
-
-# 创建测试执行文件
-add_executable(SkywalkerTestRunner
-    SkywalkerTestMain.cpp
-    SkywalkerNetworkTest.cpp
-    ../SkywalkerFramework/Plugin/Network/Protocol/SFNetworkCodec.cpp
-    ../SkywalkerFramework/Plugin/Network/Protocol/SFNetworkLoginPayload.cpp
-    ../SkywalkerFramework/Plugin/Network/Router/SFNetworkRouter.cpp
-    ../SkywalkerFramework/Plugin/Network/Session/SFNetworkSessionManager.cpp
-    ../SkywalkerFramework/Plugin/Network/Session/SFNetworkBlacklistStore.cpp
-    ../SkywalkerFramework/Plugin/Level/Module/SFModule_WorldManager.cpp
-    ../SkywalkerFramework/Plugin/CommandLine/Module/SFModule_AdminCommand.cpp
-    ../SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp
-    ../SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayRecorder.cpp
-    ../SkywalkerFramework/Plugin/Video/Module/SFModule_ReplayPlayer.cpp
-)
-
-target_link_libraries(SkywalkerTestRunner PRIVATE
-    ${skywalker_server_framework_name}
-    SFCore
-)
-
-SkywalkerGameServer_Export(SkywalkerTestRunner)
-
-SkywalkerServer_CopyToTarget(SkywalkerTestRunner ${skywalker_server_server_dir})
-
 target_link_libraries(${skywalker_game_server_name} PRIVATE
     ${skywalker_server_framework_name}
 )
