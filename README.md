@@ -18,6 +18,19 @@
 - 服务器关键配置：`Bin/Server/ServerConfig.skywalkerC`
 - 网络与能力回归测试：`SkywalkerGameServer/SkywalkerNetworkTest.cpp`
 
+## 插件 API 文档索引
+
+- [Actor 插件 API](SkywalkerFramework/Plugin/Actor/README.md)
+- [AI 插件 API](SkywalkerFramework/Plugin/AI/README.md)
+- [Auth 插件 API](SkywalkerFramework/Plugin/Auth/README.md)
+- [CommandLine 插件 API](SkywalkerFramework/Plugin/CommandLine/README.md)
+- [DB 插件 API](SkywalkerFramework/Plugin/DB/README.md)
+- [Level 插件 API](SkywalkerFramework/Plugin/Level/README.md)
+- [Network 插件 API](SkywalkerFramework/Plugin/Network/README.md)
+- [Profiler 插件 API](SkywalkerFramework/Plugin/Profiler/README.md)
+- [Test 插件 API](SkywalkerFramework/Plugin/Test/README.md)
+- [Video 插件 API](SkywalkerFramework/Plugin/Video/README.md)
+
 ## 当前关键能力入口
 
 - 核心网关：`SkywalkerFramework/Core/Service/SSFGameplayServiceGateway.h`
