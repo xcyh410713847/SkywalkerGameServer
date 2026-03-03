@@ -140,6 +140,11 @@ private:
      */
     void StartPlugin(SFObjectErrors &Errors);
 
+    /**
+     * 停止插件
+     */
+    void StopPlugin(SFObjectErrors &Errors);
+
 #pragma endregion Plugin
 
 private:

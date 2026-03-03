@@ -28,9 +28,13 @@ void SFPluginManager::Release(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Release");
 
+    StopPlugin(Errors);
+
     PluginMap.clear();
-    DynamicLibMap.clear();
     PluginNameMap.clear();
+    PluginModulesMap.clear();
+
+    DynamicLibMap.clear();
 
     PluginScriptParse = nullptr;
 
@@ -400,6 +404,20 @@ void SFPluginManager::StartPlugin(SFObjectErrors &Errors)
                 Plugin->SetConfigModules(IterModules->second);
             }
         }
+    }
+}
+
+void SFPluginManager::StopPlugin(SFObjectErrors &Errors)
+{
+    SF_COMMON_ITERATOR(IterLib, DynamicLibMap)
+    {
+        DLL_STOP_PLUGIN_FUNC DllStopPluginFunc = (DLL_STOP_PLUGIN_FUNC)IterLib->second->GetSymbol("DllStopPlugin");
+        if (DllStopPluginFunc == nullptr)
+        {
+            continue;
+        }
+
+        DllStopPluginFunc((SF_PTR(SFPluginManager))(this));
     }
 }
 
