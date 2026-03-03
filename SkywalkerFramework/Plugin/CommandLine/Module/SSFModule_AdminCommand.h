@@ -43,6 +43,9 @@ private:
     std::unordered_set<SFString> AdminOnlyCommands;
     std::unordered_set<SFString> OperatorCommands;
     std::unordered_set<SFString> ObserverCommands;
+    SFUInt64 ExecuteSuccessCount = 0;
+    SFUInt64 ExecuteDeniedCount = 0;
+    SFUInt64 ExecuteFailureCount = 0;
 };
 
 SF_NAMESPACE_END

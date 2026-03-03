@@ -41,6 +41,7 @@ public:
     SFString BuildStats() const;
     SFString GetEventByIndex(SFUInt64 EventIndex);
     SFString GetEventsRange(SFUInt64 StartIndex, SFUInt64 Count);
+    SFString FindEventsByKeyword(const SFString &Keyword, SFUInt64 MaxCount);
 
 private:
     SFUInt64 BuildChecksum() const;
@@ -57,6 +58,8 @@ private:
     SFUInt64 ReplayHeaderChecksum = 0;
     SFUInt64 ReplayVerifiedChecksum = 0;
     SFUInt64 LastQueryEventIndex = static_cast<SFUInt64>(-1);
+    SFString LastQueryKeyword;
+    SFUInt64 LastQueryKeywordHits = 0;
 };
 
 SF_NAMESPACE_END

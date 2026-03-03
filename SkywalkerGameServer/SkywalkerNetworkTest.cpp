@@ -260,6 +260,15 @@ bool TestGameplayServiceGatewayCallbacks()
 
                                              return SFString();
                                          });
+    Gateway.RegisterReplayFindEventsByKeyword([](const SFString &Keyword, SFUInt64 MaxCount)
+                                              {
+                                                  if (Keyword == "Frame" && MaxCount >= 1)
+                                                  {
+                                                      return SFString("EventSearch=EventIndex=0;Event=Frame=1");
+                                                  }
+
+                                                  return SFString();
+                                              });
     Gateway.RegisterAISetStrategy([](const SFString &StrategyName)
                                   { return StrategyName == "strict" || StrategyName == "balanced" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
@@ -287,6 +296,8 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventByIndex(1), SFString(""));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventsRange(0, 2), SFString("EventRange=EventIndex=0;Event=Frame=1|EventIndex=1;Event=Frame=2"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventsRange(9, 1), SFString(""));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.FindReplayEventsByKeyword("Frame", 3), SFString("EventSearch=EventIndex=0;Event=Frame=1"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.FindReplayEventsByKeyword("Unknown", 3), SFString(""));
     SKYWALKER_TEST_ASSERT_TRUE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("unsupported"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStrategy=strict"));
@@ -306,6 +317,7 @@ bool TestGameplayServiceGatewayCallbacks()
     Gateway.RegisterReplayPlayStats(nullptr);
     Gateway.RegisterReplayGetEventByIndex(nullptr);
     Gateway.RegisterReplayGetEventsRange(nullptr);
+    Gateway.RegisterReplayFindEventsByKeyword(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
     Gateway.RegisterAIGetStrategies(nullptr);
@@ -324,6 +336,7 @@ bool TestGameplayServiceGatewayCallbacks()
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayPlayStats(), SFString("ReplayPlayStatsUnavailable"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventByIndex(0), SFString("ReplayEventUnavailable"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetReplayEventsRange(0, 1), SFString("ReplayEventsRangeUnavailable"));
+    SKYWALKER_TEST_ASSERT_EQ(Gateway.FindReplayEventsByKeyword("Frame", 1), SFString("ReplayFindEventsUnavailable"));
     SKYWALKER_TEST_ASSERT_FALSE(Gateway.SetAIStrategy("strict"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStats(), SFString("AIStatsUnavailable"));
     SKYWALKER_TEST_ASSERT_EQ(Gateway.GetAIStrategies(), SFString("AIStrategiesUnavailable"));
@@ -412,6 +425,8 @@ bool TestReplayPlayerState()
     SKYWALKER_TEST_ASSERT_EQ(Player.GetEventByIndex(2), SFString(""));
     SKYWALKER_TEST_ASSERT_EQ(Player.GetEventsRange(0, 1), SFString("EventRange=EventIndex=0;Event=Frame=1"));
     SKYWALKER_TEST_ASSERT_EQ(Player.GetEventsRange(3, 1), SFString(""));
+    SKYWALKER_TEST_ASSERT_EQ(Player.FindEventsByKeyword("Frame", 1), SFString("EventSearch=EventIndex=0;Event=Frame=1"));
+    SKYWALKER_TEST_ASSERT_EQ(Player.FindEventsByKeyword("Unknown", 2), SFString(""));
     SKYWALKER_TEST_ASSERT_TRUE(Player.BuildStats().find("ReplayFormatVersion=2") != SFString::npos);
     SKYWALKER_TEST_ASSERT_TRUE(Player.IsReplaying());
     SKYWALKER_TEST_ASSERT_FALSE(Player.StartReplay(202));
@@ -495,6 +510,15 @@ bool TestAdminCommandReplayGateway()
 
                                              return SFString();
                                          });
+    Gateway.RegisterReplayFindEventsByKeyword([](const SFString &Keyword, SFUInt64 MaxCount)
+                                              {
+                                                  if (Keyword == "Frame" && MaxCount >= 2)
+                                                  {
+                                                      return SFString("EventSearch=EventIndex=0;Event=Frame=1|EventIndex=1;Event=Frame=2");
+                                                  }
+
+                                                  return SFString();
+                                              });
     Gateway.RegisterAISetStrategy([](const SFString &StrategyName)
                                   { return StrategyName == "strict" || StrategyName == "balanced" || StrategyName == "relaxed"; });
     Gateway.RegisterAIGetStats([]()
@@ -520,14 +544,19 @@ bool TestAdminCommandReplayGateway()
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("show_replay_event 9"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_replay_events 0 2"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("show_replay_events 9 1"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("find_replay_events Frame 2"));
+    SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("find_replay_events Unknown 2"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("set_ai_strategy strict"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("set_ai_strategy unknown"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_stats"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_strategies"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_ai_audit"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("clear_ai_audit"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("show_admin_acl_stats"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("role=observer set_ai_strategy strict"));
     SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=observer show_ai_audit"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=observer show_admin_acl_stats"));
+    SKYWALKER_TEST_ASSERT_TRUE(AdminCommand.ExecuteCommand("role=observer find_replay_events Frame 1"));
     SKYWALKER_TEST_ASSERT_FALSE(AdminCommand.ExecuteCommand("role=observer clear_ai_audit"));
 
     AdminCommand.Destroy(Errors);
@@ -539,6 +568,7 @@ bool TestAdminCommandReplayGateway()
     Gateway.RegisterReplayPlayStats(nullptr);
     Gateway.RegisterReplayGetEventByIndex(nullptr);
     Gateway.RegisterReplayGetEventsRange(nullptr);
+    Gateway.RegisterReplayFindEventsByKeyword(nullptr);
     Gateway.RegisterAISetStrategy(nullptr);
     Gateway.RegisterAIGetStats(nullptr);
     Gateway.RegisterAIGetStrategies(nullptr);

@@ -106,6 +106,12 @@ void SSFModule_ReplayPlayer::Start(SFObjectErrors &Errors)
         {
             return GetEventsRange(StartIndex, Count);
         });
+
+    SSFGameplayServiceGateway::Instance().RegisterReplayFindEventsByKeyword(
+        [this](const SFString &Keyword, SFUInt64 MaxCount)
+        {
+            return FindEventsByKeyword(Keyword, MaxCount);
+        });
 }
 
 void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
@@ -115,6 +121,7 @@ void SSFModule_ReplayPlayer::Stop(SFObjectErrors &Errors)
     SSFGameplayServiceGateway::Instance().RegisterReplayPlayStats(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayGetEventByIndex(nullptr);
     SSFGameplayServiceGateway::Instance().RegisterReplayGetEventsRange(nullptr);
+    SSFGameplayServiceGateway::Instance().RegisterReplayFindEventsByKeyword(nullptr);
 
     StopReplay();
 
@@ -272,6 +279,8 @@ SFString SSFModule_ReplayPlayer::BuildStats() const
            ";LoadedEventCount=" + std::to_string(static_cast<SFUInt64>(LoadedEvents.size())) +
            ";LastLoadedEventCount=" + std::to_string(LastLoadedEventCount) +
            ";LastQueryEventIndex=" + std::to_string(LastQueryEventIndex) +
+           ";LastQueryKeyword=" + LastQueryKeyword +
+           ";LastQueryKeywordHits=" + std::to_string(LastQueryKeywordHits) +
            ";ReplayFormatVersion=" + std::to_string(ReplayFormatVersion) +
            ";ReplayHeaderChecksum=" + std::to_string(ReplayHeaderChecksum) +
            ";ReplayVerifiedChecksum=" + std::to_string(ReplayVerifiedChecksum) +
@@ -308,6 +317,47 @@ SFString SSFModule_ReplayPlayer::GetEventsRange(SFUInt64 StartIndex, SFUInt64 Co
         }
 
         Stream << "EventIndex=" << Index << ";Event=" << LoadedEvents[static_cast<size_t>(Index)];
+    }
+
+    return Stream.str();
+}
+
+SFString SSFModule_ReplayPlayer::FindEventsByKeyword(const SFString &Keyword, SFUInt64 MaxCount)
+{
+    LastQueryKeyword = Keyword;
+    LastQueryKeywordHits = 0;
+    if (Keyword.empty() || MaxCount == 0)
+    {
+        return "";
+    }
+
+    std::ostringstream Stream;
+    Stream << "EventSearch=";
+    bool bHasResult = false;
+    for (size_t Index = 0; Index < LoadedEvents.size(); ++Index)
+    {
+        if (LoadedEvents[Index].find(Keyword) == SFString::npos)
+        {
+            continue;
+        }
+
+        if (bHasResult)
+        {
+            Stream << "|";
+        }
+
+        Stream << "EventIndex=" << Index << ";Event=" << LoadedEvents[Index];
+        bHasResult = true;
+        ++LastQueryKeywordHits;
+        if (LastQueryKeywordHits >= MaxCount)
+        {
+            break;
+        }
+    }
+
+    if (!bHasResult)
+    {
+        return "";
     }
 
     return Stream.str();

@@ -75,6 +75,11 @@ void SSFGameplayServiceGateway::RegisterReplayGetEventsRange(const ReplayGetEven
     GetEventsRange = InGetEventsRange;
 }
 
+void SSFGameplayServiceGateway::RegisterReplayFindEventsByKeyword(const ReplayFindEventsByKeyword &InFindEventsByKeyword)
+{
+    FindEventsByKeyword = InFindEventsByKeyword;
+}
+
 void SSFGameplayServiceGateway::RegisterAISetStrategy(const AISetStrategy &InSetStrategy)
 {
     SetStrategy = InSetStrategy;
@@ -218,6 +223,16 @@ SFString SSFGameplayServiceGateway::GetReplayEventsRange(SFUInt64 StartIndex, SF
     }
 
     return GetEventsRange(StartIndex, Count);
+}
+
+SFString SSFGameplayServiceGateway::FindReplayEventsByKeyword(const SFString &Keyword, SFUInt64 MaxCount) const
+{
+    if (!FindEventsByKeyword)
+    {
+        return "ReplayFindEventsUnavailable";
+    }
+
+    return FindEventsByKeyword(Keyword, MaxCount);
 }
 
 bool SSFGameplayServiceGateway::SetAIStrategy(const SFString &StrategyName) const

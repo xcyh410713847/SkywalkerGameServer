@@ -31,10 +31,12 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "show_ai_audit",
         "clear_ai_audit",
         "show_ai_strategies",
+        "show_admin_acl_stats",
         "set_ai_strategy",
         "show_replay_stats",
         "show_replay_event",
         "show_replay_events",
+        "find_replay_events",
         "start_replay_record",
         "stop_replay_record",
         "start_replay",
@@ -59,10 +61,16 @@ void SSFModule_AdminCommand::Init(SFObjectErrors &Errors)
         "show_ai_stats",
         "show_ai_audit",
         "show_ai_strategies",
+        "show_admin_acl_stats",
         "show_replay_stats",
         "show_replay_event",
         "show_replay_events",
+        "find_replay_events",
     };
+
+    ExecuteSuccessCount = 0;
+    ExecuteDeniedCount = 0;
+    ExecuteFailureCount = 0;
 
     ObserverCommands = OperatorCommands;
 
@@ -94,6 +102,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     if (!ParseRoleAndCommand(CommandLine, Role, ResolvedCommandLine))
     {
         SF_LOG_ERROR("Execute admin command failed: invalid role command line " << CommandLine);
+        ++ExecuteFailureCount;
         return false;
     }
 
@@ -103,12 +112,14 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     if (Command.empty())
     {
         SF_LOG_ERROR("Execute admin command failed: invalid command line " << CommandLine);
+        ++ExecuteFailureCount;
         return false;
     }
 
     if (!HasPermission(Role, Command))
     {
         SF_LOG_ERROR("Execute admin command denied, Role " << Role << " Command " << Command);
+        ++ExecuteDeniedCount;
         return false;
     }
 
@@ -119,11 +130,20 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (SessionId == 0)
         {
             SF_LOG_ERROR("start_replay_record failed: invalid SessionId");
+            ++ExecuteFailureCount;
             return false;
         }
 
         bool bResult = SSFGameplayServiceGateway::Instance().StartReplayRecord(SessionId);
         SF_LOG_FRAMEWORK("start_replay_record SessionId " << SessionId << " Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -132,6 +152,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         SFString RecordStats = SSFGameplayServiceGateway::Instance().GetReplayRecordStats();
         SFString PlayStats = SSFGameplayServiceGateway::Instance().GetReplayPlayStats();
         SF_LOG_FRAMEWORK("show_replay_stats Record[" << RecordStats << "] Play[" << PlayStats << "]");
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -142,6 +163,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (EventIndex == static_cast<SFUInt64>(-1))
         {
             SF_LOG_ERROR("show_replay_event failed: invalid EventIndex");
+            ++ExecuteFailureCount;
             return false;
         }
 
@@ -149,10 +171,12 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (ReplayEvent.empty() || ReplayEvent == "ReplayEventUnavailable")
         {
             SF_LOG_ERROR("show_replay_event failed, EventIndex " << EventIndex << " Value " << ReplayEvent);
+            ++ExecuteFailureCount;
             return false;
         }
 
         SF_LOG_FRAMEWORK("show_replay_event " << ReplayEvent);
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -165,6 +189,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (StartIndex == static_cast<SFUInt64>(-1) || Count == 0)
         {
             SF_LOG_ERROR("show_replay_events failed: invalid StartIndex or Count");
+            ++ExecuteFailureCount;
             return false;
         }
 
@@ -172,10 +197,38 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (ReplayEvents.empty() || ReplayEvents == "ReplayEventsRangeUnavailable")
         {
             SF_LOG_ERROR("show_replay_events failed, StartIndex " << StartIndex << " Count " << Count << " Value " << ReplayEvents);
+            ++ExecuteFailureCount;
             return false;
         }
 
         SF_LOG_FRAMEWORK("show_replay_events " << ReplayEvents);
+        ++ExecuteSuccessCount;
+        return true;
+    }
+
+    if (Command == "find_replay_events")
+    {
+        SFString Keyword;
+        SFUInt64 MaxCount = 0;
+        Stream >> Keyword;
+        Stream >> MaxCount;
+        if (Keyword.empty() || MaxCount == 0)
+        {
+            SF_LOG_ERROR("find_replay_events failed: invalid Keyword or MaxCount");
+            ++ExecuteFailureCount;
+            return false;
+        }
+
+        SFString ReplayEvents = SSFGameplayServiceGateway::Instance().FindReplayEventsByKeyword(Keyword, MaxCount);
+        if (ReplayEvents.empty() || ReplayEvents == "ReplayFindEventsUnavailable")
+        {
+            SF_LOG_ERROR("find_replay_events failed, Keyword " << Keyword << " MaxCount " << MaxCount << " Value " << ReplayEvents);
+            ++ExecuteFailureCount;
+            return false;
+        }
+
+        SF_LOG_FRAMEWORK("find_replay_events " << ReplayEvents);
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -183,6 +236,14 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         bool bResult = SSFGameplayServiceGateway::Instance().StopReplayRecord();
         SF_LOG_FRAMEWORK("stop_replay_record Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -193,11 +254,20 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (SessionId == 0)
         {
             SF_LOG_ERROR("start_replay failed: invalid SessionId");
+            ++ExecuteFailureCount;
             return false;
         }
 
         bool bResult = SSFGameplayServiceGateway::Instance().StartReplayPlay(SessionId);
         SF_LOG_FRAMEWORK("start_replay SessionId " << SessionId << " Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -205,6 +275,14 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         bool bResult = SSFGameplayServiceGateway::Instance().StopReplayPlay();
         SF_LOG_FRAMEWORK("stop_replay Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -215,11 +293,20 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (StrategyName.empty())
         {
             SF_LOG_ERROR("set_ai_strategy failed: invalid strategy name");
+            ++ExecuteFailureCount;
             return false;
         }
 
         bool bResult = SSFGameplayServiceGateway::Instance().SetAIStrategy(StrategyName);
         SF_LOG_FRAMEWORK("set_ai_strategy " << StrategyName << " Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -227,6 +314,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         SFString AIStats = SSFGameplayServiceGateway::Instance().GetAIStats();
         SF_LOG_FRAMEWORK("show_ai_stats " << AIStats);
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -234,6 +322,7 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         SFString AIAudit = SSFGameplayServiceGateway::Instance().GetAIAudit();
         SF_LOG_FRAMEWORK("show_ai_audit " << AIAudit);
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -241,6 +330,14 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         bool bResult = SSFGameplayServiceGateway::Instance().ClearAIAudit();
         SF_LOG_FRAMEWORK("clear_ai_audit Result " << bResult);
+        if (bResult)
+        {
+            ++ExecuteSuccessCount;
+        }
+        else
+        {
+            ++ExecuteFailureCount;
+        }
         return bResult;
     }
 
@@ -248,6 +345,16 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         SFString AIStrategies = SSFGameplayServiceGateway::Instance().GetAIStrategies();
         SF_LOG_FRAMEWORK("show_ai_strategies " << AIStrategies);
+        ++ExecuteSuccessCount;
+        return true;
+    }
+
+    if (Command == "show_admin_acl_stats")
+    {
+        SF_LOG_FRAMEWORK("show_admin_acl_stats SuccessCount " << ExecuteSuccessCount
+                                                               << " DeniedCount " << ExecuteDeniedCount
+                                                               << " FailureCount " << ExecuteFailureCount);
+        ++ExecuteSuccessCount;
         return true;
     }
 
@@ -256,11 +363,13 @@ bool SSFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
         if (ResolvedCommandLine.rfind(Supported, 0) == 0)
         {
             SF_LOG_FRAMEWORK("Execute admin command: " << ResolvedCommandLine << " Role " << Role);
+            ++ExecuteSuccessCount;
             return true;
         }
     }
 
     SF_LOG_ERROR("Unknown admin command: " << CommandLine << " SupportedCount " << SupportedCommands.size());
+    ++ExecuteFailureCount;
     return false;
 }
 

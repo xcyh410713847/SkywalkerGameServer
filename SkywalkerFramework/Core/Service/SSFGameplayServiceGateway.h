@@ -29,6 +29,7 @@ public:
     using ReplayPlayStats = std::function<SFString()>;
     using ReplayGetEventByIndex = std::function<SFString(SFUInt64 EventIndex)>;
     using ReplayGetEventsRange = std::function<SFString(SFUInt64 StartIndex, SFUInt64 Count)>;
+    using ReplayFindEventsByKeyword = std::function<SFString(const SFString &Keyword, SFUInt64 MaxCount)>;
     using AISetStrategy = std::function<bool(const SFString &StrategyName)>;
     using AIGetStats = std::function<SFString()>;
     using AIGetStrategies = std::function<SFString()>;
@@ -50,6 +51,7 @@ public:
     void RegisterReplayPlayStats(const ReplayPlayStats &InPlayStats);
     void RegisterReplayGetEventByIndex(const ReplayGetEventByIndex &InGetEventByIndex);
     void RegisterReplayGetEventsRange(const ReplayGetEventsRange &InGetEventsRange);
+    void RegisterReplayFindEventsByKeyword(const ReplayFindEventsByKeyword &InFindEventsByKeyword);
     void RegisterAISetStrategy(const AISetStrategy &InSetStrategy);
     void RegisterAIGetStats(const AIGetStats &InGetStats);
     void RegisterAIGetStrategies(const AIGetStrategies &InGetStrategies);
@@ -68,6 +70,7 @@ public:
     SFString GetReplayPlayStats() const;
     SFString GetReplayEventByIndex(SFUInt64 EventIndex) const;
     SFString GetReplayEventsRange(SFUInt64 StartIndex, SFUInt64 Count) const;
+    SFString FindReplayEventsByKeyword(const SFString &Keyword, SFUInt64 MaxCount) const;
     bool SetAIStrategy(const SFString &StrategyName) const;
     SFString GetAIStats() const;
     SFString GetAIStrategies() const;
@@ -87,6 +90,7 @@ private:
     ReplayPlayStats PlayStats;
     ReplayGetEventByIndex GetEventByIndex;
     ReplayGetEventsRange GetEventsRange;
+    ReplayFindEventsByKeyword FindEventsByKeyword;
     AISetStrategy SetStrategy;
     AIGetStats GetStrategyStats;
     AIGetStrategies GetStrategies;
