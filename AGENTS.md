@@ -1,20 +1,7 @@
 # AGENTS.md - SkywalkerGameServer Development Guide
 
 ## Project Overview
-C++20 game server framework with plugin-based architecture.
-
-## Current Session Baseline (2026-03-03)
-- Delivery phase has advanced to **P2 Batch 8 (doc section 7.13)**.
-- Effective workflow in this repository is **compile-only**: do not run server/client in automation.
-- Build verification baseline: full CMake build must succeed and produce `SkywalkerTestRunner` target.
-- Current cross-plugin coordination relies on `SSFGameplayServiceGateway` in `SkywalkerFramework/Core/Service/`.
-- Primary operational surface is `SSFModule_AdminCommand` with role-based ACL (`admin/operator/observer`) and config reload.
-
-### Fast Handoff Files (Read First)
-1. `JobRecord.md` - up-to-date handoff summary and continuation checklist
-2. `框架插件与模块缺口清单及落地步骤.md` - phased implementation history (`7.x`)
-3. `Bin/Server/ServerConfig.skywalkerC` - runtime knobs, ACL command lists, AI/Replay config
-4. `SkywalkerGameServer/SkywalkerNetworkTest.cpp` - canonical regression coverage for network/AI/replay/admin command paths
+C++20 game server framework with plugin-based architecture for learning purposes.
 
 ## Build Commands
 ```bash
@@ -25,7 +12,7 @@ cmake --build . --target SkywalkerGameServer --config Debug
 ./Bin/Debug/SkywalkerGameServer.exe
 ```
 
-> Current project practice: for automated coding sessions, stop at successful build; do **not** execute binaries.
+> **Workflow**: In automated coding sessions, stop at successful build; do **not** execute binaries.
 
 ### Build Modes
 - `ProjectDebug` (default) - Debug builds
@@ -36,19 +23,7 @@ cmake --build . --target SkywalkerGameServer --config Debug
 - Debug: `Bin/Debug/`
 - Release: `Bin/Server/`
 
-### Running Single Test
-All tests run via `SkywalkerTestRunner::Instance().RunAll()`. No single-test filtering available - run all tests via:
-```bash
-cd build/SkywalkerGameServer
-cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
-./Bin/Debug/SkywalkerTestRunner.exe
-```
-
-### Linting
-No linting tool configured. Code must compile and pass all tests before commit.
-
 ## Testing
-Custom unit test framework at `SkywalkerTools/SkywalkerTest/`.
 
 ### Running Tests
 ```bash
@@ -56,9 +31,7 @@ cd build/SkywalkerGameServer
 cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
 ./Bin/Debug/SkywalkerTestRunner.exe
 ```
-All tests run via `SkywalkerTestRunner::Instance().RunAll()`. No single-test filtering.
-
-> Current project practice: in automation, compile `SkywalkerTestRunner` as verification; avoid runtime execution unless explicitly requested.
+All tests run via `SkywalkerTestRunner::Instance().RunAll()`. **No single-test filtering** - run all tests.
 
 ### Writing Tests
 ```cpp
@@ -70,13 +43,16 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 ```
 
 ### Test Macros
-| Macro                                        | Description                     |
-| -------------------------------------------- | ------------------------------- |
-| `SKYWALKER_TEST_ASSERT(condition)`           | Assert condition is true        |
-| `SKYWALKER_TEST_ASSERT_EQ(expected, actual)` | Assert two values are equal     |
+| Macro | Description |
+|-------|-------------|
+| `SKYWALKER_TEST_ASSERT(condition)` | Assert condition is true |
+| `SKYWALKER_TEST_ASSERT_EQ(expected, actual)` | Assert two values are equal |
 | `SKYWALKER_TEST_ASSERT_NE(expected, actual)` | Assert two values are not equal |
-| `SKYWALKER_TEST_ASSERT_TRUE(value)`          | Assert value is true            |
-| `SKYWALKER_TEST_ASSERT_FALSE(value)`         | Assert value is false           |
+| `SKYWALKER_TEST_ASSERT_TRUE(value)` | Assert value is true |
+| `SKYWALKER_TEST_ASSERT_FALSE(value)` | Assert value is false |
+
+## Linting
+No linting tool configured. Code must compile and pass all tests before commit.
 
 ## Code Style Guidelines
 
@@ -92,14 +68,14 @@ int main() { return SkywalkerTestRunner::Instance().RunAll(); }
 - Use `#pragma region` for code organization
 
 ### Naming Conventions
-| Type       | Convention          | Example                 |
-| ---------- | ------------------- | ----------------------- |
-| Classes    | `C` prefix          | `CSkywalkerFramework`   |
-| Plugins    | `SSFPlugin_` prefix | `SSFPlugin_Test`        |
-| Modules    | `SSFModule_` prefix | `SSFModule_TestOne`     |
-| Interfaces | `I` prefix          | `ISSFPlugin`            |
-| Enums      | `E` prefix          | `ESkywalkerServerState` |
-| Files      | PascalCase          | `SkywalkerFramework.h`  |
+| Type | Convention | Example |
+|------|------------|---------|
+| Classes | `C` prefix | `CSkywalkerFramework` |
+| Plugins | `SSFPlugin_` prefix | `SSFPlugin_Test` |
+| Modules | `SSFModule_` prefix | `SSFModule_TestOne` |
+| Interfaces | `I` prefix | `ISSFPlugin` |
+| Enums | `E` prefix | `ESkywalkerServerState` |
+| Files | PascalCase | `SkywalkerFramework.h` |
 
 ### Type System (from SFCore.h)
 - `SSFString` (std::string), `SSFBool` (bool), `SSFInt` (int)
