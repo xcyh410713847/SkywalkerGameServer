@@ -17,6 +17,7 @@
 #include <list>
 #include <map>
 #include <regex>
+#include <filesystem>
 
 #include "SFPlatform.h"
 
@@ -319,6 +320,7 @@ typedef std::ptrdiff_t SFPtrDiff;
 typedef float SFFloat;
 typedef double SFDouble;
 typedef std::string SFString;
+typedef std::filesystem::path SFPath;
 
 /**
  * 通用布尔常量

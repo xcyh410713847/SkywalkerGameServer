@@ -6,36 +6,21 @@
 *************************************************************************/
 
 #include "Include/SFFramework.h"
+#include "SkywalkerPath/SkywalkerPath.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
-
-#include <filesystem>
 
 SF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
-    std::filesystem::path ExePath = std::filesystem::absolute(std::filesystem::path(argv[0]));
-    std::filesystem::path ExeDir = ExePath.parent_path();
-    SFString ConfigDir = (ExeDir / ".." / "Server").lexically_normal().string();
+    /** 计算程序所在目录，并构造默认配置目录（Bin/Server） */
+    SFPath ExePath = SkywalkerAbsolutePath(SFPath(argv[0]));
+    SFPath ExeDir = ExePath.parent_path();
+    SFPath ConfigDir = (ExeDir / ".." / "Server").lexically_normal();
     SFString PluginConfigPath = "ServerPlugin.skywalkerC";
     SFString ServerConfigPath = "ServerConfig.skywalkerC";
 
-    auto ResolveConfigPath = [&ConfigDir, &ExeDir](const SFString &InPath) -> SFString
-    {
-        std::filesystem::path PathObj(InPath);
-        if (PathObj.is_absolute())
-        {
-            return PathObj.lexically_normal().string();
-        }
-
-        if (PathObj.has_parent_path())
-        {
-            return (ExeDir / PathObj).lexically_normal().string();
-        }
-
-        return (std::filesystem::path(ConfigDir) / PathObj).lexically_normal().string();
-    };
-
+    /** 允许通过命令行覆盖默认配置路径：argv[1]=Plugin，argv[2]=Server */
     if (argc > 1)
     {
         PluginConfigPath = argv[1];
@@ -45,12 +30,14 @@ int main(int argc, char *argv[])
         ServerConfigPath = argv[2];
     }
 
-    PluginConfigPath = ResolveConfigPath(PluginConfigPath);
-    ServerConfigPath = ResolveConfigPath(ServerConfigPath);
+    PluginConfigPath = SkywalkerResolveConfigPath(PluginConfigPath, ExeDir, ConfigDir);
+    ServerConfigPath = SkywalkerResolveConfigPath(ServerConfigPath, ExeDir, ConfigDir);
 
+    /** 将配置路径注入环境变量，供框架启动阶段读取 */
     SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
     SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", ServerConfigPath.c_str());
 
+    /** 进入框架主循环（生命周期由框架托管） */
     SKYWALKER_FRAMEWORK_START(argc, argv)
 
     return 0;

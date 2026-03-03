@@ -6,35 +6,18 @@
 *************************************************************************/
 
 #include "Include/SFFramework.h"
+#include "SkywalkerPath/SkywalkerPath.h"
 #include "SkywalkerPlatform/SkywalkerPlatform.h"
-
-#include <filesystem>
 
 SF_NAMESPACE_USING
 
 int main(int argc, char *argv[])
 {
-    std::filesystem::path ExePath = std::filesystem::absolute(std::filesystem::path(argv[0]));
-    std::filesystem::path ExeDir = ExePath.parent_path();
-    SFString ConfigDir = (ExeDir / ".." / "Client").lexically_normal().string();
+    SFPath ExePath = SkywalkerAbsolutePath(SFPath(argv[0]));
+    SFPath ExeDir = ExePath.parent_path();
+    SFPath ConfigDir = (ExeDir / ".." / "Client").lexically_normal();
     SFString PluginConfigPath = "ClientPlugin.skywalkerC";
     SFString ClientConfigPath = "ClientConfig.skywalkerC";
-
-    auto ResolveConfigPath = [&ConfigDir, &ExeDir](const SFString &InPath) -> SFString
-    {
-        std::filesystem::path PathObj(InPath);
-        if (PathObj.is_absolute())
-        {
-            return PathObj.lexically_normal().string();
-        }
-
-        if (PathObj.has_parent_path())
-        {
-            return (ExeDir / PathObj).lexically_normal().string();
-        }
-
-        return (std::filesystem::path(ConfigDir) / PathObj).lexically_normal().string();
-    };
 
     if (argc > 1)
     {
@@ -45,8 +28,8 @@ int main(int argc, char *argv[])
         ClientConfigPath = argv[2];
     }
 
-    PluginConfigPath = ResolveConfigPath(PluginConfigPath);
-    ClientConfigPath = ResolveConfigPath(ClientConfigPath);
+    PluginConfigPath = SkywalkerResolveConfigPath(PluginConfigPath, ExeDir, ConfigDir);
+    ClientConfigPath = SkywalkerResolveConfigPath(ClientConfigPath, ExeDir, ConfigDir);
 
     SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
     SkywalkerSetEnv("SKYWALKER_CLIENT_CONFIG", ClientConfigPath.c_str());
