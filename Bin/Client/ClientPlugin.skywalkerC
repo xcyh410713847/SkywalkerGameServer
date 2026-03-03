@@ -1,5 +1,4 @@
-﻿#Plugin
-Plugin
+﻿Plugin
     Name=SFPlugin_Network
     Module
         Name=SFModule_NetworkClient

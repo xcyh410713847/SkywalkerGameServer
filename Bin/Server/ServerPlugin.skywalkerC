@@ -1,10 +1,4 @@
-﻿#Plugin
-#    Name=SFPlugin_Test
-#    Module
-#        Name=SFModule_TestOne
-#    Module
-#        Name=SFModule_TestTwo
-Plugin
+﻿Plugin
     Name=SFPlugin_Network
     Module
         Name=SFModule_NetworkServer
@@ -49,8 +43,7 @@ Plugin
         Name=SFModule_ReplayRecorder
     Module
         Name=SFModule_ReplayPlayer
-#Plugin
-#    Name=SFPlugin_LaunchState
+
 Plugin
     Name=SFPlugin_CommandLine
     Module
