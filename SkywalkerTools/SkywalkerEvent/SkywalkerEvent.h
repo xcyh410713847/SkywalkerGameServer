@@ -12,6 +12,7 @@
 #include <map>
 #include <list>
 
+/** 事件系统命名空间宏 */
 #define SKYWALKER_EVENT_NAMESPACE Skywalker::Event
 #define SKYWALKER_EVENT_NAMESPACE_BEGIN \
     namespace SKYWALKER_EVENT_NAMESPACE \
@@ -40,6 +41,7 @@ SKYWALKER_EVENT_NAMESPACE_BEGIN
 
 /**
  * 事件顺序枚举
+ * 按从前到后的顺序执行
  */
 enum class ESkywalkerEventOrder
 {
@@ -63,9 +65,16 @@ typedef uint64_t SkywalkerEventID;
 typedef void *SkywalkerEventParam;
 typedef uint32_t SkywalkerEventParamSize;
 
+/**
+ * 事件回调签名
+ * 返回值目前未用于中断流程，保留给上层扩展
+ */
 typedef std::function<bool(SkywalkerEventMainID, SkywalkerEventSubID, SkywalkerEventParam, SkywalkerEventParamSize)> SkywalkerEventCallback;
 typedef SkywalkerEventCallback *SkywalkerEventCallbackPtr;
 
+/**
+ * 单个事件回调节点
+ */
 struct SSkywalkerEventData
 {
     bool IsValid;
@@ -87,6 +96,9 @@ struct SSkywalkerEventData
 typedef std::list<SSkywalkerEventData> TList_SkywalkerEventCallback;
 typedef std::map<SkywalkerEventID, TList_SkywalkerEventCallback[static_cast<size_t>(ESkywalkerEventOrder::Max)]> TMap_SkywalkerEventCallback;
 
+/**
+ * 事件总线（静态管理）
+ */
 class CSkywalkerEvent
 {
 public:
@@ -95,7 +107,11 @@ public:
 
 public:
     /**
-     *  注册事件
+        * 注册事件
+        * @param InMainID 主事件ID
+        * @param InSubID 子事件ID
+        * @param InCallback 回调
+        * @param InOrder 执行阶段
      */
     static void RegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                               SkywalkerEventCallback InCallback,
@@ -112,7 +128,7 @@ public:
     }
 
     /**
-     *  注销事件
+        * 注销事件
      */
     static void UnRegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                                 SkywalkerEventCallback InCallback)
@@ -139,7 +155,8 @@ public:
     }
 
     /**
-     *  触发事件
+        * 触发事件
+        * 按 ESkywalkerEventOrder 顺序依次执行
      */
     static void TriggerEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                              SkywalkerEventParam InParam = nullptr, SkywalkerEventParamSize ParamSize = 0)
@@ -166,6 +183,7 @@ public:
     }
 
 private:
+    /** 事件回调总表：EventID -> [OrderList...] */
     static TMap_SkywalkerEventCallback SkywalkerEventCallbackMap;
 };
 

@@ -13,6 +13,8 @@
 
 /**
  * 获取绝对路径
+ * @param Path 输入路径（可为相对或绝对）
+ * @return 归一化前缀后的绝对路径
  */
 inline std::filesystem::path SkywalkerAbsolutePath(const std::filesystem::path &Path)
 {
@@ -24,6 +26,11 @@ inline std::filesystem::path SkywalkerAbsolutePath(const std::filesystem::path &
  * 1) 绝对路径：直接返回；
  * 2) 带父目录的相对路径：相对 ExeDir；
  * 3) 纯文件名：相对 DefaultConfigDir。
+ *
+ * @param InPath 输入配置路径
+ * @param ExeDir 可执行文件所在目录
+ * @param DefaultConfigDir 默认配置目录
+ * @return 可直接读取的规范化路径字符串
  */
 inline std::string SkywalkerResolveConfigPath(const std::string &InPath,
                                               const std::filesystem::path &ExeDir,
@@ -43,4 +50,4 @@ inline std::string SkywalkerResolveConfigPath(const std::string &InPath,
     return (DefaultConfigDir / PathObj).lexically_normal().string();
 }
 
-#endif
+#endif // __SKYWALKER_PATH_H__

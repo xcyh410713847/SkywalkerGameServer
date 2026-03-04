@@ -10,6 +10,7 @@
 
 #include <list>
 
+/** 对象池命名空间宏 */
 #define SKYWALKER_POOL_NAMESPACE Skywalker::Pool
 #define SKYWALKER_POOL_NAMESPACE_BEGIN \
     namespace SKYWALKER_POOL_NAMESPACE \
@@ -19,6 +20,10 @@
 
 SKYWALKER_POOL_NAMESPACE_BEGIN
 
+/**
+ * 简单对象池
+ * 说明：对象生命周期由对象池管理，回收时超过上限会直接释放。
+ */
 template <typename T>
 class CSkywalkerPool
 {
@@ -38,8 +43,9 @@ public:
         Pool.clear();
     }
 
-    /** 获取对象
-     * @return T *	: 对象
+    /**
+     * 获取对象
+     * 注意：调用方应确保池中已有对象，否则 front() 行为未定义。
      */
     T *Get()
     {
@@ -48,8 +54,9 @@ public:
         return obj;
     }
 
-    /** 回收对象
-     * @param T *obj	: 对象
+    /**
+     * 回收对象
+     * @param obj 对象指针
      */
     void Recycle(T *obj)
     {
@@ -62,8 +69,8 @@ public:
         Pool.push_back(obj);
     }
 
-    /** 获取对象池大小
-     * @return size_t	: 对象池大小
+    /**
+     * 获取当前池大小
      */
     size_t Size()
     {
@@ -73,7 +80,9 @@ public:
 
 SKYWALKER_POOL_NAMESPACE_END
 
+/** 对象池指针类型 */
 #define SKYWALKER_POOL_PTR(T) SKYWALKER_POOL_NAMESPACE::CSkywalkerPool<T> *
+/** 创建对象池 */
 #define SKYWALKER_POOL_NEW(T, MaxSize) new SKYWALKER_POOL_NAMESPACE::CSkywalkerPool<T>(MaxSize);
 
 #endif // __SKYWALKER_POOL_H__

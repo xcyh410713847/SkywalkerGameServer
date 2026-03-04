@@ -12,8 +12,10 @@
 
 #include <unistd.h>
 
+/** Mac 平台标记 */
 #define SKYWALKER_PLATFORM_MAC
 
+/** 线程休眠（微秒） */
 #define SKYWALKER_PLATFORM_SLEEP(ms) usleep(ms)
 
 #endif // __APPLE__

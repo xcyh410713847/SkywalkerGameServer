@@ -13,6 +13,7 @@
 #include <format>
 #include <chrono>
 
+/** 计时器命名空间宏 */
 #define SKYWALKER_TIMER_NAMESPACE Skywalker::Timer
 #define SKYWALKER_TIMER_NAMESPACE_BEGIN \
     namespace SKYWALKER_TIMER_NAMESPACE \
@@ -24,7 +25,9 @@ SKYWALKER_TIMER_NAMESPACE_BEGIN
 typedef unsigned long long UINT64;
 
 /**
- * 计时器
+ * 高精度计时器
+ * - GetDeltaTime(): 毫秒级帧间隔
+ * - GetTotalTime(): 从 Reset 开始累计的秒数
  */
 class SkywalkerTimer
 {
@@ -49,6 +52,9 @@ public:
     {
     }
 
+    /**
+     * 释放自身（与框架对象生命周期风格保持一致）
+     */
     virtual void Release()
     {
         delete this;
@@ -77,6 +83,7 @@ public:
 
     /**
      * 计时
+        * 每帧调用一次，用于刷新 DeltaTime
      */
     void Tick()
     {
@@ -116,6 +123,7 @@ public:
 
     /**
      * 获得启动时间(s)
+     * 返回单调时钟转换后的秒数，不是 GMT 时间
      */
     double GetStartTime() const
     {
@@ -124,6 +132,7 @@ public:
 
     /**
      * 获得当前时间(s)
+     * 返回单调时钟转换后的秒数，不是 GMT 时间
      */
     double GetCurrTime() const
     {
@@ -148,7 +157,7 @@ public:
 
     /**
      * 获取当前时间，格式：年-月-日 时:分:秒.毫秒
-     * 通过 CurrTime 装换
+        * 基于系统时钟生成，便于日志输出
      */
     std::string GetCurrTimeStr() const
     {

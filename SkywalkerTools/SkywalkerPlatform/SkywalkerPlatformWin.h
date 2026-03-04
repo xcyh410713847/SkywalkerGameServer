@@ -13,8 +13,10 @@
 #include <winsock2.h>
 #include <windows.h>
 
+/** Windows 平台标记 */
 #define SKYWALKER_PLATFORM_WINDOWS
 
+/** 线程休眠（毫秒） */
 #define SKYWALKER_PLATFORM_SLEEP(ms) Sleep(ms)
 
 #endif // _WIN32 || _WIN64

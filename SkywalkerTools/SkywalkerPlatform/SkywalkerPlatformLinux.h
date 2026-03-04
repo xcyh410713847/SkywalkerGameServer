@@ -17,8 +17,10 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 
+/** Linux 平台标记 */
 #define SKYWALKER_PLATFORM_LINUX
 
+/** 线程休眠（微秒） */
 #define SKYWALKER_PLATFORM_SLEEP(ms) usleep(ms)
 
 #endif // __linux__

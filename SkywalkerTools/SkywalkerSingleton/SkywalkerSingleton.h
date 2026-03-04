@@ -9,7 +9,8 @@
 #define __SKYWALKER_SINGLETON_H__
 
 /**
- * 声明
+ * 声明单例接口宏
+ * 要求：在类定义中使用
  */
 #define SKYWALKER_SINGLETON_DECLARE(Class) \
 private:                                   \
@@ -26,7 +27,8 @@ protected:                                 \
     Class &operator=(const Class &) = delete;
 
 /**
- * 定义
+ * 定义单例实现宏
+ * 要求：在一个 .cpp 中展开一次
  */
 #define SKYWALKER_SINGLETON_IMPLEMENT(Class) \
     Class *Class::Instance = nullptr;        \

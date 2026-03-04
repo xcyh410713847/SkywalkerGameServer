@@ -12,6 +12,7 @@
 #include <string>
 #include <sstream>
 
+/** 错误工具命名空间宏 */
 #define SKYWALKER_ERRORS_NAMESPACE Skywalker::Errors
 #define SKYWALKER_ERRORS_NAMESPACE_BEGIN \
     namespace SKYWALKER_ERRORS_NAMESPACE \
@@ -20,6 +21,10 @@
 
 SKYWALKER_ERRORS_NAMESPACE_BEGIN
 
+/**
+ * 通用错误容器
+ * T 为错误类型（通常是 enum 或错误对象）
+ */
 template <typename T>
 class CSkywalkerErrors
 {
@@ -34,9 +39,10 @@ public:
         errorTrace.clear();
     }
 
-    /** 添加错误
-     * @param const T &Error	: 错误
-     * @param string trace		: 错误堆栈
+    /**
+     * 添加错误
+     * @param Error 错误对象
+     * @param trace 错误追踪信息（可为空）
      */
     void AddError(const T &Error, std::string trace)
     {
@@ -44,24 +50,27 @@ public:
         errorTrace.push_back(trace);
     }
 
-    /** 获取错误列表
-     * @return const vector<T>	: 错误列表
+    /**
+     * 获取错误列表（拷贝）
+     * @return 错误列表
      */
     const std::vector<T> GetErrors() const
     {
         return errors;
     };
 
-    /** 获取错误堆栈
-     * @return const vector<string>	: 错误堆栈
+    /**
+     * 获取错误追踪列表（拷贝）
+     * @return 错误追踪列表
      */
     const std::vector<std::string> GetErrorTrace() const
     {
         return errorTrace;
     }
 
-    /** 获取首个错误
-     * @return const T	: 首个错误
+    /**
+     * 获取首个错误
+     * 当无错误时返回 T{} 默认值
      */
     const T GetFirstError() const
     {
@@ -76,8 +85,9 @@ public:
         }
     }
 
-    /** 是否有效
-     * @return bool	: true 有效, false 无效
+    /**
+     * 是否存在错误
+     * @return true 表示当前容器已有错误记录
      */
     bool IsValid() const
     {
@@ -86,12 +96,12 @@ public:
 };
 
 /**
- * 不带堆栈的错误
+ * 不带追踪信息的错误包装
  */
 #define SKYWALKER_ERRORS_WRAP(CppErrors, Error) CppErrors.AddError(Error, "")
 
 /**
- * 带堆栈的错误
+ * 带文件/行号/函数信息的错误包装
  */
 #define SKYWALKER_ERRORS_WRAP_TRACE(CppErrors, Error)                             \
     {                                                                             \
