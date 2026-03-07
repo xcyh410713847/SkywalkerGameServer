@@ -6,8 +6,6 @@
 *************************************************************************/
 
 #include "Include/SFFramework.h"
-#include "SkywalkerPath/SkywalkerPath.h"
-#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SF_NAMESPACE_USING
 
@@ -34,8 +32,9 @@ int main(int argc, char *argv[])
     ServerConfigPath = SkywalkerResolveConfigPath(ServerConfigPath, ExeDir, ConfigDir);
 
     /** 将配置路径注入环境变量，供框架启动阶段读取 */
-    SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
-    SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", ServerConfigPath.c_str());
+    SkywalkerSetEnv(SF_ENV_PROGRAM_WORK_DIR, ExeDir.string().c_str());
+    SkywalkerSetEnv(SF_ENV_PLUGIN_CONFIG_DIR, PluginConfigPath.c_str());
+    SkywalkerSetEnv(SF_ENV_PROGRAM_CONFIG_DIR, ServerConfigPath.c_str());
 
     /** 进入框架主循环（生命周期由框架托管） */
     SKYWALKER_FRAMEWORK_START(argc, argv)

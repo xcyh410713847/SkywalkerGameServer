@@ -17,16 +17,22 @@ SKYWALKER_EVENT_NAMESPACE_USING
 
 SF_LOG_DEFINE(SFPlugin, ESFLogLevel::Debug)
 
+/** 构造函数 */
 SFPlugin::SFPlugin(SSFPluginContext &InContext, SFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
 {
     PluginManager = InContext.PluginManager;
 }
 
+/** 析构函数 */
 SFPlugin::~SFPlugin()
 {
 }
 
+/**
+ * 释放插件
+ * 说明：先执行卸载，再释放对象管理器。
+ */
 void SFPlugin::Release(SFObjectErrors &Errors)
 {
     Uninstall(Errors);
@@ -38,6 +44,7 @@ void SFPlugin::Release(SFObjectErrors &Errors)
 
 #pragma region Plugin Process
 
+/** 初始化阶段：安装模块并广播插件初始化事件 */
 void SFPlugin::Init(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Init");
@@ -51,6 +58,7 @@ void SFPlugin::Init(SFObjectErrors &Errors)
     SKYWALKER_TRIGGER_EVENT(ESFEventMainType::Plugin, SFEventSubType_Plugin_Init, EventPluginAll);
 }
 
+/** 唤醒阶段：分发到所有模块 */
 void SFPlugin::Awake(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Awake");
@@ -66,6 +74,7 @@ void SFPlugin::Awake(SFObjectErrors &Errors)
     }
 }
 
+/** 启动阶段：分发到所有模块 */
 void SFPlugin::Start(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Start");
@@ -81,6 +90,7 @@ void SFPlugin::Start(SFObjectErrors &Errors)
     }
 }
 
+/** Tick 阶段：分发帧间隔到所有模块 */
 void SFPlugin::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SF_COMMON_ITERATOR(IterModule, ModuleMap)
@@ -94,6 +104,7 @@ void SFPlugin::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     }
 }
 
+/** 停止阶段：分发到所有模块 */
 void SFPlugin::Stop(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterModule, ModuleMap)
@@ -109,6 +120,7 @@ void SFPlugin::Stop(SFObjectErrors &Errors)
     SF_LOG_DEBUG_MODULE("Stop");
 }
 
+/** 休眠阶段：分发到所有模块 */
 void SFPlugin::Sleep(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterModule, ModuleMap)
@@ -124,6 +136,7 @@ void SFPlugin::Sleep(SFObjectErrors &Errors)
     SF_LOG_DEBUG_MODULE("Sleep");
 }
 
+/** 销毁阶段：分发到所有模块 */
 void SFPlugin::Destroy(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterModule, ModuleMap)
@@ -143,11 +156,13 @@ void SFPlugin::Destroy(SFObjectErrors &Errors)
 
 #pragma region Module
 
+/** 设置配置允许加载的模块列表 */
 void SFPlugin::SetConfigModules(const SFMap<SFString, bool> &ModuleNames)
 {
     ConfigModules = ModuleNames;
 }
 
+/** 注册模块：校验并按配置过滤后写入对象管理器与模块索引 */
 void SFPlugin::RegisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
 {
     if (!SF_PTR_VALID(Module))
@@ -206,6 +221,7 @@ void SFPlugin::RegisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
     ModuleMap.insert(std::make_pair(ModuleName, Module->GetObjectGUID()));
 }
 
+/** 注销模块：从对象管理器与模块索引移除 */
 void SFPlugin::UnregisterModule(SFObjectErrors &Errors, SF_PTR(SSFModule) Module)
 {
     if (!SF_PTR_VALID(Module))

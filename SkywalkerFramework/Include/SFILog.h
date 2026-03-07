@@ -14,6 +14,7 @@ SF_NAMESPACE_BEGIN
 
 /**
  * 日志等级
+ * 说明：数值越大优先级越高。
  */
 enum ESFLogLevel
 {
@@ -25,10 +26,12 @@ enum ESFLogLevel
     Fatal,         // 致命，用于显示致命错误
 };
 
+/** 全局最小输出等级（低于该等级的日志将被过滤） */
 #define SF_LOG_LEVEL Framework
 
 /**
  * 显示文件名，行号和函数名
+ * 说明：启用 SF_LOG_TRACE 宏后会输出源码位置信息。
  */
 #ifdef SF_LOG_TRACE
 #define SF_LOG_FILE_LINE "[" << __FILE__ << ":" << __LINE__ << "(" << __FUNCTION__ << ")] "
@@ -38,6 +41,8 @@ enum ESFLogLevel
 
 /**
  * 定义日志模块名称与显示等级
+ * @param Module 日志模块名称
+ * @param ShowLevel 当前模块最小输出等级
  */
 #define SF_LOG_DEFINE(Module, ShowLevel)          \
     static const char *SFLogModuleName = #Module; \
@@ -47,6 +52,7 @@ enum ESFLogLevel
 
 /**
  * 按全局等级过滤并输出日志
+ * 说明：先经过全局等级过滤。
  */
 #define SF_LOG_PRINT_EX(Level, Content) \
     if (Level >= SF_LOG_LEVEL)          \
@@ -54,6 +60,7 @@ enum ESFLogLevel
 
 /**
  * 按模块等级过滤并输出日志
+ * 说明：先经过模块等级过滤，再进入全局等级过滤。
  */
 #define SF_LOG_PRINT(Level, Content)   \
     if (Level >= SFLogModuleShowLevel) \
@@ -73,6 +80,7 @@ enum ESFLogLevel
 
 /**
  * 调试（当前对象）
+ * 说明：自动输出当前对象类名与 ObjectGUID。
  */
 #define SF_LOG_DEBUG_MODULE(Content) \
     SF_LOG_DEBUG_OBJECT(this, Content)

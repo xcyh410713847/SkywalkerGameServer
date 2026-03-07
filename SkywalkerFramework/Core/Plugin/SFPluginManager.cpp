@@ -15,15 +15,21 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SFPluginManager, ESFLogLevel::Debug);
 
+/** 构造函数 */
 SFPluginManager::SFPluginManager(SSFObjectContext &InContext, SFObjectErrors &InErrors)
     : SSFObjectManager(InContext, InErrors)
 {
 }
 
+/** 析构函数 */
 SFPluginManager::~SFPluginManager()
 {
 }
 
+/**
+ * 释放插件管理器
+ * 说明：先调用动态库停止入口，随后清空内存结构并释放基类对象。
+ */
 void SFPluginManager::Release(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Release");
@@ -43,6 +49,13 @@ void SFPluginManager::Release(SFObjectErrors &Errors)
 
 #pragma region Process
 
+/**
+ * 初始化流程
+ * 1. 解析插件配置
+ * 2. 加载动态库
+ * 3. 调用动态库入口启动插件
+ * 4. 逐个调用插件 Init
+ */
 void SFPluginManager::Init(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Init");
@@ -80,6 +93,7 @@ void SFPluginManager::Init(SFObjectErrors &Errors)
     }
 }
 
+/** 唤醒阶段：逐个调用插件 Awake */
 void SFPluginManager::Awake(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Awake");
@@ -95,6 +109,7 @@ void SFPluginManager::Awake(SFObjectErrors &Errors)
     }
 }
 
+/** 启动阶段：逐个调用插件 Start */
 void SFPluginManager::Start(SFObjectErrors &Errors)
 {
     SF_LOG_DEBUG_MODULE("Start");
@@ -110,6 +125,7 @@ void SFPluginManager::Start(SFObjectErrors &Errors)
     }
 }
 
+/** Tick 阶段：向所有插件广播帧间隔 */
 void SFPluginManager::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 {
     SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -123,6 +139,7 @@ void SFPluginManager::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     }
 }
 
+/** 停止阶段：逐个调用插件 Stop */
 void SFPluginManager::Stop(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -138,6 +155,7 @@ void SFPluginManager::Stop(SFObjectErrors &Errors)
     SF_LOG_DEBUG_MODULE("Stop");
 }
 
+/** 休眠阶段：逐个调用插件 Sleep */
 void SFPluginManager::Sleep(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -153,6 +171,7 @@ void SFPluginManager::Sleep(SFObjectErrors &Errors)
     SF_LOG_DEBUG_MODULE("Sleep");
 }
 
+/** 销毁阶段：逐个调用插件 Destroy */
 void SFPluginManager::Destroy(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterPlugin, PluginMap)
@@ -172,6 +191,10 @@ void SFPluginManager::Destroy(SFObjectErrors &Errors)
 
 #pragma region Plugin
 
+/**
+ * 注册插件
+ * 说明：校验后写入对象管理器与插件索引，并尝试应用配置模块列表。
+ */
 void SFPluginManager::RegisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) Plugin)
 {
     if (!SF_PTR_VALID(Plugin))
@@ -235,6 +258,7 @@ void SFPluginManager::RegisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) Pl
     }
 }
 
+/** 注销插件：从对象管理器与插件索引中移除 */
 void SFPluginManager::UnregisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) Plugin)
 {
     if (!SF_PTR_VALID(Plugin))
@@ -266,16 +290,20 @@ void SFPluginManager::UnregisterPlugin(SFObjectErrors &Errors, SF_PTR(SFPlugin) 
     PluginMap.erase(Iter);
 }
 
+/**
+ * 加载插件配置
+ * 说明：优先读取环境变量指定路径，未设置则回退到默认配置文件。
+ */
 void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
 {
     const char *ConfigPath = nullptr;
 #if defined(_WIN32) || defined(_WIN64)
     char *ConfigPathBuffer = nullptr;
     size_t ConfigPathLen = 0;
-    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_PLUGIN_CONFIG");
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, SF_ENV_PLUGIN_CONFIG_DIR);
     ConfigPath = ConfigPathBuffer;
 #else
-    ConfigPath = getenv("SKYWALKER_PLUGIN_CONFIG");
+    ConfigPath = getenv(SF_ENV_PLUGIN_CONFIG_DIR);
 #endif
     SFString PluginConfigPath = ConfigPath ? ConfigPath : "ServerPlugin.skywalkerC";
 #if defined(_WIN32) || defined(_WIN64)
@@ -340,6 +368,7 @@ void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
     }
 }
 
+/** 加载插件动态库 */
 void SFPluginManager::LoadPlugin(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterName, PluginNameMap)
@@ -349,6 +378,10 @@ void SFPluginManager::LoadPlugin(SFObjectErrors &Errors)
     }
 }
 
+/**
+ * 启动动态库插件
+ * 说明：调用每个动态库的 DllStartPlugin，并根据配置下发模块启用列表。
+ */
 void SFPluginManager::StartPlugin(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterLib, DynamicLibMap)
@@ -407,6 +440,7 @@ void SFPluginManager::StartPlugin(SFObjectErrors &Errors)
     }
 }
 
+/** 停止动态库插件：调用每个动态库的 DllStopPlugin */
 void SFPluginManager::StopPlugin(SFObjectErrors &Errors)
 {
     SF_COMMON_ITERATOR(IterLib, DynamicLibMap)

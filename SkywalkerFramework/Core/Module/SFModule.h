@@ -16,14 +16,23 @@ SF_NAMESPACE_BEGIN
 
 class SFPlugin;
 
+/**
+ * 模块创建上下文
+ * 说明：用于注入所属插件指针。
+ */
 struct SSFModuleContext : public SSFObjectContext
 {
+    /** 所属插件 */
     SF_PTR(SFPlugin)
     Plugin{};
 };
 
 using SFModuleContext = SSFModuleContext;
 
+/**
+ * 模块基类
+ * 说明：插件内部最小可调度单元，生命周期由插件统一驱动。
+ */
 class SSFModule : public SSFObject
 {
 #pragma region Module
@@ -45,7 +54,8 @@ public:
     virtual void Start(SFObjectErrors &Errors);
 
     /**
-     * Tick
+     * 每帧更新
+     * @param DelayMS 帧间隔（毫秒）
      */
     virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS);
 
@@ -67,11 +77,14 @@ public:
 #pragma endregion Module
 
 public:
+    /** 构造函数 */
     SSFModule(SSFModuleContext &InContext, SFObjectErrors &InErrors);
+    /** 析构函数 */
     virtual ~SSFModule();
 
     /**
      * 获取插件
+     * @return 所属插件指针
      */
     SF_PTR(SFPlugin)
     GetPlugin()
@@ -80,6 +93,7 @@ public:
     };
 
 private:
+    /** 所属插件 */
     SF_PTR(SFPlugin)
     Plugin;
 };

@@ -64,10 +64,10 @@ void SFModule_NetworkClient::Start(SFObjectErrors &Errors)
 #if defined(_WIN32) || defined(_WIN64)
     char *ConfigPathBuffer = nullptr;
     size_t ConfigPathLen = 0;
-    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_CLIENT_CONFIG");
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, SF_ENV_PROGRAM_CONFIG_DIR);
     ConfigPath = ConfigPathBuffer;
 #else
-    ConfigPath = getenv("SKYWALKER_CLIENT_CONFIG");
+    ConfigPath = getenv(SF_ENV_PROGRAM_CONFIG_DIR);
 #endif
     SFString ClientConfigPath = ConfigPath ? ConfigPath : "ClientConfig.skywalkerC";
 #if defined(_WIN32) || defined(_WIN64)

@@ -13,17 +13,20 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFLevelService, ESFLogLevel::Debug);
 
+/** 构造函数 */
 SSFLevelService::SSFLevelService(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFService(InContext, InErrors)
 {
 }
 
+/** 析构函数 */
 SSFLevelService::~SSFLevelService()
 {
 }
 
 #pragma region Process
 
+/** 初始化阶段 */
 bool SSFLevelService::Init(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Init");
@@ -31,6 +34,7 @@ bool SSFLevelService::Init(SFObjectErrors &InErrors)
     return true;
 }
 
+/** 启动阶段 */
 bool SSFLevelService::Start(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Start");
@@ -38,11 +42,13 @@ bool SSFLevelService::Start(SFObjectErrors &InErrors)
     return true;
 }
 
+/** Tick 阶段 */
 bool SSFLevelService::Tick(SFObjectErrors &InErrors)
 {
     return true;
 }
 
+/** 停止阶段 */
 bool SSFLevelService::Stop(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Stop");
@@ -50,6 +56,7 @@ bool SSFLevelService::Stop(SFObjectErrors &InErrors)
     return true;
 }
 
+/** 销毁阶段 */
 void SSFLevelService::Destroy(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Destroy");

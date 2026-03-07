@@ -83,7 +83,7 @@ public:
 
     /**
      * 计时
-        * 每帧调用一次，用于刷新 DeltaTime
+     * 每帧调用一次，用于刷新 DeltaTime
      */
     void Tick()
     {
@@ -157,7 +157,7 @@ public:
 
     /**
      * 获取当前时间，格式：年-月-日 时:分:秒.毫秒
-        * 基于系统时钟生成，便于日志输出
+     * 基于系统时钟生成，便于日志输出
      */
     std::string GetCurrTimeStr() const
     {

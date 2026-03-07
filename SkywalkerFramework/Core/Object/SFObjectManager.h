@@ -15,13 +15,27 @@
 SF_NAMESPACE_BEGIN
 
 SF_TEMPLATE_CLASS(SSFObject, Object)
+/**
+ * 对象管理器（模板）
+ *
+ * 职责：
+ * 1. 以 ObjectGUID 为键维护对象索引
+ * 2. 提供对象添加、移除、查找能力
+ * 3. 在释放阶段统一释放已托管对象
+ */
 class SSFObjectManager : public SSFObject
 {
 public:
+    /** 构造函数 */
     SSFObjectManager(SSFObjectContext &InContext, SFObjectErrors &InErrors)
         : SSFObject(InContext, InErrors) {};
+    /** 析构函数 */
     virtual ~SSFObjectManager() {};
 
+    /**
+     * 释放对象管理器
+     * 说明：会先释放 ObjectMap 中所有对象，再释放管理器自身。
+     */
     virtual void Release(SFObjectErrors &Errors) override
     {
         SF_COMMON_ITERATOR(IterObject, ObjectMap)
@@ -39,6 +53,9 @@ public:
 
     /**
      * 加入对象
+     * @param Errors 错误输出对象
+     * @param AddObject 待加入对象
+     * 说明：会校验对象指针、GUID 有效性及重复添加。
      */
     virtual void AddObject(SFObjectErrors &Errors, SF_PTR(Object) AddObject)
     {
@@ -66,6 +83,9 @@ public:
 
     /**
      * 移除对象
+     * @param Errors 错误输出对象
+     * @param RemoveObject 待移除对象
+     * 说明：按对象 GUID 从管理器中移除，不负责释放对象内存。
      */
     virtual void RemoveObject(SFObjectErrors &Errors, SF_PTR(Object) RemoveObject)
     {
@@ -93,7 +113,10 @@ public:
     }
 
     /**
-     * 获取对象
+     * 查找对象（带错误输出）
+     * @param Errors 错误输出对象
+     * @param InObjectGUID 目标对象 GUID
+     * @return 找到返回对象指针，失败返回 nullptr
      */
     virtual SF_PTR(Object) FindObject(SFObjectErrors &Errors, const SFObjectGUID &InObjectGUID)
     {
@@ -114,7 +137,9 @@ public:
     }
 
     /**
-     * 获取对象
+     * 查找对象（轻量重载，无错误输出）
+     * @param InObjectGUID 目标对象 GUID
+     * @return 找到返回对象指针，失败返回 nullptr
      */
     virtual SF_PTR(Object) FindObject(const SFObjectGUID &InObjectGUID)
     {
@@ -133,6 +158,7 @@ public:
     }
 
 private:
+    /** 对象索引表（Key: ObjectGUID，Value: Object 指针） */
     SFMap<SFObjectGUID, SF_PTR(Object)> ObjectMap;
 };
 

@@ -19,13 +19,27 @@ SF_NAMESPACE_BEGIN
 class SSFFrameworkService;
 
 SF_TEMPLATE_CLASS(SSFService, ServiceObject)
+/**
+ * 服务管理器（模板）
+ *
+ * 职责：
+ * 1. 管理 ServiceObject 的创建、索引与获取
+ * 2. 在 Tick 阶段驱动所有已注册服务
+ * 3. 统一管理服务生命周期入口（懒加载时 Init + Start）
+ */
 class SSFServiceManager : public SSFObjectManager<ServiceObject>
 {
 public:
+    /** 构造函数 */
     SSFServiceManager(SSFObjectContext &InContext, SFObjectErrors &InErrors)
         : SSFObjectManager<ServiceObject>(InContext, InErrors) {};
+    /** 析构函数 */
     virtual ~SSFServiceManager() {};
 
+    /**
+     * 驱动所有服务 Tick
+     * @return true 始终返回 true（当前实现）
+     */
     virtual bool Tick(SFObjectErrors &Errors)
     {
         SF_COMMON_ITERATOR(IterService, ServiceMap)
@@ -43,7 +57,8 @@ public:
     }
 
     /**
-     * 释放
+     * 释放服务管理器
+     * 说明：先清理服务索引，再释放基类对象。
      */
     virtual void Release(SFObjectErrors &Errors) override
     {
@@ -52,7 +67,9 @@ public:
     };
 
     /**
-     * 获取Service
+     * 按名称获取服务
+     * @param ServiceName 服务类名
+     * @return 服务指针；未找到返回 nullptr
      */
     inline SF_PTR(SSFService) GetService(const SFString &ServiceName)
     {
@@ -72,7 +89,14 @@ public:
     };
 
     /**
-     * 获取Service
+     * 按类型获取服务（懒加载）
+     * @tparam ServiceT 服务类型，必须继承自 ServiceObject
+     * @return 服务指针；创建或转换失败返回 nullptr
+     *
+     * 说明：
+     * 1. 若服务不存在，则自动 NewObject 创建
+     * 2. 创建后自动 AddObject，并调用 Init 与 Start
+     * 3. 之后返回缓存服务实例
      */
     template <typename ServiceT>
     SF_PTR(ServiceT)
@@ -106,10 +130,13 @@ public:
     };
 
 protected:
+    /** 服务索引表（Key: 服务类名，Value: 对象 GUID） */
     SFMap<SFString, SFObjectGUID> ServiceMap;
 };
 
+/** 框架级服务管理器类型别名 */
 typedef SSFServiceManager<SSFFrameworkService> SSFFrameworkServiceManager;
+/** 关卡级服务管理器类型别名 */
 typedef SSFServiceManager<SSFLevelService> SSFLevelServiceManager;
 
 SF_NAMESPACE_END

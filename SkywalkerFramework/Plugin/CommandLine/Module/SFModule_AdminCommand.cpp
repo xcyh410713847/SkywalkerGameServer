@@ -366,10 +366,10 @@ bool SFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         SF_LOG_FRAMEWORK("show_admin_acl_stats SuccessCount " << ExecuteSuccessCount
                                                               << " DeniedCount " << ExecuteDeniedCount
-                                                               << " FailureCount " << ExecuteFailureCount
-                                                               << " AdminOnlyCount " << AdminOnlyCommands.size()
-                                                               << " OperatorCount " << OperatorCommands.size()
-                                                               << " ObserverCount " << ObserverCommands.size());
+                                                              << " FailureCount " << ExecuteFailureCount
+                                                              << " AdminOnlyCount " << AdminOnlyCommands.size()
+                                                              << " OperatorCount " << OperatorCommands.size()
+                                                              << " ObserverCount " << ObserverCommands.size());
         ++ExecuteSuccessCount;
         return true;
     }
@@ -378,9 +378,9 @@ bool SFModule_AdminCommand::ExecuteCommand(const SFString &CommandLine)
     {
         bool bResult = ReloadACLFromConfig();
         SF_LOG_FRAMEWORK("reload_acl Result " << bResult
-                                               << " AdminOnlyCount " << AdminOnlyCommands.size()
-                                               << " OperatorCount " << OperatorCommands.size()
-                                               << " ObserverCount " << ObserverCommands.size());
+                                              << " AdminOnlyCount " << AdminOnlyCommands.size()
+                                              << " OperatorCount " << OperatorCommands.size()
+                                              << " ObserverCount " << ObserverCommands.size());
         if (bResult)
         {
             ++ExecuteSuccessCount;
@@ -494,10 +494,10 @@ bool SFModule_AdminCommand::ReloadACLFromConfig()
 #if defined(_WIN32) || defined(_WIN64)
     char *ConfigPathBuffer = nullptr;
     size_t ConfigPathLen = 0;
-    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, "SKYWALKER_SERVER_CONFIG");
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, SF_ENV_PROGRAM_CONFIG_DIR);
     ConfigPath = ConfigPathBuffer;
 #else
-    ConfigPath = getenv("SKYWALKER_SERVER_CONFIG");
+    ConfigPath = getenv(SF_ENV_PROGRAM_CONFIG_DIR);
 #endif
     SFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
 #if defined(_WIN32) || defined(_WIN64)

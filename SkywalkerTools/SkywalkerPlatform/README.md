@@ -19,7 +19,7 @@
 
 ## 使用示例
 ```cpp
-SkywalkerSetEnv("SKYWALKER_SERVER_CONFIG", "Bin/Server/ServerConfig.skywalkerC");
+SkywalkerSetEnv(SF_ENV_PROGRAM_CONFIG_DIR, "Bin/Server/ServerConfig.skywalkerC");
 ```
 
 ## 注意事项

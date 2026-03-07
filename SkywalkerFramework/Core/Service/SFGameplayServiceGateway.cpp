@@ -9,6 +9,7 @@
 
 SF_NAMESPACE_USING
 
+/** 获取网关单例 */
 SSFGameplayServiceGateway &SSFGameplayServiceGateway::Instance()
 {
     static SSFGameplayServiceGateway Gateway;
@@ -107,6 +108,7 @@ void SSFGameplayServiceGateway::RegisterAIClearAudit(const AIClearAudit &InClear
 
 bool SSFGameplayServiceGateway::ValidateToken(const SFString &Token) const
 {
+    // 未注册回调时返回 false，确保默认拒绝
     if (!Validator)
     {
         return false;
@@ -187,6 +189,7 @@ bool SSFGameplayServiceGateway::StopReplayPlay() const
 
 SFString SSFGameplayServiceGateway::GetReplayRecordStats() const
 {
+    // 未注册回调时返回占位字符串
     if (!RecordStats)
     {
         return "ReplayRecordStatsUnavailable";
@@ -247,6 +250,7 @@ bool SSFGameplayServiceGateway::SetAIStrategy(const SFString &StrategyName) cons
 
 SFString SSFGameplayServiceGateway::GetAIStats() const
 {
+    // 未注册回调时返回占位字符串
     if (!GetStrategyStats)
     {
         return "AIStatsUnavailable";

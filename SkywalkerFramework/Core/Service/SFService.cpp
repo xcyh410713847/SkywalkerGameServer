@@ -13,11 +13,13 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFService, ESFLogLevel::Debug);
 
+/** 构造函数 */
 SSFService::SSFService(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFObject(InContext, InErrors)
 {
 }
 
+/** 析构函数 */
 SSFService::~SSFService()
 {
 }

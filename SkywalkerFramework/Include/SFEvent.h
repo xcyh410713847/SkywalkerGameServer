@@ -17,10 +17,12 @@ SF_NAMESPACE_BEGIN
 /**
  * 注意：
  *      无论主类型还是子类型，都不建议使用 All 事件
+ *      建议在明确事件域下使用具体子类型，避免广播开销与语义歧义。
  */
 
 /**
  * 事件主类型
+ * 说明：用于区分事件来源域。
  */
 enum ESFEventMainType
 {
@@ -36,6 +38,7 @@ class SFPlugin;
 
 /**
  * 插件 All 子类型
+ * 说明：兜底类型，默认不建议用于业务监听。
  */
 #define SFEventSubType_Plugin_All 0
 struct SSFEventPluginAll
@@ -49,41 +52,49 @@ struct SSFEventPluginAll
 
 /**
  * 插件 Init 子类型
+ * 说明：插件完成初始化阶段时触发。
  */
 #define SFEventSubType_Plugin_Init 1
 
 /**
  * 插件 Awake 子类型
+ * 说明：插件进入唤醒阶段时触发。
  */
 #define SFEventSubType_Plugin_Awake 2
 
 /**
  * 插件 Start 子类型
+ * 说明：插件进入启动阶段时触发。
  */
 #define SFEventSubType_Plugin_Start 3
 
 /**
  * 插件 Tick 子类型
+ * 说明：插件帧更新阶段触发。
  */
 #define SFEventSubType_Plugin_Tick 4
 
 /**
  * 插件 Stop 子类型
+ * 说明：插件停止阶段触发。
  */
 #define SFEventSubType_Plugin_Stop 5
 
 /**
  * 插件 Sleep 子类型
+ * 说明：插件休眠阶段触发。
  */
 #define SFEventSubType_Plugin_Sleep 6
 
 /**
  * 插件 Destroy 子类型
+ * 说明：插件销毁阶段触发。
  */
 #define SFEventSubType_Plugin_Destroy 7
 
 /**
  * 插件 Release 子类型
+ * 说明：插件释放阶段触发。
  */
 #define SFEventSubType_Plugin_Release 8
 

@@ -16,6 +16,7 @@ SF_NAMESPACE_BEGIN
 
 /**
  * 框架错误码定义
+ * 说明：按错误域分段（插件/模块/对象/网络），便于定位问题来源。
  */
 enum ESFError
 {
@@ -61,7 +62,7 @@ enum ESFError
 
 #pragma region 对象错误
 
-    Object_Error = 300,  // 模块错误
+    Object_Error = 300,  // 对象错误
     Object_Init_Failed,  // 对象初始化失败
     Object_Nullptr,      // 对象为空
     Object_GUID_Invalid, // 对象GUID无效
@@ -86,6 +87,7 @@ enum ESFError
 
 /**
  * 错误对象
+ * 说明：用于承载单条错误码与可选描述信息。
  */
 struct SSFError
 {
@@ -125,6 +127,7 @@ struct SSFError
 
     /**
      * 获取错误内容字符串
+     * @return 格式化后的错误信息
      */
     SFString GetContent()
     {
@@ -139,6 +142,7 @@ struct SSFError
 
 /**
  * 框架错误容器类型
+ * 说明：可累计记录多条错误，并支持追踪堆栈信息。
  */
 typedef SKYWALKER_ERRORS_NAMESPACE::CSkywalkerErrors<SSFError> SkywalkerSFErrors;
 
@@ -151,6 +155,7 @@ typedef SkywalkerSFErrors SFObjectErrors;
 
 /**
  * 记录错误（不带描述，不带堆栈）
+ * 参数：CppErrors 为错误容器，Error 为错误码。
  */
 #define SF_ERROR(CppErrors, Error) \
     SSFError error(Error);         \
@@ -158,6 +163,7 @@ typedef SkywalkerSFErrors SFObjectErrors;
 
 /**
  * 记录错误（带描述，不带堆栈）
+ * 参数：ErrorDesc 用于补充上下文。
  */
 #define SF_ERROR_DESC(CppErrors, Error, ErrorDesc) \
     SSFError error(Error, ErrorDesc);              \
@@ -165,6 +171,7 @@ typedef SkywalkerSFErrors SFObjectErrors;
 
 /**
  * 记录错误（不带描述，带堆栈）
+ * 说明：用于需要追踪调用链的场景。
  */
 #define SF_ERROR_TRACE(CppErrors, Error) \
     SSFError error(Error);               \
@@ -172,6 +179,7 @@ typedef SkywalkerSFErrors SFObjectErrors;
 
 /**
  * 记录错误（带描述，带堆栈）
+ * 说明：调试复杂问题时推荐使用。
  */
 #define SF_ERROR_DESC_TRACE(CppErrors, Error, ErrorDesc) \
     SSFError error(Error, ErrorDesc);                    \

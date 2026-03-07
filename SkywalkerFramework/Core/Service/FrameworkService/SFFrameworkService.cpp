@@ -13,17 +13,20 @@ SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SSFFrameworkService, ESFLogLevel::Debug);
 
+/** 构造函数 */
 SSFFrameworkService::SSFFrameworkService(SSFServiceContext &InContext, SFObjectErrors &InErrors)
     : SSFService(InContext, InErrors)
 {
 }
 
+/** 析构函数 */
 SSFFrameworkService::~SSFFrameworkService()
 {
 }
 
 #pragma region Process
 
+/** 初始化阶段 */
 bool SSFFrameworkService::Init(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Init");
@@ -31,6 +34,7 @@ bool SSFFrameworkService::Init(SFObjectErrors &InErrors)
     return true;
 }
 
+/** 启动阶段 */
 bool SSFFrameworkService::Start(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Start");
@@ -38,11 +42,13 @@ bool SSFFrameworkService::Start(SFObjectErrors &InErrors)
     return true;
 }
 
+/** Tick 阶段 */
 bool SSFFrameworkService::Tick(SFObjectErrors &InErrors)
 {
     return true;
 }
 
+/** 停止阶段 */
 bool SSFFrameworkService::Stop(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Stop");
@@ -50,6 +56,7 @@ bool SSFFrameworkService::Stop(SFObjectErrors &InErrors)
     return true;
 }
 
+/** 销毁阶段 */
 void SSFFrameworkService::Destroy(SFObjectErrors &InErrors)
 {
     SF_LOG_DEBUG_MODULE("Destroy");

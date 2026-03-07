@@ -9,24 +9,19 @@
 #define __SKYWALKER_FRAMEWORK_SFFRAMEWORK_H__
 
 #include "Include/SFCore.h"
+#include "SkywalkerPath/SkywalkerPath.h"
+#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SF_NAMESPACE_BEGIN
 
 class SFPluginManager;
 
 /**
- * Skywalker Framework 运行状态枚举
- */
-enum class ESkywalkerFrameworkRunningState
-{
-    SkywalkerFrameworkRunningState_Create = 0, // 创建
-    SkywalkerFrameworkRunningState_Starting,   // 启动中
-    SkywalkerFrameworkRunningState_Running,    // 运行中
-    SkywalkerFrameworkRunningState_Stopping,   // 停止中
-};
-
-/**
  * Skywalker Framework 抽象接口
+ *
+ * 说明：
+ * 1. 定义框架生命周期控制能力（启动、主循环、停止、关闭）
+ * 2. 对外提供运行状态查询、对象 GUID 分配与插件管理器访问能力
  */
 class SkywalkerFramework
 {
@@ -51,34 +46,47 @@ public:
 
     /**
      * 请求关闭框架
+     * 说明：通常由外部触发关闭意图，具体关闭行为由实现类在 Tick/Stop 中处理。
      */
     virtual void Close() = 0;
 
     /**
      * 获取框架是否处于运行状态
+     * @return true 运行中；false 非运行中
      */
     virtual bool IsRunning() const = 0;
 
     /**
      * 生成新的对象 GUID
+     * @return 新分配的对象 GUID
      */
     virtual SFObjectGUID NewObjectGUID() = 0;
-
-    /**
-     * 获取插件管理器实例
-     */
-    virtual SF_PTR(SFPluginManager) GetPluginManager() const = 0;
 };
 
 SF_NAMESPACE_END
 
 /**
- * 全局 Skywalker Framework
+ * 全局 Skywalker Framework 实例
+ *
+ * 说明：由应用层创建并在进程生命周期内持有。
  */
-extern SF_SHARED_PTR(SF_NAMESPACE::SkywalkerFramework) SFFramework;
+extern SF_UNIQUE_PTR(SF_NAMESPACE::SkywalkerFramework) SFFramework;
 
 /**
  * Skywalker Framework 启动流程宏
+ *
+ * 用法：
+ *   int main(int argc, char* argv[])
+ *   {
+ *       SKYWALKER_FRAMEWORK_START(argc, argv);
+ *       return 0;
+ *   }
+ *
+ * 说明：
+ * 1. 先执行 Start，失败直接返回 1
+ * 2. 在 Tick 返回 true 时持续主循环
+ * 3. 循环结束后执行 Stop
+ * 4. argc/argv 仅用于保持主函数调用形式一致，当前宏内部未使用
  */
 #define SKYWALKER_FRAMEWORK_START(argc, argv) \
     if (!SFFramework->Start())                \

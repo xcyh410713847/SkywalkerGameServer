@@ -102,16 +102,16 @@ typedef std::map<SkywalkerEventID, TList_SkywalkerEventCallback[static_cast<size
 class CSkywalkerEvent
 {
 public:
-    CSkywalkerEvent(){};
-    ~CSkywalkerEvent(){};
+    CSkywalkerEvent() {};
+    ~CSkywalkerEvent() {};
 
 public:
     /**
-        * 注册事件
-        * @param InMainID 主事件ID
-        * @param InSubID 子事件ID
-        * @param InCallback 回调
-        * @param InOrder 执行阶段
+     * 注册事件
+     * @param InMainID 主事件ID
+     * @param InSubID 子事件ID
+     * @param InCallback 回调
+     * @param InOrder 执行阶段
      */
     static void RegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                               SkywalkerEventCallback InCallback,
@@ -128,7 +128,7 @@ public:
     }
 
     /**
-        * 注销事件
+     * 注销事件
      */
     static void UnRegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                                 SkywalkerEventCallback InCallback)
@@ -155,8 +155,8 @@ public:
     }
 
     /**
-        * 触发事件
-        * 按 ESkywalkerEventOrder 顺序依次执行
+     * 触发事件
+     * 按 ESkywalkerEventOrder 顺序依次执行
      */
     static void TriggerEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                              SkywalkerEventParam InParam = nullptr, SkywalkerEventParamSize ParamSize = 0)

@@ -6,8 +6,6 @@
 *************************************************************************/
 
 #include "Include/SFFramework.h"
-#include "SkywalkerPath/SkywalkerPath.h"
-#include "SkywalkerPlatform/SkywalkerPlatform.h"
 
 SF_NAMESPACE_USING
 
@@ -31,8 +29,9 @@ int main(int argc, char *argv[])
     PluginConfigPath = SkywalkerResolveConfigPath(PluginConfigPath, ExeDir, ConfigDir);
     ClientConfigPath = SkywalkerResolveConfigPath(ClientConfigPath, ExeDir, ConfigDir);
 
-    SkywalkerSetEnv("SKYWALKER_PLUGIN_CONFIG", PluginConfigPath.c_str());
-    SkywalkerSetEnv("SKYWALKER_CLIENT_CONFIG", ClientConfigPath.c_str());
+    SkywalkerSetEnv(SF_ENV_PROGRAM_WORK_DIR, ExeDir.string().c_str());
+    SkywalkerSetEnv(SF_ENV_PLUGIN_CONFIG_DIR, PluginConfigPath.c_str());
+    SkywalkerSetEnv(SF_ENV_PROGRAM_CONFIG_DIR, ClientConfigPath.c_str());
 
     SKYWALKER_FRAMEWORK_START(argc, argv)
 

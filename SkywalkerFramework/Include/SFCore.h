@@ -96,22 +96,84 @@ SF_NAMESPACE_BEGIN
 /**
  * 智能指针
  */
+/**
+ * SF_UNIQUE_PTR(T)
+ * 说明：独占所有权智能指针，同一时刻只能有一个拥有者，不可拷贝、可移动。
+ * 场景：对象生命周期明确、仅由单一对象管理资源（如模块内部对象、句柄封装）。
+ * 用法：
+ *   SF_UNIQUE_PTR(MyType) Obj = SF_MAKE_UNIQUE_PTR(MyType);
+ *   Obj->DoSomething();
+ * 注意：离开作用域自动释放；如需转移所有权，使用 std::move。
+ */
 #define SF_UNIQUE_PTR(T) std::unique_ptr<T>
 #define SF_MAKE_UNIQUE_PTR(T) std::make_unique<T>();
 #define SF_UNIQUE_PTR_CAST(T, Obj) std::unique_ptr<T>(dynamic_cast<T *>(Obj))
 
+/**
+ * SF_CONST_UNIQUE_PTR(T)
+ * 说明：指向 const 对象的独占指针，可管理生命周期但不能修改对象内容。
+ * 场景：只读资源所有权管理（例如加载后不可修改的配置对象）。
+ * 用法：
+ *   SF_CONST_UNIQUE_PTR(Config) Cfg = SF_MAKE_CONST_UNIQUE_PTR(Config);
+ *   // Cfg->SetXxx(); // 编译期禁止
+ */
 #define SF_CONST_UNIQUE_PTR(T) std::unique_ptr<const T>
 #define SF_MAKE_CONST_UNIQUE_PTR(T) std::make_unique<const T>();
 
+/**
+ * SF_SHARED_PTR(T)
+ * 说明：共享所有权智能指针，内部引用计数，最后一个 shared_ptr 释放时对象销毁。
+ * 场景：对象需要在多个模块/系统之间共享（如事件对象、上下文对象）。
+ * 用法：
+ *   SF_SHARED_PTR(MyType) Obj = SF_MAKE_SHARED_PTR(MyType, Arg1, Arg2);
+ *   UseInA(Obj);
+ *   UseInB(Obj);
+ * 注意：避免互相持有 shared_ptr 形成循环引用；循环关系应配合 weak_ptr。
+ */
 #define SF_SHARED_PTR(T) std::shared_ptr<T>
 #define SF_MAKE_SHARED_PTR(T, ...) std::make_shared<T>(__VA_ARGS__);
 
+/**
+ * SF_CONST_SHARED_PTR(T)
+ * 说明：指向 const 对象的共享指针，可共享生命周期但不能修改对象内容。
+ * 场景：跨模块共享只读数据（如只读配置、静态描述信息）。
+ * 用法：
+ *   SF_CONST_SHARED_PTR(Config) Cfg = SF_MAKE_CONST_SHARED_PTR(Config);
+ *   // 多处读取 Cfg，不可写。
+ */
 #define SF_CONST_SHARED_PTR(T) std::shared_ptr<const T>
 #define SF_MAKE_CONST_SHARED_PTR(T) std::make_shared<const T>();
 
+/**
+ * SF_WEAK_PTR(T)
+ * 说明：弱引用指针，不拥有对象生命周期，不增加引用计数。
+ * 场景：观察者关系、缓存索引、父子节点反向引用，避免 shared_ptr 循环引用。
+ * 用法：
+ *   SF_WEAK_PTR(MyType) Weak = SharedObj;
+ *   if (auto Locked = Weak.lock())
+ *   {
+ *       Locked->DoSomething();
+ *   }
+ *   else
+ *   {
+ *       // 对象已释放
+ *   }
+ * 注意：使用前必须 lock() 判空，不可直接解引用 weak_ptr。
+ */
 #define SF_WEAK_PTR(T) std::weak_ptr<T>
 #define SF_MAKE_WEAK_PTR(T) std::make_weak_ptr<T>();
 
+/**
+ * SF_CONST_WEAK_PTR(T)
+ * 说明：指向 const 对象的弱引用，不拥有生命周期，且锁定后只能只读访问。
+ * 场景：只读观察者引用，既避免循环引用又限制写操作。
+ * 用法：
+ *   SF_CONST_WEAK_PTR(Config) WeakCfg = SharedConstCfg;
+ *   if (auto LockedCfg = WeakCfg.lock())
+ *   {
+ *       // 只读访问 LockedCfg
+ *   }
+ */
 #define SF_CONST_WEAK_PTR(T) std::weak_ptr<const T>
 #define SF_MAKE_CONST_WEAK_PTR(T) std::make_weak_ptr<const T>();
 
@@ -373,6 +435,25 @@ using SFMap = std::map<Key, Value>;
     template <typename T, typename std::enable_if<std::is_base_of<TBase, T>{}, int>::type = 0>
 
 #pragma endregion Template Macro
+
+#pragma region Env Macro
+
+/**
+ * 程序工作目录路径
+ */
+#define SF_ENV_PROGRAM_WORK_DIR "SKYWALKER_PROGRAM_WORK_DIR"
+
+/**
+ * 程序配置路径
+ */
+#define SF_ENV_PROGRAM_CONFIG_DIR "SKYWALKER_PROGRAM_CONFIG_DIR"
+
+/**
+ * 插件配置路径
+ */
+#define SF_ENV_PLUGIN_CONFIG_DIR "SKYWALKER_PLUGIN_CONFIG_DIR"
+
+#pragma endregion Env Macro
 
 SF_NAMESPACE_END
 
