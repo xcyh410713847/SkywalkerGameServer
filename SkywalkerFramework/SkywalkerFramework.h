@@ -13,6 +13,7 @@
 
 #include "Core/Object/SFObject.h"
 #include "Core/Service/SFServiceManager.h"
+#include "Core/Plugin/SFPluginManager.h"
 
 SF_NAMESPACE_BEGIN
 
@@ -54,7 +55,7 @@ public:
     SF_PTR(ServiceT)
     GetService() const
     {
-        return ServiceManager->GetService<ServiceT>();
+        return ServiceManager->template GetService<ServiceT>();
     }
 
     /**
@@ -66,7 +67,7 @@ public:
     SF_PTR(PluginT)
     GetPlugin() const
     {
-        return PluginManager->GetPlugin<PluginT>();
+        return PluginManager->template GetPlugin<PluginT>();
     }
 
 #pragma region SkywalkerFramework
