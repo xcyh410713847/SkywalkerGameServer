@@ -118,8 +118,6 @@ bool CSkywalkerFramework::Tick()
  */
 bool CSkywalkerFramework::Stop()
 {
-    auto TimerService = GetService<SSFService_Timer>();
-
     SFObjectErrors ObjectErrors;
 
     // 插件生命周期阶段：Stop（停止业务逻辑）
@@ -135,10 +133,17 @@ bool CSkywalkerFramework::Stop()
     PluginManager->Release(ObjectErrors);
     PluginManager = nullptr;
 
+    auto TimerService = GetService<SSFService_Timer>();
     SF_LOG_INFO("Stop Time: " << TimerService->GetCurrTimeStr() << " ; Elapsed Time: " << TimerService->GetTotalTime() << "s");
 
     ServiceManager->Release(ObjectErrors);
     ServiceManager = nullptr;
+
+    if (ObjectErrors.IsValid())
+    {
+        auto FirstError = ObjectErrors.GetFirstError();
+        SF_LOG_ERROR("Stop Error: " << FirstError.GetContent())
+    }
 
     return true;
 }
