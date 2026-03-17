@@ -21,11 +21,6 @@ Plugin
         Name=SFModule_WorldManager
 
 Plugin
-    Name=SFPlugin_Actor
-    Module
-        Name=SFModule_ActorRuntime
-
-Plugin
     Name=SFPlugin_Profiler
     Module
         Name=SFModule_Metrics
