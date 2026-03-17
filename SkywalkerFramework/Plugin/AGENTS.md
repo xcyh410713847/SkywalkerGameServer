@@ -10,14 +10,14 @@
 - `[PluginName]/README.md`：各插件专属 API 与能力说明
 
 ## 当前插件
-- **Network**: 网络通信、协议编解码、会话管理
+- **Network**: 网络通信、基础socket连接
 - **CommandLine**: 命令行与运维管理
 
 ## 关键位置
 - **入口点**：`SFPlugin_[Name].cpp`。通过 `Install()` 挂载模块。
 - **业务实现**：`Module/SFModule_[Name].cpp`。实际的功能代码都在这。
 - **加载配置**：`Bin/Server/ServerPlugin.skywalkerC`。控制插件加载顺序。
-- **网络核心**：`Network/Protocol/` 处理编解码。
+- **网络核心**：`Network/Object/` 处理网络对象。
 
 ## 开发规范
 - **注册机制**：必须使用 `SF_PLUGIN_EXPORT` 导出插件，并在 `Install()` 中通过 `SF_REGISTER_MODULE` 注册模块。

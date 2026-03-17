@@ -14,7 +14,6 @@
 
 #include "SFObject_ServerSocket.h"
 #include "SFObject_ClientSocket.h"
-#include "../Protocol/SFNetworkPacket.h"
 
 #include <functional>
 #include <filesystem>
@@ -94,29 +93,12 @@ private:
      */
     void CleanupClientSocket(SSFSOCKET Socket, SFObjectErrors &Errors);
 
-    /**
-     * 注册服务端消息路由
-     */
-    void RegisterRouteHandlers();
-
-    /**
-     * 派发客户端消息
-     */
-    void DispatchClientPackets(SFObjectErrors &Errors);
-
-    void HandleHeartbeat(SSFSOCKET Socket, const SSFNetworkPacket &Packet);
-    void HandleLogin(SSFSOCKET Socket, const SSFNetworkPacket &Packet);
-    void HandlePlayerInput(SSFSOCKET Socket, const SSFNetworkPacket &Packet);
-
-    bool SendToClient(SSFSOCKET Socket, const SSFNetworkPacket &Packet);
-
 private:
     SSF_NETWORK_DATA;
 
     SF_UNIQUE_PTR(SSFObject_ServerSocket)
     ServerNetworkSocket = nullptr;
     SFMap<SSFSOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
-    SFMap<SFUInt16, std::function<void(SSFSOCKET, const SSFNetworkPacket &)>> RouteHandlerMap;
 
     SFString ServerIP;
     int ServerPort;

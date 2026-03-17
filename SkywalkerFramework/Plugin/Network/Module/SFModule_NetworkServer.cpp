@@ -10,8 +10,6 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
-#include "../Protocol/SFNetworkLoginPayload.h"
-
 #include <chrono>
 #include <vector>
 
@@ -188,15 +186,4 @@ void SFModule_NetworkServer::CleanupClientSocket(SSFSOCKET Socket, SFObjectError
         }
         ClientNetworkSocketMap.erase(IterClient);
     }
-}
-
-bool SFModule_NetworkServer::SendToClient(SSFSOCKET Socket, const SSFNetworkPacket &Packet)
-{
-    auto IterClient = ClientNetworkSocketMap.find(Socket);
-    if (IterClient == ClientNetworkSocketMap.end() || IterClient->second == nullptr)
-    {
-        return false;
-    }
-
-    return IterClient->second->SendPacket(Packet);
 }

@@ -14,10 +14,6 @@
 
 #include "SFObject_NetworkSocket.h"
 
-#include "../Protocol/SFNetworkCodec.h"
-#include "../Protocol/SFNetworkLoginPayload.h"
-#include "../Router/SFNetworkRouter.h"
-
 #include <chrono>
 
 SF_NAMESPACE_BEGIN
@@ -100,41 +96,16 @@ public:
      */
     int Send(const char *Data, int Length);
 
-    /**
-     * 发送协议包
-     */
-    bool SendPacket(const SSFNetworkPacket &Packet);
-
 private:
     /**
      * 开启网络客户端
      */
-    void StartNetworkClient(SFObjectErrors &Errors);
+    void StartNetworkClient(SFObjectErrors &InErrors);
 
     /**
      * 停止网络客户端
      */
-    void StopNetworkClient(SFObjectErrors &Errors);
-
-    /**
-     * 处理接收数据
-     */
-    void HandleReceive(SFObjectErrors &Errors);
-
-    /**
-     * 注册消息处理器
-     */
-    void RegisterRouteHandlers();
-
-    /**
-     * 心跳 Tick
-     */
-    void TickHeartbeat();
-
-    /**
-     * 发送登录包
-     */
-    void SendLoginPacket();
+    void StopNetworkClient(SFObjectErrors &InErrors);
 
 private:
     SSF_NETWORK_DATA;
@@ -143,17 +114,6 @@ private:
     bool bIsConnected = false;
     std::string ServerIP;
     int ServerPort = 0;
-    SFUInt64 ReconnectIntervalMS = 3000;
-    SFUInt32 MaxReconnectCount = 0;
-    SFUInt32 ReconnectAttemptCount = 0;
-    SFUInt64 LastReconnectAttemptMS = 0;
-    SFUInt64 HeartbeatIntervalMS = 5000;
-    SFUInt64 LastHeartbeatSendMS = 0;
-    SFUInt32 SendSeq = 0;
-    SSFNetworkLoginPayload LoginPayload;
-
-    SSFNetworkCodec NetworkCodec;
-    SSFNetworkRouter NetworkRouter;
 };
 
 SF_NAMESPACE_END

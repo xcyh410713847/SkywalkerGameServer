@@ -12,10 +12,6 @@
 
 #include "SFObject_NetworkSocket.h"
 
-#include "../Protocol/SFNetworkCodec.h"
-
-#include <vector>
-
 SF_NAMESPACE_BEGIN
 
 class SSFObject_ClientSocket : public SSFObject_NetworkSocket
@@ -26,43 +22,14 @@ public:
 
     virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
 
-    SFUInt64 GetLastRecvMS() const
-    {
-        return LastRecvMS;
-    }
-
-    SFUInt64 GetLastHeartbeatMS() const
-    {
-        return LastHeartbeatMS;
-    }
-
     bool IsClosed() const
     {
         return bClosed;
     }
 
-    SFUInt64 ConsumeInvalidPacketCount()
-    {
-        SFUInt64 Count = InvalidPacketCount;
-        InvalidPacketCount = 0;
-        return Count;
-    }
-
-    bool SendPacket(const SSFNetworkPacket &Packet);
-
-    void FetchPackets(std::vector<SSFNetworkPacket> &OutPackets);
-
 private:
-    SFUInt64 GetSteadyNowMS() const;
-
-private:
-    SSFNetworkCodec NetworkCodec;
-    std::vector<SSFNetworkPacket> RecvPackets;
-
     SFUInt64 LastRecvMS = 0;
-    SFUInt64 LastHeartbeatMS = 0;
     bool bClosed = false;
-    SFUInt64 InvalidPacketCount = 0;
 };
 
 SF_NAMESPACE_END
