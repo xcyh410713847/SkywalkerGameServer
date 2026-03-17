@@ -42,21 +42,15 @@ SkywalkerGameServer/
 │   └── Include/              # 公共头文件
 ├── SkywalkerTools/           # 工具库
 ├── SkywalkerScript/          # 脚本编码工具
-├── SkywalkerServerEditor/    # 服务器编辑器
-└── SkywalkerTest/            # 测试运行器
+└── SkywalkerServerEditor/    # 服务器编辑器
 ```
 
-## 编译与测试
+## 编译
 
 ```bash
-# 编译
 cd build/SkywalkerGameServer
 cmake ..
 cmake --build . --config Debug
-
-# 运行测试
-cmake --build . --target SkywalkerTestRunner --config Debug
-./Bin/Debug/SkywalkerTestRunner.exe
 ```
 
 ## 开发规范
@@ -97,5 +91,4 @@ cmake --build . --target SkywalkerTestRunner --config Debug
 | [SkywalkerPath](SkywalkerTools/SkywalkerPath/README.md) | 路径解析 |
 | [SkywalkerSingleton](SkywalkerTools/SkywalkerSingleton/README.md) | 单例模式 |
 | [SkywalkerTimer](SkywalkerTools/SkywalkerTimer/README.md) | 计时器 |
-| [SkywalkerTest](SkywalkerTools/SkywalkerTest/README.md) | 单元测试框架 |
 | [SkywalkerDerived](SkywalkerTools/SkywalkerDerived/README.md) | 编译期继承检测 |

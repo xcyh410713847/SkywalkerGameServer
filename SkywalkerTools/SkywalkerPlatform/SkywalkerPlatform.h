@@ -75,9 +75,9 @@
  */
 inline void SkywalkerSetEnv(const char *name, const char *value)
 {
-    // 使用_snprintf构建字符串，避免多次内存分配
+    // 使用_snprintf_s构建字符串，避免多次内存分配
     char envVar[1024];
-    _snprintf(envVar, sizeof(envVar), "%s=%s", name, value);
+    _snprintf_s(envVar, sizeof(envVar), _TRUNCATE, "%s=%s", name, value);
     _putenv(envVar);
 }
 /**

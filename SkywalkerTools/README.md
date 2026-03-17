@@ -68,11 +68,6 @@
 	- `Reset()` / `Tick()`
 	- `GetDeltaTime()` / `GetTotalTime()`
 
-### SkywalkerTest
-
-- 作用：工具层测试与断言支持。
-- 说明：用于验证 `SkywalkerTools` 中各工具的基本行为。
-
 ## 使用建议
 
 - 仅引入所需目录头文件，避免把全部工具耦合进业务模块。

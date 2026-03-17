@@ -10,7 +10,6 @@
 - `SkywalkerEvent/`: 支持 Before/During/After 三阶段执行的轻量级事件总线。
 - `SkywalkerPath/`: 统一的绝对路径与配置路径解析。
 - `SkywalkerSingleton/`: 快速声明与实现单例模式。
-- `SkywalkerTest/`: 工具层专用单元测试宏与断言框架。
 
 ## 关键位置
 - **跨平台适配**: 参考 `SkywalkerPlatform/SkywalkerPlatform.h` 提供的 OS 无关接口。

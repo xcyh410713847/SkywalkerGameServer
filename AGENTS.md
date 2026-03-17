@@ -13,7 +13,6 @@ SkywalkerGameServer/
 ├── SkywalkerGameServer/       # 服务器可执行文件
 ├── SkywalkerGameClient/        # 测试客户端
 ├── SkywalkerTools/            # 工具库：平台抽象/对象池/错误追踪
-├── SkywalkerTest/             # 测试运行器
 ├── Bin/                      # 编译输出目录
 └── build/                    # CMake 构建目录
 ```
@@ -28,7 +27,6 @@ SkywalkerGameServer/
 | 插件配置 | `Bin/Server/ServerPlugin.skywalkerC` | 插件加载列表 |
 | 网络模块 | `SkywalkerFramework/Plugin/Network/Module/SFModule_NetworkServer.cpp` | 网络服务入口 |
 | AI模块 | `SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp` | AI运行时 |
-| 测试入口 | `SkywalkerTest/SkywalkerTestMain.cpp` | 测试运行器 |
 
 ## 编译命令
 ```bash
@@ -38,14 +36,7 @@ cmake --build . --config Debug
 cmake --build . --target SkywalkerGameServer --config Debug
 ```
 
-## 测试命令
-```bash
-cmake --build . --target SkywalkerTestRunner --config Debug
-./Bin/Debug/SkywalkerTestRunner.exe
-```
-
 ## 核心规范
-- **所有代码必须包含单元测试** - 无测试不提交
 - **插件-模块设计** - 功能以插件形式实现
 - **跨平台** - 从设计之初考虑 Windows/Linux/iOS
 
