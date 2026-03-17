@@ -17,7 +17,7 @@
 - **入口点**：`SFPlugin_[Name].cpp`。通过 `Install()` 挂载模块。
 - **业务实现**：`Module/SFModule_[Name].cpp`。实际的功能代码都在这。
 - **加载配置**：`Bin/Server/ServerPlugin.skywalkerC`。控制插件加载顺序。
-- **网络核心**：`Network/Session/` 处理会话，`Network/Protocol/` 处理编解码。
+- **网络核心**：`Network/Protocol/` 处理编解码。
 
 ## 开发规范
 - **注册机制**：必须使用 `SF_PLUGIN_EXPORT` 导出插件，并在 `Install()` 中通过 `SF_REGISTER_MODULE` 注册模块。

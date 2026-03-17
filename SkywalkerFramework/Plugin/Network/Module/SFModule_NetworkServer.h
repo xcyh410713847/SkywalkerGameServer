@@ -14,8 +14,6 @@
 
 #include "SFObject_ServerSocket.h"
 #include "SFObject_ClientSocket.h"
-
-#include "../Session/SFNetworkSessionManager.h"
 #include "../Protocol/SFNetworkPacket.h"
 
 #include <functional>
@@ -92,11 +90,6 @@ private:
     void CreateNetworkClient(SFObjectErrors &Errors);
 
     /**
-     * Tick 会话状态
-     */
-    void TickSessions(SFObjectErrors &Errors);
-
-    /**
      * 关闭并清理连接
      */
     void CleanupClientSocket(SSFSOCKET Socket, SFObjectErrors &Errors);
@@ -117,39 +110,19 @@ private:
 
     bool SendToClient(SSFSOCKET Socket, const SSFNetworkPacket &Packet);
 
-    bool IsBlacklisted(const SFString &ClientIP, SFUInt64 NowMS);
-    void AddToBlacklist(const SFString &ClientIP, SFUInt64 NowMS, const SFString &Reason);
-    void LoadBlacklistFromFile(SFUInt64 NowMS);
-    void SaveBlacklistToFile();
-    void ReloadBlacklistIfNeeded(SFUInt64 NowMS);
-
 private:
     SSF_NETWORK_DATA;
 
     SF_UNIQUE_PTR(SSFObject_ServerSocket)
     ServerNetworkSocket = nullptr;
     SFMap<SSFSOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
-    SSFNetworkSessionManager SessionManager;
     SFMap<SFUInt16, std::function<void(SSFSOCKET, const SSFNetworkPacket &)>> RouteHandlerMap;
 
     SFString ServerIP;
     int ServerPort;
-    SFUInt64 NextSessionId = 1;
-    SFUInt64 SessionTimeoutMS = 15000;
     SFUInt32 MaxMsgPerSecond = 120;
     SFUInt64 StatsLogIntervalMS = 5000;
     SFUInt64 LastStatsLogMS = 0;
-    SFUInt64 BlacklistDurationMS = 60000;
-    SFUInt64 ViolationThreshold = 10;
-    SFMap<SFString, SFUInt64> BlacklistUntilMap;
-    SFString BlacklistFilePath = "ServerBlacklist.data";
-    SFBool BlacklistPersistenceEnabled = TRUE;
-    SFBool BlacklistDirty = FALSE;
-    SFBool BlacklistHotReloadEnabled = TRUE;
-    SFUInt64 BlacklistReloadIntervalMS = 5000;
-    SFUInt64 LastBlacklistReloadMS = 0;
-    SFUInt32 BlacklistFormatVersion = 1;
-    std::filesystem::file_time_type BlacklistFileLastWriteTime{};
 };
 
 SF_NAMESPACE_END
