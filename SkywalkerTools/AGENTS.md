@@ -10,11 +10,14 @@
 - `SkywalkerEvent/`: 支持 Before/During/After 三阶段执行的轻量级事件总线。
 - `SkywalkerPath/`: 统一的绝对路径与配置路径解析。
 - `SkywalkerSingleton/`: 快速声明与实现单例模式。
+- `SkywalkerTimer/`: 高精度帧计时器。
+- `SkywalkerScript/`: 配置文件解析器。
 
 ## 关键位置
 - **跨平台适配**: 参考 `SkywalkerPlatform/SkywalkerPlatform.h` 提供的 OS 无关接口。
 - **错误聚合**: 使用 `SkywalkerErrors/SkywalkerErrors.h` 中的 `CSkywalkerErrors<T>`。
 - **高精度计时**: 查阅 `SkywalkerTimer/SkywalkerTimer.h` 获取帧 delta 时间。
+- **脚本解析**: 查阅 `SkywalkerScript/SkywalkerScript.h` 获取配置解析能力。
 
 ## 开发规范
 - **命名空间**: 严格遵守 `Skywalker::[ToolName]` 嵌套规则。

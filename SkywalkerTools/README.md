@@ -68,6 +68,12 @@
 	- `Reset()` / `Tick()`
 	- `GetDeltaTime()` / `GetTotalTime()`
 
+### SkywalkerScript
+
+- 作用：配置文件解析器，支持层级结构的 `key=value` 格式。
+- 关键类型：`CSkywalkerScriptParse`、`CSkywalkerScriptNode`。
+- 命名空间：`Skywalker::Script`。
+
 ## 使用建议
 
 - 仅引入所需目录头文件，避免把全部工具耦合进业务模块。

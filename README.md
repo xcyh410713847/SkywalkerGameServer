@@ -41,7 +41,6 @@ SkywalkerGameServer/
 │   ├── Plugin/               # 动态插件
 │   └── Include/              # 公共头文件
 ├── SkywalkerTools/           # 工具库
-├── SkywalkerScript/          # 脚本编码工具
 └── SkywalkerServerEditor/    # 服务器编辑器
 ```
 
@@ -70,16 +69,8 @@ cmake --build . --config Debug
 ### 插件
 | 文件 | 说明 |
 |------|------|
-| [Network 插件](SkywalkerFramework/Plugin/Network/README.md) | 网络通信：连接接入、协议编解码、会话管理、消息路由 |
-| [AI 插件](SkywalkerFramework/Plugin/AI/README.md) | AI 运行时：策略调度、预算控制、策略审计 |
-| [DB 插件](SkywalkerFramework/Plugin/DB/README.md) | 数据访问：玩家数据仓储、数据库访问层 |
-| [Level 插件](SkywalkerFramework/Plugin/Level/README.md) | 场景管理 |
-| [Actor 插件](SkywalkerFramework/Plugin/Actor/README.md) | 角色实体 |
-| [Auth 插件](SkywalkerFramework/Plugin/Auth/README.md) | 认证授权 |
-| [CommandLine 插件](SkywalkerFramework/Plugin/CommandLine/README.md) | 命令行与 Admin 管理 |
-| [Profiler 插件](SkywalkerFramework/Plugin/Profiler/README.md) | 性能分析 |
-| [Test 插件](SkywalkerFramework/Plugin/Test/README.md) | 测试支持 |
-| [Video 插件](SkywalkerFramework/Plugin/Video/README.md) | Replay 回放 |
+| [Network 插件](SkywalkerFramework/Plugin/Network/README.md) | 网络通信：连接接入、协议编解码，会话管理、消息路由 |
+| [CommandLine 插件](SkywalkerFramework/Plugin/CommandLine/README.md) | 命令行与运维管理 |
 
 ### 工具库
 | 文件 | 说明 |
@@ -92,3 +83,4 @@ cmake --build . --config Debug
 | [SkywalkerSingleton](SkywalkerTools/SkywalkerSingleton/README.md) | 单例模式 |
 | [SkywalkerTimer](SkywalkerTools/SkywalkerTimer/README.md) | 计时器 |
 | [SkywalkerDerived](SkywalkerTools/SkywalkerDerived/README.md) | 编译期继承检测 |
+| [SkywalkerScript](SkywalkerTools/SkywalkerScript/README.md) | 脚本解析器 |

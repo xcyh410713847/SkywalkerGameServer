@@ -1,13 +1,17 @@
 # AGENTS.md - 插件枢纽 (Plugin Hub)
 
 ## 概述
-包含 12 个核心功能插件的容器，采用 C++20 编写，全部以动态库 (Shared Library) 形式构建。
+包含核心功能插件的容器，采用 C++20 编写，全部以动态库 (Shared Library) 形式构建。
 
 ## 目录结构
-- `[PluginName]/`：插件根目录（如 Network, AI, Actor）
+- `[PluginName]/`：插件根目录（如 Network, CommandLine）
 - `[PluginName]/Module/`：内部业务逻辑模块
 - `[PluginName]/SFPlugin_[Name].h/.cpp`：插件入口与模块注册点
 - `[PluginName]/README.md`：各插件专属 API 与能力说明
+
+## 当前插件
+- **Network**: 网络通信、协议编解码、会话管理
+- **CommandLine**: 命令行与运维管理
 
 ## 关键位置
 - **入口点**：`SFPlugin_[Name].cpp`。通过 `Install()` 挂载模块。

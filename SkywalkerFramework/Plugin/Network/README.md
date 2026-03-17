@@ -18,7 +18,6 @@
 - 会话超时与异常清理。
 - 限流与违规统计。
 - 黑名单持久化与热重载。
-- 通过核心网关调用 Auth/DB/Level/AI/Replay 等跨插件能力。
 
 ## 关键配置
 - `IP`、`Port`、`SessionTimeoutMS`
@@ -27,9 +26,6 @@
 - `BlacklistHotReload`、`BlacklistReloadIntervalMS`
 
 ## API接口说明
-- 核心网关调用（由 Network 发起跨插件协作）：`ValidateToken`、`LoadPlayer`、`EnterWorld`、`LeaveWorld`。
-- Replay 网关调用：`StartReplayRecord`、`StopReplayRecord`、`StartReplayPlay`、`StopReplayPlay`、`GetReplayRecordStats`、`GetReplayPlayStats`、`GetReplayEventByIndex`、`GetReplayEventsRange`、`FindReplayEventsByKeyword`。
-- AI 网关调用：`SetAIStrategy`、`GetAIStats`、`GetAIStrategies`、`GetAIAudit`、`ClearAIAudit`。
 - 网络客户端公开接口（`SFModule_NetworkClient`）：`Connect`、`Disconnect`、`IsConnected`、`Send`、`SendPacket`。
 - 网络服务端模块（`SFModule_NetworkServer`）当前以插件生命周期与内部路由处理为主，未额外开放独立业务 API。
 
