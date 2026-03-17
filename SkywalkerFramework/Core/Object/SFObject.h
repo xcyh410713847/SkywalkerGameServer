@@ -11,6 +11,7 @@
 #include "Include/SFCore.h"
 #include "Include/SFErrors.h"
 #include "Include/SFFramework.h"
+#include "SFArchive.h"
 
 SF_NAMESPACE_BEGIN
 
@@ -182,7 +183,65 @@ public:
 	}
 
 #pragma endregion NewObject
+
+#pragma region Serialization
+
+public:
+	/**
+	 * 序列化对象
+	 * @param Ar 存档流
+	 * 说明：子类应重写此函数以序列化自定义数据
+	 */
+	virtual void Serialize(SFArchive& Ar)
+	{
+		// 序列化ObjectGUID
+		Ar << ObjectGUID;
+	}
+
+	/**
+	 * 反序列化完成回调
+	 * 说明：子类可重写此函数，在反序列化完成后执行初始化逻辑
+	 */
+	virtual void OnDeserialized()
+	{
+		// 子类可重写
+	}
+
+	/**
+	 * 设置ObjectGUID
+	 * @param GUID 新的GUID
+	 */
+	void SetObjectGUID(SFObjectGUID GUID)
+	{
+		ObjectGUID = GUID;
+	}
+
+#pragma endregion Serialization
 };
+
+/**
+ * SF_PROPERTY 宏
+ * 用于标记需要序列化的属性
+ * 使用方式：SF_PROPERTY(PropertyName)
+ */
+#define SF_PROPERTY(PropertyName)
+
+/**
+ * SF_OBJECT_BEGIN 宏
+ * 声明序列化相关函数和友元
+ * 使用方式：SF_OBJECT_BEGIN(ClassName)
+ */
+#define SF_OBJECT_BEGIN(ClassName) \
+public: \
+    static SFString StaticClassName() { return #ClassName; } \
+    SFString GetClassName() const override { return #ClassName; } \
+    friend class SFArchive;
+
+/**
+ * SF_OBJECT_END 宏
+ * 结束对象序列化声明
+ */
+#define SF_OBJECT_END()
 
 SF_NAMESPACE_END
 
