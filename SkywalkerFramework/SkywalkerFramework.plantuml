@@ -13,7 +13,6 @@ package "Core" {
 	class SSFPlugin
 	class SSFPluginManager
 class SSFGameplayServiceGateway {
-	+ValidateToken(Token)
 	+LoadPlayer(PlayerId)
 	+EnterWorld(PlayerId, WorldId)
 	+LeaveWorld(PlayerId, WorldId)
@@ -59,11 +58,6 @@ package "Plugin: Video" {
 	class SSFModule_ReplayPlayer
 }
 
-package "Plugin: Auth" {
-	class SSFPlugin_Auth
-	class SSFModule_Auth
-}
-
 package "Plugin: DB" {
 	class SSFPlugin_DB
 	class SSFModule_DBAccess
@@ -91,7 +85,6 @@ package "Plugin: Test" {
 SSFPlugin <|-- SSFPlugin_Network
 SSFPlugin <|-- SSFPlugin_CommandLine
 SSFPlugin <|-- SSFPlugin_Video
-SSFPlugin <|-- SSFPlugin_Auth
 SSFPlugin <|-- SSFPlugin_DB
 SSFPlugin <|-- SSFPlugin_Level
 SSFPlugin <|-- SSFPlugin_Actor
@@ -104,7 +97,6 @@ SSFModule <|-- SSFModule_OS
 SSFModule <|-- SSFModule_AdminCommand
 SSFModule <|-- SSFModule_ReplayRecorder
 SSFModule <|-- SSFModule_ReplayPlayer
-SSFModule <|-- SSFModule_Auth
 SSFModule <|-- SSFModule_DBAccess
 SSFModule <|-- SSFModule_PlayerRepository
 SSFModule <|-- SSFModule_WorldManager
@@ -120,7 +112,6 @@ SSFPlugin_CommandLine *-- SSFModule_OS
 SSFPlugin_CommandLine *-- SSFModule_AdminCommand
 SSFPlugin_Video *-- SSFModule_ReplayRecorder
 SSFPlugin_Video *-- SSFModule_ReplayPlayer
-SSFPlugin_Auth *-- SSFModule_Auth
 SSFPlugin_DB *-- SSFModule_DBAccess
 SSFPlugin_DB *-- SSFModule_PlayerRepository
 SSFPlugin_Level *-- SSFModule_WorldManager
@@ -132,7 +123,6 @@ SSFPlugin_Test *-- SSFModule_TestThree
 
 SSFModule_NetworkServer ..> SSFGameplayServiceGateway : 登录/会话/业务调用
 SSFModule_AdminCommand ..> SSFGameplayServiceGateway : 运维命令透传
-SSFModule_Auth ..> SSFGameplayServiceGateway : RegisterAuthValidator
 SSFModule_PlayerRepository ..> SSFGameplayServiceGateway : RegisterPlayerLoader
 SSFModule_WorldManager ..> SSFGameplayServiceGateway : RegisterWorldEnter/Leave
 SSFModule_ReplayRecorder ..> SSFGameplayServiceGateway : RegisterReplayRecord*

@@ -4,11 +4,6 @@
         Name=SFModule_NetworkServer
 
 Plugin
-    Name=SFPlugin_Auth
-    Module
-        Name=SFModule_Auth
-
-Plugin
     Name=SFPlugin_DB
     Module
         Name=SFModule_DBAccess
