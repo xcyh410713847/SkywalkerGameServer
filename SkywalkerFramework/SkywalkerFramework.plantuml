@@ -12,26 +12,21 @@ package "Core" {
 	class SSFModule
 	class SSFPlugin
 	class SSFPluginManager
-	class SSFGameplayServiceGateway {
-		+ValidateToken(Token)
-		+LoadPlayer(PlayerId)
-		+EnterWorld(PlayerId, WorldId)
-		+LeaveWorld(PlayerId, WorldId)
-		+StartReplayRecord(SessionId)
-		+StopReplayRecord()
-		+StartReplayPlay(SessionId)
-		+StopReplayPlay()
-		+GetReplayRecordStats()
-		+GetReplayPlayStats()
-		+GetReplayEventByIndex(EventIndex)
-		+GetReplayEventsRange(StartIndex, Count)
-		+FindReplayEventsByKeyword(Keyword, MaxCount)
-		+SetAIStrategy(Strategy)
-		+GetAIStats()
-		+GetAIStrategies()
-		+GetAIAudit()
-		+ClearAIAudit()
-	}
+class SSFGameplayServiceGateway {
+	+ValidateToken(Token)
+	+LoadPlayer(PlayerId)
+	+EnterWorld(PlayerId, WorldId)
+	+LeaveWorld(PlayerId, WorldId)
+	+StartReplayRecord(SessionId)
+	+StopReplayRecord()
+	+StartReplayPlay(SessionId)
+	+StopReplayPlay()
+	+GetReplayRecordStats()
+	+GetReplayPlayStats()
+	+GetReplayEventByIndex(EventIndex)
+	+GetReplayEventsRange(StartIndex, Count)
+	+FindReplayEventsByKeyword(Keyword, MaxCount)
+}
 }
 
 class CSkywalkerFramework
@@ -56,11 +51,6 @@ package "Plugin: CommandLine" {
 	class SSFPlugin_CommandLine
 	class SSFModule_OS
 	class SSFModule_AdminCommand
-}
-
-package "Plugin: AI" {
-	class SSFPlugin_AI
-	class SSFModule_AIRuntime
 }
 
 package "Plugin: Video" {
@@ -100,7 +90,6 @@ package "Plugin: Test" {
 
 SSFPlugin <|-- SSFPlugin_Network
 SSFPlugin <|-- SSFPlugin_CommandLine
-SSFPlugin <|-- SSFPlugin_AI
 SSFPlugin <|-- SSFPlugin_Video
 SSFPlugin <|-- SSFPlugin_Auth
 SSFPlugin <|-- SSFPlugin_DB
@@ -113,7 +102,6 @@ SSFModule <|-- SSFModule_NetworkServer
 SSFModule <|-- SSFModule_NetworkClient
 SSFModule <|-- SSFModule_OS
 SSFModule <|-- SSFModule_AdminCommand
-SSFModule <|-- SSFModule_AIRuntime
 SSFModule <|-- SSFModule_ReplayRecorder
 SSFModule <|-- SSFModule_ReplayPlayer
 SSFModule <|-- SSFModule_Auth
@@ -130,7 +118,6 @@ SSFPlugin_Network *-- SSFModule_NetworkServer
 SSFPlugin_Network *-- SSFModule_NetworkClient
 SSFPlugin_CommandLine *-- SSFModule_OS
 SSFPlugin_CommandLine *-- SSFModule_AdminCommand
-SSFPlugin_AI *-- SSFModule_AIRuntime
 SSFPlugin_Video *-- SSFModule_ReplayRecorder
 SSFPlugin_Video *-- SSFModule_ReplayPlayer
 SSFPlugin_Auth *-- SSFModule_Auth
@@ -148,7 +135,6 @@ SSFModule_AdminCommand ..> SSFGameplayServiceGateway : 运维命令透传
 SSFModule_Auth ..> SSFGameplayServiceGateway : RegisterAuthValidator
 SSFModule_PlayerRepository ..> SSFGameplayServiceGateway : RegisterPlayerLoader
 SSFModule_WorldManager ..> SSFGameplayServiceGateway : RegisterWorldEnter/Leave
-SSFModule_AIRuntime ..> SSFGameplayServiceGateway : RegisterAI* 回调
 SSFModule_ReplayRecorder ..> SSFGameplayServiceGateway : RegisterReplayRecord*
 SSFModule_ReplayPlayer ..> SSFGameplayServiceGateway : RegisterReplayPlay* / Query*
 

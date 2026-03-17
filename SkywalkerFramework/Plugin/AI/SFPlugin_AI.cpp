@@ -8,13 +8,7 @@
 
 #include "Include/SFILog.h"
 
-#include "SFPlugin_AI.h"
-
-#include "Include/SFILog.h"
-
 #include "Core/Plugin/SFPluginManager.h"
-
-#include "Module/SFModule_AIRuntime.h"
 
 SF_NAMESPACE_USING
 
@@ -26,12 +20,10 @@ SF_PLUGIN_EXPORT(SFPlugin_AI)
 
 void SFPlugin_AI::Install(SFObjectErrors &Errors)
 {
-    SF_REGISTER_MODULE(SFModule_AIRuntime)
 }
 
 void SFPlugin_AI::Uninstall(SFObjectErrors &Errors)
 {
-    SF_UNREGISTER_MODULE(SFModule_AIRuntime)
 }
 
 #pragma endregion SSFPlugin

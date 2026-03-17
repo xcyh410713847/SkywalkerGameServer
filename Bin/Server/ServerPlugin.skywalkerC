@@ -28,11 +28,6 @@ Plugin
         Name=SFModule_HealthCheck
 
 Plugin
-    Name=SFPlugin_AI
-    Module
-        Name=SFModule_AIRuntime
-
-Plugin
     Name=SFPlugin_Video
     Module
         Name=SFModule_ReplayRecorder
