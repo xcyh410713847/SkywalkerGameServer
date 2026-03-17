@@ -13,15 +13,6 @@ package "Core" {
 	class SSFPlugin
 	class SSFPluginManager
 class SSFGameplayServiceGateway {
-	+StartReplayRecord(SessionId)
-	+StopReplayRecord()
-	+StartReplayPlay(SessionId)
-	+StopReplayPlay()
-	+GetReplayRecordStats()
-	+GetReplayPlayStats()
-	+GetReplayEventByIndex(EventIndex)
-	+GetReplayEventsRange(StartIndex, Count)
-	+FindReplayEventsByKeyword(Keyword, MaxCount)
 }
 }
 
@@ -48,12 +39,6 @@ package "Plugin: CommandLine" {
 	class SSFModule_OS
 }
 
-package "Plugin: Video" {
-	class SSFPlugin_Video
-	class SSFModule_ReplayRecorder
-	class SSFModule_ReplayPlayer
-}
-
 SSFPlugin <|-- SSFPlugin_Network
 SSFPlugin <|-- SSFPlugin_CommandLine
 SSFPlugin <|-- SSFPlugin_Video
@@ -61,18 +46,12 @@ SSFPlugin <|-- SSFPlugin_Video
 SSFModule <|-- SSFModule_NetworkServer
 SSFModule <|-- SSFModule_NetworkClient
 SSFModule <|-- SSFModule_OS
-SSFModule <|-- SSFModule_ReplayRecorder
-SSFModule <|-- SSFModule_ReplayPlayer
 
 SSFPlugin_Network *-- SSFModule_NetworkServer
 SSFPlugin_Network *-- SSFModule_NetworkClient
 SSFPlugin_CommandLine *-- SSFModule_OS
-SSFPlugin_Video *-- SSFModule_ReplayRecorder
-SSFPlugin_Video *-- SSFModule_ReplayPlayer
 
 SSFModule_NetworkServer ..> SSFGameplayServiceGateway : 登录/会话/业务调用
-SSFModule_ReplayRecorder ..> SSFGameplayServiceGateway : RegisterReplayRecord*
-SSFModule_ReplayPlayer ..> SSFGameplayServiceGateway : RegisterReplayPlay* / Query*
 
 legend right
   说明:
