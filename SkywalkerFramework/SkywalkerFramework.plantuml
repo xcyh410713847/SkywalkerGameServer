@@ -13,9 +13,6 @@ package "Core" {
 	class SSFPlugin
 	class SSFPluginManager
 class SSFGameplayServiceGateway {
-	+LoadPlayer(PlayerId)
-	+EnterWorld(PlayerId, WorldId)
-	+LeaveWorld(PlayerId, WorldId)
 	+StartReplayRecord(SessionId)
 	+StopReplayRecord()
 	+StartReplayPlay(SessionId)
@@ -57,23 +54,6 @@ package "Plugin: Video" {
 	class SSFModule_ReplayPlayer
 }
 
-package "Plugin: DB" {
-	class SSFPlugin_DB
-	class SSFModule_DBAccess
-	class SSFModule_PlayerRepository
-}
-
-package "Plugin: Level" {
-	class SSFPlugin_Level
-	class SSFModule_WorldManager
-}
-
-package "Plugin: Profiler" {
-	class SSFPlugin_Profiler
-	class SSFModule_Metrics
-	class SSFModule_HealthCheck
-}
-
 package "Plugin: Test" {
 	class SSFPlugin_Test
 	class SSFModule_TestOne
@@ -84,10 +64,6 @@ package "Plugin: Test" {
 SSFPlugin <|-- SSFPlugin_Network
 SSFPlugin <|-- SSFPlugin_CommandLine
 SSFPlugin <|-- SSFPlugin_Video
-SSFPlugin <|-- SSFPlugin_DB
-SSFPlugin <|-- SSFPlugin_Level
-SSFPlugin <|-- SSFPlugin_Actor
-SSFPlugin <|-- SSFPlugin_Profiler
 SSFPlugin <|-- SSFPlugin_Test
 
 SSFModule <|-- SSFModule_NetworkServer
@@ -95,11 +71,6 @@ SSFModule <|-- SSFModule_NetworkClient
 SSFModule <|-- SSFModule_OS
 SSFModule <|-- SSFModule_ReplayRecorder
 SSFModule <|-- SSFModule_ReplayPlayer
-SSFModule <|-- SSFModule_DBAccess
-SSFModule <|-- SSFModule_PlayerRepository
-SSFModule <|-- SSFModule_WorldManager
-SSFModule <|-- SSFModule_Metrics
-SSFModule <|-- SSFModule_HealthCheck
 SSFModule <|-- SSFModule_TestOne
 SSFModule <|-- SSFModule_TestTwo
 SSFModule <|-- SSFModule_TestThree
@@ -109,18 +80,11 @@ SSFPlugin_Network *-- SSFModule_NetworkClient
 SSFPlugin_CommandLine *-- SSFModule_OS
 SSFPlugin_Video *-- SSFModule_ReplayRecorder
 SSFPlugin_Video *-- SSFModule_ReplayPlayer
-SSFPlugin_DB *-- SSFModule_DBAccess
-SSFPlugin_DB *-- SSFModule_PlayerRepository
-SSFPlugin_Level *-- SSFModule_WorldManager
-SSFPlugin_Profiler *-- SSFModule_Metrics
-SSFPlugin_Profiler *-- SSFModule_HealthCheck
 SSFPlugin_Test *-- SSFModule_TestOne
 SSFPlugin_Test *-- SSFModule_TestTwo
 SSFPlugin_Test *-- SSFModule_TestThree
 
 SSFModule_NetworkServer ..> SSFGameplayServiceGateway : 登录/会话/业务调用
-SSFModule_PlayerRepository ..> SSFGameplayServiceGateway : RegisterPlayerLoader
-SSFModule_WorldManager ..> SSFGameplayServiceGateway : RegisterWorldEnter/Leave
 SSFModule_ReplayRecorder ..> SSFGameplayServiceGateway : RegisterReplayRecord*
 SSFModule_ReplayPlayer ..> SSFGameplayServiceGateway : RegisterReplayPlay* / Query*
 

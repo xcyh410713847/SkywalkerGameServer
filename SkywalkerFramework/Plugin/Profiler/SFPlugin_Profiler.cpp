@@ -12,9 +12,6 @@
 
 #include "Core/Plugin/SFPluginManager.h"
 
-#include "Module/SFModule_Metrics.h"
-#include "Module/SFModule_HealthCheck.h"
-
 SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SFPlugin_Profiler, ESFLogLevel::Debug);
@@ -25,14 +22,10 @@ SF_PLUGIN_EXPORT(SFPlugin_Profiler)
 
 void SFPlugin_Profiler::Install(SFObjectErrors &Errors)
 {
-    SF_REGISTER_MODULE(SFModule_Metrics)
-    SF_REGISTER_MODULE(SFModule_HealthCheck)
 }
 
 void SFPlugin_Profiler::Uninstall(SFObjectErrors &Errors)
 {
-    SF_UNREGISTER_MODULE(SFModule_Metrics)
-    SF_UNREGISTER_MODULE(SFModule_HealthCheck)
 }
 
 #pragma endregion SSFPlugin

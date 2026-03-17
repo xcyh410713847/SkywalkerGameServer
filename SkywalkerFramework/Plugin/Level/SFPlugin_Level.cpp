@@ -11,8 +11,6 @@
 
 #include "Core/Plugin/SFPluginManager.h"
 
-#include "Module/SFModule_WorldManager.h"
-
 SF_NAMESPACE_USING
 
 SF_LOG_DEFINE(SFPlugin_Level, ESFLogLevel::Debug);
@@ -23,12 +21,10 @@ SF_PLUGIN_EXPORT(SFPlugin_Level)
 
 void SFPlugin_Level::Install(SFObjectErrors &Errors)
 {
-    SF_REGISTER_MODULE(SFModule_WorldManager)
 }
 
 void SFPlugin_Level::Uninstall(SFObjectErrors &Errors)
 {
-    SF_UNREGISTER_MODULE(SFModule_WorldManager)
 }
 
 #pragma endregion SSFPlugin
