@@ -12,8 +12,6 @@ package "Core" {
 	class SSFModule
 	class SSFPlugin
 	class SSFPluginManager
-class SSFGameplayServiceGateway {
-}
 }
 
 class CSkywalkerFramework
@@ -51,13 +49,9 @@ SSFPlugin_Network *-- SSFModule_NetworkServer
 SSFPlugin_Network *-- SSFModule_NetworkClient
 SSFPlugin_CommandLine *-- SSFModule_OS
 
-SSFModule_NetworkServer ..> SSFGameplayServiceGateway : 登录/会话/业务调用
-
 legend right
   说明:
   - 实线: 继承/组合关系
-  - 虚线: 通过核心网关进行跨插件协作
-  - 网关是 Network、CommandLine 与业务插件解耦的关键枢纽
 endlegend
 
 @enduml

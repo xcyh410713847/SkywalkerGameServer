@@ -10,8 +10,6 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
-#include "Core/Service/SFGameplayServiceGateway.h"
-
 #include "../Session/SFNetworkBlacklistStore.h"
 #include "../Protocol/SFNetworkLoginPayload.h"
 
@@ -413,17 +411,6 @@ void SFModule_NetworkServer::TickSessions(SFObjectErrors &Errors)
 
 void SFModule_NetworkServer::CleanupClientSocket(SSFSOCKET Socket, SFObjectErrors &Errors)
 {
-    SSFNetworkSession *Session = SessionManager.GetSession(Socket);
-    if (Session != nullptr && Session->IsAuthed == TRUE && Session->PlayerId != 0 && Session->WorldId != 0)
-    {
-        if (!SSFGameplayServiceGateway::Instance().LeaveWorld(Session->PlayerId, Session->WorldId))
-        {
-            SF_LOG_FRAMEWORK("Client leave world failed, Socket " << Socket
-                                                                  << " PlayerId " << Session->PlayerId
-                                                                  << " WorldId " << Session->WorldId);
-        }
-    }
-
     auto IterClient = ClientNetworkSocketMap.find(Socket);
     if (IterClient != ClientNetworkSocketMap.end())
     {
@@ -557,28 +544,6 @@ void SFModule_NetworkServer::HandleLogin(SSFSOCKET Socket, const SSFNetworkPacke
                                                                  << " PlayerId " << LoginPayload.PlayerId
                                                                  << " WorldId " << LoginPayload.WorldId
                                                                  << " TokenEmpty " << LoginPayload.Token.empty());
-        return;
-    }
-
-    if (!SSFGameplayServiceGateway::Instance().ValidateToken(LoginPayload.Token))
-    {
-        SF_LOG_FRAMEWORK("Client login token validate failed, Socket " << Socket
-                                                                       << " PlayerId " << LoginPayload.PlayerId);
-        return;
-    }
-
-    if (!SSFGameplayServiceGateway::Instance().LoadPlayer(LoginPayload.PlayerId))
-    {
-        SF_LOG_FRAMEWORK("Client login load player failed, Socket " << Socket
-                                                                    << " PlayerId " << LoginPayload.PlayerId);
-        return;
-    }
-
-    if (!SSFGameplayServiceGateway::Instance().EnterWorld(LoginPayload.PlayerId, LoginPayload.WorldId))
-    {
-        SF_LOG_FRAMEWORK("Client login enter world failed, Socket " << Socket
-                                                                    << " PlayerId " << LoginPayload.PlayerId
-                                                                    << " WorldId " << LoginPayload.WorldId);
         return;
     }
 

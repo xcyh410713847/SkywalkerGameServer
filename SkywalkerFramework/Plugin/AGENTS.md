@@ -18,7 +18,6 @@
 ## 开发规范
 - **注册机制**：必须使用 `SF_PLUGIN_EXPORT` 导出插件，并在 `Install()` 中通过 `SF_REGISTER_MODULE` 注册模块。
 - **命名规则**：前缀严格遵循 `SFPlugin_`（插件类）或 `SFModule_`（模块类）。
-- **隔离性**：禁止插件间直接头文件包含。跨插件协作必须通过 `SFGameplayServiceGateway` 核心网关。
 - **热重载友好**：避免在插件内使用全局静态变量，确保 `Uninstall()` 能干净卸载。
 
 ## 禁忌
