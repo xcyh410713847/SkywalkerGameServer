@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 #define __SKYWALKER_SERVER_FRAMEWORK_PLUGIN_MANAGER_H__
 
-#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+#include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
 
 #include "Include/SFCore.h"
 

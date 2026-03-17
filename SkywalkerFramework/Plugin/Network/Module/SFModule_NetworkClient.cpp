@@ -10,7 +10,7 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
-#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+#include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
 
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
 #include <ws2tcpip.h>

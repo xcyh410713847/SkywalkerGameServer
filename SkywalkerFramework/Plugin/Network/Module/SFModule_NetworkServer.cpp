@@ -13,7 +13,7 @@
 #include "../Session/SFNetworkBlacklistStore.h"
 #include "../Protocol/SFNetworkLoginPayload.h"
 
-#include "SkywalkerScript/Include/SkywalkerScriptParse.h"
+#include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
 
 #include <chrono>
 #include <vector>

@@ -152,7 +152,4 @@ add_subdirectory(SkywalkerGameServer)
 # SkywalkerGameClient
 add_subdirectory(SkywalkerGameClient)
 
-# SkywalkerScript
-add_subdirectory(SkywalkerScript)
-
 SkywalkerServer_MessageDebug("End Build ${skywalker_server_name}")
