@@ -1,116 +1,61 @@
-﻿# AGENTS.md - SkywalkerGameServer Development Guide
+# SkywalkerGameServer 开发知识库
 
-## Project Overview
-C++20 game server framework with plugin-based architecture for learning purposes.
+## 概述
+C++20 游戏服务器框架，基于插件化架构设计，用于学习目的。
 
-## Build Commands
+## 项目结构
+```
+SkywalkerGameServer/
+├── SkywalkerFramework/         # 核心框架
+│   ├── Core/                  # 静态库：服务管理、插件加载、事件定时器
+│   ├── Plugin/                # 动态插件：Network/AI/Actor/DB/Level等
+│   └── Include/               # 公共头文件
+├── SkywalkerGameServer/       # 服务器可执行文件
+├── SkywalkerGameClient/        # 测试客户端
+├── SkywalkerTools/            # 工具库：平台抽象/对象池/错误追踪
+├── SkywalkerTest/             # 测试运行器
+├── Bin/                      # 编译输出目录
+└── build/                    # CMake 构建目录
+```
+
+## 快速导航
+| 任务 | 位置 | 备注 |
+|------|------|------|
+| 框架核心 | `SkywalkerFramework/Core/AGENTS.md` | 服务管理、插件机制、已知Bug |
+| 插件系统 | `SkywalkerFramework/Plugin/AGENTS.md` | 12个插件、动态加载配置 |
+| 工具库 | `SkywalkerTools/AGENTS.md` | 平台抽象、内存池、错误处理 |
+| 入口点 | `SkywalkerGameServer/SkywalkerGameServer.cpp` | main函数 |
+| 插件配置 | `Bin/Server/ServerPlugin.skywalkerC` | 插件加载列表 |
+| 网络模块 | `SkywalkerFramework/Plugin/Network/Module/SFModule_NetworkServer.cpp` | 网络服务入口 |
+| AI模块 | `SkywalkerFramework/Plugin/AI/Module/SFModule_AIRuntime.cpp` | AI运行时 |
+| 测试入口 | `SkywalkerTest/SkywalkerTestMain.cpp` | 测试运行器 |
+
+## 编译命令
 ```bash
 cd build/SkywalkerGameServer
 cmake ..
 cmake --build . --config Debug
 cmake --build . --target SkywalkerGameServer --config Debug
-./Bin/Debug/SkywalkerGameServer.exe
 ```
 
-> **Workflow**: In automated coding sessions, stop at successful build; do **not** execute binaries.
-
-### Build Modes
-- `ProjectDebug` (default) - Debug builds
-- `ProjectRelease` - Release builds
-- `Library` - Library-only builds
-
-### Output Locations
-- Debug: `Bin/Debug/`
-- Release: `Bin/Server/`
-
-## Testing
-
-### Running Tests
+## 测试命令
 ```bash
-cd build/SkywalkerGameServer
-cmake .. && cmake --build . --target SkywalkerTestRunner --config Debug
+cmake --build . --target SkywalkerTestRunner --config Debug
 ./Bin/Debug/SkywalkerTestRunner.exe
 ```
-All tests run via `SkywalkerTestRunner::Instance().RunAll()`. **No single-test filtering** - run all tests.
 
-### Writing Tests
-```cpp
-#include "SkywalkerTest/SkywalkerTest.h"
-SKYWALKER_TEST_SUITE(MySuite)
-bool TestMyFeature() { SKYWALKER_TEST_ASSERT_TRUE(1==1); return true; }
-SKYWALKER_TEST_REGISTER(MySuite, TestMyFeature, TestMyFeature)
-int main() { return SkywalkerTestRunner::Instance().RunAll(); }
-```
+## 核心规范
+- **所有代码必须包含单元测试** - 无测试不提交
+- **插件-模块设计** - 功能以插件形式实现
+- **跨平台** - 从设计之初考虑 Windows/Linux/iOS
 
-### Test Macros
-| Macro                                        | Description                     |
-| -------------------------------------------- | ------------------------------- |
-| `SKYWALKER_TEST_ASSERT(condition)`           | Assert condition is true        |
-| `SKYWALKER_TEST_ASSERT_EQ(expected, actual)` | Assert two values are equal     |
-| `SKYWALKER_TEST_ASSERT_NE(expected, actual)` | Assert two values are not equal |
-| `SKYWALKER_TEST_ASSERT_TRUE(value)`          | Assert value is true            |
-| `SKYWALKER_TEST_ASSERT_FALSE(value)`         | Assert value is false           |
+## 已知问题
+1. **宏错误**: 检查是否使用单行注释 → 改用多行注释
+2. **枚举未声明**: 检查前一行是否有中文注释 → 尝试修改编码
+3. **_CrtIsValidHeapPointer**: 错误释放了智能指针
+4. **SF_ERROR_TRACE宏Bug**: 传递了错误参数，应使用 `SF_ERROR_DESC_TRACE`
 
-## Linting
-No linting tool configured. Code must compile and pass all tests before commit.
-
-## Code Style Guidelines
-
-### Core Principles
-- **All code must have unit tests** - No code without tests should be committed
-- **Plugin-Module design** - Features as plugins with multiple modules
-- **Cross-platform** - Design for Windows, Linux, iOS from the start
-
-### File Organization
-- Headers: `.h`, Implementation: `.cpp`
-- Include guards: `#ifndef __FILE_PATH_H__`
-- Include order: Framework core headers → local headers
-- Use `#pragma region` for code organization
-
-### Naming Conventions
-| Type       | Convention          | Example                 |
-| ---------- | ------------------- | ----------------------- |
-| Classes    | `C` prefix          | `CSkywalkerFramework`   |
-| Plugins    | `SFPlugin_` prefix  | `SFPlugin_Test`         |
-| Modules    | `SFModule_` prefix | `SFModule_TestOne`     |
-| Interfaces | `I` prefix          | `ISSFPlugin`            |
-| Enums      | `E` prefix          | `ESkywalkerServerState` |
-| Files      | PascalCase          | `SkywalkerFramework.h`  |
-
-### Type System (from SFCore.h)
-- `SSFString` (std::string), `SSFBool` (bool), `SSFInt` (int)
-- `SSFUInt` (unsigned int), `SSFFloat` (float), `SSFDouble` (double)
-
-### Pointer Macros
-`SSF_PTR(T), SSF_CONST_PTR(T), SSF_SHARED_PTR(T), SSF_WEAK_PTR(T), SSF_UNIQUE_PTR(T)`
-
-### Namespace
-`SF_NAMESPACE_BEGIN // code here SSF_NAMESPACE_END`
-
-### Error Handling
-```cpp
-SSFObjectErrors Errors;
-SSF_ERROR(Errors, ESFError::Plugin_Load_Failed);
-SSF_ERROR_DESC(Errors, ESFError::Plugin_Load_Failed, "Description");
-if (Errors.IsValid()) { /* handle error */ }
-```
-
-### Logging
-`SF_LOG_INFO/ERROR/DEBUG("Message " << variable)`
-
-### Assertions
-`SSF_ASSERT(condition); SSF_ASSERT_IS_BASE_OF(SSFPlugin, MyPlugin);`
-
-### Plugin/Module Development
-```cpp
-SSF_REGISTER_PLUGIN(PluginManager, SFPlugin_MyPlugin);
-SSF_UNREGISTER_PLUGIN(PluginManager, SFPlugin_MyPlugin);
-SF_PLUGIN_EXPORT(SFPlugin_MyPlugin);
-SSF_REGISTER_MODULE(SFModule_MyModule);
-SSF_UNREGISTER_MODULE(SFModule_MyModule);
-```
-
-### File Header Format
+## 关键文件头格式
 ```cpp
 /*************************************************************************
 **文件: SkywalkerFramework\Plugin\Test\SFPlugin_Test.h
@@ -120,30 +65,12 @@ SSF_UNREGISTER_MODULE(SFModule_MyModule);
 *************************************************************************/
 ```
 
-### Comments
-- Use Chinese comments (project convention)
-- Format: `/** 注释内容 */` or `// 注释内容`
-- Document all public methods
-
-## Common Issues
-1. **Macro errors**: Check for single-line comments → use multi-line comments
-2. **Enum undeclared**: Check if previous line has Chinese comment → try changing encoding
-3. **_CrtIsValidHeapPointer**: Incorrectly released a smart pointer
-
-## Project Structure
-```
-SkywalkerGameServer/
-├── Bin/                    # Executable output
-├── build/                  # CMake build files
-├── SkywalkerGameServer/    # Main server executable
-├── SkywalkerGameClient/   # Test client
-├── SkywalkerFramework/
-│   ├── Core/              # Core library (static lib)
-│   ├── Plugin/            # Dynamic plugins (AI, Actor, CommandLine, DB, Level, Network, Profiler, Test, Video)
-│   └── Include/            # Framework headers
-├── SkywalkerScript/       # Script encoding tool
-└── SkywalkerTools/        # Utility libraries
-```
-
-## Cursor Rules
-This project has `.cursorrules` with additional guidelines. All rules from `.cursorrules` apply and take precedence if conflicts arise.
+## 命名约定
+| 类型 | 约定 | 示例 |
+|------|------|------|
+| 类 | C前缀 | `CSkywalkerFramework` |
+| 插件 | SFPlugin_前缀 | `SFPlugin_Test` |
+| 模块 | SFModule_前缀 | `SFModule_TestOne` |
+| 接口 | I前缀 | `ISSFPlugin` |
+| 枚举 | E前缀 | `ESkywalkerServerState` |
+| 文件 | PascalCase | `SkywalkerFramework.h` |
