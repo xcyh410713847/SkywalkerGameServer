@@ -44,26 +44,26 @@ public:
      * @param Error 错误对象
      * @param trace 错误追踪信息（可为空）
      */
-    void AddError(const T &Error, std::string trace)
+    void AddError(const T &Error, const std::string &trace)
     {
         errors.push_back(Error);
         errorTrace.push_back(trace);
     }
 
     /**
-     * 获取错误列表（拷贝）
-     * @return 错误列表
+     * 获取错误列表（const引用）
+     * @return 错误列表引用
      */
-    const std::vector<T> GetErrors() const
+    const std::vector<T> &GetErrors() const
     {
         return errors;
     };
 
     /**
-     * 获取错误追踪列表（拷贝）
-     * @return 错误追踪列表
+     * 获取错误追踪列表（const引用）
+     * @return 错误追踪列表引用
      */
-    const std::vector<std::string> GetErrorTrace() const
+    const std::vector<std::string> &GetErrorTrace() const
     {
         return errorTrace;
     }
@@ -74,15 +74,11 @@ public:
      */
     const T GetFirstError() const
     {
-        if (errors.size() > 0)
+        if (!errors.empty())
         {
             return errors[0];
         }
-        else
-        {
-            T t{};
-            return t;
-        }
+        return T{};
     }
 
     /**

@@ -11,6 +11,7 @@
 #include <functional>
 #include <map>
 #include <list>
+#include <atomic>
 
 /** 事件系统命名空间宏 */
 #define SKYWALKER_EVENT_NAMESPACE Skywalker::Event
@@ -64,13 +65,13 @@ typedef uint32_t SkywalkerEventSubID;
 typedef uint64_t SkywalkerEventID;
 typedef void *SkywalkerEventParam;
 typedef uint32_t SkywalkerEventParamSize;
+typedef uint64_t SkywalkerEventCallbackID;  // 回调唯一ID
 
 /**
  * 事件回调签名
  * 返回值目前未用于中断流程，保留给上层扩展
  */
 typedef std::function<bool(SkywalkerEventMainID, SkywalkerEventSubID, SkywalkerEventParam, SkywalkerEventParamSize)> SkywalkerEventCallback;
-typedef SkywalkerEventCallback *SkywalkerEventCallbackPtr;
 
 /**
  * 单个事件回调节点
@@ -79,7 +80,7 @@ struct SSkywalkerEventData
 {
     bool IsValid;
     SkywalkerEventCallback Callback;
-    SkywalkerEventCallbackPtr CallbackPtr;
+    SkywalkerEventCallbackID CallbackID;  // 唯一标识符，用于注销匹配
 
     SSkywalkerEventData()
     {
@@ -90,6 +91,7 @@ struct SSkywalkerEventData
     {
         IsValid = false;
         Callback = nullptr;
+        CallbackID = 0;
     }
 };
 
@@ -112,8 +114,9 @@ public:
      * @param InSubID 子事件ID
      * @param InCallback 回调
      * @param InOrder 执行阶段
+     * @return 返回回调ID，用于注销
      */
-    static void RegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
+    static SkywalkerEventCallbackID RegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
                               SkywalkerEventCallback InCallback,
                               ESkywalkerEventOrder InOrder = ESkywalkerEventOrder::During)
     {
@@ -121,37 +124,44 @@ public:
 
         SSkywalkerEventData EventData;
         EventData.IsValid = true;
-        EventData.Callback = InCallback;
-        EventData.CallbackPtr = &InCallback;
+        EventData.Callback = std::move(InCallback);
+        EventData.CallbackID = ++s_CallbackIDGenerator;  // 原子递增生成唯一ID
 
-        SkywalkerEventCallbackMap[EventID][static_cast<size_t>(InOrder)].push_back(EventData);
+        SkywalkerEventCallbackMap[EventID][static_cast<size_t>(InOrder)].push_back(std::move(EventData));
+        return EventData.CallbackID;
     }
 
     /**
      * 注销事件
+     * @param InCallbackID 注册时返回的回调ID
      */
-    static void UnRegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID,
-                                SkywalkerEventCallback InCallback)
+    static void UnRegisterEventByID(SkywalkerEventCallbackID InCallbackID)
     {
-        SkywalkerEventID EventID = SKYWALKER_EVENT_ID(InMainID, InSubID);
-
-        auto IterEventID = SkywalkerEventCallbackMap.find(EventID);
-        if (IterEventID == SkywalkerEventCallbackMap.end())
+        for (auto &IterEventID : SkywalkerEventCallbackMap)
         {
-            return;
-        }
-
-        for (size_t i = 0; i < static_cast<size_t>(ESkywalkerEventOrder::Max); ++i)
-        {
-            auto &ListEventCallback = IterEventID->second[i];
-            for (auto IterEventData : ListEventCallback)
+            for (size_t i = 0; i < static_cast<size_t>(ESkywalkerEventOrder::Max); ++i)
             {
-                if (IterEventData.CallbackPtr == &InCallback)
+                auto &ListEventCallback = IterEventID.second[i];
+                for (auto &IterEventData : ListEventCallback)
                 {
-                    IterEventData.IsValid = false;
+                    if (IterEventData.CallbackID == InCallbackID)
+                    {
+                        IterEventData.IsValid = false;
+                        return;  // 找到后立即返回
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * 注销事件（兼容旧接口，按MainID/SubID清除所有回调）
+     * @deprecated 建议使用 UnRegisterEventByID
+     */
+    static void UnRegisterEvent(SkywalkerEventMainID InMainID, SkywalkerEventSubID InSubID)
+    {
+        SkywalkerEventID EventID = SKYWALKER_EVENT_ID(InMainID, InSubID);
+        SkywalkerEventCallbackMap.erase(EventID);
     }
 
     /**
@@ -185,27 +195,36 @@ public:
 private:
     /** 事件回调总表：EventID -> [OrderList...] */
     static TMap_SkywalkerEventCallback SkywalkerEventCallbackMap;
+    /** 回调ID生成器（原子递增） */
+    static std::atomic<SkywalkerEventCallbackID> s_CallbackIDGenerator;
 };
 
 inline TMap_SkywalkerEventCallback CSkywalkerEvent::SkywalkerEventCallbackMap;
+inline std::atomic<SkywalkerEventCallbackID> CSkywalkerEvent::s_CallbackIDGenerator(0);
 
 /**
- * 注册事件，不指定 Order
+ * 注册事件，不指定 Order，返回回调ID
  */
 #define SKYWALKER_REGISTER_EVENT(MainID, SubID, Callback) \
     CSkywalkerEvent::RegisterEvent(MainID, SubID, Callback);
 
 /**
- * 注册事件，指定 Order
+ * 注册事件，指定 Order，返回回调ID
  */
 #define SKYWALKER_REGISTER_EVENT_ORDER(MainID, SubID, Callback, Order) \
     CSkywalkerEvent::RegisterEvent(MainID, SubID, Callback, Order);
 
 /**
- * 注销事件
+ * 注销事件（通过回调ID）
  */
-#define SKYWALKER_UNREGISTER_EVENT(MainID, SubID, Callback) \
-    CSkywalkerEvent::UnRegisterEvent(MainID, SubID, Callback);
+#define SKYWALKER_UNREGISTER_EVENT_BY_ID(CallbackID) \
+    CSkywalkerEvent::UnRegisterEventByID(CallbackID);
+
+/**
+ * 注销事件（清除指定EventID的所有回调 - 兼容旧接口）
+ */
+#define SKYWALKER_UNREGISTER_EVENT(MainID, SubID) \
+    CSkywalkerEvent::UnRegisterEvent(MainID, SubID);
 
 /**
  * 触发事件

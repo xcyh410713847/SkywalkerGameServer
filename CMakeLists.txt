@@ -149,9 +149,6 @@ add_subdirectory(SkywalkerServerEditor)
 # SkywalkerGameServer
 add_subdirectory(SkywalkerGameServer)
 
-# SkywalkerTest
-add_subdirectory(SkywalkerTest)
-
 # SkywalkerGameClient
 add_subdirectory(SkywalkerGameClient)
 

@@ -8,7 +8,7 @@
 #ifndef __SKYWALKER_POOL_H__
 #define __SKYWALKER_POOL_H__
 
-#include <list>
+#include <deque>
 
 /** 对象池命名空间宏 */
 #define SKYWALKER_POOL_NAMESPACE Skywalker::Pool
@@ -23,32 +23,38 @@ SKYWALKER_POOL_NAMESPACE_BEGIN
 /**
  * 简单对象池
  * 说明：对象生命周期由对象池管理，回收时超过上限会直接释放。
+ * 注意：非线程安全，多线程场景需外部加锁
  */
 template <typename T>
 class CSkywalkerPool
 {
-    std::list<T *> Pool; // 对象池
+    std::deque<T *> Pool;  // 对象池，使用deque提供更好的缓存局部性
     int MaxSize = 0;
 
 public:
-    CSkywalkerPool(int Size)
-        : MaxSize(Size) {}
+    explicit CSkywalkerPool(int Size) : MaxSize(Size)
+    {
+    }
 
     ~CSkywalkerPool()
     {
-        for (auto it = Pool.begin(); it != Pool.end(); ++it)
+        for (auto *obj : Pool)
         {
-            delete *it;
+            delete obj;
         }
         Pool.clear();
     }
 
     /**
      * 获取对象
-     * 注意：调用方应确保池中已有对象，否则 front() 行为未定义。
+     * @return 对象指针，池为空时返回nullptr
      */
     T *Get()
     {
+        if (Pool.empty())
+        {
+            return nullptr;
+        }
         T *obj = Pool.front();
         Pool.pop_front();
         return obj;
@@ -60,7 +66,7 @@ public:
      */
     void Recycle(T *obj)
     {
-        if (Pool.size() >= MaxSize)
+        if (Pool.size() >= static_cast<size_t>(MaxSize))
         {
             delete obj;
             return;
@@ -72,7 +78,7 @@ public:
     /**
      * 获取当前池大小
      */
-    size_t Size()
+    size_t Size() const
     {
         return Pool.size();
     }

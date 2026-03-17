@@ -75,8 +75,10 @@
  */
 inline void SkywalkerSetEnv(const char *name, const char *value)
 {
-    std::string envVar = std::string(name) + "=" + value;
-    _putenv(envVar.c_str());
+    // 使用_snprintf构建字符串，避免多次内存分配
+    char envVar[1024];
+    _snprintf(envVar, sizeof(envVar), "%s=%s", name, value);
+    _putenv(envVar);
 }
 /**
  * IP 字符串转地址（平台统一包装）

@@ -40,8 +40,8 @@ public:
           CurrTime(0)
     {
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
-        QueryPerformanceFrequency((LARGE_INTEGER *)&CountsPerSec);
-        SecondsPerCount = 1.0 / (double)CountsPerSec;
+        QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&CountsPerSec));
+        SecondsPerCount = 1.0 / static_cast<double>(CountsPerSec);
 #else
         timespec timeRes;
         clock_getres(CLOCK_MONOTONIC, &timeRes);
@@ -65,18 +65,8 @@ public:
      */
     void Reset()
     {
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-        QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
-
+        CurrTime = GetCurrentTimeCounter();
         BaseTime = CurrTime;
-#else
-        timespec currentTime;
-        clock_gettime(CLOCK_MONOTONIC, &currentTime);
-
-        CurrTime = currentTime.tv_sec * 1000000000 + currentTime.tv_nsec;
-        BaseTime = CurrTime;
-#endif
-
         BaseGMTTime = std::time(nullptr);
         PrevTime = BaseTime;
     }
@@ -87,22 +77,9 @@ public:
      */
     void Tick()
     {
-#if defined(SKYWALKER_PLATFORM_WINDOWS)
-        QueryPerformanceCounter((LARGE_INTEGER *)&CurrTime);
-        DeltaTime = (CurrTime - PrevTime) * 1000 / CountsPerSec;
-#else
-        timespec currentTime;
-        clock_gettime(CLOCK_MONOTONIC, &currentTime);
-        CurrTime = currentTime.tv_sec * 1000000000 + currentTime.tv_nsec;
-        DeltaTime = (CurrTime - PrevTime) / 1000000; // 转换为毫秒
-#endif
-
+        CurrTime = GetCurrentTimeCounter();
+        DeltaTime = CalculateDeltaTime();
         PrevTime = CurrTime;
-
-        if (DeltaTime < 0)
-        {
-            DeltaTime = 0;
-        }
     }
 
     /**
@@ -110,7 +87,7 @@ public:
      */
     double GetTotalTime() const
     {
-        return (double)(((CurrTime - BaseTime) * SecondsPerCount));
+        return static_cast<double>((CurrTime - BaseTime) * SecondsPerCount);
     }
 
     /**
@@ -127,7 +104,7 @@ public:
      */
     double GetStartTime() const
     {
-        return (double)(((BaseTime)*SecondsPerCount));
+        return static_cast<double>(BaseTime * SecondsPerCount);
     }
 
     /**
@@ -136,7 +113,7 @@ public:
      */
     double GetCurrTime() const
     {
-        return (double)(((CurrTime)*SecondsPerCount));
+        return static_cast<double>(CurrTime * SecondsPerCount);
     }
 
     /**
@@ -178,6 +155,35 @@ public:
         return std::format("{:04}-{:02}-{:02} {:02}:{:02}:{:02}.{:03}",
                            tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
                            tm.tm_hour, tm.tm_min, tm.tm_sec, ms.count());
+    }
+
+private:
+    /**
+     * 获取当前计数器值（平台相关）
+     */
+    UINT64 GetCurrentTimeCounter() const
+    {
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        UINT64 counter;
+        QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&counter));
+        return counter;
+#else
+        timespec currentTime;
+        clock_gettime(CLOCK_MONOTONIC, &currentTime);
+        return static_cast<UINT64>(currentTime.tv_sec) * 1000000000 + static_cast<UINT64>(currentTime.tv_nsec);
+#endif
+    }
+
+    /**
+     * 计算DeltaTime（毫秒）
+     */
+    UINT64 CalculateDeltaTime() const
+    {
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        return (CurrTime - PrevTime) * 1000 / CountsPerSec;
+#else
+        return (CurrTime - PrevTime) / 1000000; // 转换为毫秒
+#endif
     }
 
 private:
