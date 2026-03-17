@@ -49,7 +49,6 @@ package "Plugin: Network" {
 package "Plugin: CommandLine" {
 	class SSFPlugin_CommandLine
 	class SSFModule_OS
-	class SSFModule_AdminCommand
 }
 
 package "Plugin: Video" {
@@ -94,7 +93,6 @@ SSFPlugin <|-- SSFPlugin_Test
 SSFModule <|-- SSFModule_NetworkServer
 SSFModule <|-- SSFModule_NetworkClient
 SSFModule <|-- SSFModule_OS
-SSFModule <|-- SSFModule_AdminCommand
 SSFModule <|-- SSFModule_ReplayRecorder
 SSFModule <|-- SSFModule_ReplayPlayer
 SSFModule <|-- SSFModule_DBAccess
@@ -109,7 +107,6 @@ SSFModule <|-- SSFModule_TestThree
 SSFPlugin_Network *-- SSFModule_NetworkServer
 SSFPlugin_Network *-- SSFModule_NetworkClient
 SSFPlugin_CommandLine *-- SSFModule_OS
-SSFPlugin_CommandLine *-- SSFModule_AdminCommand
 SSFPlugin_Video *-- SSFModule_ReplayRecorder
 SSFPlugin_Video *-- SSFModule_ReplayPlayer
 SSFPlugin_DB *-- SSFModule_DBAccess
@@ -122,7 +119,6 @@ SSFPlugin_Test *-- SSFModule_TestTwo
 SSFPlugin_Test *-- SSFModule_TestThree
 
 SSFModule_NetworkServer ..> SSFGameplayServiceGateway : 登录/会话/业务调用
-SSFModule_AdminCommand ..> SSFGameplayServiceGateway : 运维命令透传
 SSFModule_PlayerRepository ..> SSFGameplayServiceGateway : RegisterPlayerLoader
 SSFModule_WorldManager ..> SSFGameplayServiceGateway : RegisterWorldEnter/Leave
 SSFModule_ReplayRecorder ..> SSFGameplayServiceGateway : RegisterReplayRecord*

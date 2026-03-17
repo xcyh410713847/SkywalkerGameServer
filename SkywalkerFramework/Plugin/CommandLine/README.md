@@ -5,30 +5,11 @@
 
 ## 当前模块
 - `SFModule_OS`
-- `SFModule_AdminCommand`
 
-## 当前能力
-- 角色权限：`admin` / `operator` / `observer`。
-- ACL 配置化：支持从 `ServerConfig.skywalkerC` 读取并通过 `reload_acl` 热重载。
-- 命令能力：
-	- AI：`show_ai_stats`、`show_ai_strategies`、`show_ai_audit`、`show_ai_audit_stats`、`set_ai_strategy`、`clear_ai_audit`
-	- Replay：`show_replay_stats`、`show_replay_query_stats`、`show_replay_event`、`show_replay_events`、`find_replay_events`
-	- ACL 统计：`show_admin_acl_stats`
-- 统计能力：执行成功/拒绝/失败计数。
-
-## 关键配置
-- `AdminACL_Admin`
-- `AdminACL_Operator`
-- `AdminACL_Observer`
-
-## API接口说明
-- 对外执行入口（`SFModule_AdminCommand`）：`ExecuteCommand(const SFString &CommandLine)`。
-- ACL 相关内部接口：`ReloadACLFromConfig`、`HasPermission`、`ParseRoleAndCommand`（用于权限判断与角色解析）。
-- AI 命令接口：`show_ai_stats`、`show_ai_strategies`、`show_ai_audit`、`show_ai_audit_stats`、`set_ai_strategy`、`clear_ai_audit`。
-- Replay 命令接口：`show_replay_stats`、`show_replay_query_stats`、`show_replay_event`、`show_replay_events`、`find_replay_events`。
-- ACL 统计与运维命令：`show_admin_acl_stats`、`reload_acl`。
+## 当前状态
+- CommandLine 插件保留 SFModule_OS 模块。
+- AdminCommand 模块已移除，等待业务接入。
 
 ## 关键代码入口
 - `SFPlugin_CommandLine.cpp`
-- `Module/SFModule_AdminCommand.h`
-- `Module/SFModule_AdminCommand.cpp`
+- `Module/SFModule_OS.h`
