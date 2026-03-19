@@ -11,9 +11,11 @@
 
 #include "Core/Plugin/SFPluginManager.h"
 
+#include "Module/SFModule_ActorFactory.h"
+
 SF_NAMESPACE_USING
 
-SF_LOG_DEFINE(SFPlugin_Actor, ESFLogLevel::Debug);
+SF_LOG_DEFINE(SFPlugin_Actor, Framework);
 
 SF_PLUGIN_EXPORT(SFPlugin_Actor)
 
@@ -21,10 +23,12 @@ SF_PLUGIN_EXPORT(SFPlugin_Actor)
 
 void SFPlugin_Actor::Install(SFObjectErrors &Errors)
 {
+    SF_REGISTER_MODULE(SFModule_ActorFactory)
 }
 
 void SFPlugin_Actor::Uninstall(SFObjectErrors &Errors)
 {
+    SF_UNREGISTER_MODULE(SFModule_ActorFactory)
 }
 
 #pragma endregion SSFPlugin

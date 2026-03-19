@@ -10,6 +10,8 @@
 
 #include "Core/Plugin/SFPlugin.h"
 
+#pragma comment(lib, "ws2_32.lib")
+
 SF_NAMESPACE_BEGIN
 
 class SFPlugin_Game : public SFPlugin
@@ -25,13 +27,13 @@ public:
 
 private:
     /**
-     * 安装
-     */
+      * 安装
+      */
     virtual void Install(SFObjectErrors &Errors) override;
 
     /**
-     * 卸载
-     */
+      * 卸载
+      */
     virtual void Uninstall(SFObjectErrors &Errors) override;
 
 #pragma endregion SSFPlugin

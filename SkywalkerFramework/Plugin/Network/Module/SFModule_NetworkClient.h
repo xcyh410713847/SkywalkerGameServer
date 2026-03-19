@@ -50,7 +50,9 @@ public:
     SFModule_NetworkClient(SFModuleContext &InContext, SFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors), ServerPort(0),
           HeartbeatIntervalMS(5000), LastHeartbeatMS(0),
-          LoginPlayerId(0), bLoggedIn(false), bLoginSent(false)
+          LoginPlayerId(0), bLoggedIn(false), bLoginSent(false),
+          bSceneEntered(false), bEnterSceneSent(false), LastMoveMS(0),
+          MoveIntervalMS(3000), ClientPosX(0.0f)
     {
     }
     virtual ~SFModule_NetworkClient() {};
@@ -92,6 +94,12 @@ private:
     /** 连接后发送登录请求 */
     void SendLoginReq();
 
+    /** 登录成功后发送进入场景请求 */
+    void SendEnterSceneReq(SFUInt32 SceneId);
+
+    /** 进入场景后周期发送移动请求 */
+    void SendMoveReq(float X, float Y, float Z);
+
 private:
     SSF_NETWORK_DATA;
 
@@ -112,6 +120,13 @@ private:
     SFString LoginToken;
     bool bLoggedIn;
     bool bLoginSent;
+
+    /** 场景相关 */
+    bool bSceneEntered;
+    bool bEnterSceneSent;
+    SFUInt64 LastMoveMS;
+    SFUInt64 MoveIntervalMS;
+    float ClientPosX;
 };
 
 SF_NAMESPACE_END

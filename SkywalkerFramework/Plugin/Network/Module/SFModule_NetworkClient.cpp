@@ -8,6 +8,7 @@
 #include "SFModule_NetworkClient.h"
 
 #include "Include/SFCore.h"
+#include "Include/SFActorTypes.h"
 #include "Include/SFILog.h"
 #include "Include/SFNetworkInterface.h"
 
@@ -75,6 +76,11 @@ void SFModule_NetworkClient::Init(SFObjectErrors &Errors)
                 bLoggedIn = true;
                 SF_LOG_FRAMEWORK("Login success, SessionId=" << NetSessionId
                                  << " PlayerId=" << LoginPlayerId);
+                if (!bEnterSceneSent)
+                {
+                    SendEnterSceneReq(1);
+                    bEnterSceneSent = true;
+                }
             }
             else
             {
@@ -82,6 +88,107 @@ void SFModule_NetworkClient::Init(SFObjectErrors &Errors)
                 /* 登录失败，断开连接 */
                 Disconnect();
             }
+        });
+
+    Dispatcher.RegisterHandler(SF_MSGID_ENTER_SCENE_RESP,
+        [this](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            if (PayloadLen < 3)
+            {
+                SF_LOG_ERROR("EnterSceneResp payload too short: " << PayloadLen);
+                return;
+            }
+
+            SFUInt8 Result = static_cast<SFUInt8>(Payload[0]);
+            SFUInt16 NetCount = 0;
+            std::memcpy(&NetCount, Payload + 1, 2);
+            SFUInt16 ActorCount = ntohs(NetCount);
+
+            SF_LOG_FRAMEWORK("EnterSceneResp Result=" << static_cast<int>(Result)
+                             << " ActorCount=" << ActorCount);
+
+            SFUInt32 Offset = 3;
+            for (SFUInt16 i = 0; i < ActorCount; ++i)
+            {
+                if ((Offset + SF_ACTOR_INFO_SIZE) > PayloadLen)
+                {
+                    break;
+                }
+
+                SFUInt8 ActorType = static_cast<SFUInt8>(Payload[Offset]);
+                SFUInt32 NetActorId = 0;
+                float PosX = 0.0f, PosY = 0.0f, PosZ = 0.0f;
+                float Yaw = 0.0f;
+                SFUInt32 NetHP = 0, NetMaxHP = 0;
+
+                std::memcpy(&NetActorId, Payload + Offset + 1, 4);
+                std::memcpy(&PosX, Payload + Offset + 5, 4);
+                std::memcpy(&PosY, Payload + Offset + 9, 4);
+                std::memcpy(&PosZ, Payload + Offset + 13, 4);
+                std::memcpy(&Yaw, Payload + Offset + 17, 4);
+                std::memcpy(&NetHP, Payload + Offset + 21, 4);
+                std::memcpy(&NetMaxHP, Payload + Offset + 25, 4);
+
+                SF_LOG_FRAMEWORK("SceneActor Type=" << static_cast<int>(ActorType)
+                                 << " ActorId=" << ntohl(NetActorId)
+                                 << " Pos=(" << PosX << "," << PosY << "," << PosZ << ")"
+                                 << " Yaw=" << Yaw
+                                 << " HP=" << ntohl(NetHP)
+                                 << " MaxHP=" << ntohl(NetMaxHP));
+
+                Offset += static_cast<SFUInt32>(SF_ACTOR_INFO_SIZE);
+            }
+
+            if (Result == 0)
+            {
+                bSceneEntered = true;
+                LastMoveMS = GetSteadyNowMS();
+            }
+        });
+
+    Dispatcher.RegisterHandler(SF_MSGID_ACTOR_ENTER_SCENE,
+        [](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            if (PayloadLen < SF_ACTOR_INFO_SIZE)
+            {
+                return;
+            }
+
+            SFUInt32 NetActorId = 0;
+            std::memcpy(&NetActorId, Payload + 1, 4);
+            SF_LOG_FRAMEWORK("Actor entered scene ActorId=" << ntohl(NetActorId));
+        });
+
+    Dispatcher.RegisterHandler(SF_MSGID_ACTOR_LEAVE_SCENE,
+        [](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            if (PayloadLen < 4)
+            {
+                return;
+            }
+
+            SFUInt32 NetActorId = 0;
+            std::memcpy(&NetActorId, Payload, 4);
+            SF_LOG_FRAMEWORK("Actor left scene ActorId=" << ntohl(NetActorId));
+        });
+
+    Dispatcher.RegisterHandler(SF_MSGID_MOVE_BROADCAST,
+        [](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            if (PayloadLen < 16)
+            {
+                return;
+            }
+
+            SFUInt32 NetActorId = 0;
+            float X = 0.0f, Y = 0.0f, Z = 0.0f;
+            std::memcpy(&NetActorId, Payload, 4);
+            std::memcpy(&X, Payload + 4, 4);
+            std::memcpy(&Y, Payload + 8, 4);
+            std::memcpy(&Z, Payload + 12, 4);
+
+            SF_LOG_FRAMEWORK("Actor moved ActorId=" << ntohl(NetActorId)
+                             << " Pos=(" << X << "," << Y << "," << Z << ")");
         });
 }
 
@@ -198,6 +305,17 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
         if (bLoggedIn)
         {
             SendHeartbeat();
+
+            if (bSceneEntered)
+            {
+                SFUInt64 NowMS = GetSteadyNowMS();
+                if ((NowMS - LastMoveMS) >= MoveIntervalMS)
+                {
+                    ClientPosX += 1.0f;
+                    SendMoveReq(ClientPosX, 0.0f, 0.0f);
+                    LastMoveMS = NowMS;
+                }
+            }
         }
         return;
     }
@@ -215,6 +333,10 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
         LastHeartbeatMS = GetSteadyNowMS();
         bLoginSent = false;
         bLoggedIn = false;
+        bEnterSceneSent = false;
+        bSceneEntered = false;
+        LastMoveMS = 0;
+        ClientPosX = 0.0f;
     }
 }
 
@@ -332,6 +454,12 @@ void SFModule_NetworkClient::Disconnect()
     }
 
     bIsConnected = false;
+    bLoginSent = false;
+    bLoggedIn = false;
+    bEnterSceneSent = false;
+    bSceneEntered = false;
+    LastMoveMS = 0;
+    ClientPosX = 0.0f;
     RecvBuffer.Clear();
     SendBuffer.Clear();
 
@@ -526,4 +654,23 @@ void SFModule_NetworkClient::SendLoginReq()
 
     SF_LOG_FRAMEWORK("Sent LoginReq PlayerId=" << LoginPlayerId
                      << " TokenLen=" << TokenLen);
+}
+
+void SFModule_NetworkClient::SendEnterSceneReq(SFUInt32 SceneId)
+{
+    char Payload[4] = {};
+    SFUInt32 NetSceneId = htonl(SceneId);
+    std::memcpy(Payload, &NetSceneId, 4);
+    SendMsg(SF_MSGID_ENTER_SCENE_REQ, Payload, 4);
+    SF_LOG_FRAMEWORK("Sent EnterSceneReq SceneId=" << SceneId);
+}
+
+void SFModule_NetworkClient::SendMoveReq(float X, float Y, float Z)
+{
+    char Payload[12] = {};
+    std::memcpy(Payload, &X, 4);
+    std::memcpy(Payload + 4, &Y, 4);
+    std::memcpy(Payload + 8, &Z, 4);
+    SendMsg(SF_MSGID_MOVE_REQ, Payload, 12);
+    SF_LOG_FRAMEWORK("Sent MoveReq Pos=(" << X << "," << Y << "," << Z << ")");
 }

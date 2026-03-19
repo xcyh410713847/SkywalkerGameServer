@@ -213,10 +213,10 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 **目标**: 确保项目可编译运行，骨架插件不影响启动。  
 **涉及插件**: Core（框架）
 
-- [ ] P0-1: 验证当前代码可编译通过
-- [ ] P0-2: 修改 `SFPluginManager` — 模块注册找不到时输出 warn 而非 error 终止
-- [ ] P0-3: 运行服务器确认启动不报错、监听端口正常
-- [ ] P0-4: 运行客户端确认连接服务器成功
+- [x] P0-1: 验证当前代码可编译通过
+- [x] P0-2: 修改 `SFPluginManager` — 模块注册找不到时输出 warn 而非 error 终止
+- [x] P0-3: 运行服务器确认启动不报错、监听端口正常
+- [x] P0-4: 运行客户端确认连接服务器成功
 
 **验收**: 服务器启动 → 客户端连接 → 日志 "New ClientSocket" → Ctrl+C 关闭。
 
@@ -229,37 +229,37 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 
 #### 1.1 收发缓冲区
 
-- [ ] P1-1: `Network/Object/SFNetworkBuffer.h` — 线性收发缓冲区
-- [ ] P1-2: 改造 `SSFObject_ClientSocket` — 添加 RecvBuffer/SendBuffer
+- [x] P1-1: `Network/Object/SFNetworkBuffer.h` — 线性收发缓冲区
+- [x] P1-2: 改造 `SSFObject_ClientSocket` — 添加 RecvBuffer/SendBuffer
 
 #### 1.2 消息帧编解码
 
-- [ ] P1-3: `Network/Object/SFMessageCodec.h/.cpp` — 编解码器
-- [ ] P1-4: `SSFObject_ClientSocket::Tick` 集成 Codec
+- [x] P1-3: `Network/Object/SFMessageCodec.h/.cpp` — 编解码器
+- [x] P1-4: `SSFObject_ClientSocket::Tick` 集成 Codec
 
 #### 1.3 消息分发
 
-- [ ] P1-5: `Network/Object/SFMessageDispatcher.h/.cpp` — 消息分发器
+- [x] P1-5: `Network/Object/SFMessageDispatcher.h/.cpp` — 消息分发器
   - `RegisterHandler(MsgID, Callback)` 供其他插件的模块注册
   - `Dispatch(Session, MsgID, Payload, Len)` 分发消息到对应 Handler
-- [ ] P1-6: `SFModule_NetworkServer` 集成分发器
+- [x] P1-6: `SFModule_NetworkServer` 集成分发器
 
 #### 1.4 会话管理（Session 属于 Network）
 
-- [ ] P1-7: `Network/Object/SFSession.h/.cpp` — 会话对象
+- [x] P1-7: `Network/Object/SFSession.h/.cpp` — 会话对象
   - SessionId(u32)、Socket、登录状态、PlayerId（登录后绑定）、最后活跃时间
-- [ ] P1-8: `SFModule_NetworkServer` 管理 SessionMap
+- [x] P1-8: `SFModule_NetworkServer` 管理 SessionMap
   - 连接建立 → 创建 Session（未登录态）
   - 登录成功 → Session 标记已登录 + 绑定 PlayerId
   - 断开 → 清理 Session → 通知相关插件
 
 #### 1.5 发送 API 与心跳
 
-- [ ] P1-9: `SFModule_NetworkServer` 添加发送接口
+- [x] P1-9: `SFModule_NetworkServer` 添加发送接口
   - `SendTo(SessionId, MsgID, Payload, Len)`
   - `Broadcast(MsgID, Payload, Len)`
   - `BroadcastToScene(SceneId, MsgID, Payload, Len)` — 预留接口
-- [ ] P1-10: 心跳机制（服务端超时检测、客户端定时发送）
+- [x] P1-10: 心跳机制（服务端超时检测、客户端定时发送）
 
 **验收**: 客户端连接 → 心跳正常 → 可注册自定义 Handler 收到消息 → Echo 测试通过。
 
@@ -270,14 +270,14 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 **目标**: 独立的登录验证流程。  
 **涉及插件**: **Auth**（新建）、Network（Session 状态变更）
 
-- [ ] P2-1: 新建 `SFPlugin_Auth`，注册 `SFModule_Auth`
-- [ ] P2-2: `SFModule_Auth` 注册 LoginReq(0x0101) Handler
+- [x] P2-1: 新建 `SFPlugin_Auth`，注册 `SFModule_Auth`
+- [x] P2-2: `SFModule_Auth` 注册 LoginReq(0x0101) Handler
   - 验证 PlayerId + Token（Demo: 硬编码白名单或配置文件）
   - 成功 → 更新 Session 为已登录态 + 绑定 PlayerId → 回复 LoginResp(成功)
   - 失败 → 回复 LoginResp(失败) → 断开连接
-- [ ] P2-3: 客户端连接后自动发送 LoginReq
-- [ ] P2-4: 添加 `Bin/Server/ServerPlugin.skywalkerC` 中 Auth 插件配置
-- [ ] P2-5: 未登录时发送非系统消息 → 在 Network 分发器层拦截拒绝
+- [x] P2-3: 客户端连接后自动发送 LoginReq
+- [x] P2-4: 添加 `Bin/Server/ServerPlugin.skywalkerC` 中 Auth 插件配置
+- [x] P2-5: 未登录时发送非系统消息 → 在 Network 分发器层拦截拒绝
 
 **验收**: 客户端连接 → 自动登录 → 正确 Token 成功 → 错误 Token 被拒绝断开。
 
@@ -290,24 +290,24 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 
 #### 3.1 Actor 插件 — 实体类体系
 
-- [ ] P3-1: 实现 `SFPlugin_Actor`，Install() 注册 `SFModule_ActorFactory`
-- [ ] P3-2: 定义 Actor 基类 `Actor/Object/SFActor.h`
+- [x] P3-1: 实现 `SFPlugin_Actor`，Install() 注册 `SFModule_ActorFactory`
+- [x] P3-2: 定义 Actor 基类 `Actor/Object/SFActor.h`
   - Position(x,y,z)、Rotation(yaw)、ActorType 枚举、SceneId、bActive
   - 虚函数: `Tick(DeltaMS)`、`OnEnterScene()`、`OnLeaveScene()`
-- [ ] P3-3: 定义 Creature 生物基类 `Actor/Object/SFCreature.h`
+- [x] P3-3: 定义 Creature 生物基类 `Actor/Object/SFCreature.h`
   - 继承 SFActor
   - HP/MaxHP、MoveSpeed、bAlive
   - 虚函数: `OnDeath()`、`OnMove()`
-- [ ] P3-4: 定义 Player `Actor/Object/SFPlayer.h`
+- [x] P3-4: 定义 Player `Actor/Object/SFPlayer.h`
   - 继承 SFCreature
   - PlayerId、SessionId、PlayerName
-- [ ] P3-5: 定义 NPC `Actor/Object/SFNPC.h`
+- [x] P3-5: 定义 NPC `Actor/Object/SFNPC.h`
   - 继承 SFCreature
   - NPCId、NPCType、PatrolPath(路径点数组)
-- [ ] P3-6: 定义 Monster `Actor/Object/SFMonster.h`
+- [x] P3-6: 定义 Monster `Actor/Object/SFMonster.h`
   - 继承 SFCreature
   - MonsterId、MonsterType、SpawnPosition、AggroRange
-- [ ] P3-7: `SFModule_ActorFactory` — Actor 工厂
+- [x] P3-7: `SFModule_ActorFactory` — Actor 工厂
   - `CreatePlayer(PlayerId)` → SFPlayer*
   - `CreateNPC(NPCConfig)` → SFNPC*
   - `CreateMonster(MonsterConfig)` → SFMonster*
@@ -315,14 +315,14 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 
 #### 3.2 Level 插件 — 场景管理
 
-- [ ] P3-8: 实现 `SFPlugin_Level`，Install() 注册 `SFModule_SceneManager`
-- [ ] P3-9: 定义 `Level/Object/SFScene.h` — 场景对象
+- [x] P3-8: 实现 `SFPlugin_Level`，Install() 注册 `SFModule_SceneManager`
+- [x] P3-9: 定义 `Level/Object/SFScene.h` — 场景对象
   - SceneId、SceneName
   - ActorMap (ActorId → SFActor*)
   - `AddActor()` / `RemoveActor()` / `GetAllActors()`
   - `BroadcastToScene(MsgID, Payload, Len)` — 通过 Network 的 SendTo 发给场景内所有玩家
   - `Tick(DeltaMS)` — Tick 场景内所有 Actor
-- [ ] P3-10: `SFModule_SceneManager` — 场景管理模块
+- [x] P3-10: `SFModule_SceneManager` — 场景管理模块
   - 管理 SceneMap（Demo: 启动时创建默认场景 SceneId=1）
   - 注册 EnterSceneReq(0x0201) Handler → 将 Player 加入场景 → 广播 ActorEnterScene → 回复完整 Actor 列表
   - 注册 MoveReq(0x0301) Handler → 更新 Actor 位置 → 广播 MoveBroadcast
@@ -330,8 +330,8 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 
 #### 3.3 Game 插件 — 业务流程
 
-- [ ] P3-11: 实现 `SFPlugin_Game`，Install() 注册 `SFModule_GameFlow`
-- [ ] P3-12: `SFModule_GameFlow` — 游戏流程控制
+- [x] P3-11: 实现 `SFPlugin_Game`，Install() 注册 `SFModule_GameFlow`
+- [x] P3-12: `SFModule_GameFlow` — 游戏流程控制
   - 监听 Auth 登录成功事件 → 通过 ActorFactory 创建 SFPlayer → 通知 Level 将 Player 加入默认场景
   - 监听玩家断线 → 通过 ActorFactory 销毁 Player
   - 负责 NPC/Monster 初始化配置（从 ServerConfig 或硬编码读取出生点数据）
@@ -339,10 +339,10 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 
 #### 3.4 客户端场景交互
 
-- [ ] P3-13: 客户端登录成功后自动发送 EnterSceneReq
-- [ ] P3-14: 客户端收到 EnterSceneResp 打印场景内所有 Actor
-- [ ] P3-15: 客户端定时发送 MoveReq（模拟移动）
-- [ ] P3-16: 客户端收到 MoveBroadcast / ActorEnterScene / ActorLeaveScene 打印日志
+- [x] P3-13: 客户端登录成功后自动发送 EnterSceneReq
+- [x] P3-14: 客户端收到 EnterSceneResp 打印场景内所有 Actor
+- [x] P3-15: 客户端定时发送 MoveReq（模拟移动）
+- [x] P3-16: 客户端收到 MoveBroadcast / ActorEnterScene / ActorLeaveScene 打印日志
 
 **验收**:
 1. 服务器启动 → 默认场景创建 → NPC 和 Monster 已在场景中
@@ -358,13 +358,12 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 **目标**: NPC 巡逻、Monster 简单行为，展示 Actor 体系的多态性。  
 **涉及插件**: **AI**
 
-- [ ] P4-1: 实现 `SFPlugin_AI`，Install() 注册 `SFModule_AIRuntime`
-- [ ] P4-2: `SFModule_AIRuntime` — AI 调度模块
+- [x] P4-1: 实现 `SFPlugin_AI`，Install() 注册 `SFModule_AIRuntime`
+- [x] P4-2: `SFModule_AIRuntime` — AI 调度模块
   - Tick 中遍历场景内所有 NPC/Monster
   - 对 NPC: 按 PatrolPath 巡逻（到达路径点后移向下一个），每次移动广播 MoveBroadcast
   - 对 Monster: idle 状态，检测范围内是否有 Player，有则朝 Player 方向移动（追击），广播 MoveBroadcast
-- [ ] P4-3: AI Tick 预算控制
-  - 读取 `AITickBudgetMS` 配置，超时则剩余 AI 延后到下帧
+- [ ] P4-3: AI Tick 预算控制（跳过：Demo 规模不需要预算控制）
 
 **验收**: NPC 在场景中来回巡逻 → 客户端收到 NPC 位置变化 → Monster 在玩家靠近时追击移动。
 

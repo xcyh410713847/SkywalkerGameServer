@@ -218,6 +218,11 @@ void SFModule_Auth::HandleLoginReq(SFUInt32 SessionId, const char *Payload, SFUI
     std::memcpy(Resp + 1, &NetSessId, 4);
     NetworkServer->SendTo(SessionId, SF_MSGID_LOGIN_RESP, Resp, 5);
 
+    char NotifyPayload[4] = {};
+    SFUInt32 NotifyNetPlayerId = htonl(PlayerId);
+    std::memcpy(NotifyPayload, &NotifyNetPlayerId, 4);
+    NetworkServer->DispatchLocal(SessionId, SF_MSGID_PLAYER_ENTER, NotifyPayload, 4);
+
     SF_LOG_FRAMEWORK("Login success PlayerId=" << PlayerId << " SessionId=" << SessionId);
 }
 

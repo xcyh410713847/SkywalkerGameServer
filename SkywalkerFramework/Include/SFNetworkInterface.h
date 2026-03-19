@@ -49,6 +49,8 @@ static const SFMsgID SF_MSGID_MOVE_REQ         = 0x0301;
 static const SFMsgID SF_MSGID_MOVE_BROADCAST   = 0x0302;
 
 /* 游戏业务 0x0400 - 0x04FF (Game) */
+static const SFMsgID SF_MSGID_PLAYER_ENTER     = 0x0401;
+static const SFMsgID SF_MSGID_PLAYER_LEAVE     = 0x0402;
 
 /* AI/生物 0x0500 - 0x05FF (AI) */
 static const SFMsgID SF_MSGID_CREATURE_SPAWN   = 0x0501;
@@ -113,6 +115,10 @@ public:
 
     /** 关闭指定 Session */
     virtual void CloseSession(SFUInt32 SessionId) = 0;
+
+    /** 本地分发消息（不经过网络接收，仅触发服务器侧处理器） */
+    virtual bool DispatchLocal(SFUInt32 SessionId, SFMsgID MsgID,
+                               const char *Payload, SFUInt32 PayloadLen) = 0;
 };
 
 SF_NAMESPACE_END

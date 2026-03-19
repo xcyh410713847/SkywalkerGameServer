@@ -11,9 +11,11 @@
 
 #include "Core/Plugin/SFPluginManager.h"
 
+#include "Module/SFModule_GameFlow.h"
+
 SF_NAMESPACE_USING
 
-SF_LOG_DEFINE(SFPlugin_Game, ESFLogLevel::Debug);
+SF_LOG_DEFINE(SFPlugin_Game, Framework);
 
 SF_PLUGIN_EXPORT(SFPlugin_Game)
 
@@ -21,10 +23,12 @@ SF_PLUGIN_EXPORT(SFPlugin_Game)
 
 void SFPlugin_Game::Install(SFObjectErrors &Errors)
 {
+    SF_REGISTER_MODULE(SFModule_GameFlow)
 }
 
 void SFPlugin_Game::Uninstall(SFObjectErrors &Errors)
 {
+    SF_UNREGISTER_MODULE(SFModule_GameFlow)
 }
 
 #pragma endregion SSFPlugin

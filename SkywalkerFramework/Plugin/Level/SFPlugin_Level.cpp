@@ -11,9 +11,11 @@
 
 #include "Core/Plugin/SFPluginManager.h"
 
+#include "Module/SFModule_SceneManager.h"
+
 SF_NAMESPACE_USING
 
-SF_LOG_DEFINE(SFPlugin_Level, ESFLogLevel::Debug);
+SF_LOG_DEFINE(SFPlugin_Level, Framework);
 
 SF_PLUGIN_EXPORT(SFPlugin_Level)
 
@@ -21,10 +23,12 @@ SF_PLUGIN_EXPORT(SFPlugin_Level)
 
 void SFPlugin_Level::Install(SFObjectErrors &Errors)
 {
+    SF_REGISTER_MODULE(SFModule_SceneManager)
 }
 
 void SFPlugin_Level::Uninstall(SFObjectErrors &Errors)
 {
+    SF_UNREGISTER_MODULE(SFModule_SceneManager)
 }
 
 #pragma endregion SSFPlugin

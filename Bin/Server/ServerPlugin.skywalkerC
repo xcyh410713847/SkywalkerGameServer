@@ -9,16 +9,31 @@ Plugin
         Name=SFModule_Auth
 
 Plugin
+    Name=SFPlugin_Actor
+    Module
+        Name=SFModule_ActorFactory
+
+Plugin
+    Name=SFPlugin_Level
+    Module
+        Name=SFModule_SceneManager
+
+Plugin
+    Name=SFPlugin_Game
+    Module
+        Name=SFModule_GameFlow
+
+Plugin
+    Name=SFPlugin_AI
+    Module
+        Name=SFModule_AIRuntime
+
+Plugin
     Name=SFPlugin_DB
     Module
         Name=SFModule_DBAccess
     Module
         Name=SFModule_PlayerRepository
-
-Plugin
-    Name=SFPlugin_Level
-    Module
-        Name=SFModule_WorldManager
 
 Plugin
     Name=SFPlugin_Profiler
@@ -38,5 +53,3 @@ Plugin
     Name=SFPlugin_CommandLine
     Module
         Name=SFModule_OS
-    Module
-        Name=SFModule_AdminCommand

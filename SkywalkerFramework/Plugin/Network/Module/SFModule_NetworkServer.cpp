@@ -454,6 +454,14 @@ void SFModule_NetworkServer::DestroySession(SFUInt32 SessionId, SFObjectErrors &
     SFSession *Session = IterSession->second;
     if (Session != nullptr)
     {
+        if (Session->IsAuthenticated())
+        {
+            SFUInt32 PlayerId = Session->GetPlayerId();
+            SFUInt32 NetPlayerId = htonl(PlayerId);
+            DispatchLocal(SessionId, SF_MSGID_PLAYER_LEAVE,
+                          reinterpret_cast<const char *>(&NetPlayerId), 4);
+        }
+
         SSFSOCKET Sock = Session->GetSocket();
         if (Sock != SSF_INVALID_SOCKET)
         {
@@ -540,6 +548,12 @@ void SFModule_NetworkServer::CloseSession(SFUInt32 SessionId)
     {
         IterSession->second->MarkClosing();
     }
+}
+
+bool SFModule_NetworkServer::DispatchLocal(SFUInt32 SessionId, SFMsgID MsgID,
+                                           const char *Payload, SFUInt32 PayloadLen)
+{
+    return Dispatcher.Dispatch(SessionId, MsgID, Payload, PayloadLen);
 }
 
 #pragma endregion Public API

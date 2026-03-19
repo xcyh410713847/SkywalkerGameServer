@@ -95,6 +95,10 @@ public:
     /** ISFNetworkServer::CloseSession */
     virtual void CloseSession(SFUInt32 SessionId) override;
 
+    /** ISFNetworkServer::DispatchLocal */
+    virtual bool DispatchLocal(SFUInt32 SessionId, SFMsgID MsgID,
+                               const char *Payload, SFUInt32 PayloadLen) override;
+
 #pragma endregion ISFNetworkServer Interface
 
 #pragma region Public API

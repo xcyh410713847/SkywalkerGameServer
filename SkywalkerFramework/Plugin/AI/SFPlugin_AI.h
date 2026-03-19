@@ -10,6 +10,8 @@
 
 #include "Core/Plugin/SFPlugin.h"
 
+#pragma comment(lib, "ws2_32.lib")
+
 SF_NAMESPACE_BEGIN
 
 class SFPlugin_AI : public SFPlugin
