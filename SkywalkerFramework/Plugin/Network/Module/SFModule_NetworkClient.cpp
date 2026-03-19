@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
 **文件: SkywalkerFramework\Plugin\Network\Module\SFModule_NetworkClient.cpp
 **作者: shyfan
 **日期: 2023/08/26 15:37:47
@@ -36,11 +36,21 @@ namespace
     }
 }
 
+/** 心跳消息ID */
+static const SFMsgID SF_MSGID_HEARTBEAT = 0x0001;
+
 #pragma region Object
 
 void SFModule_NetworkClient::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
+
+    /* 注册心跳回复处理（收到服务端心跳回复 → 日志） */
+    Dispatcher.RegisterHandler(SF_MSGID_HEARTBEAT,
+        [](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            /* 心跳回复，无需特殊处理 */
+        });
 }
 
 void SFModule_NetworkClient::Awake(SFObjectErrors &Errors)
@@ -104,6 +114,7 @@ void SFModule_NetworkClient::Start(SFObjectErrors &Errors)
             }
         }
     }
+    delete ConfigParse;
 
     SF_LOG_FRAMEWORK("Network Client Config IP " << ServerIP << " Port " << ServerPort);
 
@@ -119,6 +130,8 @@ void SFModule_NetworkClient::Start(SFObjectErrors &Errors)
     {
         SF_LOG_FRAMEWORK("Connect server failed at startup, will retry " << ServerIP << ":" << ServerPort);
     }
+
+    LastHeartbeatMS = GetSteadyNowMS();
 }
 
 void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
@@ -127,6 +140,9 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
 
     if (bIsConnected && ClientNetworkSocket != nullptr)
     {
+        ProcessRecv();
+        FlushSend();
+        SendHeartbeat();
         return;
     }
 
@@ -140,6 +156,7 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     if (Connect(ServerIP.c_str(), ServerPort))
     {
         SF_LOG_FRAMEWORK("Reconnect server success " << ServerIP << ":" << ServerPort);
+        LastHeartbeatMS = GetSteadyNowMS();
     }
 }
 
@@ -215,7 +232,7 @@ bool SFModule_NetworkClient::Connect(const char *IP, int Port)
         return false;
     }
 
-    // 设置为非阻塞模式
+    /* 设置为非阻塞模式 */
 #if defined(SKYWALKER_PLATFORM_WINDOWS)
     u_long mode = 1;
     if (ioctlsocket(Context.Socket, FIONBIO, &mode) == SSF_SOCKET_ERROR)
@@ -241,6 +258,8 @@ bool SFModule_NetworkClient::Connect(const char *IP, int Port)
     }
 
     bIsConnected = true;
+    RecvBuffer.Clear();
+    SendBuffer.Clear();
     SF_LOG_FRAMEWORK("Connected to server " << IP << ":" << Port << " Socket " << ClientNetworkSocket->GetSocket());
 
     return true;
@@ -255,6 +274,8 @@ void SFModule_NetworkClient::Disconnect()
     }
 
     bIsConnected = false;
+    RecvBuffer.Clear();
+    SendBuffer.Clear();
 
     SF_LOG_FRAMEWORK("Disconnected from server");
 }
@@ -262,6 +283,15 @@ void SFModule_NetworkClient::Disconnect()
 bool SFModule_NetworkClient::IsConnected() const
 {
     return bIsConnected && ClientNetworkSocket != nullptr && ClientNetworkSocket->IsSocketValid();
+}
+
+bool SFModule_NetworkClient::SendMsg(SFMsgID MsgID, const char *Payload, SFUInt32 PayloadLen)
+{
+    if (!IsConnected())
+    {
+        return false;
+    }
+    return SFMessageCodec::Encode(SendBuffer, MsgID, Payload, PayloadLen);
 }
 
 int SFModule_NetworkClient::Send(const char *Data, int Length)
@@ -301,4 +331,107 @@ void SFModule_NetworkClient::StopNetworkClient(SFObjectErrors &InErrors)
     SSF_NETWORK_CLEANUP();
 
     SF_LOG_FRAMEWORK("Network client stopped");
+}
+
+void SFModule_NetworkClient::ProcessRecv()
+{
+    if (ClientNetworkSocket == nullptr || ClientNetworkSocket->IsSocketInvalid())
+    {
+        return;
+    }
+
+    SSFSOCKET Sock = ClientNetworkSocket->GetSocket();
+    char TempBuf[4096];
+    int BytesRead = SSF_SOCKET_READ(Sock, TempBuf, sizeof(TempBuf), 0);
+
+    if (BytesRead > 0)
+    {
+        RecvBuffer.Append(TempBuf, static_cast<SFSize>(BytesRead));
+
+        std::vector<SFDecodedMessage> Messages;
+        SFUInt32 MsgCount = SFMessageCodec::Decode(RecvBuffer, Messages);
+
+        for (SFUInt32 i = 0; i < MsgCount; i++)
+        {
+            const SFDecodedMessage &Msg = Messages[i];
+            if (!Dispatcher.Dispatch(0, Msg.MsgID, Msg.Payload, Msg.PayloadLen))
+            {
+                SF_LOG_FRAMEWORK("Client unhandled MsgID 0x"
+                                 << std::hex << Msg.MsgID << std::dec);
+            }
+        }
+    }
+    else if (BytesRead == 0)
+    {
+        /* 服务器断开 */
+        SF_LOG_FRAMEWORK("Server disconnected");
+        Disconnect();
+    }
+    else
+    {
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        int Error = WSAGetLastError();
+        if (Error != WSAEWOULDBLOCK)
+        {
+            SF_LOG_ERROR("Recv error " << Error);
+            Disconnect();
+        }
+#else
+        if (errno != EAGAIN && errno != EWOULDBLOCK)
+        {
+            SF_LOG_ERROR("Recv error " << errno);
+            Disconnect();
+        }
+#endif
+    }
+}
+
+void SFModule_NetworkClient::FlushSend()
+{
+    if (SendBuffer.ReadableBytes() == 0)
+    {
+        return;
+    }
+
+    if (ClientNetworkSocket == nullptr || ClientNetworkSocket->IsSocketInvalid())
+    {
+        return;
+    }
+
+    SSFSOCKET Sock = ClientNetworkSocket->GetSocket();
+    int BytesSent = SSF_SOCKET_WRITE(Sock,
+                                      SendBuffer.ReadPtr(),
+                                      static_cast<int>(SendBuffer.ReadableBytes()),
+                                      0);
+    if (BytesSent > 0)
+    {
+        SendBuffer.Consume(static_cast<SFSize>(BytesSent));
+    }
+    else if (BytesSent < 0)
+    {
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+        int Error = WSAGetLastError();
+        if (Error != WSAEWOULDBLOCK)
+        {
+            SF_LOG_ERROR("Send error " << Error);
+            Disconnect();
+        }
+#else
+        if (errno != EAGAIN && errno != EWOULDBLOCK)
+        {
+            SF_LOG_ERROR("Send error " << errno);
+            Disconnect();
+        }
+#endif
+    }
+}
+
+void SFModule_NetworkClient::SendHeartbeat()
+{
+    SFUInt64 NowMS = GetSteadyNowMS();
+    if ((NowMS - LastHeartbeatMS) >= HeartbeatIntervalMS)
+    {
+        SendMsg(SF_MSGID_HEARTBEAT, nullptr, 0);
+        LastHeartbeatMS = NowMS;
+    }
 }

@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
 **文件: SkywalkerFramework\Plugin\Network\Module\SFModule_NetworkServer.h
 **作者: shyfan
 **日期: 2023/08/26 15:37:10
@@ -14,6 +14,9 @@
 
 #include "SFObject_ServerSocket.h"
 #include "SFObject_ClientSocket.h"
+#include "SFSession.h"
+#include "SFMessageCodec.h"
+#include "SFMessageDispatcher.h"
 
 #include <functional>
 #include <filesystem>
@@ -21,92 +24,129 @@
 SF_NAMESPACE_BEGIN
 
 /**
- * 作为服务器，接受客户端连接
+ * 网络服务器模块
+ *
+ * 职责：
+ * 1. TCP 监听与接受连接
+ * 2. 会话(Session)生命周期管理
+ * 3. 消息帧的接收、解码、分发
+ * 4. 消息帧的编码、发送
+ * 5. 心跳超时检测
  */
 class SFModule_NetworkServer : public SSFModule
 {
 #pragma region Object
 
 public:
-    /**
-     * 初始化
-     */
     virtual void Init(SFObjectErrors &Errors) override;
-
-    /**
-     * 唤醒
-     */
     virtual void Awake(SFObjectErrors &Errors) override;
-
-    /**
-     * 开始
-     */
     virtual void Start(SFObjectErrors &Errors) override;
-
-    /**
-     * Tick
-     */
     virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
-
-    /**
-     * 结束
-     */
     virtual void Stop(SFObjectErrors &Errors) override;
-
-    /**
-     * 休眠
-     */
     virtual void Sleep(SFObjectErrors &Errors) override;
-
-    /**
-     * 销毁
-     */
     virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Object
 
 public:
     SFModule_NetworkServer(SFModuleContext &InContext, SFObjectErrors &InErrors)
-        : SSFModule(InContext, InErrors), ServerPort(0)
+        : SSFModule(InContext, InErrors), ServerPort(0), NextSessionId(1),
+          SessionTimeoutMS(15000)
     {
     }
     virtual ~SFModule_NetworkServer() {};
 
-private:
+#pragma region Public API
+
     /**
-     * 开启网络服务器
+     * 获取消息分发器（供其他插件注册 Handler）
      */
+    SFMessageDispatcher &GetDispatcher() { return Dispatcher; }
+
+    /**
+     * 发送消息给指定 Session
+     * @return true=成功写入发送缓冲区, false=Session不存在或编码失败
+     */
+    bool SendTo(SFUInt32 SessionId, SFMsgID MsgID,
+                const char *Payload, SFUInt32 PayloadLen);
+
+    /**
+     * 广播消息给所有已认证的 Session
+     */
+    void Broadcast(SFMsgID MsgID, const char *Payload, SFUInt32 PayloadLen);
+
+    /**
+     * 广播消息给指定 Session 列表
+     */
+    void BroadcastTo(const std::vector<SFUInt32> &SessionIds,
+                     SFMsgID MsgID, const char *Payload, SFUInt32 PayloadLen);
+
+    /**
+     * 根据 SessionId 获取 Session
+     */
+    SFSession *GetSession(SFUInt32 SessionId);
+
+    /**
+     * 根据 PlayerId 查找 SessionId
+     * @return SessionId; 0 表示未找到
+     */
+    SFUInt32 FindSessionByPlayerId(SFUInt32 PlayerId);
+
+    /**
+     * 关闭指定 Session
+     */
+    void CloseSession(SFUInt32 SessionId);
+
+#pragma endregion Public API
+
+private:
+    /** 开启网络服务器 */
     void StartNetworkServer(SFObjectErrors &Errors);
 
-    /**
-     * 停止网络服务器
-     */
+    /** 停止网络服务器 */
     void StopNetworkServer(SFObjectErrors &Errors);
 
-    /**
-     * 创建网络客户端
-     */
-    void CreateNetworkClient(SFObjectErrors &Errors);
+    /** 接受新连接，创建 Session */
+    void AcceptNewConnections(SFObjectErrors &Errors);
 
-    /**
-     * 关闭并清理连接
-     */
-    void CleanupClientSocket(SSFSOCKET Socket, SFObjectErrors &Errors);
+    /** 处理所有 Session 的接收 */
+    void ProcessSessionRecv(SFObjectErrors &Errors);
+
+    /** 处理所有 Session 的发送 */
+    void ProcessSessionSend(SFObjectErrors &Errors);
+
+    /** 清理断开的 Session */
+    void CleanupClosedSessions(SFObjectErrors &Errors);
+
+    /** 心跳超时检测 */
+    void CheckSessionTimeout();
+
+    /** 内部清理一个 Session */
+    void DestroySession(SFUInt32 SessionId, SFObjectErrors &Errors);
 
 private:
     SSF_NETWORK_DATA;
 
     SF_UNIQUE_PTR(SSFObject_ServerSocket)
     ServerNetworkSocket = nullptr;
-    SFMap<SSFSOCKET, SSF_PRT_CLIENT_SOCKET> ClientNetworkSocketMap;
 
+    /** SessionId → Session */
+    SFMap<SFUInt32, SFSession *> SessionMap;
+    /** Socket → SessionId (快速查找) */
+    SFMap<SSFSOCKET, SFUInt32> SocketToSessionMap;
+
+    /** 消息分发器 */
+    SFMessageDispatcher Dispatcher;
+
+    /** SessionId 自增计数器 */
+    SFUInt32 NextSessionId;
+
+    /** 配置 */
     SFString ServerIP;
     int ServerPort;
-    SFUInt32 MaxMsgPerSecond = 120;
-    SFUInt64 StatsLogIntervalMS = 5000;
-    SFUInt64 LastStatsLogMS = 0;
+    SFUInt64 SessionTimeoutMS;
 };
 
 SF_NAMESPACE_END
 
-#endif // __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__
+#endif /* __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__ */
