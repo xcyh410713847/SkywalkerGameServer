@@ -9,6 +9,7 @@
 
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
+#include "Include/SFNetworkInterface.h"
 
 #include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
 
@@ -35,8 +36,7 @@ namespace
     }
 }
 
-/** 心跳消息ID */
-static const SFMsgID SF_MSGID_HEARTBEAT = 0x0001;
+/** 心跳消息ID (使用 Include/SFNetworkInterface.h 中的定义) */
 
 #pragma region Object
 
@@ -307,6 +307,17 @@ void SFModule_NetworkServer::ProcessSessionRecv(SFObjectErrors &Errors)
             for (SFUInt32 i = 0; i < MsgCount; i++)
             {
                 const SFDecodedMessage &Msg = Messages[i];
+
+                /* 鉴权守卫：未认证 Session 只允许系统消息(0x0001-0x00FF)和登录消息(0x0100-0x01FF) */
+                if (!Session->IsAuthenticated() &&
+                    Msg.MsgID > 0x01FF)
+                {
+                    SF_LOG_FRAMEWORK("Auth guard: reject MsgID 0x"
+                                     << std::hex << Msg.MsgID << std::dec
+                                     << " from unauthenticated Session " << Session->GetSessionId());
+                    continue;
+                }
+
                 if (!Dispatcher.Dispatch(Session->GetSessionId(), Msg.MsgID,
                                          Msg.Payload, Msg.PayloadLen))
                 {
@@ -532,3 +543,47 @@ void SFModule_NetworkServer::CloseSession(SFUInt32 SessionId)
 }
 
 #pragma endregion Public API
+
+#pragma region ISFNetworkServer
+
+bool SFModule_NetworkServer::RegisterHandler(SFMsgID MsgID, SFMessageHandler Handler)
+{
+    return Dispatcher.RegisterHandler(MsgID, Handler);
+}
+
+void SFModule_NetworkServer::UnregisterHandler(SFMsgID MsgID)
+{
+    Dispatcher.UnregisterHandler(MsgID);
+}
+
+void SFModule_NetworkServer::SetSessionAuthenticated(SFUInt32 SessionId, SFUInt32 PlayerId)
+{
+    SFSession *Session = GetSession(SessionId);
+    if (Session != nullptr)
+    {
+        Session->SetAuthenticated(PlayerId);
+        SF_LOG_FRAMEWORK("Session " << SessionId << " authenticated PlayerId " << PlayerId);
+    }
+}
+
+bool SFModule_NetworkServer::IsSessionAuthenticated(SFUInt32 SessionId)
+{
+    SFSession *Session = GetSession(SessionId);
+    if (Session == nullptr)
+    {
+        return false;
+    }
+    return Session->IsAuthenticated();
+}
+
+SFUInt32 SFModule_NetworkServer::GetSessionPlayerId(SFUInt32 SessionId)
+{
+    SFSession *Session = GetSession(SessionId);
+    if (Session == nullptr)
+    {
+        return 0;
+    }
+    return Session->GetPlayerId();
+}
+
+#pragma endregion ISFNetworkServer

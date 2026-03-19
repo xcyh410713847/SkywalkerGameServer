@@ -9,6 +9,7 @@
 
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
+#include "Include/SFNetworkInterface.h"
 
 #include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
 
@@ -21,6 +22,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #endif
+
+#include <cstring>
 
 SF_NAMESPACE_USING
 
@@ -36,8 +39,7 @@ namespace
     }
 }
 
-/** 心跳消息ID */
-static const SFMsgID SF_MSGID_HEARTBEAT = 0x0001;
+/** 消息ID 使用 Include/SFNetworkInterface.h 中的定义 */
 
 #pragma region Object
 
@@ -45,11 +47,41 @@ void SFModule_NetworkClient::Init(SFObjectErrors &Errors)
 {
     SSFModule::Init(Errors);
 
-    /* 注册心跳回复处理（收到服务端心跳回复 → 日志） */
+    /* 注册心跳回复处理（收到服务端心跳回复 → 无需特殊处理） */
     Dispatcher.RegisterHandler(SF_MSGID_HEARTBEAT,
         [](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
         {
             /* 心跳回复，无需特殊处理 */
+        });
+
+    /* 注册登录回复处理 */
+    Dispatcher.RegisterHandler(SF_MSGID_LOGIN_RESP,
+        [this](SFUInt32 SessionId, const char *Payload, SFUInt32 PayloadLen)
+        {
+            if (PayloadLen < 5)
+            {
+                SF_LOG_ERROR("LoginResp payload too short: " << PayloadLen);
+                return;
+            }
+
+            SFUInt8 Result = static_cast<SFUInt8>(Payload[0]);
+            SFUInt32 NetSessionId = 0;
+            std::memcpy(&NetSessionId, Payload + 1, 4);
+            /* 从网络序转主机序 */
+            NetSessionId = ntohl(NetSessionId);
+
+            if (Result == static_cast<SFUInt8>(ESFLoginResult::Success))
+            {
+                bLoggedIn = true;
+                SF_LOG_FRAMEWORK("Login success, SessionId=" << NetSessionId
+                                 << " PlayerId=" << LoginPlayerId);
+            }
+            else
+            {
+                SF_LOG_FRAMEWORK("Login failed, Result=" << static_cast<int>(Result));
+                /* 登录失败，断开连接 */
+                Disconnect();
+            }
         });
 }
 
@@ -111,6 +143,18 @@ void SFModule_NetworkClient::Start(SFObjectErrors &Errors)
                 {
                     ServerPort = std::stoi(PortNode->GetNodeValueString());
                 }
+
+                SKYWALKER_PTR_SCRIPT_NODE PlayerIdNode = ConfigNode->GetChildNodeFromName("PlayerId");
+                if (PlayerIdNode != nullptr)
+                {
+                    LoginPlayerId = static_cast<SFUInt32>(std::stoul(PlayerIdNode->GetNodeValueString()));
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE TokenNode = ConfigNode->GetChildNodeFromName("Token");
+                if (TokenNode != nullptr)
+                {
+                    LoginToken = TokenNode->GetNodeValueString();
+                }
             }
         }
     }
@@ -142,7 +186,19 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     {
         ProcessRecv();
         FlushSend();
-        SendHeartbeat();
+
+        /* 连接成功后先发送登录请求 */
+        if (!bLoginSent)
+        {
+            SendLoginReq();
+            bLoginSent = true;
+        }
+
+        /* 登录成功后才发送心跳 */
+        if (bLoggedIn)
+        {
+            SendHeartbeat();
+        }
         return;
     }
 
@@ -157,6 +213,8 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
     {
         SF_LOG_FRAMEWORK("Reconnect server success " << ServerIP << ":" << ServerPort);
         LastHeartbeatMS = GetSteadyNowMS();
+        bLoginSent = false;
+        bLoggedIn = false;
     }
 }
 
@@ -434,4 +492,38 @@ void SFModule_NetworkClient::SendHeartbeat()
         SendMsg(SF_MSGID_HEARTBEAT, nullptr, 0);
         LastHeartbeatMS = NowMS;
     }
+}
+
+void SFModule_NetworkClient::SendLoginReq()
+{
+    /*
+     * LoginReq payload:
+     *   PlayerId (u32, network order)
+     *   TokenLen (u16, network order)
+     *   Token    (bytes)
+     */
+    SFUInt16 TokenLen = static_cast<SFUInt16>(LoginToken.size());
+    SFUInt32 PayloadLen = 4 + 2 + TokenLen;
+    char Payload[512] = {};
+
+    if (PayloadLen > sizeof(Payload))
+    {
+        SF_LOG_ERROR("Login token too long");
+        return;
+    }
+
+    SFUInt32 NetPlayerId = htonl(LoginPlayerId);
+    SFUInt16 NetTokenLen = htons(TokenLen);
+
+    std::memcpy(Payload, &NetPlayerId, 4);
+    std::memcpy(Payload + 4, &NetTokenLen, 2);
+    if (TokenLen > 0)
+    {
+        std::memcpy(Payload + 6, LoginToken.c_str(), TokenLen);
+    }
+
+    SendMsg(SF_MSGID_LOGIN_REQ, Payload, PayloadLen);
+
+    SF_LOG_FRAMEWORK("Sent LoginReq PlayerId=" << LoginPlayerId
+                     << " TokenLen=" << TokenLen);
 }

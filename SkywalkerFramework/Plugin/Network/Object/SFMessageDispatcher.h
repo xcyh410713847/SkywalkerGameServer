@@ -10,6 +10,7 @@
 
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
+#include "Include/SFNetworkInterface.h"
 
 #include "SFMessageCodec.h"
 
@@ -18,20 +19,12 @@
 SF_NAMESPACE_BEGIN
 
 /**
- * 消息处理回调
- * @param SessionId 会话ID
- * @param Payload   负载数据
- * @param PayloadLen 负载长度
- */
-using SFMessageHandler = std::function<void(SFUInt32 SessionId,
-                                            const char *Payload,
-                                            SFUInt32 PayloadLen)>;
-
-/**
  * 消息分发器
  *
  * 其他插件的模块在 Init() 阶段通过 RegisterHandler 注册消息处理回调，
  * NetworkServer 在收到完整消息后调用 Dispatch 分发。
+ *
+ * SFMessageHandler 类型定义在 Include/SFNetworkInterface.h 中。
  */
 class SFMessageDispatcher
 {

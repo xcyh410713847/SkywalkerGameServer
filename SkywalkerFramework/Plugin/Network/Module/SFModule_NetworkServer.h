@@ -9,6 +9,7 @@
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_SERVER_H__
 
 #include "Include/SFCore.h"
+#include "Include/SFNetworkInterface.h"
 
 #include "Core/Module/SFModule.h"
 
@@ -32,8 +33,10 @@ SF_NAMESPACE_BEGIN
  * 3. 消息帧的接收、解码、分发
  * 4. 消息帧的编码、发送
  * 5. 心跳超时检测
+ *
+ * 实现 ISFNetworkServer 接口供其他插件跨插件调用。
  */
-class SFModule_NetworkServer : public SSFModule
+class SFModule_NetworkServer : public SSFModule, public ISFNetworkServer
 {
 #pragma region Object
 
@@ -56,46 +59,55 @@ public:
     }
     virtual ~SFModule_NetworkServer() {};
 
+#pragma region ISFNetworkServer Interface
+
+    /** ISFNetworkServer::RegisterHandler */
+    virtual bool RegisterHandler(SFMsgID MsgID, SFMessageHandler Handler) override;
+
+    /** ISFNetworkServer::UnregisterHandler */
+    virtual void UnregisterHandler(SFMsgID MsgID) override;
+
+    /** ISFNetworkServer::SendTo */
+    virtual bool SendTo(SFUInt32 SessionId, SFMsgID MsgID,
+                        const char *Payload, SFUInt32 PayloadLen) override;
+
+    /** ISFNetworkServer::Broadcast */
+    virtual void Broadcast(SFMsgID MsgID,
+                           const char *Payload, SFUInt32 PayloadLen) override;
+
+    /** ISFNetworkServer::BroadcastTo */
+    virtual void BroadcastTo(const std::vector<SFUInt32> &SessionIds,
+                             SFMsgID MsgID,
+                             const char *Payload, SFUInt32 PayloadLen) override;
+
+    /** ISFNetworkServer::SetSessionAuthenticated */
+    virtual void SetSessionAuthenticated(SFUInt32 SessionId, SFUInt32 PlayerId) override;
+
+    /** ISFNetworkServer::IsSessionAuthenticated */
+    virtual bool IsSessionAuthenticated(SFUInt32 SessionId) override;
+
+    /** ISFNetworkServer::GetSessionPlayerId */
+    virtual SFUInt32 GetSessionPlayerId(SFUInt32 SessionId) override;
+
+    /** ISFNetworkServer::FindSessionByPlayerId */
+    virtual SFUInt32 FindSessionByPlayerId(SFUInt32 PlayerId) override;
+
+    /** ISFNetworkServer::CloseSession */
+    virtual void CloseSession(SFUInt32 SessionId) override;
+
+#pragma endregion ISFNetworkServer Interface
+
 #pragma region Public API
 
     /**
-     * 获取消息分发器（供其他插件注册 Handler）
+     * 获取消息分发器（本插件内直接使用）
      */
     SFMessageDispatcher &GetDispatcher() { return Dispatcher; }
 
     /**
-     * 发送消息给指定 Session
-     * @return true=成功写入发送缓冲区, false=Session不存在或编码失败
-     */
-    bool SendTo(SFUInt32 SessionId, SFMsgID MsgID,
-                const char *Payload, SFUInt32 PayloadLen);
-
-    /**
-     * 广播消息给所有已认证的 Session
-     */
-    void Broadcast(SFMsgID MsgID, const char *Payload, SFUInt32 PayloadLen);
-
-    /**
-     * 广播消息给指定 Session 列表
-     */
-    void BroadcastTo(const std::vector<SFUInt32> &SessionIds,
-                     SFMsgID MsgID, const char *Payload, SFUInt32 PayloadLen);
-
-    /**
-     * 根据 SessionId 获取 Session
+     * 根据 SessionId 获取 Session（本插件内直接使用）
      */
     SFSession *GetSession(SFUInt32 SessionId);
-
-    /**
-     * 根据 PlayerId 查找 SessionId
-     * @return SessionId; 0 表示未找到
-     */
-    SFUInt32 FindSessionByPlayerId(SFUInt32 PlayerId);
-
-    /**
-     * 关闭指定 Session
-     */
-    void CloseSession(SFUInt32 SessionId);
 
 #pragma endregion Public API
 

@@ -9,6 +9,7 @@
 #define __SKYWALKER_SERVER_FRAMEWORK_MODULE_NETWORK_CLIENT_H__
 
 #include "Include/SFCore.h"
+#include "Include/SFNetworkInterface.h"
 
 #include "Core/Module/SFModule.h"
 
@@ -48,7 +49,8 @@ public:
 public:
     SFModule_NetworkClient(SFModuleContext &InContext, SFObjectErrors &InErrors)
         : SSFModule(InContext, InErrors), ServerPort(0),
-          HeartbeatIntervalMS(5000), LastHeartbeatMS(0)
+          HeartbeatIntervalMS(5000), LastHeartbeatMS(0),
+          LoginPlayerId(0), bLoggedIn(false), bLoginSent(false)
     {
     }
     virtual ~SFModule_NetworkClient() {};
@@ -87,6 +89,9 @@ private:
     /** 发送心跳 */
     void SendHeartbeat();
 
+    /** 连接后发送登录请求 */
+    void SendLoginReq();
+
 private:
     SSF_NETWORK_DATA;
 
@@ -101,6 +106,12 @@ private:
 
     SFUInt64 HeartbeatIntervalMS;
     SFUInt64 LastHeartbeatMS;
+
+    /** 登录相关 */
+    SFUInt32 LoginPlayerId;
+    SFString LoginToken;
+    bool bLoggedIn;
+    bool bLoginSent;
 };
 
 SF_NAMESPACE_END
