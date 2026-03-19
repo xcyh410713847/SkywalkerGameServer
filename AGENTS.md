@@ -1,16 +1,17 @@
 # SkywalkerGameServer 开发知识库
 
-**Generated:** 2026-03-19 | **Commit:** aee3a33 | **Branch:** master
+**Updated:** 2026-03-19 | **Branch:** master
 
 ## 概述
 C++20 游戏服务器框架，插件化架构，全部手写（无第三方库），学习用途。参考 NoahGameFrame + UnrealEngine 设计。
+**当前状态**: 可运行的最小游戏服务器 Demo（登录→进入场景→移动同步→NPC巡逻→Monster追击→多客户端互见→Profiler监控→服务器/客户端命令行）。
 
 ## 项目结构
 ```
 SkywalkerGameServer/
 ├── SkywalkerFramework/         # 核心框架（静态库 + 动态插件）
 │   ├── Core/                  # 静态库 SFCore：服务管理、插件加载、对象模型
-│   ├── Plugin/                # 9个动态插件：Network/CommandLine/AI/DB/Game/Level/Actor/Video/Profiler
+│   ├── Plugin/                # 10个动态插件：Network/CommandLine/AI/DB/Game/Level/Actor/Video/Profiler/Auth
 │   └── Include/               # 6个公共头文件
 ├── SkywalkerGameServer/       # 服务器可执行文件（main入口）
 ├── SkywalkerGameClient/       # 测试客户端

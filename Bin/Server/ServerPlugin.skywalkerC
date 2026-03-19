@@ -38,9 +38,7 @@ Plugin
 Plugin
     Name=SFPlugin_Profiler
     Module
-        Name=SFModule_Metrics
-    Module
-        Name=SFModule_HealthCheck
+        Name=SFModule_ServerStats
 
 Plugin
     Name=SFPlugin_Video

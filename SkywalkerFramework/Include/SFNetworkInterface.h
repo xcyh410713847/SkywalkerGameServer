@@ -119,6 +119,25 @@ public:
     /** 本地分发消息（不经过网络接收，仅触发服务器侧处理器） */
     virtual bool DispatchLocal(SFUInt32 SessionId, SFMsgID MsgID,
                                const char *Payload, SFUInt32 PayloadLen) = 0;
+
+    /*--------------------------------------------------------------------
+     * 统计信息（供 Profiler / 运维使用）
+     *------------------------------------------------------------------*/
+
+    /** 当前在线 Session 数（含未认证） */
+    virtual SFUInt32 GetSessionCount() = 0;
+
+    /** 当前已认证（在线玩家）Session 数 */
+    virtual SFUInt32 GetAuthenticatedSessionCount() = 0;
+
+    /** 累计接收消息数 */
+    virtual SFUInt64 GetTotalRecvMsgCount() = 0;
+
+    /** 累计发送消息数 */
+    virtual SFUInt64 GetTotalSendMsgCount() = 0;
+
+    /** 重置消息计数器（用于周期统计后清零） */
+    virtual void ResetMsgCounters() = 0;
 };
 
 SF_NAMESPACE_END

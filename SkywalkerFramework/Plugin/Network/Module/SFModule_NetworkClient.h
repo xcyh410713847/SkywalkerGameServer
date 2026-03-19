@@ -100,6 +100,12 @@ private:
     /** 进入场景后周期发送移动请求 */
     void SendMoveReq(float X, float Y, float Z);
 
+    /** 非阻塞读取 stdin 一行 */
+    bool TryReadStdinLine(SFString &OutLine);
+
+    /** 处理客户端命令 */
+    void ProcessClientCommand(const SFString &Command);
+
 private:
     SSF_NETWORK_DATA;
 
@@ -127,6 +133,9 @@ private:
     SFUInt64 LastMoveMS;
     SFUInt64 MoveIntervalMS;
     float ClientPosX;
+
+    /** 手动命令模式 (true=禁止自动移动，等待用户输入) */
+    bool bManualMode = false;
 };
 
 SF_NAMESPACE_END

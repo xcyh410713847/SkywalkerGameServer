@@ -99,6 +99,21 @@ public:
     virtual bool DispatchLocal(SFUInt32 SessionId, SFMsgID MsgID,
                                const char *Payload, SFUInt32 PayloadLen) override;
 
+    /** ISFNetworkServer::GetSessionCount */
+    virtual SFUInt32 GetSessionCount() override;
+
+    /** ISFNetworkServer::GetAuthenticatedSessionCount */
+    virtual SFUInt32 GetAuthenticatedSessionCount() override;
+
+    /** ISFNetworkServer::GetTotalRecvMsgCount */
+    virtual SFUInt64 GetTotalRecvMsgCount() override;
+
+    /** ISFNetworkServer::GetTotalSendMsgCount */
+    virtual SFUInt64 GetTotalSendMsgCount() override;
+
+    /** ISFNetworkServer::ResetMsgCounters */
+    virtual void ResetMsgCounters() override;
+
 #pragma endregion ISFNetworkServer Interface
 
 #pragma region Public API
@@ -161,6 +176,10 @@ private:
     SFString ServerIP;
     int ServerPort;
     SFUInt64 SessionTimeoutMS;
+
+    /** 统计计数器 */
+    SFUInt64 TotalRecvMsgCount = 0;
+    SFUInt64 TotalSendMsgCount = 0;
 };
 
 SF_NAMESPACE_END

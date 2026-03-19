@@ -1,4 +1,4 @@
-﻿/*************************************************************************
+/*************************************************************************
 **文件: SkywalkerFramework\Plugin\CommandLine\Module\SFModule_OS.h
 **作者: shyfan
 **日期: 2024/01/16 14:45:30
@@ -10,6 +10,9 @@
 
 #include "Core/Module/SFModule.h"
 
+#include "Include/SFNetworkInterface.h"
+#include "Include/SFActorTypes.h"
+
 SF_NAMESPACE_BEGIN
 
 class SFModule_OS : public SSFModule
@@ -17,7 +20,8 @@ class SFModule_OS : public SSFModule
 #pragma region Module
 
     virtual void Init(SFObjectErrors &Errors) override;
-
+    virtual void Awake(SFObjectErrors &Errors) override;
+    virtual void Tick(SFObjectErrors &Errors, SFUInt64 DelayMS) override;
     virtual void Destroy(SFObjectErrors &Errors) override;
 
 #pragma endregion Module
@@ -31,6 +35,21 @@ public:
      * 只能用static修饰，否则不生效
      */
     static void SignalHandler(int Signal);
+
+private:
+    /** 非阻塞读取 stdin 一行 (返回 true 表示读到了一行) */
+    bool TryReadStdinLine(SFString &OutLine);
+
+    /** 处理命令 */
+    void ProcessCommand(const SFString &Command);
+
+    /** 查找网络服务接口 */
+    ISFNetworkServer *FindNetworkServer();
+    ISFSceneManager *FindSceneManager();
+
+private:
+    ISFNetworkServer *NetworkServer = nullptr;
+    ISFSceneManager *SceneManager = nullptr;
 };
 
 SF_NAMESPACE_END

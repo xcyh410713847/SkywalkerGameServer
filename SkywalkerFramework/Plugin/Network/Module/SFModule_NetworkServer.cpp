@@ -318,6 +318,8 @@ void SFModule_NetworkServer::ProcessSessionRecv(SFObjectErrors &Errors)
                     continue;
                 }
 
+                ++TotalRecvMsgCount;
+
                 if (!Dispatcher.Dispatch(Session->GetSessionId(), Msg.MsgID,
                                          Msg.Payload, Msg.PayloadLen))
                 {
@@ -492,7 +494,12 @@ bool SFModule_NetworkServer::SendTo(SFUInt32 SessionId, SFMsgID MsgID,
     }
 
     SFSession *Session = IterSession->second;
-    return SFMessageCodec::Encode(Session->GetSendBuffer(), MsgID, Payload, PayloadLen);
+    bool Result = SFMessageCodec::Encode(Session->GetSendBuffer(), MsgID, Payload, PayloadLen);
+    if (Result)
+    {
+        ++TotalSendMsgCount;
+    }
+    return Result;
 }
 
 void SFModule_NetworkServer::Broadcast(SFMsgID MsgID,
@@ -503,7 +510,10 @@ void SFModule_NetworkServer::Broadcast(SFMsgID MsgID,
         SFSession *Session = IterSession->second;
         if (Session != nullptr && Session->IsAuthenticated() && !Session->IsClosing())
         {
-            SFMessageCodec::Encode(Session->GetSendBuffer(), MsgID, Payload, PayloadLen);
+            if (SFMessageCodec::Encode(Session->GetSendBuffer(), MsgID, Payload, PayloadLen))
+            {
+                ++TotalSendMsgCount;
+            }
         }
     }
 }
@@ -598,6 +608,41 @@ SFUInt32 SFModule_NetworkServer::GetSessionPlayerId(SFUInt32 SessionId)
         return 0;
     }
     return Session->GetPlayerId();
+}
+
+SFUInt32 SFModule_NetworkServer::GetSessionCount()
+{
+    return static_cast<SFUInt32>(SessionMap.size());
+}
+
+SFUInt32 SFModule_NetworkServer::GetAuthenticatedSessionCount()
+{
+    SFUInt32 Count = 0;
+    SF_COMMON_ITERATOR(IterSession, SessionMap)
+    {
+        SFSession *Session = IterSession->second;
+        if (Session != nullptr && Session->IsAuthenticated())
+        {
+            ++Count;
+        }
+    }
+    return Count;
+}
+
+SFUInt64 SFModule_NetworkServer::GetTotalRecvMsgCount()
+{
+    return TotalRecvMsgCount;
+}
+
+SFUInt64 SFModule_NetworkServer::GetTotalSendMsgCount()
+{
+    return TotalSendMsgCount;
+}
+
+void SFModule_NetworkServer::ResetMsgCounters()
+{
+    TotalRecvMsgCount = 0;
+    TotalSendMsgCount = 0;
 }
 
 #pragma endregion ISFNetworkServer

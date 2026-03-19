@@ -25,6 +25,12 @@
 #endif
 
 #include <cstring>
+#include <cstdio>
+#include <sstream>
+
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+#include <conio.h>
+#endif
 
 SF_NAMESPACE_USING
 
@@ -41,6 +47,8 @@ namespace
 }
 
 /** 消息ID 使用 Include/SFNetworkInterface.h 中的定义 */
+
+static SFString ClientStdinLineBuffer;
 
 #pragma region Object
 
@@ -306,7 +314,14 @@ void SFModule_NetworkClient::Tick(SFObjectErrors &Errors, SFUInt64 DelayMS)
         {
             SendHeartbeat();
 
-            if (bSceneEntered)
+            /* 读取用户输入命令 */
+            SFString CmdLine;
+            if (TryReadStdinLine(CmdLine))
+            {
+                ProcessClientCommand(CmdLine);
+            }
+
+            if (bSceneEntered && !bManualMode)
             {
                 SFUInt64 NowMS = GetSteadyNowMS();
                 if ((NowMS - LastMoveMS) >= MoveIntervalMS)
@@ -673,4 +688,112 @@ void SFModule_NetworkClient::SendMoveReq(float X, float Y, float Z)
     std::memcpy(Payload + 8, &Z, 4);
     SendMsg(SF_MSGID_MOVE_REQ, Payload, 12);
     SF_LOG_FRAMEWORK("Sent MoveReq Pos=(" << X << "," << Y << "," << Z << ")");
+}
+
+bool SFModule_NetworkClient::TryReadStdinLine(SFString &OutLine)
+{
+#if defined(SKYWALKER_PLATFORM_WINDOWS)
+    while (_kbhit())
+    {
+        int ch = _getch();
+        if (ch == '\r' || ch == '\n')
+        {
+            if (!ClientStdinLineBuffer.empty())
+            {
+                OutLine = ClientStdinLineBuffer;
+                ClientStdinLineBuffer.clear();
+                return true;
+            }
+        }
+        else if (ch == '\b' || ch == 127)
+        {
+            if (!ClientStdinLineBuffer.empty())
+            {
+                ClientStdinLineBuffer.pop_back();
+            }
+        }
+        else
+        {
+            ClientStdinLineBuffer += static_cast<char>(ch);
+        }
+    }
+    return false;
+#else
+    char Buf[256];
+    int BytesRead = read(STDIN_FILENO, Buf, sizeof(Buf) - 1);
+    if (BytesRead > 0)
+    {
+        Buf[BytesRead] = '\0';
+        ClientStdinLineBuffer += Buf;
+
+        auto Pos = ClientStdinLineBuffer.find('\n');
+        if (Pos != SFString::npos)
+        {
+            OutLine = ClientStdinLineBuffer.substr(0, Pos);
+            ClientStdinLineBuffer = ClientStdinLineBuffer.substr(Pos + 1);
+            if (!OutLine.empty() && OutLine.back() == '\r')
+            {
+                OutLine.pop_back();
+            }
+            return !OutLine.empty();
+        }
+    }
+    return false;
+#endif
+}
+
+void SFModule_NetworkClient::ProcessClientCommand(const SFString &Command)
+{
+    if (Command == "quit" || Command == "exit")
+    {
+        SF_LOG_FRAMEWORK("Client shutting down by command...");
+        Disconnect();
+        GetFramework()->Close();
+        return;
+    }
+
+    if (Command == "help")
+    {
+        SF_LOG_FRAMEWORK("Client commands:");
+        SF_LOG_FRAMEWORK("  move x y z  - Send move request");
+        SF_LOG_FRAMEWORK("  manual      - Toggle manual mode (stop auto-move)");
+        SF_LOG_FRAMEWORK("  auto        - Resume auto-move mode");
+        SF_LOG_FRAMEWORK("  quit        - Disconnect and exit");
+        SF_LOG_FRAMEWORK("  help        - Show this help");
+        return;
+    }
+
+    if (Command == "manual")
+    {
+        bManualMode = true;
+        SF_LOG_FRAMEWORK("Manual mode ON - auto-move disabled");
+        return;
+    }
+
+    if (Command == "auto")
+    {
+        bManualMode = false;
+        LastMoveMS = GetSteadyNowMS();
+        SF_LOG_FRAMEWORK("Auto-move mode ON");
+        return;
+    }
+
+    /* move x y z */
+    if (Command.substr(0, 5) == "move ")
+    {
+        std::istringstream ISS(Command.substr(5));
+        float X = 0.0f, Y = 0.0f, Z = 0.0f;
+        if (ISS >> X >> Y >> Z)
+        {
+            ClientPosX = X;
+            SendMoveReq(X, Y, Z);
+        }
+        else
+        {
+            SF_LOG_FRAMEWORK("Usage: move <x> <y> <z>");
+        }
+        return;
+    }
+
+    SF_LOG_FRAMEWORK("Unknown command: " << Command << " (type 'help')");
 }

@@ -7,8 +7,8 @@
 ```
 SkywalkerFramework/
 ├── Core/              # 静态库 SFCore：对象模型、服务容器、插件管理器
-├── Plugin/            # 9个动态插件（Network/CommandLine/AI/DB/Game/Level/Actor/Video/Profiler）
-├── Include/           # 6个公共头文件（SFCore.h/SFErrors.h/SFEvent.h/SFFramework.h/SFILog.h/SFPlatform.h）
+├── Plugin/            # 10个动态插件（Network/CommandLine/AI/DB/Game/Level/Actor/Video/Profiler/Auth）
+├── Include/           # 8个公共头文件（SFCore.h/SFErrors.h/SFEvent.h/SFFramework.h/SFILog.h/SFPlatform.h/SFNetworkInterface.h/SFActorTypes.h）
 ├── SkywalkerFramework.h/.cpp  # CSkywalkerFramework：Start/Tick/Stop 主循环
 └── SkywalkerFramework.plantuml # 架构图源文件
 ```
@@ -20,6 +20,8 @@ SkywalkerFramework/
 | `Include/SFCore.h` | 核心类型（SSFInt/SFString）、指针宏（SSF_SHARED_PTR）、注册宏（SF_REGISTER_PLUGIN/MODULE）、导出宏（SF_PLUGIN_EXPORT） |
 | `Include/SFErrors.h` | ESFError 枚举、SF_ERROR_*/SF_ERROR_DESC_TRACE 宏 |
 | `Include/SFFramework.h` | 框架公共 include（main 文件引用此头） |
+| `Include/SFNetworkInterface.h` | ISFNetworkServer 接口、消息ID定义、登录类型 |
+| `Include/SFActorTypes.h` | SFVector3、ESFActorType、ISFActorFactory、ISFSceneManager 接口 |
 | `Core/Plugin/SFPluginManager.h` | 插件动态库扫描与注册入口 |
 
 ## 编译输出
