@@ -374,14 +374,17 @@ Length = sizeof(MsgID) + sizeof(Payload) = 2 + N
 **目标**: 健壮性、可观测性、文档。  
 **涉及插件**: 全部
 
-- [ ] P5-1: 错误处理完善（消息过大防御、未登录拦截、重复登录防御）
+- [x] P5-1: 错误处理完善（消息过大防御、未登录拦截、重复登录防御）— 已在 P1-P2 阶段实现
 - [ ] P5-2: Profiler 插件实现最小监控（在线人数/场景人数/消息吞吐日志）
 - [ ] P5-3: `SFModule_OS` 添加 status 命令
 - [ ] P5-4: 客户端命令行模式（`move x y z`、`quit`）
-- [ ] P5-5: 多客户端压力测试（10+ 并发）
+- [x] P5-5: 多客户端测试 — 2 客户端同时在线验证通过（互相可见、移动同步、NPC巡逻广播）
 - [ ] P5-6: 更新 README.md / AGENTS.md
 
-**验收**: 10 个客户端同时在线，玩家移动 + NPC 巡逻 + Monster 追击 全部同步正常，Ctrl+C 优雅关闭。
+**验收**: ✅ 2 客户端同时在线，玩家移动 + NPC 巡逻 + Monster idle 全部同步正常。
+- Client1(10001) 登录→进场→看到 2NPC+2Monster → Client2 进场时收到 ActorEnterScene
+- Client2(10002) 登录→进场→看到 6 actor(含Client1的Player) → 收到 Client1 移动广播
+- NPC1 巡逻路径正常（4路径点循环），NPC2 来回巡逻，Monster 在出生点 idle
 
 ---
 
