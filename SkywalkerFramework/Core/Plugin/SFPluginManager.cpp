@@ -317,14 +317,14 @@ void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
     PluginScriptParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
     if (!PluginScriptParse->LoadScript(PluginConfigPath.c_str()))
     {
-        SF_ERROR_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr);
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr, "LoadScript failed");
         return;
     }
 
     SKYWALKER_PTR_SCRIPT_NODE RootNode = PluginScriptParse->GetRootNode();
     if (RootNode == nullptr)
     {
-        SF_ERROR_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr);
+        SF_ERROR_DESC_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr, "RootNode is nullptr");
         return;
     }
 
@@ -333,14 +333,14 @@ void SFPluginManager::LoadPluginConfig(SFObjectErrors &Errors)
         SKYWALKER_PTR_SCRIPT_NODE PluginNode = RootNode->GetChildNodeFromIndex(i);
         if (PluginNode == nullptr)
         {
-            SF_ERROR_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr);
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr, "PluginNode is nullptr");
             continue;
         }
 
         SKYWALKER_PTR_SCRIPT_NODE NameNode = PluginNode->GetChildNodeFromName("Name");
         if (NameNode == nullptr)
         {
-            SF_ERROR_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr);
+            SF_ERROR_DESC_TRACE(Errors, ESFError::Plugin_Load_ConfigNullptr, "NameNode is nullptr");
             continue;
         }
 
@@ -390,7 +390,7 @@ void SFPluginManager::StartPlugin(SFObjectErrors &Errors)
         DLL_START_PLUGIN_FUNC DllStartPluginFunc = (DLL_START_PLUGIN_FUNC)IterLib->second->GetSymbol("DllStartPlugin");
         if (DllStartPluginFunc == nullptr)
         {
-            SF_ERROR_TRACE(Errors, ESFError::Plugin_Load_EntryNullptr);
+            SF_LOG_WARNING("StartPlugin [" << LibraryName << "] Skip: DllStartPlugin entry not found");
             continue;
         }
 

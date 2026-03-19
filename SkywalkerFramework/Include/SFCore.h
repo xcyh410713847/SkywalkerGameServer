@@ -199,27 +199,31 @@ SF_NAMESPACE_BEGIN
 
 /**
  * 注册库
+ * 说明：加载失败时输出警告并跳过，不终止后续插件加载。
  */
-#define SF_REGISTER_LIBRARY(LibraryName)                                              \
-    SFObjectErrors LibraryName##Errors;                                               \
-    if (DynamicLibMap.find(LibraryName) != DynamicLibMap.end())                       \
-    {                                                                                 \
-        SF_ERROR_TRACE(LibraryName##Errors, ESFError::Plugin_Load_Repeated);          \
-        return;                                                                       \
-    }                                                                                 \
-    SFDynamicLib *DynamicLib = new SFDynamicLib(LibraryName);                         \
-    if (DynamicLib == nullptr)                                                        \
-    {                                                                                 \
-        SF_ERROR_TRACE(LibraryName##Errors, ESFError::Plugin_Load_DynamicLibNullptr); \
-        return;                                                                       \
-    }                                                                                 \
-    DynamicLibMap.insert(std::make_pair(LibraryName, DynamicLib));                    \
-    if (!DynamicLib->Load())                                                          \
-    {                                                                                 \
-        SF_ERROR_TRACE(LibraryName##Errors, ESFError::Plugin_Load_Failed);            \
-        return;                                                                       \
-    }                                                                                 \
-    SF_LOG_INFO("Register Library [" << LibraryName << "] Success");
+#define SF_REGISTER_LIBRARY(LibraryName)                                                              \
+    {                                                                                                  \
+        SFObjectErrors LibraryName##Errors;                                                            \
+        if (DynamicLibMap.find(LibraryName) != DynamicLibMap.end())                                    \
+        {                                                                                              \
+            SF_LOG_WARNING("Register Library [" << LibraryName << "] Skip: already loaded");              \
+            continue;                                                                                  \
+        }                                                                                              \
+        SFDynamicLib *DynamicLib = new SFDynamicLib(LibraryName);                                      \
+        if (DynamicLib == nullptr)                                                                     \
+        {                                                                                              \
+            SF_LOG_WARNING("Register Library [" << LibraryName << "] Skip: alloc failed");                \
+            continue;                                                                                  \
+        }                                                                                              \
+        if (!DynamicLib->Load())                                                                       \
+        {                                                                                              \
+            SF_LOG_WARNING("Register Library [" << LibraryName << "] Skip: DLL load failed");             \
+            delete DynamicLib;                                                                         \
+            continue;                                                                                  \
+        }                                                                                              \
+        DynamicLibMap.insert(std::make_pair(LibraryName, DynamicLib));                                 \
+        SF_LOG_INFO("Register Library [" << LibraryName << "] Success");                               \
+    }
 
 /**
  * 注册插件

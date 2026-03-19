@@ -10,6 +10,8 @@
 #include "Include/SFCore.h"
 #include "Include/SFILog.h"
 
+#include "SkywalkerTools/SkywalkerScript/SkywalkerScript.h"
+
 #include <chrono>
 #include <vector>
 
@@ -48,6 +50,65 @@ void SFModule_NetworkServer::Awake(SFObjectErrors &Errors)
 void SFModule_NetworkServer::Start(SFObjectErrors &Errors)
 {
     SSFModule::Start(Errors);
+
+    /* 从 ServerConfig.skywalkerC 读取网络配置 */
+    const char *ConfigPath = nullptr;
+#if defined(_WIN32) || defined(_WIN64)
+    char *ConfigPathBuffer = nullptr;
+    size_t ConfigPathLen = 0;
+    _dupenv_s(&ConfigPathBuffer, &ConfigPathLen, SF_ENV_PROGRAM_CONFIG_DIR);
+    ConfigPath = ConfigPathBuffer;
+#else
+    ConfigPath = getenv(SF_ENV_PROGRAM_CONFIG_DIR);
+#endif
+    SFString ServerConfigPath = ConfigPath ? ConfigPath : "ServerConfig.skywalkerC";
+#if defined(_WIN32) || defined(_WIN64)
+    if (ConfigPathBuffer != nullptr)
+    {
+        free(ConfigPathBuffer);
+        ConfigPathBuffer = nullptr;
+    }
+#endif
+
+    SKYWALKER_PTR_SCRIPT_PARSE ConfigParse = new SKYWALKER_SCRIPT_NAMESPACE::CSkywalkerScriptParse();
+    if (ConfigParse->LoadScript(ServerConfigPath.c_str()))
+    {
+        SKYWALKER_PTR_SCRIPT_NODE RootNode = ConfigParse->GetRootNode();
+        if (RootNode != nullptr)
+        {
+            for (size_t i = 0; i < RootNode->GetChildNodeNum(); i++)
+            {
+                SKYWALKER_PTR_SCRIPT_NODE ConfigNode = RootNode->GetChildNodeFromIndex(i);
+                if (ConfigNode == nullptr)
+                {
+                    continue;
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE IPNode = ConfigNode->GetChildNodeFromName("IP");
+                if (IPNode != nullptr)
+                {
+                    ServerIP = IPNode->GetNodeValueString();
+                }
+
+                SKYWALKER_PTR_SCRIPT_NODE PortNode = ConfigNode->GetChildNodeFromName("Port");
+                if (PortNode != nullptr)
+                {
+                    ServerPort = std::stoi(PortNode->GetNodeValueString());
+                }
+            }
+        }
+    }
+    delete ConfigParse;
+
+    SF_LOG_FRAMEWORK("Network Server Config IP " << ServerIP << " Port " << ServerPort);
+
+    if (ServerPort <= 0)
+    {
+        SF_ERROR_DESC_TRACE(Errors,
+                            ESFError::Network_Start_Failed,
+                            "Network server config invalid: Port not configured");
+        return;
+    }
 
     StartNetworkServer(Errors);
 }
